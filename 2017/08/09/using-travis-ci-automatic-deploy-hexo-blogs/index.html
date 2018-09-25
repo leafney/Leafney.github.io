@@ -94,18 +94,18 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="自从使用GitHub Pages和Hexo来发布博客之后，不得不说方便了许多，只需要几个简单的命令博客就发布了。但在不断的使用中发现每次的发布操作也挺耗时的。 我一般的操作是将平时整理好的md文件放到私有的git仓库中（感兴趣可了解 &quot;Ubuntu Gogs 用更简单的方式部署、升级或迁移Gogs服 ...">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/170809/gmgDm96jGa.jpg?imageslim">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/170809/26B1D9j4eI.jpg?imageslim">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/170809/34fAK0D1cH.jpg?imageslim">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/170809/37cGl0m6me.jpg?imageslim">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/170809/L8IgF7ijH5.jpg?imageslim">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/170809/dHK41IbL4h.jpg?imageslim">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/170809/ii4E0ca8G4.jpg?imageslim">
-<meta property="og:updated_time" content="2018-09-24T13:14:30.038Z">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/170809/gmgDm96jGa.jpg?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/170809/26B1D9j4eI.jpg?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/170809/34fAK0D1cH.jpg?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/170809/37cGl0m6me.jpg?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/170809/L8IgF7ijH5.jpg?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/170809/dHK41IbL4h.jpg?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/170809/ii4E0ca8G4.jpg?imageslim">
+<meta property="og:updated_time" content="2018-09-25T13:57:17.737Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Travis CI自动部署Hexo博客">
 <meta name="twitter:description" content="自从使用GitHub Pages和Hexo来发布博客之后，不得不说方便了许多，只需要几个简单的命令博客就发布了。但在不断的使用中发现每次的发布操作也挺耗时的。 我一般的操作是将平时整理好的md文件放到私有的git仓库中（感兴趣可了解 &quot;Ubuntu Gogs 用更简单的方式部署、升级或迁移Gogs服 ...">
-<meta name="twitter:image" content="http://ouej55gp9.bkt.clouddn.com/blog/170809/gmgDm96jGa.jpg?imageslim">
+<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/170809/gmgDm96jGa.jpg?imageslim">
 
 
 
@@ -357,8 +357,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-09-24T21:14:30+08:00">
-                2018-09-24
+              <time title="更新于" itemprop="dateModified" datetime="2018-09-25T21:57:17+08:00">
+                2018-09-25
               </time>
             
           </span>
@@ -469,23 +469,23 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; git pull origin hexo</div></pre></td></tr></table></figure>
 <hr>
 <h4 id="设置-Travis-CI"><a href="#设置-Travis-CI" class="headerlink" title="设置 Travis CI"></a>设置 Travis CI</h4><p>使用 GitHub账户登录 <a href="https://travis-ci.org/" target="_blank" rel="external">Travis CI官网</a> ，进去后能看到已经自动关联了 GitHub 上的仓库。这里我们选择需要启用的项目，即 <code>yourname/yourname.github.io</code> 。</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/170809/gmgDm96jGa.jpg?imageslim" alt="mark"></p>
+<p><img src="https://qiniu.itfanr.cc/blog/170809/gmgDm96jGa.jpg?imageslim" alt="mark"></p>
 <p>然后点击后面的齿轮图标进入设置界面。</p>
 <p>如果你之前已经勾选过项目，可以进到项目主页中，在右上角找到 <code>More options</code> 选项下的 <code>Settings</code> 进入设置界面。</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/170809/26B1D9j4eI.jpg?imageslim" alt="mark"></p>
+<p><img src="https://qiniu.itfanr.cc/blog/170809/26B1D9j4eI.jpg?imageslim" alt="mark"></p>
 <hr>
 <h5 id="通用设置"><a href="#通用设置" class="headerlink" title="通用设置"></a>通用设置</h5><p>在 <code>General</code> 区域开启：<code>Build only if .travis.yml is present</code> 表示“只有当 <code>.travis.yml</code> 存在时才构建” ；开启：<code>Build branch updates</code> 表示 “当分支更新时构建” 两个选项，如下：</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/170809/34fAK0D1cH.jpg?imageslim" alt="mark"></p>
+<p><img src="https://qiniu.itfanr.cc/blog/170809/34fAK0D1cH.jpg?imageslim" alt="mark"></p>
 <p>Travis CI在自动构建完成后需要push静态文件到仓库的 <code>master</code> 分支下，而访问GitHub的仓库是需要权限的，下面来看看如何配置权限。</p>
 <h5 id="配置-Access-Token"><a href="#配置-Access-Token" class="headerlink" title="配置 Access Token"></a>配置 Access Token</h5><p>如下图，<code>Environment Variables</code> 区域就是用来添加权限信息的。我们需要填写一个Token的名称和值，该名称可以在配置文件中以 <code>${变量名}</code> 来引用，该Token我们需要从Github中获取。</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/170809/37cGl0m6me.jpg?imageslim" alt="mark"></p>
+<p><img src="https://qiniu.itfanr.cc/blog/170809/37cGl0m6me.jpg?imageslim" alt="mark"></p>
 <hr>
 <h5 id="从GitHub获取Access-Token"><a href="#从GitHub获取Access-Token" class="headerlink" title="从GitHub获取Access Token"></a>从GitHub获取Access Token</h5><p>之前我们在使用命令 <code>hexo d</code> 部署hexo博客到GitHub上时，是因为本地有 <code>SSH key</code>，当交给 Travis 去自动部署时我们也需要设置可操作权限，这里我们使用GitHub提供的token变量来实现。</p>
 <p>登陆 <code>GitHub</code> –<code>Settings</code> 选项，找到 <code>Personal access tokens</code> 页面。</p>
 <p>点击右上角的 <code>Generate new token</code> 按钮会生成新的token，点击后提示输入密码后继续，然后来到如下界面，取个名字（我这里取 <code>Travis_Token</code> 下面的配置文件中会用到)，勾选相应权限，这里只需要 <code>repo</code> 下全部和 <code>user</code> 下的 <code>user:email</code> 即可。</p>
-<p> <img src="http://ouej55gp9.bkt.clouddn.com/blog/170809/L8IgF7ijH5.jpg?imageslim" alt="mark"></p>
+<p> <img src="https://qiniu.itfanr.cc/blog/170809/L8IgF7ijH5.jpg?imageslim" alt="mark"></p>
 <p>生成完成后，将该token拷贝下来。这里需要注意的是该token只有这个时候才能看到，当再次进入这个页面时就只会显示之前设置的名称了。如果忘记了只能重新生成一个。</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/170809/dHK41IbL4h.jpg?imageslim" alt="mark"></p>
+<p><img src="https://qiniu.itfanr.cc/blog/170809/dHK41IbL4h.jpg?imageslim" alt="mark"></p>
 <hr>
 <h5 id="在Travis-CI中配置"><a href="#在Travis-CI中配置" class="headerlink" title="在Travis CI中配置"></a>在Travis CI中配置</h5><p>将上面获取到的token添加到 <code>Environment Variables</code> 部分，值为该 <code>token</code> ,而名称即为上面设置的 <code>Travis_Token</code> (请更改为个人所设置名称)。<strong>不勾选</strong>后面的 <code>Display value in build log</code> . 否则会在日志文件中暴露你的 <code>token</code> 信息，而日志文件是公开可见的。</p>
 <p>至此我们已经配置好了要构建的仓库和访问的token，接下来就是如何构建的问题了。</p>
@@ -496,7 +496,7 @@
 <p>配置文件中的操作也很简单，这也是网上找到的比较常见的一种配置格式了。然而，这份配置文件中却隐藏着一个大坑。至于如何跳过去，后面再详说。</p>
 <hr>
 <h5 id="实现自动部署"><a href="#实现自动部署" class="headerlink" title="实现自动部署"></a>实现自动部署</h5><p>当 <code>.travis.yml</code> 配置文件修改完成后，将其提交到远程仓库的 <code>hexo</code> 分支下，此时如果之前的配置一切ok，我们应该能在 <code>Travis CI</code> 的博客项目主页页面中看到自动构建已经在开始执行了。上面会显示出构建过程中的日志信息及状态等。</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/170809/ii4E0ca8G4.jpg?imageslim" alt="mark"></p>
+<p><img src="https://qiniu.itfanr.cc/blog/170809/ii4E0ca8G4.jpg?imageslim" alt="mark"></p>
 <hr>
 <h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><h5 id="问题一：提示-travis-yml-文件格式错误"><a href="#问题一：提示-travis-yml-文件格式错误" class="headerlink" title="问题一：提示 .travis.yml 文件格式错误"></a>问题一：提示 <code>.travis.yml</code> 文件格式错误</h5><p>在 <code>Travis CI</code> 的日志文件中，如果遇到下面的错误提示，那可能就是 <code>.travis.yml</code> 文件的格式有问题。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ERROR: An error occured while trying to parse your .travis.yml file.</div><div class="line">Please make sure that the file is valid YAML.</div><div class="line">http://lint.travis-ci.org can check your .travis.yml.</div><div class="line">The log message was: Build config file had a parse error: found character that cannot start any token while scanning for the next token at line 6 column 1.</div></pre></td></tr></table></figure>

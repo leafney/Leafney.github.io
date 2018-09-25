@@ -94,17 +94,17 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="为Hexo博客添加Gitment评论系统，并实现钉钉机器人实时提醒">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/20180917193416.png">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/20180917193521.png">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/20180917193602.png">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/20180917193631.png">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/20180917193733.png">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/20180917193816.png">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193416.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193521.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193602.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193631.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193733.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193816.png?imageslim">
 <meta property="og:updated_time" content="2018-09-17T11:38:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo博客添加Gitment评论系统">
 <meta name="twitter:description" content="为Hexo博客添加Gitment评论系统，并实现钉钉机器人实时提醒">
-<meta name="twitter:image" content="http://ouej55gp9.bkt.clouddn.com/blog/20180917193416.png">
+<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/20180917193416.png?imageslim">
 
 
 
@@ -465,15 +465,15 @@
 <p>其他的必需项是 <code>github_user</code> ，表示你的github账号名称。 <code>github_repo</code> 表示保存评论数据的仓库名称，这里可以使用当前博客所在的仓库名称，也可以单独设置一个专门的仓库。<code>client_id</code> 和 <code>client_secret</code> 为上面创建的值。</p>
 <p>修改完成后，将hexo博客文件上传到github。因为gitment功能必需在线上才能进行操作。</p>
 <h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><h5 id="点击登录github发现一直显示loading"><a href="#点击登录github发现一直显示loading" class="headerlink" title="点击登录github发现一直显示loading"></a>点击登录github发现一直显示loading</h5><p>在创建 <code>OAuth Apps</code> 中填写 <code>Authorization callback URL</code> 时，网站的地址末尾不能带有 <code>/</code> 。</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/20180917193416.png" alt=""></p>
+<p><img src="https://qiniu.itfanr.cc/blog/20180917193416.png?imageslim" alt=""></p>
 <hr>
 <h5 id="某些文章不能生成Issues"><a href="#某些文章不能生成Issues" class="headerlink" title="某些文章不能生成Issues"></a>某些文章不能生成Issues</h5><p>当点击文章页面底部的 <code>初始化本文的评论页</code> 按钮时，页面会弹出错误信息：<code>Error:Validation Failed</code> 信息。</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/20180917193521.png" alt=""></p>
+<p><img src="https://qiniu.itfanr.cc/blog/20180917193521.png?imageslim" alt=""></p>
 <p>通过查看操作请求，gitment会在生成Issues时创建两个 <code>label</code> 标签。</p>
 <p>一个是文章标题的路径: <code>window.location.pathname</code> 值，如 <code>/2018/09/05/pip-install-locale-error-unsupported-locale-setting/</code> ；另一个是定值 <code>gitment</code> 。</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/20180917193602.png" alt=""></p>
+<p><img src="https://qiniu.itfanr.cc/blog/20180917193602.png?imageslim" alt=""></p>
 <p>而由于 github 中 <code>Issues</code> 的 <code>label</code> 长度限制为最大 <code>50</code> 个字符，当 文章标题长度过长时，该label就会生成失败，而导致初始化错误，弹出 <code>Validation Failed</code> 的提示。</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/20180917193631.png" alt=""></p>
+<p><img src="https://qiniu.itfanr.cc/blog/20180917193631.png?imageslim" alt=""></p>
 <p>通过网上的搜索，发现可以使用文章创建时的时间来代替文章标题，作为这个唯一的label标签。</p>
 <p>找到giment的配置：<code>/themes/next/layout/_third-party/comments/gitment.swig</code> 文件：</p>
 <p>找到如下部分：</p>
@@ -487,7 +487,7 @@
 <p>我采用的方法是 “偷梁换柱” 的方式。首先呢，在手机或PC端选择 “发起群聊”，随便拉一个人进来，不需要发任何信息。然后在 <code>群设置</code> 中的 <code>群成员</code> 选项中移除那个人就可以了。就这么简单。这样，这个群里就只有你一个人了，添加群机器人后也不会打扰到别人。</p>
 <p>然后在 <code>群</code> 设置中选择 <code>群机器人</code> 选项，选择 <code>GitHub机器人</code> ，按照设置流程生成GitHub机器人，即可获取到相应群的WebHook地址，其格式如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://oapi.dingtalk.com/robot/send?access_token=xxxxxxxx</div></pre></td></tr></table></figure>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/20180917193733.png" alt=""></p>
+<p><img src="https://qiniu.itfanr.cc/blog/20180917193733.png?imageslim" alt=""></p>
 <h5 id="在GitHub中设置项目的webhook"><a href="#在GitHub中设置项目的webhook" class="headerlink" title="在GitHub中设置项目的webhook"></a>在GitHub中设置项目的webhook</h5><p>进入 GitHub 的 Hexo 博客仓库，依次点击 <code>Settings</code> – <code>Webhooks &amp; Services</code> – <code>Add Webhook</code> ，新增一项。</p>
 <p>在 <code>payload URL</code> 中填写刚才获得的钉钉WebHook地址；</p>
 <p>在 <code>Content type</code> 选项下选择 <code>application/json</code> 项；</p>
@@ -495,7 +495,7 @@
 <p>在 <code>Event</code> 选项下，我这里选择了 <code>issues</code> 相关的所有 <code>event</code> 事件，也可以按照自己的需求自定义。</p>
 <p>然后，点击 <code>Add webhook</code> 按钮即可。</p>
 <p>至此，当 <code>Issues</code> 中有新的评论时，在钉钉手机客户端就能立即接收到提醒了。</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/20180917193816.png" alt=""></p>
+<p><img src="https://qiniu.itfanr.cc/blog/20180917193816.png?imageslim" alt=""></p>
 <h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul>
 <li><a href="http://pacez.github.io/2018/03/08/%E8%A7%A3%E5%86%B3Gitment%E5%88%9D%E5%A7%8B%E5%8C%96%E8%AF%84%E8%AE%BA%E6%97%B6validation%20failed/" target="_blank" rel="external">解决Gitment初始化评论时validation failed | Pace’s Blog</a></li>
 <li><a href="https://github.com/swlfigo/Study/wiki/Hexo%E5%8D%9A%E5%AE%A2Next%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0Gitment%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E5%9D%91%E7%82%B9" target="_blank" rel="external">Hexo博客Next主题添加Gitment评论系统坑点 · swlfigo/Study Wiki</a></li>

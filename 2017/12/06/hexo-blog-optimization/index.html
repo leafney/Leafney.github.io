@@ -94,13 +94,13 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="介绍Hexo博客功能优化项，如 文章置顶、显示版权、访问统计、字数统计、显示更新时间等">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171206/Blk7gcB7CI.png?imageslim">
-<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171206/LC91BEHEcg.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171206/Blk7gcB7CI.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171206/LC91BEHEcg.png?imageslim">
 <meta property="og:updated_time" content="2017-12-06T03:58:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo博客功能优化">
 <meta name="twitter:description" content="介绍Hexo博客功能优化项，如 文章置顶、显示版权、访问统计、字数统计、显示更新时间等">
-<meta name="twitter:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171206/Blk7gcB7CI.png?imageslim">
+<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/171206/Blk7gcB7CI.png?imageslim">
 
 
 
@@ -469,9 +469,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># Declare license on posts</div><div class="line">post_copyright:</div><div class="line">  enable: false</div><div class="line">  license: CC BY-NC-SA 3.0</div><div class="line">  license_url: https://creativecommons.org/licenses/by-nc-sa/3.0/</div></pre></td></tr></table></figure>
 <p>将其中的 <code>enable: false</code> 改为 <code>enable: true</code> 即可。</p>
 <p>但是改完后，使用 <code>hexo s -g</code> 预览，发现 “本文链接” 部分有问题。</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171206/Blk7gcB7CI.png?imageslim" alt="mark"></p>
+<p><img src="https://qiniu.itfanr.cc/blog/171206/Blk7gcB7CI.png?imageslim" alt="mark"></p>
 <p>这就需要我们修改主站点的配置文件了。打开主站点的 <code>_config.yml</code> 文件，修改：</p>
-<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171206/LC91BEHEcg.png?imageslim" alt="mark"></p>
+<p><img src="https://qiniu.itfanr.cc/blog/171206/LC91BEHEcg.png?imageslim" alt="mark"></p>
 <p>将 <code>url</code> 部分改成自己站点的域名地址即可。</p>
 <h5 id="相关参考-1"><a href="#相关参考-1" class="headerlink" title="相关参考"></a>相关参考</h5><ul>
 <li><a href="http://www.crocutax.com/2017/05/20/Hexo%E6%8C%81%E7%BB%AD%E4%BC%98%E5%8C%96-%E5%9C%A8%E6%96%87%E7%AB%A0%E5%B0%BE%E9%83%A8%E6%B7%BB%E5%8A%A0%E7%89%88%E6%9D%83%E5%A3%B0%E6%98%8E%E4%BF%A1%E6%81%AF/" target="_blank" rel="external">Hexo持续优化-在文章尾部添加版权声明信息</a></li>

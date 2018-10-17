@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Skill," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Google Pixel解锁BL、刷入Twrp及Root 不做过多解释，懂的人自然懂">
+<meta name="keywords" content="Skill">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google Pixel解锁BL、刷入Twrp及Root折腾小记">
+<meta property="og:url" content="https://www.itfanr.cc/2018/10/16/google-pixel-unlock-bl-and-root/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="Google Pixel解锁BL、刷入Twrp及Root 不做过多解释，懂的人自然懂">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016195733.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016143933.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016144134.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016144340.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016211926.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016212056.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016191327.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016191719.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181017110509.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016212322.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016212428.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016155219.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016161659.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016183455.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184210.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184312.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184418.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184615.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184814.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184312.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184919.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016185120.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016185217.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016185342.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016185438.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181017101716.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181017104902.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181017105009.png?imageslim">
+<meta property="og:updated_time" content="2018-10-17T03:07:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Google Pixel解锁BL、刷入Twrp及Root折腾小记">
+<meta name="twitter:description" content="Google Pixel解锁BL、刷入Twrp及Root 不做过多解释，懂的人自然懂">
+<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/20181016195733.png?imageslim">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.itfanr.cc/2018/10/16/google-pixel-unlock-bl-and-root/"/>
+
+
+
+
+
+  <title>Google Pixel解锁BL、刷入Twrp及Root折腾小记 | IT范儿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">IT范儿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">程序员改变世界</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2018/10/16/google-pixel-unlock-bl-and-root/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Google Pixel解锁BL、刷入Twrp及Root折腾小记</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T21:29:13+08:00">
+                2018-10-16
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-10-17T11:07:39+08:00">
+                2018-10-17
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/16/google-pixel-unlock-bl-and-root/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/10/16/google-pixel-unlock-bl-and-root/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,654
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  Google Pixel解锁BL、刷入Twrp及Root 不做过多解释，懂的人自然懂
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>因为个人项目上的需要，我从某宝入手了一款二手的Google Pixel 欧版手机。当初选择时主要是考虑到它的大内存–4G内存，可以流畅运行常用的程序。（不过入手之后的感觉就是，要想用好Google的手机，「科学上网」是必备的技能，否则的话，还是用国内的手机吧！）</p>
+<p>因为需要在手机上安装按键精灵的手机版app，而调试按键精灵的脚本又需要获取手机的Root权限，所以就开始了我的Pixel刷机之旅。</p>
+<hr>
+<h4 id="准备工具"><a href="#准备工具" class="headerlink" title="准备工具"></a>准备工具</h4><ol>
+<li>Google Pixel手机 欧版（国际版）</li>
+<li>Android 8.1.0</li>
+<li>Windows或Mac</li>
+<li>twrp</li>
+<li>Magisk</li>
+<li>ss</li>
+</ol>
+<hr>
+<h4 id="欧版判断"><a href="#欧版判断" class="headerlink" title="欧版判断"></a>欧版判断</h4><p>点击Settings(设置) -&gt; System(系统) -&gt; About phone(关于手机) -&gt; Regulatory labels(监管标签) 查看。</p>
+<p>MODEL: G-2PW4200 ，其中 <code>4200</code> 表示欧版，<code>4100</code> 表示美版。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016195733.png?imageslim" alt=""></p>
+<hr>
+<h4 id="解锁Bootloader"><a href="#解锁Bootloader" class="headerlink" title="解锁Bootloader"></a>解锁Bootloader</h4><p>（注意：解锁 Bootloader 重置设备数据，请注意备份。一定不要忘记退出你的Google账号和取消指纹识别及锁屏设置。）</p>
+<p>由于我的手机是新买的，所以这些操作就免了。</p>
+<hr>
+<h5 id="开启USB调试和OEM解锁"><a href="#开启USB调试和OEM解锁" class="headerlink" title="开启USB调试和OEM解锁"></a>开启USB调试和OEM解锁</h5><p>安装「科学上网」工具，并成功接入互联网。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016143933.png?imageslim" alt=""></p>
+<p>选择 「设置-系统-关于手机-版本号」，猛击「版本号」7次开启 「开发者选项」。</p>
+<p>返回「上一页」，在「开发者选项」中开启「USB调试」和「OEM解锁」两个选项。如果「OEM解锁」选项显示为灰色，请检查网络连接是否正常。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016144134.png?imageslim" alt=""></p>
+<p>通过数据线将手机连接至电脑，此时，手机端会弹出 USB 调试申请，点击「允许」。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016144340.png?imageslim" alt=""></p>
+<p>可以通过命令 <code>adb devices</code> 来验证是否允许adb调试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">➜ adb devices</div><div class="line">List of devices attached</div><div class="line">FA6XXXXXXX53    device</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="进入-Bootloader模式"><a href="#进入-Bootloader模式" class="headerlink" title="进入 Bootloader模式"></a>进入 Bootloader模式</h5><p>进入bootloader默认有两种方式，第一种是通过在关机状态下「按住电源键+音量减少键」；第二种是通过「ADB命令」进入。</p>
+<p>这里我采用「adb命令」来操作。</p>
+<p>回到命令提示符窗口，键入 <code>adb reboot bootloader</code> 并回车，手机会立即重启至 Bootloader 模式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb reboot bootloader</div></pre></td></tr></table></figure>
+<p>之后，通过 <code>fastboot devices</code> 命令验证 fastboot 是否成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜ fastboot devices</div><div class="line">FA6AB0311758    fastboot</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="解锁-Bootloader"><a href="#解锁-Bootloader" class="headerlink" title="解锁 Bootloader"></a>解锁 Bootloader</h5><p>上一步进入Bootloader页面后，手机界面应该是如下图：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016211926.png?imageslim" alt=""></p>
+<p>在命令提示符窗口键入 <code>fastboot flashing unlock</code> 并回车，手机进入 Bootloader 解锁界面。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">➜ fastboot flashing unlock</div><div class="line">...</div><div class="line">OKAY [  0.049s]</div><div class="line">finished. total time: 0.049s</div></pre></td></tr></table></figure>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016212056.png?imageslim" alt=""></p>
+<p>对于 <code>Pixel 2 XL</code> 机型，要用如下的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fastboot flashing unlock_critical</div></pre></td></tr></table></figure>
+<p>详情查看：<a href="https://developers.google.com/android/images" target="_blank" rel="external">Factory Images for Nexus and Pixel Devices  |  Google APIs for Android  |  Google Developers</a></p>
+<p>在 Bootloader 解锁界面中，使用音量键 <code>+/-</code> 来控制光标，选择「Yes」并按下电源键来进行 Bootloader 解锁。</p>
+<p>确认完毕后,稍作等待。通过 <code>fastboot reboot</code> 命令重启手机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">➜ fastboot reboot</div><div class="line">rebooting...</div><div class="line"></div><div class="line">finished. total time: 0.050s</div></pre></td></tr></table></figure>
+<p>稍等片刻之后，你的设备会自动重启。</p>
+<hr>
+<h5 id="判断解锁成功"><a href="#判断解锁成功" class="headerlink" title="判断解锁成功"></a>判断解锁成功</h5><p>当手机重启时出现黑底白字的英文警告页以及屏幕下方出现一把打开的小锁，那 Bootloader 就解锁成功啦。</p>
+<p>重启手机，出现如下两个界面就算解锁成功：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016191327.png?imageslim" alt=""></p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016191719.png?imageslim" alt=""></p>
+<p>当然，还有一种更简单的方法，就是再次进入 <code>fastboot</code> 模式，查看：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181017110509.png?imageslim" alt=""></p>
+<hr>
+<h4 id="解锁Bootloader后的两个问题"><a href="#解锁Bootloader后的两个问题" class="headerlink" title="解锁Bootloader后的两个问题"></a>解锁Bootloader后的两个问题</h4><h5 id="恢复初始"><a href="#恢复初始" class="headerlink" title="恢复初始"></a>恢复初始</h5><p>在解锁 Bootloader 之后，可以看到手机系统已经是完全初始化的状态了。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016212322.png?imageslim" alt=""></p>
+<p>在进入 「关于手机」 界面后，可以发现之前开启的「开发者选项」也是默认关闭了，需要再次点击7次「版本号」开启。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016212428.png?imageslim" alt=""></p>
+<p>那么，在执行后面的操作时是否仍需要再次将「OEM解锁」打开呢？答案是：<strong>不需要</strong>。</p>
+<p>然而，因为后面需要用到 <code>adb</code> 命令去操作手机，所以「USB调试」选项还是需要打开的。</p>
+<p>关于「OEM锁与bootloader锁的关系」，可以看下面的 <a href="#OEM锁与bootloader锁的关系">疑难解答</a> 。</p>
+<hr>
+<h5 id="错误提示"><a href="#错误提示" class="headerlink" title="错误提示"></a>错误提示</h5><p>成功解锁Bootloader后，每次手机启动或重启时，都会出现黑底白字的英文警告页，提示 “Your device software can’t be checked for corruption. Please lock the bootloader”。 </p>
+<p><strong>这没有什么可担心的，这是正常的！</strong></p>
+<p>这仅仅是提示你 Bootloader 被解锁了，直接忽视即可。</p>
+<hr>
+<h4 id="刷入第三方Recovery-TWRP及Root"><a href="#刷入第三方Recovery-TWRP及Root" class="headerlink" title="刷入第三方Recovery:TWRP及Root"></a>刷入第三方Recovery:TWRP及Root</h4><p>由于Pixel及Pixel XL都采用A/B升级系统，因而可以理解为手机里有2个系统，如果你按照传统刷入Twrp的方法刷入的话，那么你并不会获得一个永久的Twrp。所以需要先刷入一个临时的Twrp，在通过临时的Twrp来刷入永久的Twrp从而来获取Root权限。</p>
+<h5 id="下载必要软件"><a href="#下载必要软件" class="headerlink" title="下载必要软件"></a>下载必要软件</h5><p>需要下载临时的Twrp、永久Twrp及Magisk三个文件。</p>
+<p>首先，前往 TWRP 官网 <a href="https://twrp.me/Devices/" target="_blank" rel="external">Devices</a> 下载最新版 TWRP 压缩包（.zip）和临时 TWRP 镜像文件（.img）。</p>
+<p>我的Pixel对应选择从这个页面 <a href="https://dl.twrp.me/sailfish/" target="_blank" rel="external">Download TWRP for sailfish</a> 下载的 <code>3.2.3-1</code> 版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">twrp-pixel-installer-sailfish-3.2.3-1.zip （永久twrp）</div><div class="line">twrp-3.2.3-1-sailfish.img (临时twrp)</div></pre></td></tr></table></figure>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016155219.png?imageslim" alt=""></p>
+<p>从github <a href="https://github.com/topjohnwu/Magisk/releases" target="_blank" rel="external">Releases · topjohnwu/Magisk</a> 下载最新的 Magisk 包。 这里我下载的是 <code>17.2</code> 版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Magisk-v17.2.zip</div></pre></td></tr></table></figure>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016161659.png?imageslim" alt=""></p>
+<hr>
+<h5 id="拷贝文件到手机"><a href="#拷贝文件到手机" class="headerlink" title="拷贝文件到手机"></a>拷贝文件到手机</h5><p>假设我电脑上的操作目录为: <code>~/test/pixel</code> 。</p>
+<p>将 <code>twrp-3.2.3-1-sailfish.img</code> 拷贝到该目录下。</p>
+<p>将 <code>twrp-pixel-installer-sailfish-3.2.3-1.zip</code> 和 <code>Magisk-v17.2.zip</code> 拷贝到手机中。</p>
+<p>在将文件拷贝到手机中时，我发现通过数据线连接到电脑时，选择 <code>传输文件</code> 电脑中并没有出现手机存储的盘符，也就无法直接将文件拖拽到手机中。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016183455.png?imageslim" alt=""></p>
+<p>在经过一番摆弄之后，我觉得最靠谱的还是通过 <code>adb</code> 的方式来上传文件。</p>
+<p>连接手机，在手机端弹出「USB调试」点击确定，打开item2，切换到目录 <code>~/test/pixel</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ ls</div><div class="line">Magisk-v17.2.zip                          twrp-3.2.3-1-sailfish.img                 twrp-pixel-installer-sailfish-3.2.3-1.zip</div></pre></td></tr></table></figure>
+<p>查看adb连接状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb devices</div><div class="line">List of devices attached</div><div class="line">FA6XXXXXXX53    device</div></pre></td></tr></table></figure>
+<hr>
+<p>先通过 <code>adb shell</code> 命令进入手机的bash命令下，在 <code>/sdcard</code> 目录下创建临时文件夹 <code>tmp</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb shell</div><div class="line">sailfish:/ $ cd sdcard/</div><div class="line">sailfish:/sdcard $ mkdir tmp</div><div class="line">sailfish:/sdcard $ ls</div><div class="line">Alarms Android DCIM Download Movies Music Notifications Pictures Podcasts Ringtones tmp</div><div class="line">sailfish:/sdcard $ ls -al</div><div class="line">total 100</div><div class="line">drwxrwx--x 13 root sdcard_rw 4096 2018-10-16 17:27 .</div><div class="line">drwx--x--x  4 root sdcard_rw 4096 2009-01-01 16:02 ..</div><div class="line">drwxrwx--x  2 root sdcard_rw 4096 2009-01-01 16:02 Alarms</div><div class="line">drwxrwx--x  3 root sdcard_rw 4096 2009-01-01 16:02 Android</div><div class="line">drwxrwx--x  2 root sdcard_rw 4096 2009-01-01 16:02 DCIM</div><div class="line">drwxrwx--x  2 root sdcard_rw 4096 2009-01-01 16:02 Download</div><div class="line">...</div><div class="line">...</div><div class="line">drwxrwx--x  2 root sdcard_rw 4096 2018-10-16 17:27 tmp</div><div class="line">sailfish:/sdcard $</div></pre></td></tr></table></figure>
+<p>通过 <code>adb push &lt;local&gt; &lt;remote&gt;</code> 命令将文件上传到手机的 <code>/sdcard/tmp/</code> 目录中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb push twrp-pixel-installer-sailfish-3.2.3-1.zip /sdcard/tmp/</div><div class="line">twrp-pixel-installer-sailfish-3.2.3-1.zip: 1 file pushed. 14.6 MB/s (11492088 bytes in 0.753s)</div><div class="line"></div><div class="line"></div><div class="line">~/test/pixel</div><div class="line">➜ adb push Magisk-v17.2.zip /sdcard/tmp/</div><div class="line">Magisk-v17.2.zip: 1 file pushed. 16.3 MB/s (4174026 bytes in 0.245s)</div></pre></td></tr></table></figure>
+<p>查看手机中文件列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb shell ls -al /sdcard/tmp/</div><div class="line">total 15328</div><div class="line">drwxrwx--x  2 root sdcard_rw     4096 2018-10-16 17:32 .</div><div class="line">drwxrwx--x 13 root sdcard_rw     4096 2018-10-16 17:27 ..</div><div class="line">-rw-rw----  1 root sdcard_rw  4174026 2018-10-16 16:07 Magisk-v17.2.zip</div><div class="line">-rw-rw----  1 root sdcard_rw 11492088 2018-10-16 15:56 twrp-pixel-installer-sailfish-3.2.3-1.zip</div></pre></td></tr></table></figure>
+<p>注：对于为什么将文件拷贝到手机的 <code>/sdcard</code> 目录，可以看下面的 <a href="adbpush文件时权限不够">疑难解答</a></p>
+<hr>
+<h5 id="刷临时Twrp"><a href="#刷临时Twrp" class="headerlink" title="刷临时Twrp"></a>刷临时Twrp</h5><h6 id="引导进入-Bootloader"><a href="#引导进入-Bootloader" class="headerlink" title="引导进入 Bootloader"></a>引导进入 Bootloader</h6><p>执行命令 <code>adb reboot bootloader</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb reboot bootloader</div></pre></td></tr></table></figure>
+<hr>
+<h6 id="刷入临时Twrp"><a href="#刷入临时Twrp" class="headerlink" title="刷入临时Twrp"></a>刷入临时Twrp</h6><p>执行命令 <code>fastboot boot *.img</code> 来启动临时Twrp：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">~/test/pixel took 5s</div><div class="line">➜ fastboot boot twrp-3.2.3-1-sailfish.img</div><div class="line">downloading &apos;boot.img&apos;...</div><div class="line">OKAY [  0.712s]</div><div class="line">booting...</div><div class="line">OKAY [  0.903s]</div><div class="line">finished. total time: 1.615s</div></pre></td></tr></table></figure>
+<p>之后，手机会进入到临时的Twrp中：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016184210.png?imageslim" alt=""></p>
+<p>滑动下面的 <code>Swipe to Allow Modifications</code> 滑条，进入Twrp操作页面：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016184312.png?imageslim" alt=""></p>
+<hr>
+<h5 id="刷入永久Twrp"><a href="#刷入永久Twrp" class="headerlink" title="刷入永久Twrp"></a>刷入永久Twrp</h5><p>选择 <code>Install</code> – 找到目录 <code>/sdcard/tmp/</code> – 选择 <code>twrp*.zip</code> 文件 – 弹出安装界面 – 直接滑动底部的滑条 <code>Swipe to confirm Flash</code> 安装：</p>
+<blockquote>
+<p>这里也间接验证了为什么要选择 <code>/sdcard</code> 目录：点击 <code>Install</code> 按钮后，直接进入的就是 <code>/sdcard</code> 目录，即只能操作这个目录。</p>
+</blockquote>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016184418.png?imageslim" alt=""></p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016184615.png?imageslim" alt=""></p>
+<p>等待进度条执行完毕，最后会显示 <code>...done</code> 的提示。说明这一步执行完成。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016184814.png?imageslim" alt=""></p>
+<hr>
+<h5 id="刷入Magisk"><a href="#刷入Magisk" class="headerlink" title="刷入Magisk"></a>刷入Magisk</h5><p>上一步安装完成后，我们发现界面中只有两个按钮：<code>Wipe cache/dalvik</code> 和 <code>Reboot System</code> 。后一项肯定不能选，如果选择重启，那还有一个 <code>Magisk</code> 文件没有刷入，否则的话还需要走一遍上面的 <code>刷入临时Twrp</code> 的操作；而第一项 清除临时缓存文件，只是我不清楚该文件具体是干什么用的，所以也怕点了之后会出问题。</p>
+<p>这种情况下，我只好上网去查询看看是否有相关的操作介绍，可想而知，这个问题可能太简单了，很难找到相关的介绍。</p>
+<p>正当我一脸迷蒙时，我的手误按了顶部的 “蓝色条” 部分，发现… 界面返回了 <code>Install</code> 页面：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016184312.png?imageslim" alt=""></p>
+<p>我只想说，这操作简直是 <code>666</code> 啊！！！</p>
+<p>经过验证，只要点击顶部的「install Zip」 蓝色条部分左侧的「图标」处，就会返回 <code>Team Win Recovery Project</code> 界面。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016184919.png?imageslim" alt=""></p>
+<p>依照上面的安装步骤，继续安装 <code>Magisk-v17.2.zip</code> 文件。直到界面中提示 <code>...done</code> 时，说明安装完成。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016185120.png?imageslim" alt=""></p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016185217.png?imageslim" alt=""></p>
+<p>安装完成后，点击下面的 <code>Reboot System</code> 按钮，重启系统。</p>
+<p>不过，这时候发现界面会提示询问是否安装 <code>TWRP App</code> ？</p>
+<p>这里，<strong>千万不要安装</strong>。直接点击中间的 <strong><code>Do Not Install</code></strong> 即可。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016185342.png?imageslim" alt=""></p>
+<p>待手机重启进入系统后，可以发现手机APP中多了一个 <code>Magisk</code> 的脸谱Logo图标。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181016185438.png?imageslim" alt=""></p>
+<p>至此，整个刷机过程就结束了。</p>
+<hr>
+<h4 id="验证是否成功Root"><a href="#验证是否成功Root" class="headerlink" title="验证是否成功Root"></a>验证是否成功Root</h4><p>至于如何验证是否成功Root，最简单的方法就是安装几个需要获取Root权限的软件就可以了。</p>
+<p>可以在「脸谱Logo」的菜单中选择「超级用户」，为相应的软件开启Root权限。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181017101716.png?imageslim" alt=""></p>
+<hr>
+<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><h5 id="去掉wifi叉号标记"><a href="#去掉wifi叉号标记" class="headerlink" title="去掉wifi叉号标记"></a>去掉wifi叉号标记</h5><p>在国内的网络环境下，通过wifi联网之后，Pixel的wifi图标上会默认显示一个「叉号」。虽然能够正常联网，但对于强迫症来说，还是觉得很碍眼。</p>
+<p>对于这个问题，原理性的解释是：</p>
+<blockquote>
+<p>谷歌原生安卓系统当连接到移动数据网络或者WIFI网络的时候，其NetworkMonitor模块会向特定的服务器发起一个http的请求并利用收到的响应进行网络状态判断。由于谷歌的服务器被GFW屏蔽，所以导致没有返回值，这个时候谷歌安卓系统就会在信号或者wifi上打一个感叹号或叉号。</p>
+</blockquote>
+<p>可以通过换成v2ex的验证方式来解决。在命令提示符中执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adb shell settings put global captive_portal_https_url https://www.google.cn/generate_204</div></pre></td></tr></table></figure>
+<p>然后开启飞行模式，再关闭飞行模式即解决！</p>
+<p>操作前：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181017104902.png?imageslim" alt=""></p>
+<p>执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb shell settings put global captive_portal_https_url https://www.google.cn/generate_204</div><div class="line"></div><div class="line">~/test/pixel</div><div class="line">➜</div></pre></td></tr></table></figure>
+<p>操作后：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181017105009.png?imageslim" alt=""></p>
+<p>如果你想恢复的话，使用下面的命令：（未亲测）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">adb shell settings delete global captive_portal_server  </div><div class="line">adb shell settings put global captive_portal_detection_enabled 1</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="疑难解答"><a href="#疑难解答" class="headerlink" title="疑难解答"></a>疑难解答</h4><h5 id="fastboot-oem-unlock-or-fastboot-flashing-unlock"><a href="#fastboot-oem-unlock-or-fastboot-flashing-unlock" class="headerlink" title="fastboot oem unlock or fastboot flashing unlock"></a><code>fastboot oem unlock</code> or <code>fastboot flashing unlock</code></h5><p>在网上搜索到的一些教程中，有的说是使用 <code>fastboot oem unlock</code> 来解BL，有的说是通过 <code>fastboot flashing unlock</code> 来解BL。</p>
+<p>在google的官网中，我找到了如下的介绍：</p>
+<blockquote>
+<p>If necessary, unlock the device’s bootloader using one of the following methods:</p>
+<p>If you are updating a Nexus or Pixel device that is manufactured in 2015 or later (for example, a Nexus 5X, Nexus 6P, Pixel, Pixel XL, Pixel 2 or Pixel 2 XL device), run this command:</p>
+<p>fastboot flashing unlock</p>
+<p>If you are updating an older device, run this command:</p>
+<p>fastboot oem unlock</p>
+</blockquote>
+<p>更多介绍，请看： <a href="https://developers.google.com/android/images" target="_blank" rel="external">Factory Images for Nexus and Pixel Devices  |  Google APIs for Android  |  Google Developers</a></p>
+<hr>
+<h5 id="OEM锁与bootloader锁的关系"><a href="#OEM锁与bootloader锁的关系" class="headerlink" title="OEM锁与bootloader锁的关系"></a>OEM锁与bootloader锁的关系</h5><p>OEM锁是限制了bootloader锁，OEM锁系统默认是关闭的，必须在开发者中手动打开。之后 bootloader锁才能进行解锁。</p>
+<p>通俗一点的说，OEM锁只跟bootloader锁有关系，和之后的Root操作没有关系。所以当解锁Bootloader后系统配置被重置了，即使 「开发者选项」中的 「OEM解锁」显示为灰色不能操作，也无关紧要了。</p>
+<p>参考：<a href="http://bbs.zhiyoo.com/thread-13220001-1-1.html" target="_blank" rel="external">关于解锁bootloader的重要性.机友们务必细读,生死问题,请勿忽视! - Pixel | Pixel XL 论坛 - 智友论坛</a></p>
+<hr>
+<h5 id="解锁bootloader的好处"><a href="#解锁bootloader的好处" class="headerlink" title="解锁bootloader的好处"></a>解锁bootloader的好处</h5><ol>
+<li>最重要是为自己的手机买了份保险,留了条生路.卡死 系统抽风或变砖后,<br>可在bootloader界面下线刷原厂镜像恢复系统。(不解锁的无法刷机救回)</li>
+<li>作为亲儿子机型，XDA上很多资源，有大量第三方ROM、优化补丁、Recoovery、ROOT</li>
+<li>解锁bootloader后，不ROOT和修改系统文件，不影响在线OTA升级。</li>
+</ol>
+<p>解锁后 开机Google logo下有个小锁和两秒钟的警示语说你的手机已经解了bootloader锁,<br>机友们可以无视之，不影响使用。</p>
+<hr>
+<h5 id="adbpush文件时权限不够"><a href="#adbpush文件时权限不够" class="headerlink" title="adbpush文件时权限不够"></a>adbpush文件时权限不够</h5><p>在使用命令 <code>adb push</code> 将文件 <code>twrp-pixel-installer-sailfish-3.2.3-1.zip</code> 上传到手机时，可能由于权限问题而报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb push twrp-pixel-installer-sailfish-3.2.3-1.zip /</div><div class="line">adb: error: failed to copy &apos;twrp-pixel-installer-sailfish-3.2.3-1.zip&apos; to &apos;/twrp-pixel-installer-sailfish-3.2.3-1.zip&apos;: remote couldn&apos;t create file: Read-only file system</div><div class="line">twrp-pixel-installer-sailfish-3.2.3-1.zip: 0 files pushed. 22.7 MB/s (1048448 bytes in 0.044s)</div></pre></td></tr></table></figure>
+<p>我们可以通过 <code>adb shell</code> 命令来进入到手机的bash命令下，也可以直接在后面跟上bash命令来执行。进行验证：</p>
+<p><code>adb shell</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb shell</div><div class="line">sailfish:/ $ </div><div class="line">sailfish:/ $ ls</div><div class="line">ls: ./verity_key: Permission denied</div><div class="line">ls: ./init.rc: Permission denied</div><div class="line">ls: ./postinstall: Permission denied</div><div class="line">ls: ./init.usb.configfs.rc: Permission denied</div><div class="line">ls: ./init.zygote64_32.rc: Permission denied</div><div class="line">...</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>或者</p>
+<p><code>adb shell mkdir tmp</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb shell mkdir tmp</div><div class="line">mkdir: &apos;tmp&apos;: Read-only file system</div></pre></td></tr></table></figure>
+<p>发现，果然是当前用户的权限不够。</p>
+<p>经过验证，发现当前用户对 <code>/sdcard</code> 目录是有权限进行文件或目录的操作的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb shell</div><div class="line">sailfish:/ $ cd sdcard/</div><div class="line">sailfish:/sdcard $ ls</div><div class="line">Alarms Android DCIM Download Movies Music Notifications Pictures Podcasts Ringtones</div><div class="line">sailfish:/sdcard $ mkdir tmp</div><div class="line">sailfish:/sdcard $ ls</div><div class="line">Alarms Android DCIM Download Movies Music Notifications Pictures Podcasts Ringtones tmp</div><div class="line"></div><div class="line">sailfish:/sdcard $ rm -rf tmp</div><div class="line">sailfish:/sdcard $ ls</div><div class="line">Alarms Android DCIM Download Movies Music Notifications Pictures Podcasts Ringtones</div><div class="line">sailfish:/sdcard $ exit</div></pre></td></tr></table></figure>
+<hr>
+<p><strong>码字不易，以上操作均为本人实际操作并验证。如果该文章对您有所帮助，可以赠送一杯咖啡！！！</strong></p>
+<hr>
+<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><h5 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h5><ul>
+<li><a href="https://github.com/shadowsocks/shadowsocks-android/releases" target="_blank" rel="external">Releases · shadowsocks/shadowsocks-android</a></li>
+<li><a href="https://dl.twrp.me/sailfish/" target="_blank" rel="external">Download TWRP for sailfish</a></li>
+<li><a href="https://github.com/topjohnwu/Magisk/releases" target="_blank" rel="external">Releases · topjohnwu/Magisk</a></li>
+</ul>
+<h5 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h5><ul>
+<li><a href="https://www.xzymoe.com/pixel-xl-unlockbl-root/" target="_blank" rel="external">Pixel XL解锁BL、刷入Twrp及Root教程 | XZYMOE’S BLOG</a> <strong>☆</strong></li>
+<li><a href="https://sspai.com/post/38319" target="_blank" rel="external">从 Bootloader 解锁到必备应用推荐：我的 Google Pixel 折腾手记 - 少数派</a></li>
+<li><a href="https://blog.csdn.net/ekeuy/article/details/43112645" target="_blank" rel="external">Android ADB命令大全(通过ADB命令查看wifi密码、MAC地址、设备信息、操作文件、查看文件、日志信息、卸载、启动和安装APK等) - mingy的专栏 - CSDN博客</a></li>
+</ul>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <div>如有疑问或需要技术讨论，请发邮件到 service@itfanr.cc</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>鼓励</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Leafney 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2018/10/16/google-pixel-unlock-bl-and-root/" title="Google Pixel解锁BL、刷入Twrp及Root折腾小记">https://www.itfanr.cc/2018/10/16/google-pixel-unlock-bl-and-root/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Skill/" rel="tag"># Skill</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/10/omnigraffle-shortcut-keys/" rel="next" title="OmniGraffle常用快捷键">
+                <i class="fa fa-chevron-left"></i> OmniGraffle常用快捷键
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Leafney" />
+            
+              <p class="site-author-name" itemprop="name">Leafney</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>DockerHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:service@itfanr.cc" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工具"><span class="nav-number">1.</span> <span class="nav-text">准备工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欧版判断"><span class="nav-number">2.</span> <span class="nav-text">欧版判断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解锁Bootloader"><span class="nav-number">3.</span> <span class="nav-text">解锁Bootloader</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开启USB调试和OEM解锁"><span class="nav-number">3.1.</span> <span class="nav-text">开启USB调试和OEM解锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进入-Bootloader模式"><span class="nav-number">3.2.</span> <span class="nav-text">进入 Bootloader模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解锁-Bootloader"><span class="nav-number">3.3.</span> <span class="nav-text">解锁 Bootloader</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#判断解锁成功"><span class="nav-number">3.4.</span> <span class="nav-text">判断解锁成功</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解锁Bootloader后的两个问题"><span class="nav-number">4.</span> <span class="nav-text">解锁Bootloader后的两个问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#恢复初始"><span class="nav-number">4.1.</span> <span class="nav-text">恢复初始</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#错误提示"><span class="nav-number">4.2.</span> <span class="nav-text">错误提示</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#刷入第三方Recovery-TWRP及Root"><span class="nav-number">5.</span> <span class="nav-text">刷入第三方Recovery:TWRP及Root</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#下载必要软件"><span class="nav-number">5.1.</span> <span class="nav-text">下载必要软件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#拷贝文件到手机"><span class="nav-number">5.2.</span> <span class="nav-text">拷贝文件到手机</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷临时Twrp"><span class="nav-number">5.3.</span> <span class="nav-text">刷临时Twrp</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#引导进入-Bootloader"><span class="nav-number">5.3.1.</span> <span class="nav-text">引导进入 Bootloader</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#刷入临时Twrp"><span class="nav-number">5.3.2.</span> <span class="nav-text">刷入临时Twrp</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷入永久Twrp"><span class="nav-number">5.4.</span> <span class="nav-text">刷入永久Twrp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷入Magisk"><span class="nav-number">5.5.</span> <span class="nav-text">刷入Magisk</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证是否成功Root"><span class="nav-number">6.</span> <span class="nav-text">验证是否成功Root</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化"><span class="nav-number">7.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#去掉wifi叉号标记"><span class="nav-number">7.1.</span> <span class="nav-text">去掉wifi叉号标记</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#疑难解答"><span class="nav-number">8.</span> <span class="nav-text">疑难解答</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#fastboot-oem-unlock-or-fastboot-flashing-unlock"><span class="nav-number">8.1.</span> <span class="nav-text">fastboot oem unlock or fastboot flashing unlock</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#OEM锁与bootloader锁的关系"><span class="nav-number">8.2.</span> <span class="nav-text">OEM锁与bootloader锁的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解锁bootloader的好处"><span class="nav-number">8.3.</span> <span class="nav-text">解锁bootloader的好处</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#adbpush文件时权限不够"><span class="nav-number">8.4.</span> <span class="nav-text">adbpush文件时权限不够</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关链接"><span class="nav-number">9.</span> <span class="nav-text">相关链接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#工具"><span class="nav-number">9.1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#教程"><span class="nav-number">9.2.</span> <span class="nav-text">教程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数 <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问量 <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: 'itfanr_blog_20181016092913',
+            owner: 'Leafney',
+            repo: 'Leafney.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '70a085c82c8d67b07e5482058272fcab3e969b83',
+            
+                client_id: 'f28d68fd5271fd52826d'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+</body>
+</html>

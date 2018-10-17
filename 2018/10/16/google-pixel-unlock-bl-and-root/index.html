@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,654
+                  3,656
                 </span>
               
 
@@ -547,7 +547,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb push twrp-pixel-installer-sailfish-3.2.3-1.zip /sdcard/tmp/</div><div class="line">twrp-pixel-installer-sailfish-3.2.3-1.zip: 1 file pushed. 14.6 MB/s (11492088 bytes in 0.753s)</div><div class="line"></div><div class="line"></div><div class="line">~/test/pixel</div><div class="line">➜ adb push Magisk-v17.2.zip /sdcard/tmp/</div><div class="line">Magisk-v17.2.zip: 1 file pushed. 16.3 MB/s (4174026 bytes in 0.245s)</div></pre></td></tr></table></figure>
 <p>查看手机中文件列表：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb shell ls -al /sdcard/tmp/</div><div class="line">total 15328</div><div class="line">drwxrwx--x  2 root sdcard_rw     4096 2018-10-16 17:32 .</div><div class="line">drwxrwx--x 13 root sdcard_rw     4096 2018-10-16 17:27 ..</div><div class="line">-rw-rw----  1 root sdcard_rw  4174026 2018-10-16 16:07 Magisk-v17.2.zip</div><div class="line">-rw-rw----  1 root sdcard_rw 11492088 2018-10-16 15:56 twrp-pixel-installer-sailfish-3.2.3-1.zip</div></pre></td></tr></table></figure>
-<p>注：对于为什么将文件拷贝到手机的 <code>/sdcard</code> 目录，可以看下面的 <a href="adbpush文件时权限不够">疑难解答</a></p>
+<p>注：对于为什么将文件拷贝到手机的 <code>/sdcard</code> 目录，可以看下面的 <a href="#adbpush文件时权限不够">疑难解答</a></p>
 <hr>
 <h5 id="刷临时Twrp"><a href="#刷临时Twrp" class="headerlink" title="刷临时Twrp"></a>刷临时Twrp</h5><h6 id="引导进入-Bootloader"><a href="#引导进入-Bootloader" class="headerlink" title="引导进入 Bootloader"></a>引导进入 Bootloader</h6><p>执行命令 <code>adb reboot bootloader</code>:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">~/test/pixel</div><div class="line">➜ adb reboot bootloader</div></pre></td></tr></table></figure>
@@ -608,7 +608,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">adb shell settings delete global captive_portal_server  </div><div class="line">adb shell settings put global captive_portal_detection_enabled 1</div></pre></td></tr></table></figure>
 <hr>
 <h4 id="疑难解答"><a href="#疑难解答" class="headerlink" title="疑难解答"></a>疑难解答</h4><h5 id="fastboot-oem-unlock-or-fastboot-flashing-unlock"><a href="#fastboot-oem-unlock-or-fastboot-flashing-unlock" class="headerlink" title="fastboot oem unlock or fastboot flashing unlock"></a><code>fastboot oem unlock</code> or <code>fastboot flashing unlock</code></h5><p>在网上搜索到的一些教程中，有的说是使用 <code>fastboot oem unlock</code> 来解BL，有的说是通过 <code>fastboot flashing unlock</code> 来解BL。</p>
-<p>在google的官网中，我找到了如下的介绍：</p>
+<p>最终在google的官网中，我找到了如下的介绍：</p>
 <blockquote>
 <p>If necessary, unlock the device’s bootloader using one of the following methods:</p>
 <p>If you are updating a Nexus or Pixel device that is manufactured in 2015 or later (for example, a Nexus 5X, Nexus 6P, Pixel, Pixel XL, Pixel 2 or Pixel 2 XL device), run this command:</p>

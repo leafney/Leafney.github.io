@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Golang," />
 
 
 
@@ -86,16 +86,18 @@
 
 
 
-<meta name="description" content="Stay Hungry. Stay Foolish.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="IT范儿">
-<meta property="og:url" content="https://www.itfanr.cc/tags/RestfulApi/index.html">
+<meta name="description" content="malformed HTTP response">
+<meta name="keywords" content="Golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang http malformed HTTP response 探究">
+<meta property="og:url" content="https://www.itfanr.cc/2018/11/28/golang-http-error-malformed-http-response/index.html">
 <meta property="og:site_name" content="IT范儿">
-<meta property="og:description" content="Stay Hungry. Stay Foolish.">
+<meta property="og:description" content="malformed HTTP response">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-28T08:28:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="IT范儿">
-<meta name="twitter:description" content="Stay Hungry. Stay Foolish.">
+<meta name="twitter:title" content="Golang http malformed HTTP response 探究">
+<meta name="twitter:description" content="malformed HTTP response">
 
 
 
@@ -125,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="https://www.itfanr.cc/tags/RestfulApi/"/>
+  <link rel="canonical" href="https://www.itfanr.cc/2018/11/28/golang-http-error-malformed-http-response/"/>
 
 
 
 
 
-  <title>标签: RestfulApi | IT范儿</title>
+  <title>Golang http malformed HTTP response 探究 | IT范儿</title>
   
 
 
@@ -150,7 +152,7 @@
     
   
 
-  <div class="container sidebar-position-right ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -288,54 +290,376 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h2>RestfulApi<small>标签</small>
-        </h2>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2018/11/28/golang-http-error-malformed-http-response/">
 
-      <h3 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2016/04/17/transfer-data-from-filter-to-action/" itemprop="url">
-              
-                <span itemprop="name">MVC和WebAPI如何从Filter向Action中传递数据</span>
-              
-            </a>
         
-      </h3>
+          <h2 class="post-title" itemprop="name headline">Golang http malformed HTTP response 探究</h2>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-04-17T14:06:00+08:00"
-              content="2016-04-17" >
-          04-17
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-28T16:11:36+08:00">
+                2018-11-28
+              </time>
+            
 
-    </header>
-  </article>
+            
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-11-28T16:28:43+08:00">
+                2018-11-28
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Golang/" itemprop="url" rel="index">
+                    <span itemprop="name">Golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/28/golang-http-error-malformed-http-response/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/11/28/golang-http-error-malformed-http-response/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,126
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  malformed HTTP response
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>处理请求返回内容的时候， 遇到 <code>error malformed HTTP response &quot;&lt;html&gt;&quot;</code> 异常信息</p>
+<h4 id="探究"><a href="#探究" class="headerlink" title="探究"></a>探究</h4><p>根据目前的测试情况，得出的结论是：</p>
+<ol>
+<li>在请求返回结果为 <code>html</code> 页面时，proxy 需要带上 <code>http://</code> 前缀。</li>
+<li>在请求返回结果为 <code>api</code> 接口时，proxy 需要去掉 <code>http://</code> 前缀。</li>
+</ol>
+<p>待后续多次验证。</p>
+<p><strong>经验证：</strong> 以上结论 <strong>错误</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>请求网址</th>
+<th>返回结果类型</th>
+<th>proxy格式</th>
+<th>proxy是否带http</th>
+<th>请求结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>http://ip38.com/</code></td>
+<td><code>html</code></td>
+<td><code>http://27.203.219.181:8060</code></td>
+<td>是</td>
+<td>ok，已验证</td>
+</tr>
+<tr>
+<td><code>http://ip38.com/</code></td>
+<td><code>html</code></td>
+<td><code>27.203.219.181:8060</code></td>
+<td>否</td>
+<td>请求正常，代理未生效,已验证</td>
+</tr>
+<tr>
+<td><code>https://www.cnblogs.com/</code></td>
+<td><code>html</code></td>
+<td><code>http://27.203.219.181:8060</code></td>
+<td>是</td>
+<td><code>error,malformed HTTP response &quot;&lt;html&gt;&quot;</code>,已验证</td>
+</tr>
+<tr>
+<td><code>https://www.cnblogs.com/</code></td>
+<td><code>html</code></td>
+<td><code>27.203.219.181:8060</code></td>
+<td>否</td>
+<td>ok，已验证</td>
+</tr>
+<tr>
+<td><code>https://p.3.cn/prices/mgets</code></td>
+<td><code>json</code></td>
+<td><code>http://27.203.219.181:8060</code></td>
+<td>是</td>
+<td><code>error,malformed HTTP response &quot;&lt;html&gt;&quot;</code>,已验证</td>
+</tr>
+<tr>
+<td><code>https://p.3.cn/prices/mgets</code></td>
+<td><code>json</code></td>
+<td><code>27.203.219.181:8060</code></td>
+<td>否</td>
+<td>ok,已验证</td>
+</tr>
+</tbody>
+</table>
+<p>即：</p>
+<ul>
+<li>请求 <code>http://ip38.com/</code> 时，需要使用 proxy格式为 <code>http://27.203.219.181:8060</code> 才能访问成功。</li>
+<li>请求 <code>https://www.cnblogs.com/</code> 时，需要使用proxy格式为 <code>27.203.219.181:8060</code> 才能访问成功。</li>
+<li>请求 <code>https://p.3.cn/prices/mgets</code> 时，需要使用proxy格式为 <code>27.203.219.181:8060</code> 才能访问成功。</li>
+</ul>
+<hr>
+<h4 id="我的一种解法"><a href="#我的一种解法" class="headerlink" title="我的一种解法"></a>我的一种解法</h4><p>项目中在测试使用代理的代码段：</p>
+<p>代码中的 <code>req.XReq()</code> 是对 <a href="https://github.com/imroc/req" target="_blank" rel="external">imroc/req: a golang http request library for humans</a> 的封装。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">    // 使用了代理ip</div><div class="line"></div><div class="line">    //为防止使用代理ip请求超时太长，设置默认超时时间为30s</div><div class="line">    if _, ok := rh[&quot;time-out&quot;]; !ok &#123;</div><div class="line">        // 请求头中 time-out 参数不存在</div><div class="line">        rh[&quot;time-out&quot;] = 30</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    is_malformedHttp := false</div><div class="line"></div><div class="line">HandleProxy:</div><div class="line">    for _, ag := range rAgents &#123;</div><div class="line">        // 表示在使用proxy ip时，是否遇到返回错误信息为 malformed HTTP response &quot;&lt;html&gt;&quot; 的情况</div><div class="line"></div><div class="line">        if is_malformedHttp &#123;</div><div class="line">            // 将代理ip的 http:// 去掉</div><div class="line">            ag = GetHostAndPort(ag)</div><div class="line">            fmt.Printf(&quot;[info] remove http for proxy ip: %s .\n&quot;, ag)</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        rh[&quot;proxy&quot;] = ag</div><div class="line">        fmt.Printf(&quot;[info] use proxy to request: %s .\n&quot;, ag)</div><div class="line"></div><div class="line">        resData, errMsg = req.XReq(rUrl, rh, rp)</div><div class="line">        if errMsg != nil &#123;</div><div class="line">            fmt.Printf(&quot;[info] the proxy result error: %s .\n&quot;, errMsg.Error())</div><div class="line"></div><div class="line">            if !is_malformedHttp &#123;</div><div class="line">                // 当 is_malf 为 false时，才对 mailformed http response 处理</div><div class="line">                if strings.Contains(errMsg.Error(), &quot;malformed HTTP response&quot;) &#123;</div><div class="line">                    fmt.Printf(&quot;[error] the proxy ip format error: %s .\n&quot;, errMsg.Error())</div><div class="line">                    is_malformedHttp = true</div><div class="line">                    time.Sleep(1 * time.Second)</div><div class="line">                    goto HandleProxy</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            continue</div><div class="line">        &#125; else &#123;</div><div class="line">            fmt.Printf(&quot;[info] the proxy ok %s .\n&quot;, ag)</div><div class="line">            break</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>实现逻辑是：</p>
+<p>当传入的代理ip格式为 <code>http://27.203.219.181:8060</code> ，先发起请求，如果请求报错，判断错误信息是否包含 <code>malformed HTTP response</code> ，如果包含，则认为是代理ip的格式错误，需要对代理ip处理。</p>
+<p>通过 <code>goto</code> 语句，直接跳回到 <code>for</code> 循环之外，对代理ip做格式化处理，截取到 <code>host:port</code> 的格式再次去请求。</p>
+<p>为了防止第二次请求时再遇到 <code>malformed HTTP response</code> 错误的话，又会 <code>goto</code> 到 <code>for</code> 循环之外，所以这里加一个标记 <code>is_malformedHttp</code> ，标明代理ip出现格式问题时是否被处理过。</p>
+<p>后经测试验证，这种方法无效。</p>
+<hr>
+<p>验证结果：</p>
+<ol>
+<li>当代理格式为 <code>[&quot;http://192.168.1.100:8080&quot;,&quot;192.168.1.120:8080&quot;]</code> 时，proxy1第一次请求异常，经“处理”后请求仍异常，proxy2第一次请求异常。请求结束。</li>
+<li>当代理格式为 <code>[&quot;192.168.1.100:8080&quot;,&quot;192.168.1.120:8080&quot;]</code> 时，proxy1第一次请求正常。请求结束。</li>
+</ol>
+<hr>
+<h4 id="猜测"><a href="#猜测" class="headerlink" title="猜测"></a>猜测</h4><p>为什么在代理Ip经处理后的请求，仍然会出错呢？</p>
+<p>个人怀疑是 <code>defer</code> 导致的。</p>
+<blockquote>
+<p>defer语句调用一个函数，这个函数执行会推迟，直到外围的函数返回，或者外围函数运行到最后，或者相应的goroutine panic.</p>
+</blockquote>
+<p>在请求之后，需要 <code>defer</code> 去 <code>close</code> 请求。而 <code>defer</code> 又有延后性，也就导致了在 <code>for</code> 循环中的多次请求之间都是有关联的，第一次的请求对象并没有被关闭就继续进行了后续的请求，直到函数结束，请求才被关闭掉。</p>
+<p>也就导致了，即使第二次请求时的代理ip去掉了 <code>http://</code> ，请求仍然会失败。</p>
+<hr>
+<h4 id="之后如何处理"><a href="#之后如何处理" class="headerlink" title="之后如何处理"></a>之后如何处理</h4><ol>
+<li>先用 <code>http://27.203.219.181:8060</code> 的代理格式去请求，当遇到 <code>malformed HTTP response</code> 错误时，直接抛出异常，等待下次请求。</li>
+<li>在第二次请求时，将代理ip的格式更改为 <code>27.203.219.181:8060</code> 传入，再去执行请求操作。</li>
+</ol>
+<h4 id="相关"><a href="#相关" class="headerlink" title="相关"></a>相关</h4><ul>
+<li><a href="https://github.com/golang/go/blob/master/src/net/http/response.go#L168" target="_blank" rel="external">https://github.com/golang/go/blob/master/src/net/http/response.go#L168</a></li>
+<li><a href="http://holys.im/2015/06/28/debug-http/" target="_blank" rel="external">HTTP Method | holys’</a></li>
+</ul>
+<h4 id="推荐"><a href="#推荐" class="headerlink" title="推荐"></a>推荐</h4><p>推荐两个请求类：</p>
+<ul>
+<li>req: <a href="https://github.com/imroc/req" target="_blank" rel="external">imroc/req: a golang http request library for humans</a></li>
+<li>gorequest: <a href="https://github.com/parnurzeal/gorequest" target="_blank" rel="external">parnurzeal/gorequest: GoRequest – Simplified HTTP client ( inspired by nodejs SuperAgent )</a></li>
+</ul>
+<hr>
+<p>以上，仅做记录。由于暂未查询到问题原因，后续持续更新。</p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <div>如有疑问或需要技术讨论，请发邮件到 service@itfanr.cc</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>鼓励</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Leafney 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2018/11/28/golang-http-error-malformed-http-response/" title="Golang http malformed HTTP response 探究">https://www.itfanr.cc/2018/11/28/golang-http-error-malformed-http-response/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Golang/" rel="tag"># Golang</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/12/busuanzi-counter-error/" rel="next" title="Hexo博客Next主题解决不蒜子统计不显示问题">
+                <i class="fa fa-chevron-left"></i> Hexo博客Next主题解决不蒜子统计不显示问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -343,6 +667,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
 
         </div>
         
@@ -363,8 +698,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -450,6 +794,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#探究"><span class="nav-number">2.</span> <span class="nav-text">探究</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#我的一种解法"><span class="nav-number">3.</span> <span class="nav-text">我的一种解法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#猜测"><span class="nav-number">4.</span> <span class="nav-text">猜测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#之后如何处理"><span class="nav-number">5.</span> <span class="nav-text">之后如何处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关"><span class="nav-number">6.</span> <span class="nav-text">相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐"><span class="nav-number">7.</span> <span class="nav-text">推荐</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -612,6 +972,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -658,6 +1022,30 @@
 
     
 
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: 'itfanr_blog_20181128041136',
+            owner: 'Leafney',
+            repo: 'Leafney.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '70a085c82c8d67b07e5482058272fcab3e969b83',
+            
+                client_id: 'f28d68fd5271fd52826d'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
     
 
 

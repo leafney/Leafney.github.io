@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo," />
+  <meta name="keywords" content="Git," />
 
 
 
@@ -86,27 +86,18 @@
 
 
 
-<meta name="description" content="解决Hexo博客使用Local Search搜索功能时一直显示加载中的问题">
-<meta name="keywords" content="Hexo">
+<meta name="description" content="Git主分支有更改后如何合并提交">
+<meta name="keywords" content="Git">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解决Hexo博客搜索异常">
-<meta property="og:url" content="https://www.itfanr.cc/2017/11/24/resolve-hexo-blog-search-exception/index.html">
+<meta property="og:title" content="Git主分支有更改后如何合并提交">
+<meta property="og:url" content="https://www.itfanr.cc/2018/11/30/how-to-merge-when-main-branch-changed/index.html">
 <meta property="og:site_name" content="IT范儿">
-<meta property="og:description" content="解决Hexo博客使用Local Search搜索功能时一直显示加载中的问题">
+<meta property="og:description" content="Git主分支有更改后如何合并提交">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171124/1KiH0C4BaA.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171124/eHlhg3am05.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171124/68cam2i3k8.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171124/jmJc73ClH5.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171124/imFDgH4mmE.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171124/km78g4i39h.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171124/06F5a7GEaL.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171124/B85CK5774h.png?imageslim">
-<meta property="og:updated_time" content="2018-11-30T10:06:44.284Z">
+<meta property="og:updated_time" content="2018-11-30T10:00:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="解决Hexo博客搜索异常">
-<meta name="twitter:description" content="解决Hexo博客使用Local Search搜索功能时一直显示加载中的问题">
-<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/171124/1KiH0C4BaA.png?imageslim">
+<meta name="twitter:title" content="Git主分支有更改后如何合并提交">
+<meta name="twitter:description" content="Git主分支有更改后如何合并提交">
 
 
 
@@ -136,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="https://www.itfanr.cc/2017/11/24/resolve-hexo-blog-search-exception/"/>
+  <link rel="canonical" href="https://www.itfanr.cc/2018/11/30/how-to-merge-when-main-branch-changed/"/>
 
 
 
 
 
-  <title>解决Hexo博客搜索异常 | IT范儿</title>
+  <title>Git主分支有更改后如何合并提交 | IT范儿</title>
   
 
 
@@ -313,7 +304,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2017/11/24/resolve-hexo-blog-search-exception/">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2018/11/30/how-to-merge-when-main-branch-changed/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Leafney">
@@ -330,7 +321,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">解决Hexo博客搜索异常</h2>
+          <h2 class="post-title" itemprop="name headline">Git主分支有更改后如何合并提交</h2>
         
 
         <div class="post-meta">
@@ -342,8 +333,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-24T10:49:28+08:00">
-                2017-11-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-30T17:30:13+08:00">
+                2018-11-30
               </time>
             
 
@@ -358,7 +349,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-11-30T18:06:44+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2018-11-30T18:00:16+08:00">
                 2018-11-30
               </time>
             
@@ -377,8 +368,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo博客搭建/" itemprop="url" rel="index">
-                    <span itemprop="name">Hexo博客搭建</span>
+                  <a href="/categories/Git操作系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Git操作系列</span>
                   </a>
                 </span>
 
@@ -395,8 +386,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/11/24/resolve-hexo-blog-search-exception/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/11/24/resolve-hexo-blog-search-exception/" itemprop="commentsCount"></span>
+                <a href="/2018/11/30/how-to-merge-when-main-branch-changed/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/11/30/how-to-merge-when-main-branch-changed/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -425,7 +416,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  599
+                  494
                 </span>
               
 
@@ -437,7 +428,7 @@
 
           
               <div class="post-description">
-                  解决Hexo博客使用Local Search搜索功能时一直显示加载中的问题
+                  Git主分支有更改后如何合并提交
               </div>
           
 
@@ -454,34 +445,23 @@
       
 
       
-        <p>最近在更新博客文章时发现之前新添加的搜索功能不太好用了。每次点击了搜索按钮之后，搜索弹框一直显示 “加载中” 的状态。</p>
-<p><img src="https://qiniu.itfanr.cc/blog/171124/1KiH0C4BaA.png?imageslim" alt="mark"></p>
-<h4 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h4><p>因为我使用的是 <code>hexo</code> 的 <code>Next</code> 主题中的 <code>Local Search</code> 搜索功能，所以就去 <code>Next</code> 主题的github中查找了类似的 <code>issues</code> ，发现类似问题下作者是建议重新安装该搜索组件来解决的。</p>
-<p>于是我就卸载了该组件，然后重新安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ npm uninstall hexo-generator-searchdb --save</div><div class="line"></div><div class="line">$ npm install hexo-generator-searchdb --save</div></pre></td></tr></table></figure>
-<p><img src="https://qiniu.itfanr.cc/blog/171124/eHlhg3am05.png?imageslim" alt="mark"></p>
-<p>结果问题依旧。</p>
-<h4 id="探究"><a href="#探究" class="headerlink" title="探究"></a>探究</h4><p>后来我发现 <code>Local Search</code> 的搜索功能是加载的项目目录下的 <code>search.xml</code> 文件：<code>http://localhost:4000/search.xml</code>。于是我在浏览器中打开，居然有报错提示。</p>
-<p><img src="https://qiniu.itfanr.cc/blog/171124/68cam2i3k8.png?imageslim" alt="mark"></p>
-<p><img src="https://qiniu.itfanr.cc/blog/171124/jmJc73ClH5.png?imageslim" alt="mark"></p>
-<p>按照错误信息的说明，我找到了出错的第 <code>47</code> 行第 <code>35</code> 列，发现和其他内容不同的是这里居然多了一个 “红点”，那么搜索弹窗出不来的问题应该就是这个 “红点” 搞的鬼了。</p>
-<p><img src="https://qiniu.itfanr.cc/blog/171124/imFDgH4mmE.png?imageslim" alt="mark"></p>
-<p>我通过 <code>Sublime Text</code> 打开了源博客文件，发现在段落的开头居然多了两个奇葩的字符：<code>BS</code>。</p>
-<p><img src="https://qiniu.itfanr.cc/blog/171124/km78g4i39h.png?imageslim" alt="mark"></p>
-<p>我觉得可能是什么时候复制文件时给加上的。删除后，再次生成。问题解决。</p>
-<p><img src="https://qiniu.itfanr.cc/blog/171124/06F5a7GEaL.png?imageslim" alt="mark"></p>
-<p>再次访问搜索的xml文件 <code>http://localhost:4000/search.xml</code> ，发现已经不会再报之前的错误了。</p>
-<p><img src="https://qiniu.itfanr.cc/blog/171124/B85CK5774h.png?imageslim" alt="mark"></p>
-<p>需要注意的一点：我在查看源博客文件时也使用了 <code>VS Code</code> 编辑器，但是 <code>VS Code</code> 却无法显示出来前面的特殊字符 <code>BS</code>，通过 <code>Sublime Text</code> 才查看到。</p>
-<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p>在Hexo博客文件的项目目录下有一个 <code>node_modules</code> 目录。每次在windows系统下删除 (拷贝或者移动) 该目录时都会报 <code>文件名或扩展名太长，目录层次超过限制</code> 等错误而导致操作失败。</p>
-<p>解决这个问题只需要使用 <code>unix</code> 或者 <code>linux</code> 下的 <code>rm -rf</code>（强制删除） 命令来删除即可，但要注意操作时一定要慎重，不要误删其他文件。</p>
-<p>在 <code>node_modules</code> 文件夹所在目录下右键打开 <code>Git Bash</code> 窗口，执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rm -rf ./node_modules/</div></pre></td></tr></table></figure>
-<p>等待完成，即可。</p>
-<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
-<li><a href="https://stackoverflow.com/questions/13066532/how-to-uninstall-npm-modules-in-node-js" target="_blank" rel="external">how to uninstall npm modules in node js?</a></li>
-<li><a href="http://blog.csdn.net/crper/article/details/50458369" target="_blank" rel="external">windows删除node_modules[文件名或扩展名太长，目录层次超过无法删除的问题]</a></li>
-</ul>
+        <p>公司里的项目部署在私有的GitLab站点上，项目的 <code>master</code> 分支不能直接进行 <code>git push</code> 操作，只能通过将其他分支合并到 <code>master</code> 分支来上线新功能。</p>
+<p>比如我基于 <code>master</code> 分支创建了一个名为 <code>dev-1130</code> 的分支做功能开发。当功能开发完成后需要合并到 <code>master</code> 分支，却发现 <code>master</code> 分支上已经有同事提交了自己的分支，提示有代码合并冲突，不能自动合并。</p>
+<p>那么这种情况下该如何合并当前的分支呢？</p>
+<p>其实解决方法有很多，下面说一种。其他的方法后续补充。</p>
+<hr>
+<h4 id="第一种方法"><a href="#第一种方法" class="headerlink" title="第一种方法"></a>第一种方法</h4><h5 id="查看当前分支状态"><a href="#查看当前分支状态" class="headerlink" title="查看当前分支状态"></a>查看当前分支状态</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">➜ git status</div><div class="line">On branch dev-1130</div><div class="line">nothing to commit, working tree clean</div></pre></td></tr></table></figure>
+<h5 id="拉取当前分支最新代码"><a href="#拉取当前分支最新代码" class="headerlink" title="拉取当前分支最新代码"></a>拉取当前分支最新代码</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜ git pull origin dev-1130:dev-1130</div><div class="line">Already up to date.</div></pre></td></tr></table></figure>
+<h5 id="切换到master分支"><a href="#切换到master分支" class="headerlink" title="切换到master分支"></a>切换到master分支</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">➜ git checkout master</div><div class="line">Switched to branch &apos;master&apos;</div><div class="line">Your branch is up to date with &apos;origin/master&apos;.</div></pre></td></tr></table></figure>
+<h5 id="拉取master分支最新代码"><a href="#拉取master分支最新代码" class="headerlink" title="拉取master分支最新代码"></a>拉取master分支最新代码</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜ git pull origin master:master</div><div class="line">Already up to date.</div></pre></td></tr></table></figure>
+<h5 id="手动合并dev-1130到master分支"><a href="#手动合并dev-1130到master分支" class="headerlink" title="手动合并dev-1130到master分支"></a>手动合并dev-1130到master分支</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">➜ git merge dev-1130</div><div class="line">Auto-merging hello_world/hello.py</div><div class="line">CONFLICT (content): Merge conflict in hello_world/hello.py</div><div class="line">Automatic merge failed; fix conflicts and then commit the result.</div></pre></td></tr></table></figure>
+<h5 id="提示代码冲突，手动解决"><a href="#提示代码冲突，手动解决" class="headerlink" title="提示代码冲突，手动解决"></a>提示代码冲突，手动解决</h5><h5 id="提交更改"><a href="#提交更改" class="headerlink" title="提交更改"></a>提交更改</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">➜ git add .</div><div class="line"></div><div class="line">➜ git commit -m &quot;解决冲突&quot;</div><div class="line">[master 9c7471f] 解决冲突</div></pre></td></tr></table></figure>
+<h5 id="查看当前分支状态-1"><a href="#查看当前分支状态-1" class="headerlink" title="查看当前分支状态"></a>查看当前分支状态</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">➜ git status</div><div class="line">On branch master</div><div class="line">Your branch is ahead of &apos;origin/master&apos; by 3 commits.</div><div class="line">  (use &quot;git push&quot; to publish your local commits)</div></pre></td></tr></table></figure>
+<h5 id="将当前master分支提交到远端的dev-1130分支"><a href="#将当前master分支提交到远端的dev-1130分支" class="headerlink" title="将当前master分支提交到远端的dev-1130分支"></a>将当前master分支提交到远端的dev-1130分支</h5><p>注意这里，是将本地我们解决冲突合并之后的 <code>master</code> 分支代码提交到远端的 <code>dev-1130</code> 分支上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">➜ git push origin master:dev-1130</div><div class="line">Counting objects: 4, done.</div><div class="line">Delta compression using up to 8 threads.</div><div class="line">Compressing objects: 100% (4/4), done.</div><div class="line">Writing objects: 100% (4/4), 548 bytes | 548.00 KiB/s, done.</div><div class="line">Total 4 (delta 2), reused 0 (delta 0)</div><div class="line">To mycompany_gitlab:Leafney/hello_world.git</div><div class="line">   49c7684..9c7471f  master -&gt; dev-1130</div></pre></td></tr></table></figure>
+<h5 id="拉取远端的dev-1130分支到本地的dev-1130分支"><a href="#拉取远端的dev-1130分支到本地的dev-1130分支" class="headerlink" title="拉取远端的dev-1130分支到本地的dev-1130分支"></a>拉取远端的dev-1130分支到本地的dev-1130分支</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">➜ git pull origin dev-1130:dev-1130</div><div class="line">From mycompany_gitlab:Leafney/hello_world</div><div class="line">   49c7684..9c7471f  dev-1130    -&gt; dev-1130</div><div class="line">Already up to date.</div></pre></td></tr></table></figure>
+<p>至此，操作完毕。</p>
+<hr>
 
       
     </div>
@@ -532,7 +512,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://www.itfanr.cc/2017/11/24/resolve-hexo-blog-search-exception/" title="解决Hexo博客搜索异常">https://www.itfanr.cc/2017/11/24/resolve-hexo-blog-search-exception/</a>
+    <a href="https://www.itfanr.cc/2018/11/30/how-to-merge-when-main-branch-changed/" title="Git主分支有更改后如何合并提交">https://www.itfanr.cc/2018/11/30/how-to-merge-when-main-branch-changed/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -547,7 +527,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+            <a href="/tags/Git/" rel="tag"># Git</a>
           
         </div>
       
@@ -560,8 +540,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/17/playing-synology-nas-of-docker-aria2/" rel="next" title="玩转群晖NAS--下载神器aria2">
-                <i class="fa fa-chevron-left"></i> 玩转群晖NAS--下载神器aria2
+              <a href="/2018/11/29/synchronize-project-updated-after-fork/" rel="next" title="Fork别人的项目源作者更新后如何同步更新">
+                <i class="fa fa-chevron-left"></i> Fork别人的项目源作者更新后如何同步更新
               </a>
             
           </div>
@@ -569,10 +549,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/05/the-initial-experience-of-dueros-open-platform/" rel="prev" title="百度人工智能开放平台DuerOS初体验">
-                百度人工智能开放平台DuerOS初体验 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -737,7 +713,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#尝试"><span class="nav-number">1.</span> <span class="nav-text">尝试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#探究"><span class="nav-number">2.</span> <span class="nav-text">探究</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#扩展"><span class="nav-number">3.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">4.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一种方法"><span class="nav-number">1.</span> <span class="nav-text">第一种方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查看当前分支状态"><span class="nav-number">1.1.</span> <span class="nav-text">查看当前分支状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#拉取当前分支最新代码"><span class="nav-number">1.2.</span> <span class="nav-text">拉取当前分支最新代码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#切换到master分支"><span class="nav-number">1.3.</span> <span class="nav-text">切换到master分支</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#拉取master分支最新代码"><span class="nav-number">1.4.</span> <span class="nav-text">拉取master分支最新代码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#手动合并dev-1130到master分支"><span class="nav-number">1.5.</span> <span class="nav-text">手动合并dev-1130到master分支</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#提示代码冲突，手动解决"><span class="nav-number">1.6.</span> <span class="nav-text">提示代码冲突，手动解决</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#提交更改"><span class="nav-number">1.7.</span> <span class="nav-text">提交更改</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看当前分支状态-1"><span class="nav-number">1.8.</span> <span class="nav-text">查看当前分支状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将当前master分支提交到远端的dev-1130分支"><span class="nav-number">1.9.</span> <span class="nav-text">将当前master分支提交到远端的dev-1130分支</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#拉取远端的dev-1130分支到本地的dev-1130分支"><span class="nav-number">1.10.</span> <span class="nav-text">拉取远端的dev-1130分支到本地的dev-1130分支</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -959,7 +935,7 @@
       <script type="text/javascript">
       function renderGitment(){
         var gitment = new Gitmint({
-            id: 'itfanr_blog_20171124104928',
+            id: 'itfanr_blog_20181130053013',
             owner: 'Leafney',
             repo: 'Leafney.github.io',
             

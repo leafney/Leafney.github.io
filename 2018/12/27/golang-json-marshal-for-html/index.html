@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo," />
+  <meta name="keywords" content="Golang," />
 
 
 
@@ -86,25 +86,18 @@
 
 
 
-<meta name="description" content="为Hexo博客添加Gitment评论系统，并实现钉钉机器人实时提醒">
-<meta name="keywords" content="Hexo">
+<meta name="description" content="Golang下的json.Marshal序列化默认对html标签进行转义">
+<meta name="keywords" content="Golang">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo博客添加Gitment评论系统">
-<meta property="og:url" content="https://www.itfanr.cc/2018/09/17/hexo-add-gitment-review-system/index.html">
+<meta property="og:title" content="解决Golang下json.Marshal默认对html标签转义问题">
+<meta property="og:url" content="https://www.itfanr.cc/2018/12/27/golang-json-marshal-for-html/index.html">
 <meta property="og:site_name" content="IT范儿">
-<meta property="og:description" content="为Hexo博客添加Gitment评论系统，并实现钉钉机器人实时提醒">
+<meta property="og:description" content="Golang下的json.Marshal序列化默认对html标签进行转义">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193416.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193521.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193602.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193631.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193733.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193816.png?imageslim">
-<meta property="og:updated_time" content="2018-09-17T11:38:33.000Z">
+<meta property="og:updated_time" content="2018-12-27T08:10:11.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo博客添加Gitment评论系统">
-<meta name="twitter:description" content="为Hexo博客添加Gitment评论系统，并实现钉钉机器人实时提醒">
-<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/20180917193416.png?imageslim">
+<meta name="twitter:title" content="解决Golang下json.Marshal默认对html标签转义问题">
+<meta name="twitter:description" content="Golang下的json.Marshal序列化默认对html标签进行转义">
 
 
 
@@ -134,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="https://www.itfanr.cc/2018/09/17/hexo-add-gitment-review-system/"/>
+  <link rel="canonical" href="https://www.itfanr.cc/2018/12/27/golang-json-marshal-for-html/"/>
 
 
 
 
 
-  <title>Hexo博客添加Gitment评论系统 | IT范儿</title>
+  <title>解决Golang下json.Marshal默认对html标签转义问题 | IT范儿</title>
   
 
 
@@ -311,7 +304,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2018/09/17/hexo-add-gitment-review-system/">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2018/12/27/golang-json-marshal-for-html/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Leafney">
@@ -328,7 +321,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Hexo博客添加Gitment评论系统</h2>
+          <h2 class="post-title" itemprop="name headline">解决Golang下json.Marshal默认对html标签转义问题</h2>
         
 
         <div class="post-meta">
@@ -340,8 +333,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-17T19:20:05+08:00">
-                2018-09-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-27T15:55:28+08:00">
+                2018-12-27
               </time>
             
 
@@ -356,8 +349,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-09-17T19:38:33+08:00">
-                2018-09-17
+              <time title="更新于" itemprop="dateModified" datetime="2018-12-27T16:10:11+08:00">
+                2018-12-27
               </time>
             
           </span>
@@ -375,8 +368,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo博客搭建/" itemprop="url" rel="index">
-                    <span itemprop="name">Hexo博客搭建</span>
+                  <a href="/categories/Golang/" itemprop="url" rel="index">
+                    <span itemprop="name">Golang</span>
                   </a>
                 </span>
 
@@ -393,8 +386,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/09/17/hexo-add-gitment-review-system/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/09/17/hexo-add-gitment-review-system/" itemprop="commentsCount"></span>
+                <a href="/2018/12/27/golang-json-marshal-for-html/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/12/27/golang-json-marshal-for-html/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -423,7 +416,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,494
+                  572
                 </span>
               
 
@@ -435,7 +428,7 @@
 
           
               <div class="post-description">
-                  为Hexo博客添加Gitment评论系统，并实现钉钉机器人实时提醒
+                  Golang下的json.Marshal序列化默认对html标签进行转义
               </div>
           
 
@@ -452,54 +445,17 @@
       
 
       
-        <p>之前我的Hexo博客中使用的是 <code>多说</code> 的评论插件，后来多说停止运营了之后就直接把评论功能去掉了，而后一直使用的是邮件的方式。但邮件也是很不方便的，是一种不得已的选择。</p>
-<p>最近，看到好多博客中都添加了一个名为 <code>Gitment</code> 的评论插件，直接使用GitHub的 <code>Issues</code> 作为评论内容的存储位置，也是非常方便的。</p>
-<h4 id="Next主题版本"><a href="#Next主题版本" class="headerlink" title="Next主题版本"></a>Next主题版本</h4><p>我的hexo主题使用的是 <code>Next</code> 主题,当前版本为 <code>v5.1.3</code> 。这一版是直接内置支持 <code>gitment</code> 功能的。关于如何升级 <code>Next</code> 主题，可以看我之前的文章：<a href="/2017/10/27/add-search-function-to-hexo-blog/">Hexo博客添加搜索功能</a></p>
-<p>另外我发现，当前 <code>Next</code> 主题的最新版本为 <code>v6.4.1</code>，而 <code>v6.x.x</code> 版本和 <code>v5.x.x</code> 版本又有所不同，不能平滑的升级，所以这里我就没有升级 <code>Next</code> 到最新，直接使用的 <code>v5.1.3</code> 版本。</p>
-<h4 id="添加Gitment评论"><a href="#添加Gitment评论" class="headerlink" title="添加Gitment评论"></a>添加Gitment评论</h4><h5 id="创建GitHub-OAuth-Apps"><a href="#创建GitHub-OAuth-Apps" class="headerlink" title="创建GitHub OAuth Apps"></a>创建GitHub OAuth Apps</h5><p>打开链接 <a href="https://github.com/settings/developers" target="_blank" rel="external">OAuth Apps</a> – <code>New OAuth App</code> 。按要求填写相应内容即可。</p>
-<p>其中，<code>Homepage URL</code> 表示站点的网址。<code>Authorization callback URL</code> 为站点的回调地址，一般也默认为站点的网址。</p>
-<p>最后，得到 <code>Client ID</code> 和 <code>Client Secret</code> 备用。</p>
-<h5 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h5><p>在 <code>themes/next</code> 目录下，找到 <code>_config.yml</code> 配置文件，找到 <code>gitment</code> 配置段：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># Gitment</div><div class="line"># Introduction: https://imsun.net/posts/gitment-introduction/</div><div class="line">gitment:</div><div class="line">  enable: false</div><div class="line">  mint: true # RECOMMEND, A mint on Gitment, to support count, language and proxy_gateway</div><div class="line">  count: true # Show comments count in post meta area</div><div class="line">  lazy: false # Comments lazy loading with a button</div><div class="line">  cleanly: false # Hide &apos;Powered by ...&apos; on footer, and more</div><div class="line">  language: # Force language, or auto switch by theme</div><div class="line">  github_user: # MUST HAVE, Your Github Username</div><div class="line">  github_repo: # MUST HAVE, The name of the repo you use to store Gitment comments</div><div class="line">  client_id: # MUST HAVE, Github client id for the Gitment</div><div class="line">  client_secret: # EITHER this or proxy_gateway, Github access secret token for the Gitment</div><div class="line">  proxy_gateway: # Address of api proxy, See: https://github.com/aimingoo/intersect</div><div class="line">  redirect_protocol: # Protocol of redirect_uri with force_redirect_protocol when mint enabled</div></pre></td></tr></table></figure>
-<p>设置 <code>enable</code> 为 <code>true</code> ，表示启用 <code>gitment</code> 评论插件。</p>
-<p>其他的必需项是 <code>github_user</code> ，表示你的github账号名称。 <code>github_repo</code> 表示保存评论数据的仓库名称，这里可以使用当前博客所在的仓库名称，也可以单独设置一个专门的仓库。<code>client_id</code> 和 <code>client_secret</code> 为上面创建的值。</p>
-<p>修改完成后，将hexo博客文件上传到github。因为gitment功能必需在线上才能进行操作。</p>
-<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><h5 id="点击登录github发现一直显示loading"><a href="#点击登录github发现一直显示loading" class="headerlink" title="点击登录github发现一直显示loading"></a>点击登录github发现一直显示loading</h5><p>在创建 <code>OAuth Apps</code> 中填写 <code>Authorization callback URL</code> 时，网站的地址末尾不能带有 <code>/</code> 。</p>
-<p><img src="https://qiniu.itfanr.cc/blog/20180917193416.png?imageslim" alt=""></p>
+        <p>最近在用Golang下的json对含有html标签的Object序列化的时候，发现Golang会默认对html标签做转义处理。比如我的一段html代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;choose-results&quot; class=&quot;li&quot; style=&quot;display:none&quot;&gt;&lt;div class=&quot;dt&quot;&gt;已选择&lt;/div&gt;&lt;div class=&quot;dd&quot;&gt;&lt;/div&lt;/div&gt;</div><div class="line">    &lt;div id=&quot;choose-luodipei&quot; class=&quot;choose-luodipei li&quot; style=&quot;display&lt;div class=&quot;dt&quot;&gt;送装服务&lt;/div&gt;</div><div class="line">    &lt;div class=&quot;dd&quot;&gt;&lt;/div&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">&lt;div id=&quot;choose-suits&quot; class=&quot;li choose-suits&quot; style=&quot;display:none&quot;&gt;</div><div class="line">        &lt;div class=&quot;dt&quot;&gt;套&amp;#x3000;&amp;#x3000;装&lt;/div&gt;</div><div class="line">            &lt;div class=&quot;dd clearfix&quot;&gt;&lt;/div&gt;</div><div class="line">                &lt;/div&gt;</div><div class="line">                                &lt;div id=&quot;choose-gift&quot; class=&quot;choose-gift li&quot;  style=&quot;display: none;&quot;&gt;</div><div class="line">                    &lt;div class=&quot;dt&quot;&gt;搭配赠品&lt;/div&gt;</div><div class="line">                    &lt;div class=&quot;dd clearfix&quot;&gt;</div><div class="line">                        &lt;div class=&quot;gift J-gift&quot; clstag=&quot;shangpin|keycount|product|dapeizengpin&quot;&gt;</div><div class="line">                            &lt;i class=&quot;sprite-gift J-popup&quot;&gt;&lt;/i&gt;&lt;span class=&quot;gift-tips&quot;&gt;选择搭配赠品(共&lt;em&gt;0&lt;/em&gt;个)&lt;/span&gt;</div><div class="line">                        &lt;/div&gt;</div><div class="line">                        &lt;!--choosed--&gt;</div><div class="line">                        &lt;div class=&quot;J-gift-selected hide&quot;&gt;</div><div class="line">                            &lt;div class=&quot;gift choosed J-gift-choosed&quot;&gt;&lt;/div&gt;</div><div class="line">                            &lt;a href=&quot;#none&quot; class=&quot;gift-modify J-popup&quot; clstag=&quot;shangpin|keycount|product|zengpin-genggai&quot;&gt;更改&lt;/a&gt;</div></pre></td></tr></table></figure>
+<p>在经过 <code>json.Marshal()</code> 处理之后就变成了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\u003cdiv id=\&quot;choose-results\&quot; class=\&quot;li\&quot; style=\&quot;display:none\&quot;\u003e\u003cdiv class=\&quot;dt\&quot;\u003e已选择\u003c/div\u003e\u003cdiv class=\&quot;dd\&quot;\u003e\u003c/div\u003e\u003c/div\u003e\n                                    \u003c/div\u003e\n\n                                                \n                                                                                                \u003cdiv id=\&quot;choose-luodipei\&quot; class=\&quot;choose-luodipei li\&quot; style=\&quot;display:none\&quot;\u003e\n                    \u003cdiv class=\&quot;dt\&quot;\u003e送装服务\u003c/div\u003e\n                    \u003cdiv class=\&quot;dd\&quot;\u003e\u003c/div\u003e\n                \u003c/div\u003e\n                                                                \u003cdiv id=\&quot;choose-suits\&quot; class=\&quot;li choose-suits\&quot; style=\&quot;display:none\&quot;\u003e\n                    \u003cdiv class=\&quot;dt\&quot;\u003e套\u0026#x3000;\u0026#x3000;装\u003c/div\u003e\n                    \u003cdiv class=\&quot;dd clearfix\&quot;\u003e\u003c/div\u003e\n                \u003c/div\u003e\n                                \u003cdiv id=\&quot;choose-gift\&quot; class=\&quot;choose-gift li\&quot;  style=\&quot;display: none;\&quot;\u003e\n                    \u003cdiv class=\&quot;dt\&quot;\u003e搭配赠品\u003c/div\u003e\n                    \u003cdiv class=\&quot;dd clearfix\&quot;\u003e\n                        \u003cdiv class=\&quot;gift J-gift\&quot; clstag=\&quot;shangpin|keycount|product|dapeizengpin\&quot;\u003e\n                            \u003ci class=\&quot;sprite-gift J-popup\&quot;\u003e\u003c/i\u003e\u003cspan class=\&quot;gift-tips\&quot;\u003e选择搭配赠品(共\u003cem\u003e0\u003c/em\u003e个)\u003c/span\u003e\n                        \u003c/div\u003e\n                        \u003c!--choosed--\u003e\n                        \u003cdiv class=\&quot;J-gift-selected hide\&quot;\u003e\n                            \u003cdiv class=\&quot;gift choosed J-gift-choosed\&quot;\u003e\u003c/div\u003e\n                            \u003ca href=\&quot;#none\&quot; class=\&quot;gift-modify J-popup\&quot; clstag=\&quot;shangpin|keycount|product|zengpin-genggai\&quot;\u003e更改\u003c/a\u003e\n</div></pre></td></tr></table></figure>
 <hr>
-<h5 id="某些文章不能生成Issues"><a href="#某些文章不能生成Issues" class="headerlink" title="某些文章不能生成Issues"></a>某些文章不能生成Issues</h5><p>当点击文章页面底部的 <code>初始化本文的评论页</code> 按钮时，页面会弹出错误信息：<code>Error:Validation Failed</code> 信息。</p>
-<p><img src="https://qiniu.itfanr.cc/blog/20180917193521.png?imageslim" alt=""></p>
-<p>通过查看操作请求，gitment会在生成Issues时创建两个 <code>label</code> 标签。</p>
-<p>一个是文章标题的路径: <code>window.location.pathname</code> 值，如 <code>/2018/09/05/pip-install-locale-error-unsupported-locale-setting/</code> ；另一个是定值 <code>gitment</code> 。</p>
-<p><img src="https://qiniu.itfanr.cc/blog/20180917193602.png?imageslim" alt=""></p>
-<p>而由于 github 中 <code>Issues</code> 的 <code>label</code> 长度限制为最大 <code>50</code> 个字符，当 文章标题长度过长时，该label就会生成失败，而导致初始化错误，弹出 <code>Validation Failed</code> 的提示。</p>
-<p><img src="https://qiniu.itfanr.cc/blog/20180917193631.png?imageslim" alt=""></p>
-<p>通过网上的搜索，发现可以使用文章创建时的时间来代替文章标题，作为这个唯一的label标签。</p>
-<p>找到giment的配置：<code>/themes/next/layout/_third-party/comments/gitment.swig</code> 文件：</p>
-<p>找到如下部分：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var gitment = new &#123;&#123;CommentsClass&#125;&#125;(&#123;</div><div class="line">    id: window.location.pathname,</div><div class="line">    owner: &apos;&#123;&#123; theme.gitment.github_user &#125;&#125;&apos;,</div><div class="line">    repo: &apos;&#123;&#123; theme.gitment.github_repo &#125;&#125;&apos;,</div><div class="line">    ...</div></pre></td></tr></table></figure>
-<p>修改为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var gitment = new &#123;&#123;CommentsClass&#125;&#125;(&#123;</div><div class="line">    id: &apos;itfanr_blog_&#123;&#123; date(page.date, &quot;YYYYMMDDhhmmss&quot;) &#125;&#125;&apos;,</div><div class="line">    owner: &apos;&#123;&#123; theme.gitment.github_user &#125;&#125;&apos;,</div><div class="line">    repo: &apos;&#123;&#123; theme.gitment.github_repo &#125;&#125;&apos;,</div><div class="line">    ...</div></pre></td></tr></table></figure>
-<p>这样，在初始化时就不会出错了。</p>
-<h4 id="有新的Issues时发送钉钉提醒"><a href="#有新的Issues时发送钉钉提醒" class="headerlink" title="有新的Issues时发送钉钉提醒"></a>有新的Issues时发送钉钉提醒</h4><p>上面我们添加了评论功能，但是在使用中会出现不能及时响应的问题。当有人对文章做了评论或提出什么疑问后，我们并不能及时的知道或者回复，这样给人的感觉是不好的。虽然添加了评论功能，但反而不如使用邮件的方式高效了。</p>
-<p>经过一番思考后，我发现平时工作中用到的钉钉中是可以添加GitHub的钉钉机器人的。而手机端的钉钉也能做到有新提醒后立即响应。所以，可以设置当GitHub的Issues有变动时，通过钉钉机器人提醒我们查看新的评论或作出回复。</p>
-<h5 id="生成Github机器人WebHook地址"><a href="#生成Github机器人WebHook地址" class="headerlink" title="生成Github机器人WebHook地址"></a>生成Github机器人WebHook地址</h5><p>钉钉机器人只有在群中才能添加，个人是无法添加的。但是一个人又无法创建群。那么该如何添加一个钉钉群机器人呢？</p>
-<p>我采用的方法是 “偷梁换柱” 的方式。首先呢，在手机或PC端选择 “发起群聊”，随便拉一个人进来，不需要发任何信息。然后在 <code>群设置</code> 中的 <code>群成员</code> 选项中移除那个人就可以了。就这么简单。这样，这个群里就只有你一个人了，添加群机器人后也不会打扰到别人。</p>
-<p>然后在 <code>群</code> 设置中选择 <code>群机器人</code> 选项，选择 <code>GitHub机器人</code> ，按照设置流程生成GitHub机器人，即可获取到相应群的WebHook地址，其格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://oapi.dingtalk.com/robot/send?access_token=xxxxxxxx</div></pre></td></tr></table></figure>
-<p><img src="https://qiniu.itfanr.cc/blog/20180917193733.png?imageslim" alt=""></p>
-<h5 id="在GitHub中设置项目的webhook"><a href="#在GitHub中设置项目的webhook" class="headerlink" title="在GitHub中设置项目的webhook"></a>在GitHub中设置项目的webhook</h5><p>进入 GitHub 的 Hexo 博客仓库，依次点击 <code>Settings</code> – <code>Webhooks &amp; Services</code> – <code>Add Webhook</code> ，新增一项。</p>
-<p>在 <code>payload URL</code> 中填写刚才获得的钉钉WebHook地址；</p>
-<p>在 <code>Content type</code> 选项下选择 <code>application/json</code> 项；</p>
-<p>在 <code>Secret</code> 中不填写内容，保持空值即可；</p>
-<p>在 <code>Event</code> 选项下，我这里选择了 <code>issues</code> 相关的所有 <code>event</code> 事件，也可以按照自己的需求自定义。</p>
-<p>然后，点击 <code>Add webhook</code> 按钮即可。</p>
-<p>至此，当 <code>Issues</code> 中有新的评论时，在钉钉手机客户端就能立即接收到提醒了。</p>
-<p><img src="https://qiniu.itfanr.cc/blog/20180917193816.png?imageslim" alt=""></p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul>
-<li><a href="http://pacez.github.io/2018/03/08/%E8%A7%A3%E5%86%B3Gitment%E5%88%9D%E5%A7%8B%E5%8C%96%E8%AF%84%E8%AE%BA%E6%97%B6validation%20failed/" target="_blank" rel="external">解决Gitment初始化评论时validation failed | Pace’s Blog</a></li>
-<li><a href="https://github.com/swlfigo/Study/wiki/Hexo%E5%8D%9A%E5%AE%A2Next%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0Gitment%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E5%9D%91%E7%82%B9" target="_blank" rel="external">Hexo博客Next主题添加Gitment评论系统坑点 · swlfigo/Study Wiki</a></li>
-<li><a href="https://blog.csdn.net/Q563573095/article/details/79580249" target="_blank" rel="external">钉钉中设置代码提交提醒–Github机器人 - CSDN博客</a></li>
+<p>通过上网搜索，发现Golang为我们提供了一个 <code>SetEscapeHTML()</code> 方法，默认情况下该值为 <code>true</code> ，我们只要将其设置为 <code>false</code> 即可实现不对html标签转义。</p>
+<p>我的封装方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">package utils</div><div class="line"></div><div class="line">import (</div><div class="line">    &quot;bytes&quot;</div><div class="line">    &quot;encoding/json&quot;</div><div class="line">)</div><div class="line"></div><div class="line">// json.Marshal方法优化，不对html做转义处理</div><div class="line">func MarshalHTML(v interface&#123;&#125;) ([]byte, error) &#123;</div><div class="line">    var buf bytes.Buffer</div><div class="line">    enc := json.NewEncoder(&amp;buf)</div><div class="line">    enc.SetEscapeHTML(false)</div><div class="line">    err := enc.Encode(v)</div><div class="line">    if err != nil &#123;</div><div class="line">        return nil, err</div><div class="line">    &#125;</div><div class="line">    return buf.Bytes(), nil</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<ul>
+<li><a href="https://stackoverflow.com/questions/28595664/how-to-stop-json-marshal-from-escaping-and" target="_blank" rel="external">go - How to stop json.Marshal from escaping &lt; and &gt;? - Stack Overflow</a></li>
 </ul>
 
       
@@ -551,7 +507,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://www.itfanr.cc/2018/09/17/hexo-add-gitment-review-system/" title="Hexo博客添加Gitment评论系统">https://www.itfanr.cc/2018/09/17/hexo-add-gitment-review-system/</a>
+    <a href="https://www.itfanr.cc/2018/12/27/golang-json-marshal-for-html/" title="解决Golang下json.Marshal默认对html标签转义问题">https://www.itfanr.cc/2018/12/27/golang-json-marshal-for-html/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -566,7 +522,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+            <a href="/tags/Golang/" rel="tag"># Golang</a>
           
         </div>
       
@@ -579,8 +535,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/05/pip-install-locale-error-unsupported-locale-setting/" rel="next" title="解决pip install时unsupported locale setting错误">
-                <i class="fa fa-chevron-left"></i> 解决pip install时unsupported locale setting错误
+              <a href="/2018/12/21/why-me-give-up-python-to-golang/" rel="next" title="为什么我要放弃Python而转投Golang">
+                <i class="fa fa-chevron-left"></i> 为什么我要放弃Python而转投Golang
               </a>
             
           </div>
@@ -588,10 +544,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/24/https-certificate-one-of-application/" rel="prev" title="HTTPS泛域名证书申请之一-申请流程">
-                HTTPS泛域名证书申请之一-申请流程 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -650,17 +602,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -746,22 +689,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Next主题版本"><span class="nav-number">1.</span> <span class="nav-text">Next主题版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加Gitment评论"><span class="nav-number">2.</span> <span class="nav-text">添加Gitment评论</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建GitHub-OAuth-Apps"><span class="nav-number">2.1.</span> <span class="nav-text">创建GitHub OAuth Apps</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改配置"><span class="nav-number">2.2.</span> <span class="nav-text">修改配置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意事项"><span class="nav-number">3.</span> <span class="nav-text">注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#点击登录github发现一直显示loading"><span class="nav-number">3.1.</span> <span class="nav-text">点击登录github发现一直显示loading</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#某些文章不能生成Issues"><span class="nav-number">3.2.</span> <span class="nav-text">某些文章不能生成Issues</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有新的Issues时发送钉钉提醒"><span class="nav-number">4.</span> <span class="nav-text">有新的Issues时发送钉钉提醒</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#生成Github机器人WebHook地址"><span class="nav-number">4.1.</span> <span class="nav-text">生成Github机器人WebHook地址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在GitHub中设置项目的webhook"><span class="nav-number">4.2.</span> <span class="nav-text">在GitHub中设置项目的webhook</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -978,7 +905,7 @@
       <script type="text/javascript">
       function renderGitment(){
         var gitment = new Gitmint({
-            id: 'itfanr_blog_20180917072005',
+            id: 'itfanr_blog_20181227035528',
             owner: 'Leafney',
             repo: 'Leafney.github.io',
             

@@ -94,12 +94,16 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="Fiddler证书报错问题 Unable to Generate Certificate">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190107192103.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190107191528.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190107191642.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190107190523.png?imageslim">
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181213122350.png?imageslim">
-<meta property="og:updated_time" content="2018-12-13T07:11:40.000Z">
+<meta property="og:updated_time" content="2019-01-07T11:26:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fiddler抓包时证书报错问题">
 <meta name="twitter:description" content="Fiddler证书报错问题 Unable to Generate Certificate">
-<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/20181213122350.png?imageslim">
+<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/20190107192103.png?imageslim">
 
 
 
@@ -351,8 +355,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-12-13T15:11:40+08:00">
-                2018-12-13
+              <time title="更新于" itemprop="dateModified" datetime="2019-01-07T19:26:20+08:00">
+                2019-01-07
               </time>
             
           </span>
@@ -396,7 +400,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  354
+                  519
                 </span>
               
 
@@ -430,19 +434,34 @@
 <p>错误信息为： <code>Can&#39;t create the key of the subject (&#39;JoeSoft&#39;) Failed</code> </p>
 <p>如下面的形式：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">--------------------------- </div><div class="line">Unable to Generate Certificate </div><div class="line">--------------------------- </div><div class="line">Creation of the interception certificate failed. </div><div class="line">makecert.exe returned -1. </div><div class="line">Results from C:\Program Files\Fiddler2\MakeCert.exe -ss my -n </div><div class="line">&quot;CN=DO_NOT_TRUST_FiddlerRoot, O=DO_NOT_TRUST, OU=Created by </div><div class="line">http://www.fiddler2.com&quot; -eku 1.3.6.1.5.5.7.3.1 -r -cy authority -a </div><div class="line">sha1 </div><div class="line">Error: Can&apos;t create the key of the subject (&apos;JoeSoft&apos;) </div><div class="line">Failed </div><div class="line">-------------------------------------------</div></pre></td></tr></table></figure>
+<p>有时候，也可能是下面的错误：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190107192103.png?imageslim" alt=""></p>
 <hr>
 <h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>在网上搜索，找到一种简单粗暴的方式，经测试后确实有效。</p>
 <ol>
+<li>在Fiddler的选项中操作移除现有证书–见下面的 <code>移除证书</code> 方法。</li>
+<li>退出Fiddler。</li>
 <li>打开windows资源管理器，输入 <code>%userprofile%\AppData\Roaming\Microsoft\Crypto\RSA</code> ，回车打开；</li>
 <li>将该目录下的文件夹删除即可（删除之前以防出问题可以备份一下）。</li>
 </ol>
-<p>然后，就可以为Fiddler重新添加证书了。</p>
+<p>然后，就可以为Fiddler重新添加证书了–见下面的 <code>安装证书</code> 方法。</p>
+<hr>
+<h4 id="移除证书"><a href="#移除证书" class="headerlink" title="移除证书"></a>移除证书</h4><p>打开Fiddler，选择 <code>Tools</code> – <code>Fiddler Options</code> – <code>HTTPS</code> 选项，</p>
+<p>去掉勾选 <code>Capture HTTPS CONNECTs</code> 的对勾：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190107191528.png?imageslim" alt=""></p>
+<p>此时，窗口中右下角的 <code>Remove Interception Certificates</code> 按钮就可以点击了：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190107191642.png?imageslim" alt=""></p>
+<p>点击移除即可。</p>
+<p>另外需要说明一点的是，即使你的证书移除失败了，也要把 <code>Capture HTTPS CONNECTs</code> 一项前面的对勾取消掉，<strong>这很关键</strong>。</p>
 <hr>
 <h4 id="安装证书"><a href="#安装证书" class="headerlink" title="安装证书"></a>安装证书</h4><p>打开Fiddler，选择 <code>Tools</code> – <code>Fiddler Options</code> – <code>HTTPS</code> 选项，</p>
 <p>勾选 <code>Capture HTTPS CONNECTs</code> <code>Decrypt HTTPS traffic</code> 选项，会弹出安装证书文件的提示，点击确定即可安装。</p>
+<p>点到 <code>第2步</code> 的时候就会弹出安装证书的弹窗，选择 <code>Yes</code>：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190107190523.png?imageslim" alt=""></p>
 <p>完成后点击最下面的 <code>OK</code> 选项。</p>
 <p><img src="https://qiniu.itfanr.cc/blog/20181213122350.png?imageslim" alt=""></p>
-<p>然后将Fiddler关闭，再重新打开。之后，就可以对HTTPS的请求进行抓包了。</p>
+<p><strong>然后将Fiddler关闭，再重新打开。</strong></p>
+<p>之后，就可以对HTTPS的请求进行抓包了。</p>
 <hr>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
 <li><a href="https://www.telerik.com/forums/creation-of-the-interception-certificate-failed" target="_blank" rel="external">Creation of the interception certificate failed. - Fiddler on PCs - Fiddler Forum</a></li>
@@ -702,7 +721,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方法"><span class="nav-number">1.</span> <span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装证书"><span class="nav-number">2.</span> <span class="nav-text">安装证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">3.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方法"><span class="nav-number">1.</span> <span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#移除证书"><span class="nav-number">2.</span> <span class="nav-text">移除证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装证书"><span class="nav-number">3.</span> <span class="nav-text">安装证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">4.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
             
 
           </div>
@@ -722,7 +741,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -95,7 +95,7 @@
 <meta property="og:description" content="Portainer是一个轻量级的Docker容器管理界面，可让您轻松管理 Docker 主机 或 Swarm 集群。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180930185744.png?imageslim">
-<meta property="og:updated_time" content="2018-09-30T11:02:25.000Z">
+<meta property="og:updated_time" content="2019-03-06T07:29:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker图形化管理工具Portainer">
 <meta name="twitter:description" content="Portainer是一个轻量级的Docker容器管理界面，可让您轻松管理 Docker 主机 或 Swarm 集群。">
@@ -351,8 +351,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-09-30T19:02:25+08:00">
-                2018-09-30
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-06T15:29:23+08:00">
+                2019-03-06
               </time>
             
           </span>
@@ -418,7 +418,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  241
+                  253
                 </span>
               
 
@@ -450,15 +450,15 @@
         <p><code>Portainer</code> 是一个轻量级的Docker容器管理界面，可让您轻松管理 <code>Docker</code> 主机 或 <code>Swarm</code> 集群。</p>
 <p>在服务器上部署了很多Docker容器后，总觉得还差点什么。感觉确实需要一个图形化的容器管理工具，便于直观的查看目前服务器中容器的状态等。</p>
 <p>通过对各种管理工具的比较，最后确定使用 <code>Portainer</code> 这款轻量级的。毕竟是个人服务器，也用不到特别大的量级。</p>
-<h4 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h4><p>这里我直接使用官网提供的 <code>docker-compose.yml</code> 来启动portainer容器。下载该文件: <a href="https://portainer.io/download/docker-compose.yml" target="_blank" rel="external">Download the Compose file</a> ，更多的安装信息可见官网：<a href="https://portainer.io/install.html" target="_blank" rel="external">Portainer | Simple management UI for Docker</a> 。</p>
+<h4 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h4><p>这里我直接使用官网提供的 <code>docker-compose.yml</code> 来启动portainer容器。下载该文件: <a href="https://portainer.io/download/docker-compose.yml" target="_blank" rel="external">Download the Compose file</a> ，更多的安装信息可见官方文档：<a href="https://portainer.readthedocs.io/en/stable/deployment.html" target="_blank" rel="external">Deployment — Portainer 1.20.1 documentation</a> 。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">version: &apos;2&apos;</div><div class="line"></div><div class="line">services:</div><div class="line">  portainer:</div><div class="line">    image: portainer/portainer</div><div class="line">    ports:</div><div class="line">      - &quot;9000:9000&quot;</div><div class="line">    command: -H unix:///var/run/docker.sock</div><div class="line">    volumes:</div><div class="line">      - /var/run/docker.sock:/var/run/docker.sock</div><div class="line">      - portainer_data:/data</div><div class="line"></div><div class="line">volumes:</div><div class="line">  portainer_data:</div></pre></td></tr></table></figure>
 <p>第一次登录，需要输入管理员的密码。</p>
 <p>管理界面：</p>
 <p><img src="https://qiniu.itfanr.cc/blog/20180930185744.png?imageslim" alt=""></p>
 <hr>
-<p>待续…</p>
+<p>更多内容可以查看官方文档。</p>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
-<li><a href="https://portainer.io/index.html" target="_blank" rel="external">Portainer | Simple management UI for Docker</a></li>
+<li><a href="https://portainer.readthedocs.io/en/stable/deployment.html" target="_blank" rel="external">Deployment — Portainer 1.20.1 documentation</a></li>
 </ul>
 
       
@@ -638,7 +638,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">92</span>
+                  <span class="site-state-item-count">94</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -649,7 +649,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -660,7 +660,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

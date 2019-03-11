@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Flutter," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="对于Flutter开发环境的配置，官方网站中已经介绍的非常详细了，只要按照步骤来操作即可。这里我仅做为安装记录和自己遇到问题的解决方法。">
+<meta name="keywords" content="Flutter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="兵马未动，粮草先行 -- Flutter开发环境配置">
+<meta property="og:url" content="https://www.itfanr.cc/2019/03/08/flutter-devemopment-environment-configuration/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="对于Flutter开发环境的配置，官方网站中已经介绍的非常详细了，只要按照步骤来操作即可。这里我仅做为安装记录和自己遇到问题的解决方法。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190223120927.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181222203818.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190223153756.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190223155254.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190223155655.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190223155931.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190223160142.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190223160710.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190223183743.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190223184006.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190311150318.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190224163145.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190224165204.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190224171103.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190224172722.png?imageslim">
+<meta property="og:updated_time" content="2019-03-11T07:13:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="兵马未动，粮草先行 -- Flutter开发环境配置">
+<meta name="twitter:description" content="对于Flutter开发环境的配置，官方网站中已经介绍的非常详细了，只要按照步骤来操作即可。这里我仅做为安装记录和自己遇到问题的解决方法。">
+<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/20190223120927.png?imageslim">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.itfanr.cc/2019/03/08/flutter-devemopment-environment-configuration/"/>
+
+
+
+
+
+  <title>兵马未动，粮草先行 -- Flutter开发环境配置 | IT范儿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">IT范儿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">程序员改变世界</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2019/03/08/flutter-devemopment-environment-configuration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">兵马未动，粮草先行 -- Flutter开发环境配置</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-08T16:29:45+08:00">
+                2019-03-08
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-11T15:13:15+08:00">
+                2019-03-11
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter之旅/" itemprop="url" rel="index">
+                    <span itemprop="name">Flutter之旅</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/08/flutter-devemopment-environment-configuration/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/03/08/flutter-devemopment-environment-configuration/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5,641
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  对于Flutter开发环境的配置，官方网站中已经介绍的非常详细了，只要按照步骤来操作即可。这里我仅做为安装记录和自己遇到问题的解决方法。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>对于Flutter开发环境的配置，官方网站 <a href="https://flutter.dev/docs/get-started/install" target="_blank" rel="external">Install - Flutter</a> 中已经介绍的非常详细了，只要按照步骤来操作即可。</p>
+<p>我也是按照官方的教程来操作的，这里只是做一个记录。另外，我的操作并不是完全按照官方的流程来的，这里也仅仅是给各位做一个参考。</p>
+<hr>
+<h4 id="关于系统"><a href="#关于系统" class="headerlink" title="关于系统"></a>关于系统</h4><p>我的电脑是 Mac，系统版本为 <code>macOS Mojave 10.14.3</code>。</p>
+<h4 id="配置Flutter-SDK"><a href="#配置Flutter-SDK" class="headerlink" title="配置Flutter SDK"></a>配置Flutter SDK</h4><p>我安装的时候Flutter的版本还是 <code>v1.0.0</code> ，今天看已经更新到 <code>v1.2.1</code> 了。不得不说Flutter的更新是真给力。</p>
+<h5 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h5><p>从网站地址 <a href="https://flutter.dev/docs/get-started/install/macos" target="_blank" rel="external">MacOS install - Flutter</a> 下载 <code>Flutter SDK</code> 安装包。</p>
+<p>我将 <code>flutter sdk</code> 安装在 <code>~/sdk</code> (或者写成 <code>$HOME/sdk</code>) 目录下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd ~/sdk</div><div class="line">$ unzip ~/Downloads/flutter_macos_v1.0.0-stable.zip</div></pre></td></tr></table></figure>
+<h5 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h5><p>添加 <code>flutter</code> 相关工具到环境变量 <code>path</code> 中:</p>
+<p>编辑 <code>$HOME/.bash_profile</code> 文件，在底部添加如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PATH=&quot;$PATH:[PATH_TO_FLUTTER_GIT_DIRECTORY]/flutter/bin&quot;</div></pre></td></tr></table></figure>
+<p>其中的 <code>[PATH_TO_FLUTTER_GIT_DIRECTORY]</code> 表示你解压 <code>flutter sdk</code> 的目录，我这里就是 <code>~/sdk</code>。即：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PATH=&quot;$PATH:~/sdk/flutter/bin&quot;</div></pre></td></tr></table></figure>
+<hr>
+<p>另外，在国内由于 <code>众所周知</code> 的原因，还需要设置一下pub源，用以下载相关的依赖文件。其中 <code>PUB_HOSTED_URL</code> 和 <code>FLUTTER_STORAGE_BASE_URL</code> 是google为国内开发者搭建的临时镜像。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">export PUB_HOSTED_URL=https://pub.flutter-io.cn</div><div class="line">export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn</div></pre></td></tr></table></figure>
+<p>所以，需要添加的就是上面的三条命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">export PUB_HOSTED_URL=https://pub.flutter-io.cn</div><div class="line">export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn</div><div class="line">export PATH=PATH_TO_FLUTTER_GIT_DIRECTORY/flutter/bin:$PATH</div></pre></td></tr></table></figure>
+<p>其中 <code>PATH_TO_FLUTTER_GIT_DIRECTORY</code> 为你 <code>flutter sdk</code> 的路径。如我这里就是改成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PATH=$HOME/sdk/flutter/bin:$PATH</div></pre></td></tr></table></figure>
+<p>刷新bash:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ source $HOME/.bash_profile</div></pre></td></tr></table></figure>
+<p>如果使用的是 <code>zsh</code> ，则执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ source $HOME/.zshrc</div></pre></td></tr></table></figure>
+<p>查看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo $PATH</div></pre></td></tr></table></figure>
+<p>验证是否配置成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">flutter -h</div></pre></td></tr></table></figure>
+<p>这个时候应该能展示flutter的命令帮助：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190223120927.png?imageslim" alt=""></p>
+<hr>
+<h4 id="检查flutter环境"><a href="#检查flutter环境" class="headerlink" title="检查flutter环境"></a>检查flutter环境</h4><p>在安装环境的过程中，Flutter官方提供了一个依赖检查的命令 <code>flutter doctor</code> ，可以查看到哪些依赖项或程序没有安装成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ flutter doctor</div></pre></td></tr></table></figure>
+<p>另外，该命令的 <code>-v</code> 选项在开发过程中也非常有帮助，执行 <code>flutter doctor -v</code> 查看。</p>
+<p><strong>第一次运行时间会有点长</strong>(所以。。。如果看到没反应的话千万别慌，等等就好了)，它会去下载相关的依赖项并自行编译。执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">➜ flutter doctor</div><div class="line">Doctor summary (to see all details, run flutter doctor -v):</div><div class="line">[✓] Flutter (Channel stable, v1.0.0, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)</div><div class="line">[!] Android toolchain - develop for Android devices</div><div class="line">    ✗ No valid Android SDK platforms found in /usr/local/Caskroom/android-platform-tools/latest/platforms. Directory was</div><div class="line">      empty.</div><div class="line">[!] iOS toolchain - develop for iOS devices (Xcode 10.1)</div><div class="line">    ✗ Xcode requires additional components to be installed in order to run.</div><div class="line">      Launch Xcode and install additional required components when prompted.</div><div class="line">    ✗ libimobiledevice and ideviceinstaller are not installed. To install with Brew, run:</div><div class="line">        brew update</div><div class="line">        brew install --HEAD usbmuxd</div><div class="line">        brew link usbmuxd</div><div class="line">        brew install --HEAD libimobiledevice</div><div class="line">        brew install ideviceinstaller</div><div class="line">    ✗ ios-deploy not installed. To install with Brew:</div><div class="line">        brew install ios-deploy</div><div class="line">    ✗ CocoaPods not installed.</div><div class="line">        CocoaPods is used to retrieve the iOS platform side&apos;s plugin code that responds to your plugin usage on the Dart</div><div class="line">        side.</div><div class="line">        Without resolving iOS dependencies with CocoaPods, plugins will not work on iOS.</div><div class="line">        For more info, see https://flutter.io/platform-plugins</div><div class="line">      To install:</div><div class="line">        brew install cocoapods</div><div class="line">        pod setup</div><div class="line">[!] Android Studio (not installed)</div><div class="line">[!] VS Code (version 1.31.1)</div><div class="line">[!] Connected device</div><div class="line">    ! No devices available</div><div class="line"></div><div class="line">! Doctor found issues in 5 categories.</div></pre></td></tr></table></figure>
+<p>通过上面的提示信息，可以看到 <code>Android toolchain</code> 或 <code>iOS toolchain</code> 是必须安装其一的。这里我是都要安装，毕竟两个平台都想要体验一下的。</p>
+<p>开发工具呢除了之前 <code>官方</code> 的 <code>Android Studio</code> 和 <code>XCode</code> 之前，Flutter非常推荐通过轻量级的 <code>VS Code</code> 来进行开发。</p>
+<hr>
+<h4 id="配置VS-Code"><a href="#配置VS-Code" class="headerlink" title="配置VS Code"></a>配置VS Code</h4><p>安装VS Code ,安装1.20.1或更高版本.</p>
+<h5 id="安装Flutter插件"><a href="#安装Flutter插件" class="headerlink" title="安装Flutter插件"></a>安装Flutter插件</h5><ol>
+<li>启动 <code>VS Code</code></li>
+<li>调用 <code>View &gt; Command Palette…</code></li>
+<li>输入 <code>install</code>, 然后选择 <code>Extensions: Install Extension action</code></li>
+<li>在搜索框输入 <code>flutter</code> , 在搜索结果列表中选择 <code>Flutter</code>, 然后点击 <code>Install</code>(会自动附带安装好 <code>Dart</code> 插件)</li>
+<li>选择 <code>OK</code> 重新启动 <code>VS Code</code></li>
+</ol>
+<h5 id="通过Flutter-Doctor验证您的设置"><a href="#通过Flutter-Doctor验证您的设置" class="headerlink" title="通过Flutter Doctor验证您的设置"></a>通过Flutter Doctor验证您的设置</h5><ol>
+<li>调用 <code>View &gt; Command Palette…</code></li>
+<li>输入 <code>doctor</code>, 然后选择 <code>Flutter: Run Flutter Doctor</code> 选项</li>
+<li>查看 “OUTPUT” 窗口中的输出是否有问题</li>
+</ol>
+<p>运行 <code>flutter doctor</code> 查看结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">➜ flutter doctor</div><div class="line">Doctor summary (to see all details, run flutter doctor -v):</div><div class="line">[✓] Flutter (Channel stable, v1.0.0, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)</div><div class="line">[!] Android toolchain - develop for Android devices</div><div class="line">    ✗ No valid Android SDK platforms found in /usr/local/Caskroom/android-platform-tools/latest/platforms. Directory was</div><div class="line">      empty.</div><div class="line">[!] iOS toolchain - develop for iOS devices (Xcode 10.1)</div><div class="line">    ✗ libimobiledevice and ideviceinstaller are not installed. To install with Brew, run:</div><div class="line">        brew update</div><div class="line">        brew install --HEAD usbmuxd</div><div class="line">        brew link usbmuxd</div><div class="line">        brew install --HEAD libimobiledevice</div><div class="line">        brew install ideviceinstaller</div><div class="line">    ✗ ios-deploy not installed. To install with Brew:</div><div class="line">        brew install ios-deploy</div><div class="line">    ✗ CocoaPods not installed.</div><div class="line">        CocoaPods is used to retrieve the iOS platform side&apos;s plugin code that responds to your plugin usage on the Dart</div><div class="line">        side.</div><div class="line">        Without resolving iOS dependencies with CocoaPods, plugins will not work on iOS.</div><div class="line">        For more info, see https://flutter.io/platform-plugins</div><div class="line">      To install:</div><div class="line">        brew install cocoapods</div><div class="line">        pod setup</div><div class="line">[!] Android Studio (not installed)</div><div class="line">[✓] VS Code (version 1.31.1)</div><div class="line">[✓] Connected device (1 available)</div><div class="line"></div><div class="line">! Doctor found issues in 3 categories.</div></pre></td></tr></table></figure>
+<p>可以看到 <code>[✓] VS Code (version 1.31.1)</code> 一项已经打钩了。</p>
+<ul>
+<li><a href="https://flutterchina.club/get-started/editor/#vscode" target="_blank" rel="external">起步: 配置编辑器 - Flutter中文网</a></li>
+</ul>
+<hr>
+<h4 id="Android环境配置"><a href="#Android环境配置" class="headerlink" title="Android环境配置"></a>Android环境配置</h4><p><code>Android toolchain</code> 中要求必须安装好 <code>Android SDK</code> ，而 <code>Android SDK</code> 的安装方法常见的有两种：</p>
+<ol>
+<li>通过安装 <code>Android Studio</code> 会自动给安装好 <code>Android SDK</code> ,这种方法操作起来比较简单，基本上 <code>Android Studio</code> 都帮你配置好了；</li>
+<li>直接下载 <code>Android SDK</code> 安装包，但需要自己去手动配置，而该配置过程稍显复杂；</li>
+</ol>
+<p>虽然开发工具上面已经配置了 <code>VS Code</code>也就没必要再安装 <code>Android Studio</code> 了，不过为了方便快捷，这里我选择采用第一种方式来安装。</p>
+<p>这里需要注意的是：最好自备 <code>梯子</code> ，有些Android依赖包下载的过程中可能会由于网络原因需要多次重试。</p>
+<h5 id="安装-Android-Studio-及配置"><a href="#安装-Android-Studio-及配置" class="headerlink" title="安装 Android Studio 及配置"></a>安装 Android Studio 及配置</h5><p>打开官网 <a href="https://developer.android.com/studio/" target="_blank" rel="external"></a> ，会直接根据当前系统显示推荐下载版本：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20181222203818.png?imageslim" alt=""></p>
+<p>直接点开安装即可。结果弹出了一个错误页面：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190223153756.png?imageslim" alt=""></p>
+<p>出现这个错误的原因是：在第一次安装AS，启动后，检测到电脑没有安装 Android SDK。</p>
+<p>相应的解决方法是直接点击 <code>Cancel</code> 选项，在后续的界面中再安装SDK。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190223155254.png?imageslim" alt=""></p>
+<p>点击 <code>Next</code> 后，我这里选择的是 <code>Custom</code> （自定义）选项。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190223155655.png?imageslim" alt=""></p>
+<p>可以看到 <code>Android SDK</code> 是默认勾选的。另外两项我这里全部勾选上了。还可以在这里选择自定义安装目录。</p>
+<p>下一页是Android模拟器的内存设置：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190223155931.png?imageslim" alt=""></p>
+<p>SDK Path 默认为 <code>/Users/xyz/Library/Android/sdk</code> 。</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190223160142.png?imageslim" alt=""></p>
+<p>然后就是等待下载安装的过程：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190223160710.png?imageslim" alt=""></p>
+<p>由于某些资源包是访问的 <code>google.com</code> 网址，如果没有 <code>梯子</code> ，是需要等待很久。。。很久。。。的。</p>
+<p>等待安装完成后，再次查看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">➜ flutter doctor</div><div class="line">Doctor summary (to see all details, run flutter doctor -v):</div><div class="line">[✓] Flutter (Channel stable, v1.0.0, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)</div><div class="line">[!] Android toolchain - develop for Android devices (Android SDK 28.0.3)</div><div class="line">    ✗ Android licenses not accepted.  To resolve this, run: flutter doctor --android-licenses</div><div class="line">[!] iOS toolchain - develop for iOS devices (Xcode 10.1)</div><div class="line">    ✗ libimobiledevice and ideviceinstaller are not installed. To install with Brew, run:</div><div class="line">        brew update</div><div class="line">        brew install --HEAD usbmuxd</div><div class="line">        brew link usbmuxd</div><div class="line">        brew install --HEAD libimobiledevice</div><div class="line">        brew install ideviceinstaller</div><div class="line">    ✗ ios-deploy not installed. To install with Brew:</div><div class="line">        brew install ios-deploy</div><div class="line">    ✗ CocoaPods not installed.</div><div class="line">        CocoaPods is used to retrieve the iOS platform side&apos;s plugin code that responds to your plugin usage on the Dart</div><div class="line">        side.</div><div class="line">        Without resolving iOS dependencies with CocoaPods, plugins will not work on iOS.</div><div class="line">        For more info, see https://flutter.io/platform-plugins</div><div class="line">      To install:</div><div class="line">        brew install cocoapods</div><div class="line">        pod setup</div><div class="line">[✓] Android Studio (version 3.3)</div><div class="line">    ✗ Flutter plugin not installed; this adds Flutter specific functionality.</div><div class="line">    ✗ Dart plugin not installed; this adds Dart specific functionality.</div><div class="line">[✓] VS Code (version 1.31.1)</div><div class="line">[!] Connected device</div><div class="line">    ! No devices available</div><div class="line"></div><div class="line">! Doctor found issues in 3 categories.</div></pre></td></tr></table></figure>
+<h5 id="解决-Android-licenses-问题"><a href="#解决-Android-licenses-问题" class="headerlink" title="解决 Android licenses 问题"></a>解决 Android licenses 问题</h5><p>看上面的提示，这里不得不夸赞一下Flutter工具的🐂🍺了。有什么问题直接在下面显示并给出解决方法，不会让一些小白再需要去网上搜索了。</p>
+<p>看上面的错误提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[!] Android toolchain - develop for Android devices (Android SDK 28.0.3)</div><div class="line">    ✗ Android licenses not accepted.  To resolve this, run: flutter doctor --android-licenses</div></pre></td></tr></table></figure>
+<p>直接执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">➜ flutter doctor --android-licenses</div><div class="line">Warning: File /Users/xyz/.android/repositories.cfg could not be loaded..</div><div class="line">6 of 6 SDK package licenses not accepted. 100% Computing updates...</div><div class="line">Review licenses that have not been accepted (y/N)?</div><div class="line">...</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>按照提示，一直输入 <code>y</code> 即可。直到看到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">All SDK package licenses accepted</div></pre></td></tr></table></figure>
+<p>就说明配置成功了。再次查看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">➜ flutter doctor</div><div class="line">Doctor summary (to see all details, run flutter doctor -v):</div><div class="line">[✓] Flutter (Channel stable, v1.0.0, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)</div><div class="line">[✓] Android toolchain - develop for Android devices (Android SDK 28.0.3)</div><div class="line">[!] iOS toolchain - develop for iOS devices (Xcode 10.1)</div><div class="line">    ✗ libimobiledevice and ideviceinstaller are not installed. To install with Brew, run:</div><div class="line">        brew update</div><div class="line">        brew install --HEAD usbmuxd</div><div class="line">        brew link usbmuxd</div><div class="line">        brew install --HEAD libimobiledevice</div><div class="line">        brew install ideviceinstaller</div><div class="line">    ✗ ios-deploy not installed. To install with Brew:</div><div class="line">        brew install ios-deploy</div><div class="line">    ✗ CocoaPods not installed.</div><div class="line">        CocoaPods is used to retrieve the iOS platform side&apos;s plugin code that responds to your plugin usage on the Dart</div><div class="line">        side.</div><div class="line">        Without resolving iOS dependencies with CocoaPods, plugins will not work on iOS.</div><div class="line">        For more info, see https://flutter.io/platform-plugins</div><div class="line">      To install:</div><div class="line">        brew install cocoapods</div><div class="line">        pod setup</div><div class="line">[✓] Android Studio (version 3.3)</div><div class="line">    ✗ Flutter plugin not installed; this adds Flutter specific functionality.</div><div class="line">    ✗ Dart plugin not installed; this adds Dart specific functionality.</div><div class="line">[✓] VS Code (version 1.31.1)</div><div class="line">[!] Connected device</div><div class="line">    ! No devices available</div><div class="line"></div><div class="line">! Doctor found issues in 2 categories.</div></pre></td></tr></table></figure>
+<p>发现 <code>[✓] Android toolchain</code> 配置成功了。</p>
+<h5 id="安装Flutter插件-1"><a href="#安装Flutter插件-1" class="headerlink" title="安装Flutter插件"></a>安装Flutter插件</h5><p>看上面的错误提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[✓] Android Studio (version 3.3)</div><div class="line">    ✗ Flutter plugin not installed; this adds Flutter specific functionality.</div><div class="line">    ✗ Dart plugin not installed; this adds Dart specific functionality.</div></pre></td></tr></table></figure>
+<p>看提示，需要在 <code>Android Studio</code> 中安装两个必要的插件：<code>Flutter plugin</code> 和 <code>Dart plugin</code></p>
+<p>打开 Android Studio，可以不用新建项目，直接选择菜单栏中的 <code>Android Studio</code> – <code>Preferences</code> – 选择或者搜索 <code>Plugins</code> 菜单 – 然后搜索 <code>Flutter</code> 插件，可以看到会自动提示安装依赖的 <code>Dart</code> 插件：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190223183743.png?imageslim" alt=""></p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190223184006.png?imageslim" alt=""></p>
+<p>之后，需要重启。</p>
+<p>再次查看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">➜ flutter doctor</div><div class="line">Doctor summary (to see all details, run flutter doctor -v):</div><div class="line">[✓] Flutter (Channel stable, v1.0.0, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)</div><div class="line">[✓] Android toolchain - develop for Android devices (Android SDK 28.0.3)</div><div class="line">[!] iOS toolchain - develop for iOS devices (Xcode 10.1)</div><div class="line">    ✗ libimobiledevice and ideviceinstaller are not installed. To install with Brew, run:</div><div class="line">        brew update</div><div class="line">        brew install --HEAD usbmuxd</div><div class="line">        brew link usbmuxd</div><div class="line">        brew install --HEAD libimobiledevice</div><div class="line">        brew install ideviceinstaller</div><div class="line">    ✗ ios-deploy not installed. To install with Brew:</div><div class="line">        brew install ios-deploy</div><div class="line">    ✗ CocoaPods not installed.</div><div class="line">        CocoaPods is used to retrieve the iOS platform side&apos;s plugin code that responds to your plugin usage on the Dart</div><div class="line">        side.</div><div class="line">        Without resolving iOS dependencies with CocoaPods, plugins will not work on iOS.</div><div class="line">        For more info, see https://flutter.io/platform-plugins</div><div class="line">      To install:</div><div class="line">        brew install cocoapods</div><div class="line">        pod setup</div><div class="line">[✓] Android Studio (version 3.3)</div><div class="line">[✓] VS Code (version 1.31.1)</div><div class="line">[!] Connected device</div><div class="line">    ! No devices available</div><div class="line"></div><div class="line">! Doctor found issues in 2 categories.</div></pre></td></tr></table></figure>
+<ul>
+<li><a href="https://blog.csdn.net/xx326664162/article/details/50563122" target="_blank" rel="external">unable to access android sdk add-on list - 薛瑄的博客 - CSDN博客</a></li>
+</ul>
+<hr>
+<h4 id="连接Android真机运行"><a href="#连接Android真机运行" class="headerlink" title="连接Android真机运行"></a>连接Android真机运行</h4><p>上面 <code>Android</code> 的环境已经配置好了，我就有些迫不及待的想要在手机上运行了。</p>
+<h5 id="跑起来"><a href="#跑起来" class="headerlink" title="跑起来"></a>跑起来</h5><p>连接上安卓手机，开始运行 <code>flutter run</code> 命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">➜ flutter run   </div><div class="line">No connected devices.</div><div class="line"></div><div class="line">Run &apos;flutter emulators&apos; to list and start any available device emulators.</div><div class="line"></div><div class="line">If you expected your device to be detected, please run &quot;flutter doctor&quot; to diagnose</div><div class="line">potential issues, or visit https://flutter.io/setup/ for troubleshooting tips.</div></pre></td></tr></table></figure>
+<p>结果却提示 <code>No connected devices</code> 。根据提示，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">➜ flutter emulators</div><div class="line">2 available emulators:</div><div class="line"></div><div class="line">Nexus_5X_API_28_x86 • Nexus 5X      • Google • Nexus 5X API 28 x86</div><div class="line">apple_ios_simulator • iOS Simulator • Apple</div><div class="line"></div><div class="line">To run an emulator, run &apos;flutter emulators --launch &lt;emulator id&gt;&apos;.</div><div class="line">To create a new emulator, run &apos;flutter emulators --create [--name xyz]&apos;.</div><div class="line"></div><div class="line">You can find more information on managing emulators at the links below:</div><div class="line">  https://developer.android.com/studio/run/managing-avds</div><div class="line">  https://developer.android.com/studio/command-line/avdmanager</div></pre></td></tr></table></figure>
+<p>按照提示，执行 <code>flutter emulators --launch &lt;emulator id&gt;</code> 命令:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">➜ flutter run -d Nexus_5X</div><div class="line">No devices found with name or id matching &apos;Nexus_5X&apos;</div><div class="line"></div><div class="line"></div><div class="line">➜ flutter run -d Nexus_5X_API_28_x86</div><div class="line">No devices found with name or id matching &apos;Nexus_5X_API_28_x86&apos;</div></pre></td></tr></table></figure>
+<p>结果仍然是 <code>找不到设备</code>。</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/52573901/flutter-command-line-emulator-device-not-found" target="_blank" rel="external">dart - Flutter - Command line - Emulator- Device not found - Stack Overflow</a></li>
+</ul>
+<p>到这里的结果就是：</p>
+<ul>
+<li>安卓手机发现不了设备。</li>
+<li>Android模拟器一直连接失败，即使连接上了，在安装app的时候也会提示 <code>no devices</code> 的信息。好不容易安装成功后，发现网上提到的 <code>hot reload</code> 的功能却用不了。<code>Android Studio</code> 上的热加载 ⚡️ 按钮也是灰色的。</li>
+<li>ios模拟器安装启动正常，而且热更新的功能也能正常使用。</li>
+</ul>
+<p>后来再次查看了官方的安装文档，恍然大悟之间，才发现我忘记操作了一步：我只安装了 <code>Android Studio</code> ，<strong>但并没有配置 <code>ANDROID_HOME</code> 环境变量</strong>，而是直接就开始安装App了。</p>
+<p>见官方文档：<a href="https://flutter.dev/docs/get-started/install/macos#set-up-your-android-device" target="_blank" rel="external">Set up your Android device - Flutter</a></p>
+<h5 id="配置-ANDROID-HOME-环境变量"><a href="#配置-ANDROID-HOME-环境变量" class="headerlink" title="配置 ANDROID_HOME 环境变量"></a>配置 ANDROID_HOME 环境变量</h5><p>查看当前环境变量：</p>
+<p>打开 AS ，找到 <code>Preferences</code> – <code>Appearance &amp; Behavior</code> – <code>System Settings</code> – <code>Android SDK</code> – 在右侧找到 <code>Android SDK Location</code> – 复制</p>
+<p>在命令行中输入 <code>echo $ANDROID_HOME</code>，发现当前值确实为空。</p>
+<p>然后在 <code>$HOME/.bash_profile</code> 中加入下列代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">export ANDROID_HOME=$HOME/Library/Android/sdk</div><div class="line">export PATH=$&#123;PATH&#125;:$&#123;ANDROID_HOME&#125;/tools</div><div class="line">export PATH=$&#123;PATH&#125;:$&#123;ANDROID_HOME&#125;/platform-tools</div></pre></td></tr></table></figure>
+<p><img src="https://qiniu.itfanr.cc/blog/20190311150318.png?imageslim" alt=""></p>
+<p>重启命令行窗口或者执行 <code>source $HOME/.bash_profile</code> or <code>source $HOME/.zshrc</code> 刷新配置。</p>
+<h5 id="配置Android模拟器"><a href="#配置Android模拟器" class="headerlink" title="配置Android模拟器"></a>配置Android模拟器</h5><p>打开 AS, <code>Android Studio</code> &gt; <code>Tools</code> &gt; <code>Android</code> &gt; <code>AVD Manager and select Create Virtual Device</code> . （更多的去参考一下文档去吧）&gt; <a href="https://flutter.dev/docs/get-started/install/macos#set-up-the-android-emulator" target="_blank" rel="external">Set up the Android emulator - Flutter</a></p>
+<p>后来发现，如果没有配置，是会启动一个默认的模拟器。</p>
+<p>在上面的操作中，由于我太着急，直接就运行程序了，所以默认给我创建了一个 <code>Nexus 5X</code> 的模拟器。</p>
+<hr>
+<h5 id="ADB-server-didn’t-ACK"><a href="#ADB-server-didn’t-ACK" class="headerlink" title="ADB server didn’t ACK"></a>ADB server didn’t ACK</h5><p>将手机通过usb连接，通过 <code>adb devices</code> 命令来查看设备连接状态:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">➜ adb devices</div><div class="line">List of devices attached</div><div class="line">adb server version (40) doesn&apos;t match this client (39); killing...</div><div class="line">ADB server didn&apos;t ACK</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>结果却报了 <code>ADB server didn&#39;t ACK</code> 的错误。</p>
+<p>相应的解决方法如下：</p>
+<ol>
+<li>查看端口被占用情况：在终端输入 <code>lsof -i tcp:5037</code> 查看占用 <code>5037</code> 端口的pid号</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">➜ lsof -i tcp:5037</div><div class="line">COMMAND   PID USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME</div><div class="line">adb     38752  xyz    3u  IPv4 0xec93d79cdb5a9d91      0t0  TCP localhost:49653-&gt;localhost:5037 (CLOSED)</div><div class="line">adb     38752  xyz   11u  IPv4 0xec93x80a5492d411      0t0  TCP localhost:5037 (LISTEN)</div></pre></td></tr></table></figure>
+<p>2.去任务管理器（应用程序-其他-活动监视器）找到对应pid号(这里是38752)的进程，并关闭 </p>
+<ol>
+<li>再次查看：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">➜ adb devices</div><div class="line">List of devices attached</div><div class="line">adb server version (40) doesn&apos;t match this client (39); killing...</div><div class="line">* daemon started successfully</div><div class="line">FA6AB0311758    device</div></pre></td></tr></table></figure>
+<p>现在，设备已经正常连接了。</p>
+<ul>
+<li><a href="https://blog.csdn.net/XieYupeng520/article/details/46660517" target="_blank" rel="external">【MAC版】Android ADB server didn’t ACK failed to start daemon 解决办法 - AZZ的博客 - CSDN博客</a></li>
+</ul>
+<hr>
+<h5 id="Android-license-status-unknown"><a href="#Android-license-status-unknown" class="headerlink" title="Android license status unknown"></a>Android license status unknown</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">➜ flutter doctor</div><div class="line">Doctor summary (to see all details, run flutter doctor -v):</div><div class="line">[✓] Flutter (Channel stable, v1.0.0, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)</div><div class="line">[!] Android toolchain - develop for Android devices (Android SDK 28.0.3)</div><div class="line">    ✗ Android license status unknown.</div><div class="line">[✓] Android Studio (version 3.3)</div><div class="line">。。。</div><div class="line">。。。</div></pre></td></tr></table></figure>
+<p>解决方法是：再执行一次 <code>flutter doctor --android-licenses</code> 命令，在提示后输入 <code>y</code> 确认，然后再通过 <code>flutter doctor</code> 查看。</p>
+<ul>
+<li><a href="https://github.com/flutter/flutter/issues/16025" target="_blank" rel="external">✗ Android license status unknown. · Issue #16025 · flutter/flutter</a></li>
+<li><a href="https://my.oschina.net/falcon10086/blog/1827718" target="_blank" rel="external">Android license status unknown - Code is Poetry - 开源中国</a></li>
+</ul>
+<hr>
+<h5 id="某些安卓手机需要解锁"><a href="#某些安卓手机需要解锁" class="headerlink" title="某些安卓手机需要解锁"></a>某些安卓手机需要解锁</h5><p>对于某些安卓设备默认情况下都没有启用开发者调试的功能，这次我换用一台小米手机来进行真机调试。</p>
+<p>当有多个设备连接时，可以通过 <code>-d &lt;deviceId&gt;</code> 连接指定设备，或者使用 <code>-d all</code> 连接所有设备来调试。其中 <code>&lt;deviceId&gt;</code> 支持模糊匹配设备名称：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">➜ flutter run</div><div class="line">More than one device connected; please specify a device with the &apos;-d &lt;deviceId&gt;&apos; flag, or use &apos;-d all&apos; to act</div><div class="line">on all devices.</div><div class="line"></div><div class="line">Redmi Note 4X             • a1529b418604  • android-arm64 • Android 7.0 (API 24)</div><div class="line">Android SDK built for x86 • emulator-5554 • android-x86   • Android 9 (API 28) (emulator)</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">➜ flutter run -d Redmi</div><div class="line">Launching lib/main.dart on Redmi Note 4X in debug mode...</div><div class="line">Initializing gradle...                                       1.0s</div><div class="line">Resolving dependencies...                                    7.7s</div><div class="line">Gradle task &apos;assembleDebug&apos;...                                   </div><div class="line">Gradle task &apos;assembleDebug&apos;... Done                         10.4s</div><div class="line">Built build/app/outputs/apk/debug/app-debug.apk.</div><div class="line">Installing build/app/outputs/apk/app.apk...                  8.1s</div><div class="line">Error: ADB exited with exit code 1</div><div class="line">adb: failed to install /Users/xyz/Learn/flutter/hello_world/build/app/outputs/apk/app.apk: Failure</div><div class="line">[INSTALL_FAILED_USER_RESTRICTED: Install canceled by user]</div><div class="line">Error launching application on Redmi Note 4X.</div></pre></td></tr></table></figure>
+<p>可以看到，我这里设备选择成功了，但当运行到 <code>Install</code> 阶段报错了。</p>
+<p>这里，需要更改一下手机设置，以小米手机为例：</p>
+<ol>
+<li>打开手机的开发者模式: <code>设置</code> – <code>我的设备</code> – <code>全部参数</code> – <code>MIUI版本</code> – 连续点击7下即可</li>
+<li>再次点击 <code>设置</code> – <code>更多设置</code> – <code>开发者选项</code> – 将 <code>开启开发者选项</code> 启用 、 <code>USB调试</code> 启用 、 <code>USB安装</code> 启用</li>
+<li>再次执行 <code>flutter run</code> 命令进行安装，此时手机上会弹出 <code>USB安装提示</code> 的命令，选择 <code>允许</code> 即可</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">➜ flutter run</div><div class="line">Launching lib/main.dart on Redmi Note 4X in debug mode...</div><div class="line">Initializing gradle...                                       0.8s</div><div class="line">Resolving dependencies...                                    1.5s</div><div class="line">Gradle task &apos;assembleDebug&apos;...                                   </div><div class="line">Gradle task &apos;assembleDebug&apos;... Done                          1.5s</div><div class="line">Built build/app/outputs/apk/debug/app-debug.apk.</div><div class="line">Installing build/app/outputs/apk/app.apk...                 14.6s</div><div class="line">Syncing files to device Redmi Note 4X...                     1.6s</div><div class="line"></div><div class="line">🔥  To hot reload changes while running, press &quot;r&quot;. To hot restart (and rebuild state), press &quot;R&quot;.</div><div class="line">An Observatory debugger and profiler on Redmi Note 4X is available at: http://127.0.0.1:61766/</div><div class="line">For a more detailed help message, press &quot;h&quot;. To detach, press &quot;d&quot;; to quit, press &quot;q&quot;.</div></pre></td></tr></table></figure>
+<ul>
+<li><a href="https://stackoverflow.com/a/54127898/6246673" target="_blank" rel="external">INSTALL_FAILED_USER_RESTRICTED : android studio using redmi 4 device
+</a></li>
+</ul>
+<hr>
+<h5 id="最终运行"><a href="#最终运行" class="headerlink" title="最终运行"></a>最终运行</h5><p>再次检查状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">➜ flutter doctor</div><div class="line">Doctor summary (to see all details, run flutter doctor -v):</div><div class="line">[✓] Flutter (Channel stable, v1.0.0, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)</div><div class="line">[✓] Android toolchain - develop for Android devices (Android SDK 28.0.3)</div><div class="line">[!] iOS toolchain - develop for iOS devices (Xcode 10.1)</div><div class="line">    ✗ libimobiledevice and ideviceinstaller are not installed. To install with Brew, run:</div><div class="line">        brew update</div><div class="line">        brew install --HEAD usbmuxd</div><div class="line">        brew link usbmuxd</div><div class="line">        brew install --HEAD libimobiledevice</div><div class="line">        brew install ideviceinstaller</div><div class="line">    ✗ ios-deploy not installed. To install with Brew:</div><div class="line">        brew install ios-deploy</div><div class="line">    ✗ CocoaPods not installed.</div><div class="line">        CocoaPods is used to retrieve the iOS platform side&apos;s plugin code that responds to your plugin usage on the Dart</div><div class="line">        side.</div><div class="line">        Without resolving iOS dependencies with CocoaPods, plugins will not work on iOS.</div><div class="line">        For more info, see https://flutter.io/platform-plugins</div><div class="line">      To install:</div><div class="line">        brew install cocoapods</div><div class="line">        pod setup</div><div class="line">[✓] Android Studio (version 3.3)</div><div class="line">[✓] VS Code (version 1.31.1)</div><div class="line">[✓] Connected device (1 available)</div><div class="line"></div><div class="line">! Doctor found issues in 1 category.</div></pre></td></tr></table></figure>
+<p>打开 <code>VS Code</code>, 在终端中运行 <code>flutter run</code> 命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">➜ flutter run</div><div class="line">Launching lib/main.dart on Pixel in debug mode...</div><div class="line">Initializing gradle...                                       1.1s</div><div class="line">Resolving dependencies...                                    8.2s</div><div class="line">Gradle task &apos;assembleDebug&apos;...                                   </div><div class="line">Gradle task &apos;assembleDebug&apos;... Done                         12.4s</div><div class="line">Built build/app/outputs/apk/debug/app-debug.apk.</div><div class="line">Installing build/app/outputs/apk/app.apk...                  3.4s</div><div class="line">Syncing files to device Pixel...                             1.5s</div><div class="line"></div><div class="line">🔥  To hot reload changes while running, press &quot;r&quot;. To hot restart (and rebuild state), press &quot;R&quot;.</div><div class="line">An Observatory debugger and profiler on Pixel is available at: http://127.0.0.1:49724/</div><div class="line">For a more detailed help message, press &quot;h&quot;. To detach, press &quot;d&quot;; to quit, press &quot;q&quot;.</div></pre></td></tr></table></figure>
+<p>可以看到，现在才是正常运行的状态。已经成功的连接上了我的 <code>Pixel</code> 手机，同时在手机端，已经打开了示例app的界面。输入 <code>r</code> 来实现热更新。</p>
+<hr>
+<h4 id="IOS环境配置"><a href="#IOS环境配置" class="headerlink" title="IOS环境配置"></a>IOS环境配置</h4><p>查看当前的状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">➜ flutter doctor</div><div class="line">Doctor summary (to see all details, run flutter doctor -v):</div><div class="line">[✓] Flutter (Channel stable, v1.0.0, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)</div><div class="line">[✓] Android toolchain - develop for Android devices (Android SDK 28.0.3)</div><div class="line">[!] iOS toolchain - develop for iOS devices (Xcode 10.1)</div><div class="line">    ✗ libimobiledevice and ideviceinstaller are not installed. To install with Brew, run:</div><div class="line">        brew update</div><div class="line">        brew install --HEAD usbmuxd</div><div class="line">        brew link usbmuxd</div><div class="line">        brew install --HEAD libimobiledevice</div><div class="line">        brew install ideviceinstaller</div><div class="line">    ✗ ios-deploy not installed. To install with Brew:</div><div class="line">        brew install ios-deploy</div><div class="line">    ✗ CocoaPods not installed.</div><div class="line">        CocoaPods is used to retrieve the iOS platform side&apos;s plugin code that responds to your plugin usage on the Dart</div><div class="line">        side.</div><div class="line">        Without resolving iOS dependencies with CocoaPods, plugins will not work on iOS.</div><div class="line">        For more info, see https://flutter.io/platform-plugins</div><div class="line">      To install:</div><div class="line">        brew install cocoapods</div><div class="line">        pod setup</div><div class="line">[✓] Android Studio (version 3.3)</div><div class="line">[✓] VS Code (version 1.31.1)</div><div class="line">[✓] Connected device (1 available)</div><div class="line"></div><div class="line">! Doctor found issues in 1 category.</div></pre></td></tr></table></figure>
+<p>依照上面的提示信息，依次执行，安装 <code>iOS toolchain</code> 所有相关依赖。</p>
+<h4 id="连接IPhone真机运行"><a href="#连接IPhone真机运行" class="headerlink" title="连接IPhone真机运行"></a>连接IPhone真机运行</h4><h5 id="No-valid-code-signing-certificates-were-found"><a href="#No-valid-code-signing-certificates-were-found" class="headerlink" title="No valid code signing certificates were found"></a>No valid code signing certificates were found</h5><p>没想到第一次运行却报错了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">➜ flutter run</div><div class="line">Launching lib/main.dart on xyz的iPhone in debug mode...</div><div class="line">════════════════════════════════════════════════════════════════════════════════</div><div class="line">No valid code signing certificates were found</div><div class="line">You can connect to your Apple Developer account by signing in with your Apple ID</div><div class="line">in Xcode and create an iOS Development Certificate as well as a Provisioning </div><div class="line">Profile for your project by:</div><div class="line">  1- Open the Flutter project&apos;s Xcode target with</div><div class="line">       open ios/Runner.xcworkspace</div><div class="line">  2- Select the &apos;Runner&apos; project in the navigator then the &apos;Runner&apos; target</div><div class="line">     in the project settings</div><div class="line">  3- In the &apos;General&apos; tab, make sure a &apos;Development Team&apos; is selected. </div><div class="line">     You may need to:</div><div class="line">         - Log in with your Apple ID in Xcode first</div><div class="line">         - Ensure you have a valid unique Bundle ID</div><div class="line">         - Register your device with your Apple Developer Account</div><div class="line">         - Let Xcode automatically provision a profile for your app</div><div class="line">  4- Build or run your project again</div><div class="line">  5- Trust your newly created Development Certificate on your iOS device</div><div class="line">     via Settings &gt; General &gt; Device Management &gt; [your new certificate] &gt; Trust</div><div class="line"></div><div class="line">For more information, please visit:</div><div class="line">  https://developer.apple.com/library/content/documentation/IDEs/Conceptual/</div><div class="line">  AppDistributionGuide/MaintainingCertificates/MaintainingCertificates.html</div><div class="line"></div><div class="line">Or run on an iOS simulator without code signing</div><div class="line">════════════════════════════════════════════════════════════════════════════════</div><div class="line">No development certificates available to code sign app for device deployment</div></pre></td></tr></table></figure>
+<p>按照上面的提示，用 Xcode 打开示例项目中的 <code>ios/Runner.xcworkspace</code> 这个文件，</p>
+<p>选择项目菜单 <code>Runner</code> – General 选项 ，可以看到 <code>Signing</code> 中的 <code>Status</code> 提示错误信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Signing for &quot;Runner&quot; requires a development team.</div><div class="line">Select a development team in the projct editor.</div></pre></td></tr></table></figure>
+<p><img src="https://qiniu.itfanr.cc/blog/20190224163145.png?imageslim" alt=""></p>
+<p>点击 <code>Team</code> 选项的 <code>Add Account...</code> 按钮，登录 <code>Apple ID</code> ，没有则需要创建一个。回到 <code>General</code> 界面，选择 <code>Team</code> 名称。等待验证。</p>
+<h5 id="No-profiles-for-xxx-were-found"><a href="#No-profiles-for-xxx-were-found" class="headerlink" title="No profiles for xxx were found"></a>No profiles for xxx were found</h5><p>现在又提示下面的错误：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190224165204.png?imageslim" alt=""></p>
+<p>在 VSCode中执行 <code>flutter run</code> 命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">➜ flutter run</div><div class="line">Launching lib/main.dart on xyz的iPhone in debug mode...</div><div class="line">Automatically signing iOS for device deployment using specified development team in Xcode project:</div><div class="line">9Y41Q9PF28</div><div class="line">Starting Xcode build...                                          </div><div class="line">Xcode build done.                                            1.3s</div><div class="line">Failed to build iOS app</div><div class="line">Error output from Xcode build:</div><div class="line">↳</div><div class="line">    ** BUILD FAILED **</div><div class="line"></div><div class="line"></div><div class="line">Xcode&apos;s output:</div><div class="line">↳</div><div class="line">    === BUILD TARGET Runner OF PROJECT Runner WITH CONFIGURATION Debug ===</div><div class="line">    Code Signing Error: No profiles for &apos;com.example.helloWorld&apos; were found:  Xcode couldn&apos;t find any</div><div class="line">    iOS App Development provisioning profiles matching &apos;com.example.helloWorld&apos;. Automatic signing is</div><div class="line">    disabled and unable to generate a profile. To enable automatic signing, pass</div><div class="line">    -allowProvisioningUpdates to xcodebuild.</div><div class="line">    Code Signing Error: Code signing is required for product type &apos;Application&apos; in SDK &apos;iOS 12.1&apos;</div><div class="line">    Code Signing Error: Code signing is required for product type &apos;Application&apos; in SDK &apos;iOS 12.1&apos;</div><div class="line">    Code Signing Error: Code signing is required for product type &apos;Application&apos; in SDK &apos;iOS 12.1&apos;</div><div class="line"></div><div class="line">Could not build the precompiled application for the device.</div><div class="line"></div><div class="line">It appears that your application still contains the default signing identifier.</div><div class="line">Try replacing &apos;com.example&apos; with your signing id in Xcode:</div><div class="line">  open ios/Runner.xcworkspace</div><div class="line"></div><div class="line">Error launching application on xyz的iPhone.</div></pre></td></tr></table></figure>
+<p>在 XCode中编译，提示如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Failed to create provisioning profile. The app ID &quot;com.example.helloWorld&quot; cannot be registered to your development team. Change your bundle identifier to a unique string to try again.</div><div class="line"></div><div class="line">No profiles for &apos;com.example.helloWorld&apos; were found:  Xcode couldn&apos;t find any iOS App Development provisioning profiles matching &apos;com.example.helloWorld&apos;.</div><div class="line"></div><div class="line">Code signing is required for product type &apos;Application&apos; in SDK &apos;iOS 12.1&apos;</div><div class="line">Code signing is required for product type &apos;Application&apos; in SDK &apos;iOS 12.1&apos;</div><div class="line">Code signing is required for product type &apos;Application&apos; in SDK &apos;iOS 12.1&apos;</div></pre></td></tr></table></figure>
+<p>通过一番查找，在 Stack Overflow 上找到了一个解决方法：</p>
+<p><strong>将 <code>Bundle Identifier</code> 的值改变一下，比如在结尾随机加上几个数字。</strong></p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190224171103.png?imageslim" alt=""></p>
+<ul>
+<li><a href="https://stackoverflow.com/a/43687946/6246673" target="_blank" rel="external">Failed to create provisioning profile</a></li>
+</ul>
+<p>再次在 <code>VS Code</code> 中运行：</p>
+<p>期间需要输入密码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">➜ flutter run </div><div class="line">Launching lib/main.dart on xyz的iPhone in debug mode...</div><div class="line">Automatically signing iOS for device deployment using specified development team in Xcode project:</div><div class="line">9Y41Q9PF28</div><div class="line">Starting Xcode build...                                          </div><div class="line"> ├─Assembling Flutter resources...                    1.3s</div><div class="line"> </div><div class="line"> └─Compiling, linking and signing...                  3.4s</div><div class="line"> </div><div class="line">Xcode build done.                                            6.2s</div><div class="line">Installing and launching...                                  4.6s</div><div class="line">⢿2019-02-24 17:17:33.270 ios-deploy[15328:80609] [ !! ] Unable to locate DeviceSupport directory with suffix &apos;Symbols&apos;. This probably means you don&apos;t have Xcode installed, you will need to launch the app manually and logging output will not be shown!</div><div class="line"> 6.8s</div><div class="line">Could not install build/ios/iphoneos/Runner.app on f1b5b10369882093413772c363995b5cda163c34.</div><div class="line">Try launching Xcode and selecting &quot;Product &gt; Run&quot; to fix the problem:</div><div class="line">  open ios/Runner.xcworkspace</div><div class="line"></div><div class="line">Error launching application on xyz的iPhone.</div></pre></td></tr></table></figure>
+<h5 id="Device-is-locked"><a href="#Device-is-locked" class="headerlink" title="Device is locked"></a>Device is locked</h5><p>使用 XCode编译，提示如下错误：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190224172722.png?imageslim" alt=""></p>
+<p>这个问题是需要在手机端开启允许调试。</p>
+<p>依次点击 <code>通用</code> – <code>设备管理</code> – <code>开发者应用</code> – 点击开发者账号 – 点击 <code>信任应用</code> </p>
+<p>再次在 VS Code 中运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">➜ flutter run </div><div class="line">Launching lib/main.dart on xyz的iPhone in debug mode...</div><div class="line">Automatically signing iOS for device deployment using specified development team in Xcode project:</div><div class="line">9Y41Q9PF28</div><div class="line">Starting Xcode build...                                          </div><div class="line"> ├─Assembling Flutter resources...                    1.4s</div><div class="line"> </div><div class="line"> └─Compiling, linking and signing...                  4.6s</div><div class="line"> </div><div class="line">Xcode build done.                                            7.7s</div><div class="line">Installing and launching...                                  6.1s</div><div class="line">12.0s</div><div class="line">Syncing files to device xyz的iPhone...                        1.7s</div><div class="line"></div><div class="line">🔥  To hot reload changes while running, press &quot;r&quot;. To hot restart (and rebuild state), press &quot;R&quot;.</div><div class="line">An Observatory debugger and profiler on xyz的iPhone is available at: http://127.0.0.1:1024/</div><div class="line">For a more detailed help message, press &quot;h&quot;. To detach, press &quot;d&quot;; to quit, press &quot;q&quot;.</div></pre></td></tr></table></figure>
+<p>这次能够正常运行了，也支持热加载调试。</p>
+<hr>
+<h4 id="Flutter版本更新"><a href="#Flutter版本更新" class="headerlink" title="Flutter版本更新"></a>Flutter版本更新</h4><p>对于Flutter的版本更新，看最近的形势迭代频率越来越快，而更新操作也很简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">➜ flutter doctor</div><div class="line">  ╔════════════════════════════════════════════════════════════════════════════╗</div><div class="line">  ║ A new version of Flutter is available!                                     ║</div><div class="line">  ║                                                                            ║</div><div class="line">  ║ To update to the latest version, run &quot;flutter upgrade&quot;.                    ║</div><div class="line">  ╚════════════════════════════════════════════════════════════════════════════╝</div><div class="line"></div><div class="line"></div><div class="line">Doctor summary (to see all details, run flutter doctor -v):</div><div class="line">[✓] Flutter (Channel stable, v1.0.0, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)</div><div class="line">[✓] Android toolchain - develop for Android devices (Android SDK 28.0.3)</div><div class="line">[✓] iOS toolchain - develop for iOS devices (Xcode 10.1)</div><div class="line">[✓] Android Studio (version 3.3)</div><div class="line">[✓] VS Code (version 1.31.1)</div><div class="line">[!] Connected device</div><div class="line">    ! No devices available</div><div class="line"></div><div class="line">! Doctor found issues in 1 category.</div></pre></td></tr></table></figure>
+<p>直接按照官方给出的提示执行 <code>flutter upgrade</code> 即可。</p>
+<hr>
+<p>至此，Android和iOS的开发环境配置基本ok了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <div>如有疑问或需要技术讨论，请发邮件到 service@itfanr.cc</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>鼓励</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Leafney 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2019/03/08/flutter-devemopment-environment-configuration/" title="兵马未动，粮草先行 -- Flutter开发环境配置">https://www.itfanr.cc/2019/03/08/flutter-devemopment-environment-configuration/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/08/flutter-get-start/" rel="next" title="打开新世界的大门 -- Flutter介绍">
+                <i class="fa fa-chevron-left"></i> 打开新世界的大门 -- Flutter介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Leafney" />
+            
+              <p class="site-author-name" itemprop="name">Leafney</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">94</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>DockerHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:service@itfanr.cc" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于系统"><span class="nav-number">1.</span> <span class="nav-text">关于系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置Flutter-SDK"><span class="nav-number">2.</span> <span class="nav-text">配置Flutter SDK</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#下载"><span class="nav-number">2.1.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置"><span class="nav-number">2.2.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检查flutter环境"><span class="nav-number">3.</span> <span class="nav-text">检查flutter环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置VS-Code"><span class="nav-number">4.</span> <span class="nav-text">配置VS Code</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装Flutter插件"><span class="nav-number">4.1.</span> <span class="nav-text">安装Flutter插件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通过Flutter-Doctor验证您的设置"><span class="nav-number">4.2.</span> <span class="nav-text">通过Flutter Doctor验证您的设置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Android环境配置"><span class="nav-number">5.</span> <span class="nav-text">Android环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-Android-Studio-及配置"><span class="nav-number">5.1.</span> <span class="nav-text">安装 Android Studio 及配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解决-Android-licenses-问题"><span class="nav-number">5.2.</span> <span class="nav-text">解决 Android licenses 问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装Flutter插件-1"><span class="nav-number">5.3.</span> <span class="nav-text">安装Flutter插件</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连接Android真机运行"><span class="nav-number">6.</span> <span class="nav-text">连接Android真机运行</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#跑起来"><span class="nav-number">6.1.</span> <span class="nav-text">跑起来</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置-ANDROID-HOME-环境变量"><span class="nav-number">6.2.</span> <span class="nav-text">配置 ANDROID_HOME 环境变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置Android模拟器"><span class="nav-number">6.3.</span> <span class="nav-text">配置Android模拟器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ADB-server-didn’t-ACK"><span class="nav-number">6.4.</span> <span class="nav-text">ADB server didn’t ACK</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Android-license-status-unknown"><span class="nav-number">6.5.</span> <span class="nav-text">Android license status unknown</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#某些安卓手机需要解锁"><span class="nav-number">6.6.</span> <span class="nav-text">某些安卓手机需要解锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#最终运行"><span class="nav-number">6.7.</span> <span class="nav-text">最终运行</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IOS环境配置"><span class="nav-number">7.</span> <span class="nav-text">IOS环境配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连接IPhone真机运行"><span class="nav-number">8.</span> <span class="nav-text">连接IPhone真机运行</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#No-valid-code-signing-certificates-were-found"><span class="nav-number">8.1.</span> <span class="nav-text">No valid code signing certificates were found</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#No-profiles-for-xxx-were-found"><span class="nav-number">8.2.</span> <span class="nav-text">No profiles for xxx were found</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Device-is-locked"><span class="nav-number">8.3.</span> <span class="nav-text">Device is locked</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Flutter版本更新"><span class="nav-number">9.</span> <span class="nav-text">Flutter版本更新</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数 <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问量 <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: 'itfanr_blog_20190308042945',
+            owner: 'Leafney',
+            repo: 'Leafney.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '70a085c82c8d67b07e5482058272fcab3e969b83',
+            
+                client_id: 'f28d68fd5271fd52826d'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+</body>
+</html>

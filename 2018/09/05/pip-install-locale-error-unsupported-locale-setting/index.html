@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="pip install locale.Error unsupported locale setting">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-05T06:21:17.000Z">
+<meta property="og:updated_time" content="2019-03-22T06:21:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解决pip install时unsupported locale setting错误">
 <meta name="twitter:description" content="pip install locale.Error unsupported locale setting">
@@ -349,8 +349,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-09-05T14:21:17+08:00">
-                2018-09-05
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-22T14:21:58+08:00">
+                2019-03-22
               </time>
             
           </span>
@@ -394,7 +394,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  420
+                  848
                 </span>
               
 
@@ -432,9 +432,22 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜  export LC_ALL=C</div></pre></td></tr></table></figure>
 <p>再次尝试安装：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">➜  sudo pip install -U docker-compose</div><div class="line">The directory &apos;/home/ubuntu/.cache/pip/http&apos; or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo&apos;s -H flag.</div><div class="line">The directory &apos;/home/ubuntu/.cache/pip&apos; or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo&apos;s -H flag.</div><div class="line">Collecting docker-compose</div><div class="line">  Downloading https://files.pythonhosted.org/packages/67/03/b833b571595e05c933d3af3685be3b27b1166c415d005b3eadaa5be80d25/docker_compose-1.22.0-py2.py3-none-any.whl (126kB)</div><div class="line">    100% |################################| 133kB 143kB/s</div><div class="line">Collecting websocket-client&lt;1.0,&gt;=0.32.0 (from docker-compose)</div><div class="line">  Downloading https://files.pythonhosted.org/packages/09/12/d21872b618befc489cabde794c7af281d12fa2e194e279132ef1f04a3b07/websocket_client-0.52.0-py2.py3-none-any.whl (198kB)</div><div class="line">    100% |################################| 204kB 34kB/s</div><div class="line"></div><div class="line">...</div><div class="line">...</div><div class="line">Successfully installed PyYAML-3.11 backports.ssl-match-hostname-3.5.0.1 cached-property-1.4.3 certifi-2018.8.24 chardet-2.3.0 docker-3.5.0 docker-compose-1.22.0 docker-pycreds-0.3.0 dockerpty-0.4.1 docopt-0.6.2 enum34-1.1.2 functools32-3.2.3.post2 idna-2.0 ipaddress-1.0.16 jsonschema-2.6.0 requests-2.9.1 six-1.10.0 texttable-0.9.1 urllib3-1.13.1 websocket-client-0.52.0</div><div class="line">You are using pip version 8.1.1, however version 18.0 is available.</div><div class="line">You should consider upgrading via the &apos;pip install --upgrade pip&apos; command.</div></pre></td></tr></table></figure>
+<hr>
+<p><strong>关于<code>LC_ALL=C</code></strong></p>
+<p><code>LC_ALL=C</code> 是为了去除所有本地化的设置，让命令能正确执行。</p>
+<p>在Linux中通过 <code>locale</code> 来设置程序运行的不同语言环境，<code>locale</code> 由ANSI C提供支持。<code>locale</code> 的命名规则为 <code>&lt;语言&gt;_&lt;地区&gt;.&lt;字符集编码&gt;</code> ，如<code>zh_CN.UTF-8</code>，zh代表中文，CN代表大陆地区，UTF-8表示字符集。</p>
+<p>在shell控制台中输入 <code>locale</code> 就可以查看本地默认设置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">➜ locale</div><div class="line">LANG=&quot;zh_CN.UTF-8&quot;</div><div class="line">LC_COLLATE=&quot;zh_CN.UTF-8&quot;</div><div class="line">LC_CTYPE=&quot;zh_CN.UTF-8&quot;</div><div class="line">LC_MESSAGES=&quot;zh_CN.UTF-8&quot;</div><div class="line">LC_MONETARY=&quot;zh_CN.UTF-8&quot;</div><div class="line">LC_NUMERIC=&quot;zh_CN.UTF-8&quot;</div><div class="line">LC_TIME=&quot;zh_CN.UTF-8&quot;</div><div class="line">LC_ALL=</div></pre></td></tr></table></figure>
+<p>“C”是系统默认的<code>locale</code> ，”POSIX”是”C”的别名。所以当我们新安装完一个系统时，默认的 <code>locale</code> 就是 <code>C</code> 或 <code>POSIX</code> 。</p>
+<p><code>LANG</code> <code>LC_*</code> 的默认值，是最低级别的设置。可以理解成 <code>LANG</code>是一个缺省值，所有没有显式设置值的 <code>LC_*</code> 变量都会取LANG的值。类似于 <code>LC_ALL</code> 。</p>
+<p><code>LC_ALL</code> 它是一个宏，如果该值设置了，则该值会覆盖所有 <code>LC_*</code> 的设置值。注意，LANG的值不受该宏影响。</p>
+<p><strong>注意:</strong> <code>LC_ALL</code> 并不是一个环境变量，而是一个glibc中定义的一个宏。<code>LC_ALL=C</code> 这样的语法实际上是调用了 <code>setlocale</code> 把所有的 <code>LC_*</code> 的变量设置了一遍，所以在终端中直接 <code>echo $LANG</code> 等可以输出对应变量的值，但是 <code>echo $LC_ALL</code> 什么都没有，因为它压根就不是一个变量。</p>
+<p>所以设置 <code>LC_ALL=C</code> ，就是解决各种与区域设置有关的warning。从程序运行角度看，就是保持程序输出的统一格式，这样有些程序才能正确执行下去。</p>
+<hr>
 <p>相关参考：</p>
 <ul>
 <li><a href="http://linfuyan.com/locale_error_unsupported_locale_setting/" target="_blank" rel="external">解决pip install时unsupported locale setting错误 | 阿阿燃</a></li>
+<li><a href="http://www.maixj.net/ict/lc-all-20255" target="_blank" rel="external">LC_ALL=C表示什么？ | 云上小悟</a></li>
 </ul>
 
       
@@ -605,7 +618,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-count">96</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

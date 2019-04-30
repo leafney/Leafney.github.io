@@ -96,7 +96,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/171112/bEf4IBJgeA.jpg?imageslim">
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/171112/6jeAcDFc4K.jpg?imageslim">
-<meta property="og:updated_time" content="2019-04-26T15:12:59.482Z">
+<meta property="og:updated_time" content="2019-04-30T03:01:47.565Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="通过路由器找回忘记的宽带密码">
 <meta name="twitter:description" content="宽带账号的密码忘记了怎么办? 下面说说通过路由器找回密码的方法">
@@ -352,8 +352,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-04-26T23:12:59+08:00">
-                2019-04-26
+              <time title="更新于" itemprop="dateModified" datetime="2019-04-30T11:01:47+08:00">
+                2019-04-30
               </time>
             
           </span>
@@ -361,16 +361,6 @@
           
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/13/retrieve-forgotten-broadband-passwords-through-routers/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/11/13/retrieve-forgotten-broadband-passwords-through-routers/" itemprop="commentsCount"></span>
-                </a>
-              </span>
             
           
 
@@ -561,9 +551,7 @@
 
   
     <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
+        <div id="gitalk-container"></div>
     </div>
 
   
@@ -903,44 +891,31 @@
 
 
 
-<!-- LOCAL: You can save these files to your site and update links -->
-    
-        
-        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
-        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
-    
-<!-- END LOCAL -->
-
-    
-
-    
-      <script type="text/javascript">
-      function renderGitment(){
-        var gitment = new Gitmint({
-            id: 'itfanr_blog_20171113095046',
-            owner: 'Leafney',
-            repo: 'Leafney.github.io',
-            
-            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-            
-            oauth: {
-            
-            
-                client_secret: '70a085c82c8d67b07e5482058272fcab3e969b83',
-            
-                client_id: 'f28d68fd5271fd52826d'
-            }});
-        gitment.render('gitment-container');
-      }
-
-      
-      renderGitment();
-      
-      </script>
-    
 
 
 
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'f28d68fd5271fd52826d',
+          clientSecret: '70a085c82c8d67b07e5482058272fcab3e969b83',
+          repo: 'Leafney.github.io',
+          owner: 'leafney',
+          admin: ['leafney'],
+          id:'itfanr_blog || gitalk' + '_20171113095046',
+          labels: 'gitalk'.split(',').filter(l => l),
+          perPage: 10,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+
+        gitalk.render('gitalk-container')           
+       </script>
 
 
 

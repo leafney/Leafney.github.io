@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="Ubuntu-Gogs 首次运行安装程序配置及多数据库配置方法整理。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-26T15:12:59.478Z">
+<meta property="og:updated_time" content="2019-04-30T03:01:47.561Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker-Ubuntu-Gogs数据库及初始化配置">
 <meta name="twitter:description" content="Ubuntu-Gogs 首次运行安装程序配置及多数据库配置方法整理。">
@@ -349,8 +349,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-04-26T23:12:59+08:00">
-                2019-04-26
+              <time title="更新于" itemprop="dateModified" datetime="2019-04-30T11:01:47+08:00">
+                2019-04-30
               </time>
             
           </span>
@@ -380,16 +380,6 @@
           
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/07/docker-ubuntu-gogs-initialization/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/09/07/docker-ubuntu-gogs-initialization/" itemprop="commentsCount"></span>
-                </a>
-              </span>
             
           
 
@@ -608,7 +598,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#101;&#109;&#97;&#105;&#108;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#109;">&#101;&#109;&#97;&#105;&#108;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#58;&#x65;&#109;&#97;&#105;&#x6c;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#x65;&#109;&#97;&#105;&#x6c;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>
@@ -773,9 +763,7 @@
 
   
     <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
+        <div id="gitalk-container"></div>
     </div>
 
   
@@ -1115,44 +1103,31 @@
 
 
 
-<!-- LOCAL: You can save these files to your site and update links -->
-    
-        
-        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
-        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
-    
-<!-- END LOCAL -->
-
-    
-
-    
-      <script type="text/javascript">
-      function renderGitment(){
-        var gitment = new Gitmint({
-            id: 'itfanr_blog_20170907112754',
-            owner: 'Leafney',
-            repo: 'Leafney.github.io',
-            
-            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-            
-            oauth: {
-            
-            
-                client_secret: '70a085c82c8d67b07e5482058272fcab3e969b83',
-            
-                client_id: 'f28d68fd5271fd52826d'
-            }});
-        gitment.render('gitment-container');
-      }
-
-      
-      renderGitment();
-      
-      </script>
-    
 
 
 
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'f28d68fd5271fd52826d',
+          clientSecret: '70a085c82c8d67b07e5482058272fcab3e969b83',
+          repo: 'Leafney.github.io',
+          owner: 'leafney',
+          admin: ['leafney'],
+          id:'itfanr_blog || gitalk' + '_20170907112754',
+          labels: 'gitalk'.split(',').filter(l => l),
+          perPage: 10,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+
+        gitalk.render('gitalk-container')           
+       </script>
 
 
 

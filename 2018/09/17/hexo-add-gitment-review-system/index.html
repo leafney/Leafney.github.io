@@ -100,7 +100,7 @@
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193631.png?imageslim">
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193733.png?imageslim">
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180917193816.png?imageslim">
-<meta property="og:updated_time" content="2019-04-30T06:12:26.000Z">
+<meta property="og:updated_time" content="2019-05-05T06:27:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo博客添加Gitment评论系统">
 <meta name="twitter:description" content="为Hexo博客添加Gitment评论系统，并实现钉钉机器人实时提醒">
@@ -356,8 +356,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-04-30T14:12:26+08:00">
-                2019-04-30
+              <time title="更新于" itemprop="dateModified" datetime="2019-05-05T14:27:49+08:00">
+                2019-05-05
               </time>
             
           </span>
@@ -413,7 +413,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,646
+                  1,767
                 </span>
               
 
@@ -482,7 +482,9 @@
 <h4 id="有新的Issues时发送钉钉提醒"><a href="#有新的Issues时发送钉钉提醒" class="headerlink" title="有新的Issues时发送钉钉提醒"></a>有新的Issues时发送钉钉提醒</h4><p>上面我们添加了评论功能，但是在使用中会出现不能及时响应的问题。当有人对文章做了评论或提出什么疑问后，我们并不能及时的知道或者回复，这样给人的感觉是不好的。虽然添加了评论功能，但反而不如使用邮件的方式高效了。</p>
 <p>经过一番思考后，我发现平时工作中用到的钉钉中是可以添加GitHub的钉钉机器人的。而手机端的钉钉也能做到有新提醒后立即响应。所以，可以设置当GitHub的Issues有变动时，通过钉钉机器人提醒我们查看新的评论或作出回复。</p>
 <h5 id="生成Github机器人WebHook地址"><a href="#生成Github机器人WebHook地址" class="headerlink" title="生成Github机器人WebHook地址"></a>生成Github机器人WebHook地址</h5><p>钉钉机器人只有在群中才能添加，个人是无法添加的。但是一个人又无法创建群。那么该如何添加一个钉钉群机器人呢？</p>
-<p>我采用的方法是 “偷梁换柱” 的方式。首先呢，在手机或PC端选择 “发起群聊”，随便拉一个人进来，不需要发任何信息。然后在 <code>群设置</code> 中的 <code>群成员</code> 选项中移除那个人就可以了。就这么简单。这样，这个群里就只有你一个人了，添加群机器人后也不会打扰到别人。</p>
+<p><strong>Update:2019-05-05</strong></p>
+<p>我采用的方法是 “偷梁换柱” 的方式。首先呢，在手机或PC端选择 “发起群聊”，至少选择二个人进来，此时注意不要在群里发任何信息。然后在 <code>群设置</code> 中的 <code>群成员</code> 选项中移除其他人就可以了，整个过程其他人不会接收到任何消息（有点类似于微信清理联系人的操作）。就这么简单。这样，这个群里就只有你一个人了，添加群机器人后也不会打扰到别人。</p>
+<p>之前钉钉中组建群组至少必须是二个人，最近测试发现组建群组<strong>至少必须是三个人</strong>了。也就是必须选择另外两个好友才能组成一个群组。如果只选择一个好友，那进入的就是 “发消息” 的界面了。</p>
 <p>然后在 <code>群</code> 设置中选择 <code>群机器人</code> 选项，选择 <code>GitHub机器人</code> ，按照设置流程生成GitHub机器人，即可获取到相应群的WebHook地址，其格式如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://oapi.dingtalk.com/robot/send?access_token=xxxxxxxx</div></pre></td></tr></table></figure>
 <p><img src="https://qiniu.itfanr.cc/blog/20180917193733.png?imageslim" alt=""></p>

@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="配置阿里云Docker镜像加速器和DaoCload镜像加速器 最新设置方法">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-29T04:16:39.000Z">
+<meta property="og:updated_time" content="2019-06-26T04:35:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="配置Docker镜像加速器2019">
 <meta name="twitter:description" content="配置阿里云Docker镜像加速器和DaoCload镜像加速器 最新设置方法">
@@ -349,8 +349,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-29T12:16:39+08:00">
-                2019-05-29
+              <time title="更新于" itemprop="dateModified" datetime="2019-06-26T12:35:13+08:00">
+                2019-06-26
               </time>
             
           </span>
@@ -384,7 +384,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  561
+                  573
                 </span>
               
 
@@ -428,6 +428,8 @@
 <h4 id="DaoCload镜像加速器"><a href="#DaoCload镜像加速器" class="headerlink" title="DaoCload镜像加速器"></a>DaoCload镜像加速器</h4><p>访问DaoCloud官方镜像页面 <a href="https://www.daocloud.io/mirror" target="_blank" rel="external">DaoCloud – 企业级云计算领域的创新领导者</a> 。</p>
 <p><strong>DaoCloud的镜像加速地址，不需要注册就可以使用</strong></p>
 <h5 id="配置镜像加速器-1"><a href="#配置镜像加速器-1" class="headerlink" title="配置镜像加速器"></a>配置镜像加速器</h5><h6 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://f1361db2.m.daocloud.io</div></pre></td></tr></table></figure>
+<p>然后重启docker服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl restart docker</div></pre></td></tr></table></figure>
 <h6 id="macOS"><a href="#macOS" class="headerlink" title="macOS"></a>macOS</h6><p>Docker For Mac</p>
 <p>右键点击桌面顶栏的 docker 图标，选择 <code>Preferences</code> ，在 Daemon 标签（Docker 17.03 之前版本为 Advanced 标签）下的 Registry mirrors 列表中加入下面的镜像地址:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://f1361db2.m.daocloud.io</div></pre></td></tr></table></figure></p>
 <p>点击 <code>Apply &amp; Restart</code> 按钮使设置生效。</p>
@@ -612,7 +614,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-count">108</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

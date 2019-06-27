@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="使用kubeadm快速安装Kubernetes集群 v1.14.1">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-17T06:49:46.000Z">
+<meta property="og:updated_time" content="2019-06-27T05:51:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes入门 -- 一使用kubeadm部署Kubernetes集群v1.14.1">
 <meta name="twitter:description" content="使用kubeadm快速安装Kubernetes集群 v1.14.1">
@@ -349,8 +349,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-05-17T14:49:46+08:00">
-                2019-05-17
+              <time title="更新于" itemprop="dateModified" datetime="2019-06-27T13:51:13+08:00">
+                2019-06-27
               </time>
             
           </span>
@@ -444,7 +444,7 @@
 </ul>
 <hr>
 <h4 id="系统环境配置"><a href="#系统环境配置" class="headerlink" title="系统环境配置"></a>系统环境配置</h4><p><strong>注意：在 Master 和 Node 节点均操作</strong></p>
-<h5 id="切换到-root-权限"><a href="#切换到-root-权限" class="headerlink" title="切换到 root 权限"></a>切换到 root 权限</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo - root</div></pre></td></tr></table></figure>
+<h5 id="切换到-root-权限"><a href="#切换到-root-权限" class="headerlink" title="切换到 root 权限"></a>切换到 root 权限</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ su - root</div></pre></td></tr></table></figure>
 <h5 id="更改hostname"><a href="#更改hostname" class="headerlink" title="更改hostname"></a>更改hostname</h5><h6 id="master"><a href="#master" class="headerlink" title="master"></a>master</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># hostname</div><div class="line"># hostnamectl set-hostname master</div><div class="line"># hostname</div></pre></td></tr></table></figure>
 <h6 id="node1"><a href="#node1" class="headerlink" title="node1"></a>node1</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># hostname</div><div class="line"># hostnamectl set-hostname node1</div><div class="line"># hostname</div></pre></td></tr></table></figure>
 <h5 id="修改-hosts"><a href="#修改-hosts" class="headerlink" title="修改 hosts"></a>修改 hosts</h5><h6 id="master-1"><a href="#master-1" class="headerlink" title="master"></a>master</h6><p>编辑 <code>/etc/hosts</code> 文件，在底部新增下面两行，然后重启系统：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># vim /etc/hosts</div><div class="line"></div><div class="line">192.168.5.28 master</div><div class="line">192.168.5.29 node1</div><div class="line"></div><div class="line">reboot</div></pre></td></tr></table></figure></p>
@@ -730,7 +730,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-count">108</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

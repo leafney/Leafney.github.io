@@ -94,12 +94,13 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="Drone CI/CD On Kubernetes">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190710111150.png?imageslim">
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190710211502.png?imageslim">
-<meta property="og:updated_time" content="2019-07-10T17:12:47.000Z">
+<meta property="og:updated_time" content="2019-07-11T01:37:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Kubernetes上执行Drone CI&#x2F;CD">
 <meta name="twitter:description" content="Drone CI/CD On Kubernetes">
-<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/20190710211502.png?imageslim">
+<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/20190710111150.png?imageslim">
 
 
 
@@ -351,7 +352,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-07-11T01:12:47+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-07-11T09:37:49+08:00">
                 2019-07-11
               </time>
             
@@ -408,7 +409,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  941
+                  956
                 </span>
               
 
@@ -449,7 +450,9 @@
 <li>先部署Gitea服务，其中的 <code>nodePort</code> 不需要手动指定，使用随机端口号即可；</li>
 <li>部署Drone服务时，需要手动指定 <code>nodePort</code> 一项，因为在设置环境变量 <code>DRONE_SERVER_HOST</code> 时需要该端口；</li>
 </ul>
-<h5 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h5><p>创建一个简单的 <code>.drone.yml</code> 文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">kind: pipeline</div><div class="line">name: default</div><div class="line"></div><div class="line">clone:</div><div class="line">  disable: true</div><div class="line"></div><div class="line">steps:</div><div class="line">- name: test_drone</div><div class="line">  image: alpine:3.9</div><div class="line">  commands:</div><div class="line">  - echo &quot;show hello world by drone&quot;</div><div class="line">  - echo $(pwd)</div><div class="line">  - sleep 10</div></pre></td></tr></table></figure></p>
+<h5 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h5><p>gitea安装配置页面，以下几项需要注意：</p>
+<p><img src="https://qiniu.itfanr.cc/blog/20190710111150.png?imageslim" alt=""></p>
+<p>创建一个简单的 <code>.drone.yml</code> 文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">kind: pipeline</div><div class="line">name: default</div><div class="line"></div><div class="line">clone:</div><div class="line">  disable: true</div><div class="line"></div><div class="line">steps:</div><div class="line">- name: test_drone</div><div class="line">  image: alpine:3.9</div><div class="line">  commands:</div><div class="line">  - echo &quot;show hello world by drone&quot;</div><div class="line">  - echo $(pwd)</div><div class="line">  - sleep 10</div></pre></td></tr></table></figure></p>
 <p>当执行git提交后，Drone容器中的部分日志记录如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;&quot;commit&quot;:&quot;6ef0d3355007823ab03c6c1a8ca7ba41bb7c304e&quot;,&quot;event&quot;:&quot;push&quot;,&quot;level&quot;:&quot;debug&quot;,&quot;msg&quot;:&quot;webhook parsed&quot;,&quot;name&quot;:&quot;hello&quot;,&quot;namespace&quot;:&quot;abc&quot;,&quot;time&quot;:&quot;2019-07-10T13:08:24Z&quot;&#125;</div><div class="line">&#123;&quot;commit&quot;:&quot;6ef0d3355007823ab03c6c1a8ca7ba41bb7c304e&quot;,&quot;event&quot;:&quot;push&quot;,&quot;level&quot;:&quot;debug&quot;,&quot;msg&quot;:&quot;trigger: received&quot;,&quot;ref&quot;:&quot;refs/heads/master&quot;,&quot;repo&quot;:&quot;abc/hello&quot;,&quot;time&quot;:&quot;2019-07-10T13:08:24Z&quot;&#125;</div><div class="line">&#123;&quot;build-id&quot;:2,&quot;level&quot;:&quot;debug&quot;,&quot;msg&quot;:&quot;kubernetes: creating job&quot;,&quot;repo-id&quot;:1,&quot;stage-id&quot;:2,&quot;stage-name&quot;:&quot;default&quot;,&quot;stage-number&quot;:1,&quot;time&quot;:&quot;2019-07-10T13:08:24Z&quot;&#125;</div><div class="line">&#123;&quot;build-id&quot;:2,&quot;level&quot;:&quot;debug&quot;,&quot;msg&quot;:&quot;kubernetes: successfully created job&quot;,&quot;repo-id&quot;:1,&quot;stage-id&quot;:2,&quot;stage-name&quot;:&quot;default&quot;,&quot;stage-number&quot;:1,&quot;time&quot;:&quot;2019-07-10T13:08:25Z&quot;&#125;</div><div class="line">&#123;&quot;fields.time&quot;:&quot;2019-07-10T13:08:25Z&quot;,&quot;latency&quot;:351766213,&quot;level&quot;:&quot;debug&quot;,&quot;method&quot;:&quot;POST&quot;,&quot;msg&quot;:&quot;&quot;,&quot;remote&quot;:&quot;10.244.0.1:50176&quot;,&quot;request&quot;:&quot;/hook?secret=Gfz8OUgBscs2wySUiQZsTRdqDCqK6GBc&quot;,&quot;request-id&quot;:&quot;1Np3FAx2JZldpFOFBkNsnn2jgD1&quot;,&quot;time&quot;:&quot;2019-07-10T13:08:25Z&quot;&#125;</div></pre></td></tr></table></figure>
 <p>可以看到其中关键的两步：</p>

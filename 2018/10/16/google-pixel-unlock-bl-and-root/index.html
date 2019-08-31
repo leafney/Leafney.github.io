@@ -122,7 +122,7 @@
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181017101716.png?imageslim">
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181017104902.png?imageslim">
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181017105009.png?imageslim">
-<meta property="og:updated_time" content="2018-10-17T03:07:39.000Z">
+<meta property="og:updated_time" content="2019-08-27T06:39:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Google Pixel解锁BL、刷入Twrp及Root折腾小记">
 <meta name="twitter:description" content="Google Pixel解锁BL、刷入Twrp及Root 不做过多解释，懂的人自然懂">
@@ -378,8 +378,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-10-17T11:07:39+08:00">
-                2018-10-17
+              <time title="更新于" itemprop="dateModified" datetime="2019-08-27T14:39:56+08:00">
+                2019-08-27
               </time>
             
           </span>
@@ -413,7 +413,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,656
+                  4,137
                 </span>
               
 
@@ -644,6 +644,33 @@
 <li><a href="https://blog.csdn.net/ekeuy/article/details/43112645" target="_blank" rel="external">Android ADB命令大全(通过ADB命令查看wifi密码、MAC地址、设备信息、操作文件、查看文件、日志信息、卸载、启动和安装APK等) - mingy的专栏 - CSDN博客</a></li>
 </ul>
 <hr>
+<p><strong>2019年08月27日 Update</strong></p>
+<h4 id="Magisk更新"><a href="#Magisk更新" class="headerlink" title="Magisk更新"></a>Magisk更新</h4><p>将 Magisk 从 <code>v17.2</code> 版本升级到 <code>v19.3</code> 版本。</p>
+<p>可以从 <a href="https://github.com/topjohnwu/Magisk/releases" target="_blank" rel="external">Magisk</a> 下载最新版本的Magisk的zip压缩包。</p>
+<h5 id="第一步-adb连接"><a href="#第一步-adb连接" class="headerlink" title="第一步 adb连接"></a>第一步 adb连接</h5><p>要确保手机设备通过adb正确连接。如果提示为 <code>offline</code> 则需要重新设置手机的连接。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">➜ adb devices</div><div class="line">List of devices attached</div><div class="line">FA6XXXXXXX53	offline</div></pre></td></tr></table></figure>
+<p>直到出现 <code>device</code> 时，说明手机正确连接了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">➜ adb devices</div><div class="line">List of devices attached</div><div class="line">FA6XXXXXXX53	device</div></pre></td></tr></table></figure></p>
+<p>一般出现 <code>offline</code> 的情况可能是usb数据线的问题，或者连接设置的问题。</p>
+<p>这里我的解决方法是：</p>
+<ol>
+<li>断开usb设备连接</li>
+<li>执行命令 <code>adb kill-server</code> 来停止adb服务</li>
+<li>执行命令 <code>adb start-server</code> 来重新运行adb服务</li>
+<li>重新通过usb连接手机设备</li>
+<li>打开 <code>开发者选项</code> ，重新勾选 <code>usb调试</code>，在弹出的窗口选择 <code>确定</code></li>
+<li>再次执行命令 <code>adb devices</code>，发现显示 <code>device</code> 了</li>
+</ol>
+<h5 id="第二步-拷贝Magisk文件"><a href="#第二步-拷贝Magisk文件" class="headerlink" title="第二步 拷贝Magisk文件"></a>第二步 拷贝Magisk文件</h5><p>通过 <code>adb push</code> 命令将新版的Magisk文件拷贝到手机设备中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜ adb push Magisk-v19.3.zip /sdcard/tmp/</div><div class="line">Magisk-v19.3.zip: 1 file pushed. 21.0 MB/s (5348187 bytes in 0.243s)</div></pre></td></tr></table></figure>
+<p>这里我之前使用的是 <code>Magisk-v17.2.zip</code> 版本，现在要更新到 <code>Magisk-v19.3.zip</code> 版本。</p>
+<h5 id="第三步-进入Bootloader"><a href="#第三步-进入Bootloader" class="headerlink" title="第三步 进入Bootloader"></a>第三步 进入Bootloader</h5><p>执行 <code>adb reboot bootloader</code> 进入 <code>Bootloader</code> 界面。</p>
+<h5 id="第四步-进入临时Twrp"><a href="#第四步-进入临时Twrp" class="headerlink" title="第四步 进入临时Twrp"></a>第四步 进入临时Twrp</h5><p>通过 <code>twrp*.img</code> 文件，启动进入临时Twrp：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">➜ fastboot boot twrp-3.2.3-1-sailfish.img</div><div class="line">ERROR: Couldn&apos;t create a device interface iterator: (e00002bd)</div><div class="line">downloading &apos;boot.img&apos;...</div><div class="line">OKAY [  0.712s]</div><div class="line">booting...</div><div class="line">OKAY [  0.893s]</div><div class="line">finished. total time: 1.605s</div></pre></td></tr></table></figure>
+<h5 id="第五步-安装Magisk"><a href="#第五步-安装Magisk" class="headerlink" title="第五步 安装Magisk"></a>第五步 安装Magisk</h5><p>进入 <code>Twrp</code> 页面后，滑动下面的 <code>Swipe to Allow Modifications</code> 滑条，进入Twrp操作页面。</p>
+<p>选择 <code>Install</code> – 找到目录 <code>/sdcard/tmp/</code> – 选择 <code>Magisk-v19.3.zip</code> 文件，滑动 <code>Swipe to confirm Flash</code> 来安装。</p>
+<p>安装完成后，点击下面的 <code>Reboot System</code> 按钮，进入下一步。</p>
+<p>之后，直接点击中间的 <code>Do Not Install</code> 等待手机重启进入系统即可。</p>
+<hr>
 
       
     </div>
@@ -820,7 +847,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-count">116</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -831,7 +858,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -842,7 +869,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -897,7 +924,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工具"><span class="nav-number">1.</span> <span class="nav-text">准备工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欧版判断"><span class="nav-number">2.</span> <span class="nav-text">欧版判断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解锁Bootloader"><span class="nav-number">3.</span> <span class="nav-text">解锁Bootloader</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开启USB调试和OEM解锁"><span class="nav-number">3.1.</span> <span class="nav-text">开启USB调试和OEM解锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进入-Bootloader模式"><span class="nav-number">3.2.</span> <span class="nav-text">进入 Bootloader模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解锁-Bootloader"><span class="nav-number">3.3.</span> <span class="nav-text">解锁 Bootloader</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#判断解锁成功"><span class="nav-number">3.4.</span> <span class="nav-text">判断解锁成功</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解锁Bootloader后的两个问题"><span class="nav-number">4.</span> <span class="nav-text">解锁Bootloader后的两个问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#恢复初始"><span class="nav-number">4.1.</span> <span class="nav-text">恢复初始</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#错误提示"><span class="nav-number">4.2.</span> <span class="nav-text">错误提示</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#刷入第三方Recovery-TWRP及Root"><span class="nav-number">5.</span> <span class="nav-text">刷入第三方Recovery:TWRP及Root</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#下载必要软件"><span class="nav-number">5.1.</span> <span class="nav-text">下载必要软件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#拷贝文件到手机"><span class="nav-number">5.2.</span> <span class="nav-text">拷贝文件到手机</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷临时Twrp"><span class="nav-number">5.3.</span> <span class="nav-text">刷临时Twrp</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#引导进入-Bootloader"><span class="nav-number">5.3.1.</span> <span class="nav-text">引导进入 Bootloader</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#刷入临时Twrp"><span class="nav-number">5.3.2.</span> <span class="nav-text">刷入临时Twrp</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷入永久Twrp"><span class="nav-number">5.4.</span> <span class="nav-text">刷入永久Twrp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷入Magisk"><span class="nav-number">5.5.</span> <span class="nav-text">刷入Magisk</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证是否成功Root"><span class="nav-number">6.</span> <span class="nav-text">验证是否成功Root</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化"><span class="nav-number">7.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#去掉wifi叉号标记"><span class="nav-number">7.1.</span> <span class="nav-text">去掉wifi叉号标记</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#疑难解答"><span class="nav-number">8.</span> <span class="nav-text">疑难解答</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#fastboot-oem-unlock-or-fastboot-flashing-unlock"><span class="nav-number">8.1.</span> <span class="nav-text">fastboot oem unlock or fastboot flashing unlock</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#OEM锁与bootloader锁的关系"><span class="nav-number">8.2.</span> <span class="nav-text">OEM锁与bootloader锁的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解锁bootloader的好处"><span class="nav-number">8.3.</span> <span class="nav-text">解锁bootloader的好处</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#adbpush文件时权限不够"><span class="nav-number">8.4.</span> <span class="nav-text">adbpush文件时权限不够</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关链接"><span class="nav-number">9.</span> <span class="nav-text">相关链接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#工具"><span class="nav-number">9.1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#教程"><span class="nav-number">9.2.</span> <span class="nav-text">教程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工具"><span class="nav-number">1.</span> <span class="nav-text">准备工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欧版判断"><span class="nav-number">2.</span> <span class="nav-text">欧版判断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解锁Bootloader"><span class="nav-number">3.</span> <span class="nav-text">解锁Bootloader</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开启USB调试和OEM解锁"><span class="nav-number">3.1.</span> <span class="nav-text">开启USB调试和OEM解锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进入-Bootloader模式"><span class="nav-number">3.2.</span> <span class="nav-text">进入 Bootloader模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解锁-Bootloader"><span class="nav-number">3.3.</span> <span class="nav-text">解锁 Bootloader</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#判断解锁成功"><span class="nav-number">3.4.</span> <span class="nav-text">判断解锁成功</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解锁Bootloader后的两个问题"><span class="nav-number">4.</span> <span class="nav-text">解锁Bootloader后的两个问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#恢复初始"><span class="nav-number">4.1.</span> <span class="nav-text">恢复初始</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#错误提示"><span class="nav-number">4.2.</span> <span class="nav-text">错误提示</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#刷入第三方Recovery-TWRP及Root"><span class="nav-number">5.</span> <span class="nav-text">刷入第三方Recovery:TWRP及Root</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#下载必要软件"><span class="nav-number">5.1.</span> <span class="nav-text">下载必要软件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#拷贝文件到手机"><span class="nav-number">5.2.</span> <span class="nav-text">拷贝文件到手机</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷临时Twrp"><span class="nav-number">5.3.</span> <span class="nav-text">刷临时Twrp</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#引导进入-Bootloader"><span class="nav-number">5.3.1.</span> <span class="nav-text">引导进入 Bootloader</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#刷入临时Twrp"><span class="nav-number">5.3.2.</span> <span class="nav-text">刷入临时Twrp</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷入永久Twrp"><span class="nav-number">5.4.</span> <span class="nav-text">刷入永久Twrp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷入Magisk"><span class="nav-number">5.5.</span> <span class="nav-text">刷入Magisk</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证是否成功Root"><span class="nav-number">6.</span> <span class="nav-text">验证是否成功Root</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化"><span class="nav-number">7.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#去掉wifi叉号标记"><span class="nav-number">7.1.</span> <span class="nav-text">去掉wifi叉号标记</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#疑难解答"><span class="nav-number">8.</span> <span class="nav-text">疑难解答</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#fastboot-oem-unlock-or-fastboot-flashing-unlock"><span class="nav-number">8.1.</span> <span class="nav-text">fastboot oem unlock or fastboot flashing unlock</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#OEM锁与bootloader锁的关系"><span class="nav-number">8.2.</span> <span class="nav-text">OEM锁与bootloader锁的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解锁bootloader的好处"><span class="nav-number">8.3.</span> <span class="nav-text">解锁bootloader的好处</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#adbpush文件时权限不够"><span class="nav-number">8.4.</span> <span class="nav-text">adbpush文件时权限不够</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关链接"><span class="nav-number">9.</span> <span class="nav-text">相关链接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#工具"><span class="nav-number">9.1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#教程"><span class="nav-number">9.2.</span> <span class="nav-text">教程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Magisk更新"><span class="nav-number">10.</span> <span class="nav-text">Magisk更新</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#第一步-adb连接"><span class="nav-number">10.1.</span> <span class="nav-text">第一步 adb连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第二步-拷贝Magisk文件"><span class="nav-number">10.2.</span> <span class="nav-text">第二步 拷贝Magisk文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第三步-进入Bootloader"><span class="nav-number">10.3.</span> <span class="nav-text">第三步 进入Bootloader</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第四步-进入临时Twrp"><span class="nav-number">10.4.</span> <span class="nav-text">第四步 进入临时Twrp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第五步-安装Magisk"><span class="nav-number">10.5.</span> <span class="nav-text">第五步 安装Magisk</span></a></li></ol></li></ol></div>
             
 
           </div>

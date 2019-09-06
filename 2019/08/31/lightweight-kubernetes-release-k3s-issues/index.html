@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="k3s 是一个轻量级 Kubernetes 发行版 吃灰多年的树莓派终于要再上战场了">
+<meta name="description" content="k3s 是一个轻量级 Kubernetes 发行版 吃灰多年的树莓派终于要再上战场了 安装配置过程中遇到的问题">
 <meta name="keywords" content="云原生,K3s">
 <meta property="og:type" content="article">
 <meta property="og:title" content="轻量级Kubernetes发行版k3s之配置问题汇总">
 <meta property="og:url" content="https://www.itfanr.cc/2019/08/31/lightweight-kubernetes-release-k3s-issues/index.html">
 <meta property="og:site_name" content="IT范儿">
-<meta property="og:description" content="k3s 是一个轻量级 Kubernetes 发行版 吃灰多年的树莓派终于要再上战场了">
+<meta property="og:description" content="k3s 是一个轻量级 Kubernetes 发行版 吃灰多年的树莓派终于要再上战场了 安装配置过程中遇到的问题">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-31T14:15:43.000Z">
+<meta property="og:updated_time" content="2019-09-06T02:33:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="轻量级Kubernetes发行版k3s之配置问题汇总">
-<meta name="twitter:description" content="k3s 是一个轻量级 Kubernetes 发行版 吃灰多年的树莓派终于要再上战场了">
+<meta name="twitter:description" content="k3s 是一个轻量级 Kubernetes 发行版 吃灰多年的树莓派终于要再上战场了 安装配置过程中遇到的问题">
 
 
 
@@ -325,6 +325,13 @@
         
 
         <div class="post-meta">
+        
+         
+            <i class="fa fa-thumb-tack"></i>
+            <font color="#F05050">[置顶]</font>
+            <span class="post-meta-divider">|</span>
+          
+
           <span class="post-time">
             
               <span class="post-meta-item-icon">
@@ -349,8 +356,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-08-31T22:15:43+08:00">
-                2019-08-31
+              <time title="更新于" itemprop="dateModified" datetime="2019-09-06T10:33:28+08:00">
+                2019-09-06
               </time>
             
           </span>
@@ -406,7 +413,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  4
+                  1,841
                 </span>
               
 
@@ -418,7 +425,7 @@
 
           
               <div class="post-description">
-                  k3s 是一个轻量级 Kubernetes 发行版 吃灰多年的树莓派终于要再上战场了
+                  k3s 是一个轻量级 Kubernetes 发行版 吃灰多年的树莓派终于要再上战场了 安装配置过程中遇到的问题
               </div>
           
 
@@ -435,7 +442,61 @@
       
 
       
-        <p>敬请期待…</p>
+        <p>虽然上篇文章中提到k3s安装非常简单，但由于现在k3s的版本还是 <code>v0.8.1</code>，可能会出现不稳定的情况以及一些配置上的问题，还不推荐在生产环境中正式使用。</p>
+<p>下面我总结了一些我在配置k3s集群过程中遇到的一些问题及解决方法。</p>
+<h4 id="关于容器引擎"><a href="#关于容器引擎" class="headerlink" title="关于容器引擎"></a>关于容器引擎</h4><h5 id="containerd"><a href="#containerd" class="headerlink" title="containerd"></a>containerd</h5><p>k3s默认推荐使用 <code>Containerd</code> 作为容器引擎。通过用containderd替换Docker，K3s能够显著减少运行时占用空间，删除了libnetwork、swarm、Docker存储驱动程序和其他插件等功能。</p>
+<p>k3s服务在安装时也默认设置了containerd容器管理工具 <code>crictl</code>。</p>
+<p>关于containerd的详细内容，这里暂且不细说，后续我会单独用一篇文章来介绍。</p>
+<h5 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h5><p>k3s 也支持使用docker来作为容器引擎。只需要在服务启动时指定参数 <code>--docker</code> 即可。</p>
+<p>因为我平时习惯了使用docker，所以我就选择了docker作为默认的容器引擎。启动后如下，会在 <code>CONTAINER-RUNTIME</code> 一栏显示所用的容器引擎信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># kubectl get nodes -o wide</div><div class="line">NAME         STATUS   ROLES    AGE     VERSION         INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION               CONTAINER-RUNTIME</div><div class="line">k3s-agent    Ready    worker   6m2s    v1.14.6-k3s.1   192.168.5.18   &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-957.10.1.el7.x86_64   docker://18.6.3</div><div class="line">k3s-master   Ready    master   4m38s   v1.14.6-k3s.1   192.168.5.17   &lt;none&gt;        CentOS Linux 7 (Core)   3.10.0-957.10.1.el7.x86_64   docker://18.6.3</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="docker版本"><a href="#docker版本" class="headerlink" title="docker版本"></a>docker版本</h4><p>我安装的k3s版本为 <code>v0.8.1</code>，对应的kubernetes版本为 <code>v1.14.6</code>。安装的docker版本为 <code>v18.06</code>。</p>
+<p>一开始我使用的docker版本为 <code>v18.09</code>，配置k3s的master客户端时服务能正常启动，但当安装agent服务时，添加了 <code>--docker</code> 参数后k3s服务一直无法启动。于是我只好将docker版本从 <code>v18.09</code> 降级到了 <code>v18.06</code> 版本才正常启动。</p>
+<p>我去查看了一下Kubernetes支持的docker版本，对于Kubernetes <code>v1.14</code> 版本支持的docker版本为 1.13.1, 17.03, 17.06, 17.09, 18.06, 18.09。</p>
+<p>至于我的 <code>v18.09</code> 为什么没有正常启动，后来推测可能是两方面的问题：</p>
+<ol>
+<li>k3s不稳定（可以尝试多次重启服务或者重启系统解决）</li>
+<li>系统环境影响（可以通过重新搭建系统环境来解决）</li>
+</ol>
+<hr>
+<h4 id="pause镜像"><a href="#pause镜像" class="headerlink" title="pause镜像"></a>pause镜像</h4><p>Kubernetes集群在运行时需要获取一个基础镜像pause：<code>k8s.gcr.io/pause:3.1</code>，k3s中也不例外。但由于pause镜像的仓库为 <code>k8s.gcr.io</code>，在国内是无法正常拉取的，也就导致了你在创建Pod时一直处于 <code>ImagePullBackOff</code> 状态。</p>
+<p>一般我们可以通过折中的方法来获取该镜像。</p>
+<h5 id="使用docker作为容器引擎时"><a href="#使用docker作为容器引擎时" class="headerlink" title="使用docker作为容器引擎时"></a>使用docker作为容器引擎时</h5><p>这种方法是相对来说比较简单的，只需要在k3s服务命令中添加 <code>--docker</code> 就可以指定k3s使用Docker容器引擎。pause镜像的获取可以按照之前搭建Kubernetes集群环境时 <a href="https://www.itfanr.cc/2019/05/17/kubernetes-introduction-for-install-by-kubeadm/#%E4%B8%8B%E8%BD%BD%E9%95%9C%E5%83%8F">Kubernetes入门 – 一使用kubeadm部署Kubernetes集群v1.14.1 | IT范儿</a> 中的步骤来操作。</p>
+<p>我这里使用的是 <code>azure中国</code> 的镜像地址：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ docker pull gcr.azk8s.cn/google_containers/pause:3.1</div><div class="line">$ docker tag gcr.azk8s.cn/google_containers/pause:3.1 k8s.gcr.io/pause:3.1</div><div class="line">$ docker rmi gcr.azk8s.cn/google_containers/pause:3.1</div></pre></td></tr></table></figure></p>
+<h5 id="使用containerd作为容器引擎时"><a href="#使用containerd作为容器引擎时" class="headerlink" title="使用containerd作为容器引擎时"></a>使用containerd作为容器引擎时</h5><p>k3s中默认使用containerd作为容器引擎，在运行Pod时也会先去获取pause镜像。</p>
+<p>这里我总结了两种方法来为containerd提前下载pause镜像。</p>
+<h6 id="通过docker拉取"><a href="#通过docker拉取" class="headerlink" title="通过docker拉取"></a>通过docker拉取</h6><p>我们可以通过docker把pause镜像拉取下来，然后转换成containerd可以使用的pause镜像：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># 通过docker拉取镜像</div><div class="line">$ docker pull gcr.azk8s.cn/google_containers/pause:3.1</div><div class="line"></div><div class="line"># 通过tag重命名pause镜像</div><div class="line">$ docker tag gcr.azk8s.cn/google_containers/pause:3.1 k8s.gcr.io/pause:3.1</div><div class="line"></div><div class="line"># 保存镜像为tar包</div><div class="line">$ docker save k8s.gcr.io/pause:3.1 -o pause.tar</div><div class="line"></div><div class="line"># 让containerd加载该tar包</div><div class="line">$ ctr cri load pause.tar</div></pre></td></tr></table></figure>
+<h6 id="通过air-gap安装"><a href="#通过air-gap安装" class="headerlink" title="通过air-gap安装"></a>通过air-gap安装</h6><p>k3s支持预加载containerd映像，方法是在启动之前将它们放在代理的images目录中。</p>
+<p>先从 <a href="https://github.com/rancher/k3s/releases" target="_blank" rel="external">Releases · rancher/k3s</a> 下载对应的 <code>k3s-airgap-images-xxx.tar</code> 安装包。</p>
+<p>然后通过如下命令操作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo mkdir -p /var/lib/rancher/k3s/agent/images/</div><div class="line">sudo cp ./k3s-airgap-images-$ARCH.tar /var/lib/rancher/k3s/agent/images/</div></pre></td></tr></table></figure></p>
+<p>详见官方文档：<a href="https://rancher.com/docs/k3s/latest/en/running/#air-gap-support" target="_blank" rel="external">Running K3S</a></p>
+<hr>
+<h4 id="启用端口"><a href="#启用端口" class="headerlink" title="启用端口"></a>启用端口</h4><p>一般情况下，在局域网内测试k3s集群为了测试方便都会选择关闭防火墙 <code>systemctl stop firewalld &amp;&amp; systemctl disable firewalld</code> 。但如果是在正式的生产环境中则需要启用防火墙并打开相关的端口。</p>
+<p>按照k3s文档上的说明，需要启用 <code>6443</code> 和 <code>8472</code> 端口。</p>
+<p>但是，不排除还有一些其他的潜在端口。这里我只找到了一篇相关的issues：<a href="https://github.com/rancher/k3s/issues/401" target="_blank" rel="external">k3s service cannot start in RHEL with firewall enabled · Issue #401 · rancher/k3s</a></p>
+<p>扩展：<a href="https://www.rancher.cn/docs/k3s/latest/en/configuration/#open-ports-network-security" target="_blank" rel="external">Configuration Info Open Ports / Network Security</a></p>
+<hr>
+<h4 id="卸载k3s"><a href="#卸载k3s" class="headerlink" title="卸载k3s"></a>卸载k3s</h4><p>如果是通过 <code>install.sh</code> 脚本安装的k3s，默认会在服务中安装一个卸载的脚本文件：</p>
+<p> <code>/usr/local/bin/k3s-uninstall.sh</code> (or as <code>k3s-agent-uninstall.sh</code>).</p>
+<hr>
+<h4 id="Running-in-Docker"><a href="#Running-in-Docker" class="headerlink" title="Running in Docker"></a>Running in Docker</h4><p>除了通过二进制的方式来部署k3s，还可以使用更简单的Docker容器方式来部署。k3s官方也给出了两种方法来通过Docker容器安装k3s。</p>
+<h5 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h5><p>可以直接从k3s的github仓库中获取该 <code>docker-compose.yaml</code> 文件，或执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ wget https://raw.githubusercontent.com/rancher/k3s/master/docker-compose.yml</div></pre></td></tr></table></figure></p>
+<h5 id="k3d"><a href="#k3d" class="headerlink" title="k3d"></a>k3d</h5><p><code>k3d</code> 可以理解成 <code>k3s in docker</code> ，是一个设计用于在Docker中轻松运行k3s的实用程序。</p>
+<p>详见：<a href="https://github.com/rancher/k3d" target="_blank" rel="external">rancher/k3d: Little helper to run Rancher Lab’s k3s in Docker</a></p>
+<hr>
+<h4 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h4><h5 id="kube-config-permissions"><a href="#kube-config-permissions" class="headerlink" title="kube config permissions"></a>kube config permissions</h5><p>在通过非root账户配置好<code>k3s-master</code> 服务后，我想着通过 <code>kubectl get node</code> 查看一下节点的运行状态，结果却报出了如下的错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">➜  ~ k3s kubectl get node</div><div class="line">WARN[2019-08-30T12:14:50.841714144+08:00] Unable to read /etc/rancher/k3s/k3s.yaml, please start server with --write-kubeconfig-mode to modify kube config permissions</div><div class="line">error: Error loading config file &quot;/etc/rancher/k3s/k3s.yaml&quot;: open /etc/rancher/k3s/k3s.yaml: permission denied</div></pre></td></tr></table></figure>
+<p>错误信息是：在加载配置文件 <code>/etc/rancher/k3s/k3s.yaml</code> 时没有权限。</p>
+<p>让人欣喜的是在错误信息也给出了解决方法，通过设置 <code>--write-kubeconfig-mode</code> 参数来赋予权限。</p>
+<p>只需在 <code>k3s.service</code> 中将 <code>ExecStart</code> 的值 <code>ExecStart=/usr/local/bin/k3s server --docker</code> 改成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/bin/k3s server --docker --write-kubeconfig-mode 644</div></pre></td></tr></table></figure></p>
+<p>之后，重启服务即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜  ~ sudo systemctl daemon-reload</div><div class="line">➜  ~ sudo systemctl restart k3s</div></pre></td></tr></table></figure>
+<p>具体关于这个问题的讨论可以参考：<a href="https://github.com/rancher/k3s/issues/389" target="_blank" rel="external">/etc/rancher/k3s/k3s.yaml is world readable · Issue #389 · rancher/k3s</a> 这个issue讨论。</p>
+<h5 id="certificate-has-expired"><a href="#certificate-has-expired" class="headerlink" title="certificate has expired"></a>certificate has expired</h5><p>在安装 <code>k3s-agent</code> 过程中，发现启动服务后日志中一直报如下的错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">8月 30 17:07:00 node1 k3s[941]: time=&quot;2019-08-30T17:07:00.542226362+08:00&quot; level=error msg=&quot;server https://127.0.0.1:35556/cacerts is not trusted: Get https://127.0.0.1:35556/cacerts: x509: certificate has expired or is not yet valid&quot;</div><div class="line">8月 30 17:07:02 node1 k3s[941]: time=&quot;2019-08-30T17:07:02.547358146+08:00&quot; level=error msg=&quot;server https://127.0.0.1:35556/cacerts is not trusted: Get https://127.0.0.1:35556/cacerts: x509: certificate has expired or is not yet valid&quot;</div></pre></td></tr></table></figure></p>
+<p>看错误信息 <code>x509: certificate has expired or is not yet valid&quot;</code> 提示是证书过期了，但刚一安装证书怎么就过期了呢？多次重启服务后发现一直报这个错误。</p>
+<p>后来才发现原来是master服务器和agent服务器两个主机的<strong>系统时间不一致</strong>导致的，我将agent服务器重启后就好了。</p>
 
       
     </div>
@@ -585,8 +646,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -605,7 +675,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">117</span>
+                  <span class="site-state-item-count">119</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -627,7 +697,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -672,6 +742,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于容器引擎"><span class="nav-number">1.</span> <span class="nav-text">关于容器引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#containerd"><span class="nav-number">1.1.</span> <span class="nav-text">containerd</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker"><span class="nav-number">1.2.</span> <span class="nav-text">docker</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker版本"><span class="nav-number">2.</span> <span class="nav-text">docker版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pause镜像"><span class="nav-number">3.</span> <span class="nav-text">pause镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用docker作为容器引擎时"><span class="nav-number">3.1.</span> <span class="nav-text">使用docker作为容器引擎时</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用containerd作为容器引擎时"><span class="nav-number">3.2.</span> <span class="nav-text">使用containerd作为容器引擎时</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#通过docker拉取"><span class="nav-number">3.2.1.</span> <span class="nav-text">通过docker拉取</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#通过air-gap安装"><span class="nav-number">3.2.2.</span> <span class="nav-text">通过air-gap安装</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启用端口"><span class="nav-number">4.</span> <span class="nav-text">启用端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#卸载k3s"><span class="nav-number">5.</span> <span class="nav-text">卸载k3s</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Running-in-Docker"><span class="nav-number">6.</span> <span class="nav-text">Running in Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#docker-compose"><span class="nav-number">6.1.</span> <span class="nav-text">docker-compose</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#k3d"><span class="nav-number">6.2.</span> <span class="nav-text">k3d</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异常处理"><span class="nav-number">7.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#kube-config-permissions"><span class="nav-number">7.1.</span> <span class="nav-text">kube config permissions</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#certificate-has-expired"><span class="nav-number">7.2.</span> <span class="nav-text">certificate has expired</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

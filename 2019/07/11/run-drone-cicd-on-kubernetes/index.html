@@ -96,7 +96,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190710111150.png?imageslim">
 <meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190710211502.png?imageslim">
-<meta property="og:updated_time" content="2019-07-11T01:37:49.000Z">
+<meta property="og:updated_time" content="2019-09-09T09:03:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Kubernetes上执行Drone CI&#x2F;CD">
 <meta name="twitter:description" content="Drone CI/CD On Kubernetes">
@@ -359,8 +359,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-07-11T09:37:49+08:00">
-                2019-07-11
+              <time title="更新于" itemprop="dateModified" datetime="2019-09-09T17:03:35+08:00">
+                2019-09-09
               </time>
             
           </span>
@@ -416,7 +416,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  956
+                  986
                 </span>
               
 
@@ -474,13 +474,14 @@
 <h5 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h5><p>查看该Pod的详细描述：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">➜ kubectl -n cicd describe pods drone-job-2-cnbmdfdlov2wqkcsg-c8m56</div><div class="line">Name:               drone-job-2-cnbmdfdlov2wqkcsg-c8m56</div><div class="line">Namespace:          cicd</div><div class="line">...</div><div class="line">...</div><div class="line">Status:             Succeeded</div><div class="line">IP:                 10.244.1.121</div><div class="line">Controlled By:      Job/drone-job-2-cnbmdfdlov2wqkcsg</div><div class="line">Containers:</div><div class="line">  drone-controller:</div><div class="line">    Container ID:   docker://8a2e413b84fe6d9dd361cc17b82881f888ff7376605c83bea0714cd5e439523c</div><div class="line">    Image:          drone/controller:1.2.1</div><div class="line">    Image ID:       docker-pullable://drone/controller@sha256:3a57ab277657525b1cfe464d8f38501a4454a5db3d20ca7e56052330df2ec523</div><div class="line">    Port:           &lt;none&gt;</div><div class="line">    Host Port:      &lt;none&gt;</div><div class="line">    State:          Terminated</div><div class="line">      Reason:       Completed</div><div class="line">      Exit Code:    0</div><div class="line">      Started:      Wed, 10 Jul 2019 02:14:44 +0800</div><div class="line">      Finished:     Wed, 10 Jul 2019 02:14:57 +0800</div><div class="line">...</div><div class="line">...</div></pre></td></tr></table></figure></p>
 <p>可以看到在该Pod内部自动创建了一个基于 <code>drone/controller</code> 镜像的容器来执行Pipeline。</p>
 <h5 id="自动移除Jobs"><a href="#自动移除Jobs" class="headerlink" title="自动移除Jobs"></a>自动移除Jobs</h5><p>默认情况下，执行完成后的Kubernetes Jobs不会自动从系统中清除，主要是为了便于对Pipeline执行过程中报错的故障排查。</p>
-<p>如果需要实现自动清理，这里我找到了两种方式：</p>
+<p>如果需要实现自动清理，这里我找到了两种方式，可以深入的去了解一下：</p>
 <ol>
-<li>设置Kubernetes的 <code>TTLAfterFinished</code> 特性，这也是Drone官方给出了解决方法</li>
+<li>设置Kubernetes的 <code>TTLAfterFinished</code> 特性，这也是Drone官方给出的解决方法</li>
 <li>通过第三方的工具来实现：<a href="https://github.com/lwolf/kube-cleanup-operator" target="_blank" rel="external">lwolf/kube-cleanup-operator: Kubernetes Operator to automatically delete completed Jobs and their Pods</a></li>
 </ol>
 <hr>
-<h4 id="注意事项-1"><a href="#注意事项-1" class="headerlink" title="注意事项"></a>注意事项</h4><p>需要为Drone创建相应的ServiceAccount权限。否则会报如下错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jobs.batch is forbidden: User &quot;system:serviceaccount:default:default&quot; cannot create resource &quot;jobs&quot; in API group &quot;batch&quot; in the namespace &quot;default&quot;</div></pre></td></tr></table></figure></p>
+<h4 id="注意事项-1"><a href="#注意事项-1" class="headerlink" title="注意事项"></a>注意事项</h4><p>需要为Drone创建相应的<code>ServiceAccount</code>权限。否则会报如下错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jobs.batch is forbidden: User &quot;system:serviceaccount:default:default&quot; cannot create resource &quot;jobs&quot; in API group &quot;batch&quot; in the namespace &quot;default&quot;</div></pre></td></tr></table></figure></p>
+<p>配置流程则直接按照Drone文档中的方法操作即可。</p>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
 <li><a href="https://docs.drone.io/installation/gitea/kubernetes/" target="_blank" rel="external">gitea-Kubernetes</a></li>
 <li><a href="https://blog.drone.io/drone-goes-kubernetes-native/" target="_blank" rel="external">Drone CI/CD Goes Kubernetes-Native</a></li>
@@ -663,7 +664,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">119</span>
+                  <span class="site-state-item-count">120</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

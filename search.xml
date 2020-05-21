@@ -106,6 +106,79 @@
       </tags>
   </entry>
   <entry>
+    <title>Hexo博客版本升级到Next7.8.0</title>
+    <url>/2020/05/21/upgrade-hexo-next-5-to-7/</url>
+    <content><![CDATA[<p>将Hexo博客版本从 <code>hexo v3.7.1 next v5.1.3</code> 升级到 <code>hexo v4.2.1 next v7.8.0</code> 时的一些设置。 </p>
+<p><code>Next v5.x</code> 和 <code>Next v7.x</code> 的配置还是有一定差异的。</p>
+<h4 id="不蒜子计数统计设置"><a href="#不蒜子计数统计设置" class="headerlink" title="不蒜子计数统计设置"></a>不蒜子计数统计设置</h4><p>找到相应配置文件 <code>next/layout/_third-party/statistics/busuanzi-counter.swig</code></p>
+<p>根据 <a href="http://ibruce.info/2015/04/04/busuanzi/" target="_blank" rel="noopener">不蒜子 | 不如</a> 官网中的说明，其中：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">本站总访问量&lt;span id&#x3D;&quot;busuanzi_value_site_pv&quot;&gt;&lt;&#x2F;span&gt;次</span><br><span class="line">本站访客数&lt;span id&#x3D;&quot;busuanzi_value_site_uv&quot;&gt;&lt;&#x2F;span&gt;人次</span><br><span class="line">本文总阅读量&lt;span id&#x3D;&quot;busuanzi_value_page_pv&quot;&gt;&lt;&#x2F;span&gt;次</span><br></pre></td></tr></table></figure>
+
+<p>上面的三个 <code>id</code> 标签部分就表示要显示的统计内容。</p>
+<p>找到 <code>busuanzi-counter.swig</code> 文件中的:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;span class&#x3D;&quot;site-uv&quot; title&#x3D;&quot;&#123;&#123; __(&#39;footer.total_visitors&#39;) &#125;&#125;&quot;&gt;</span><br><span class="line">      &lt;span id&#x3D;&quot;busuanzi_value_site_uv&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">&lt;&#x2F;span&gt;</span><br></pre></td></tr></table></figure>
+
+<p>修改为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;span class&#x3D;&quot;site-uv&quot; title&#x3D;&quot;&#123;&#123; __(&#39;footer.total_visitors&#39;) &#125;&#125;&quot;&gt;</span><br><span class="line">  访客数 &lt;span id&#x3D;&quot;busuanzi_value_site_uv&quot;&gt;&lt;&#x2F;span&gt; 人次</span><br><span class="line">&lt;&#x2F;span&gt;</span><br></pre></td></tr></table></figure>
+
+<p>找到：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;span class&#x3D;&quot;site-pv&quot; title&#x3D;&quot;&#123;&#123; __(&#39;footer.total_views&#39;) &#125;&#125;&quot;&gt;</span><br><span class="line">    &lt;span id&#x3D;&quot;busuanzi_value_site_pv&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">&lt;&#x2F;span&gt;</span><br></pre></td></tr></table></figure>
+
+<p>修改为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;span class&#x3D;&quot;site-pv&quot; title&#x3D;&quot;&#123;&#123; __(&#39;footer.total_views&#39;) &#125;&#125;&quot;&gt;</span><br><span class="line">  访问量 &lt;span id&#x3D;&quot;busuanzi_value_site_pv&quot;&gt;&lt;&#x2F;span&gt; 次</span><br><span class="line">&lt;&#x2F;span&gt;</span><br></pre></td></tr></table></figure>
+
+<p>即可。</p>
+<hr>
+<h4 id="gitalk设置"><a href="#gitalk设置" class="headerlink" title="gitalk设置"></a>gitalk设置</h4><p>找到 <code>/next/layout/_third-party/comments/gitalk.swig</code> 文件：</p>
+<p>将其中的 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">id : &#39;&#123;&#123; gitalk_md5(page.path) &#125;&#125;&#39;,</span><br></pre></td></tr></table></figure>
+
+<p>修改为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">id : &#39;&#123;&#123; theme.gitalk.id_prefix &#125;&#125;_&#123;&#123; date(page.date, &quot;YYYYMMDDHHmmss&quot;) &#125;&#125;&#39;,</span><br></pre></td></tr></table></figure>
+
+<p>然后在 <code>_config.yml</code> 中添加：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gitalk: </span><br><span class="line">  enable: true</span><br><span class="line">  ...</span><br><span class="line">  id_prefix: itfanr</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+
+<p>即可。</p>
+<p>这里要说明一下，在之前 <code>next v5.1.3</code> 版本中，我设置的 <code>id</code> 值为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">id : &#39;&#123;&#123; theme.gitalk.id_prefix || gitalk &#125;&#125;_&#123;&#123; date(page.date, &quot;YYYYMMDDHHmmss&quot;) &#125;&#125;&#39;,</span><br></pre></td></tr></table></figure>
+
+<p>即如果没有在配置文件中设置参数 <code>id_prefix</code> 的话，会默认使用 <code>gitalk</code> 为前缀，在 <code>Next v7.x</code> 中发现这样设置发布时会报错，所以就去掉了默认值。</p>
+<p>对于 <code>labels</code> 的显示，可以参考 <a href="https://github.com/gitalk/gitalk/issues/114" target="_blank" rel="noopener">Error: u.concat(…).join is not a function</a></p>
+<hr>
+<h4 id="博客置顶设置"><a href="#博客置顶设置" class="headerlink" title="博客置顶设置"></a>博客置顶设置</h4><p>安装插件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-index-pin-top --save</span><br><span class="line">npm uninstall hexo-generator-index --save</span><br></pre></td></tr></table></figure>
+
+<p>修改博客文件目录中的 <code>/themes/next/layout/_macro/post.swig</code> 文件。</p>
+<p>找到 <code>&lt;div class=&quot;post-meta&quot;&gt;</code> ，在下面添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;%- if post.top %&#125;</span><br><span class="line">&lt;i class&#x3D;&quot;fa fa-thumbtack&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">&lt;font color&#x3D;&#39;#f05050&#39;&gt;置顶&lt;&#x2F;font&gt;</span><br><span class="line">&lt;span class&#x3D;&quot;post-meta-divider&quot;&gt;|&lt;&#x2F;span&gt;</span><br><span class="line">&#123;%- endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后往上面找到 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% elif is_index %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>和</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;%- else %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之间的部分，在 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;%- endif %&#125;</span><br><span class="line">&#123;&#123; next_url(post.path, post.title or __(&#39;post.untitled&#39;), &#123;class: &#39;post-title-link&#39;, itemprop: &#39;url&#39;&#125;) &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>的中间加上</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;%- if post.top %&#125;&lt;font color&#x3D;&quot;#f05050&quot;&gt;[置顶] &lt;&#x2F;font&gt; &#123;%- endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>即:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;%- endif %&#125;</span><br><span class="line">&#123;%- if post.top %&#125;&lt;font color&#x3D;&quot;#f05050&quot;&gt;[置顶] &lt;&#x2F;font&gt; &#123;%- endif %&#125;</span><br><span class="line">&#123;&#123; next_url(post.path, post.title or __(&#39;post.untitled&#39;), &#123;class: &#39;post-title-link&#39;, itemprop: &#39;url&#39;&#125;) &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在需要设置 <code>置顶</code> 的文章头部添加 <code>top: true</code> 即可。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>Hexo博客搭建</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>临时分支法解决git提交代码冲突</title>
     <url>/2019/10/20/how-to-merge-rejected-git-branch/</url>
     <content><![CDATA[<p>在改动git仓库中的文件时，没有在变更前执行 <code>git pull</code> 而导致本地的代码在后续的改动后和线上的代码不一致，而在commit后准备提交时再执行 <code>git pull</code> 获取代码时却提示 <code>rejected -- non-fast-forward</code> 的错误。</p>
@@ -5081,7 +5154,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#97;&#105;&#108;&#x40;&#x65;&#120;&#x61;&#109;&#112;&#108;&#x65;&#x2e;&#99;&#111;&#109;">&#x65;&#109;&#97;&#105;&#108;&#x40;&#x65;&#120;&#x61;&#109;&#112;&#108;&#x65;&#x2e;&#99;&#111;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#109;&#x61;&#105;&#x6c;&#x40;&#101;&#x78;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#99;&#111;&#109;">&#101;&#109;&#x61;&#105;&#x6c;&#x40;&#101;&#x78;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#99;&#111;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

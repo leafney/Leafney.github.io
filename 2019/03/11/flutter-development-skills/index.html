@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.itfanr.cc","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍 VS Code 和 Android Studio 两款常用Flutter开发工具的快捷键及使用技巧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="磨刀不误砍柴工 -- Flutter开发技巧">
+<meta property="og:url" content="https://www.itfanr.cc/2019/03/11/flutter-development-skills/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="介绍 VS Code 和 Android Studio 两款常用Flutter开发工具的快捷键及使用技巧">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190225205422.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190226122412.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190226120402.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190226103153.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190226104555.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190226104555.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190226105411.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190226110223.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190225140010.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190225202632.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190225194726.png?imageslim">
+<meta property="article:published_time" content="2019-03-11T09:40:52.000Z">
+<meta property="article:modified_time" content="2019-03-11T11:10:13.000Z">
+<meta property="article:author" content="Leafney">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/20190225205422.png?imageslim">
+
+<link rel="canonical" href="https://www.itfanr.cc/2019/03/11/flutter-development-skills/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>磨刀不误砍柴工 -- Flutter开发技巧 | IT范儿</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">IT范儿</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">程序员改变世界</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leafney" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2019/03/11/flutter-development-skills/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="Stay Hungry. Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          磨刀不误砍柴工 -- Flutter开发技巧
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-03-11 17:40:52 / 修改时间：19:10:13" itemprop="dateCreated datePublished" datetime="2019-03-11T17:40:52+08:00">2019-03-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter%E4%B9%8B%E6%97%85/" itemprop="url" rel="index"><span itemprop="name">Flutter之旅</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">介绍 VS Code 和 Android Studio 两款常用Flutter开发工具的快捷键及使用技巧</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>上一篇文章中我们配置好了Flutter的开发环境，可以选择 <code>VS Code</code>(以下简称<code>VS</code>) 或 <code>Android Studio</code>(以下简称<code>AS</code>) 其中任意一款工具来开发。</p>
+<p>下面，我整理了这两款工具中常用的快捷键及一些技巧，以帮助大家在开发过程中提高效率。</p>
+<hr>
+<h4 id="StatelessWidget和StatefulWidget"><a href="#StatelessWidget和StatefulWidget" class="headerlink" title="StatelessWidget和StatefulWidget"></a>StatelessWidget和StatefulWidget</h4><h5 id="快速创建基于StatelessWidget和StatefulWidget的组件"><a href="#快速创建基于StatelessWidget和StatefulWidget的组件" class="headerlink" title="快速创建基于StatelessWidget和StatefulWidget的组件"></a>快速创建基于StatelessWidget和StatefulWidget的组件</h5><p>只需要输入 <code>stless</code> 就可以创建一个StatelessWidget。</p>
+<p>只需要输入 <code>stful</code> 就可以创建一个StatefulWidget。</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>VS Code</th>
+<th>Android Studio</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>StatelessWidget</td>
+<td><code>stless</code> + Tab</td>
+<td><code>stless</code> + Tab / <code>stless</code> + Enter</td>
+</tr>
+<tr>
+<td>StatefulWidget</td>
+<td><code>stful</code> + Tab</td>
+<td><code>stful</code> + Tab / <code>stful</code> + Enter</td>
+</tr>
+</tbody></table>
+<h5 id="将-StatelessWidget-改成-StatefulWidget"><a href="#将-StatelessWidget-改成-StatefulWidget" class="headerlink" title="将 StatelessWidget 改成 StatefulWidget"></a>将 StatelessWidget 改成 StatefulWidget</h5><p>在 <code>AS</code> 中，将光标放在 <code>StatelessWidget</code> 上，按住 <code>Alt+Enter</code> (in Mac is <code>Option+Enter</code>) ，然后单击 <code>Convert to StatefulWidget</code> 将自动进行转换。</p>
+<p>在 <code>VS Code</code> 中，将光标放在 <code>StatelessWidget</code> 上，按住 <code>Ctrl + .</code> (in Mac is <code>Cmd + .</code>) ，然后单击 <code>Convert to StatefulWidget</code> 将自动进行转换。</p>
+<hr>
+<h4 id="Alt-Enter-扩展选项"><a href="#Alt-Enter-扩展选项" class="headerlink" title="Alt+Enter 扩展选项"></a>Alt+Enter 扩展选项</h4><h5 id="AS"><a href="#AS" class="headerlink" title="AS"></a>AS</h5><ul>
+<li>Win: <code>单击任意组件名称 + Alt + Enter</code></li>
+<li>Mac: <code>单击任意组件名称 + Option + Enter</code></li>
+</ul>
+<h5 id="VS-Code"><a href="#VS-Code" class="headerlink" title="VS Code"></a>VS Code</h5><ul>
+<li>Win: <code>单击任意组件名称 + Ctrl + .</code></li>
+<li>Mac: <code>单击任意组件名称 + Command + .</code></li>
+</ul>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20190225205422.png?imageslim" alt=""></p>
+<hr>
+<h4 id="将代码块提取到方法中-Extract-Method"><a href="#将代码块提取到方法中-Extract-Method" class="headerlink" title="将代码块提取到方法中 Extract Method"></a>将代码块提取到方法中 Extract Method</h4><p>提取一段代码块，生成一个新的方法。当你发现某个方法里面过于复杂，需要将某一段代码提取成单独的方法时，该技巧是很有用的。</p>
+<h5 id="AS-1"><a href="#AS-1" class="headerlink" title="AS"></a>AS</h5><p>在 <code>AS</code> 中，<code>选中代码段</code> – <code>Menu</code> – <code>Refactor</code> – <code>Extract</code> – <code>Method...</code> ：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20190226122412.png?imageslim" alt=""></p>
+<p>对应的快捷键是：<br>    * Win: <code>选中代码段</code> + <code>Ctrl + Alt + M</code><br>    * Mac: <code>选中代码段</code> + <code>Command + Option + M</code></p>
+<ul>
+<li><a href="https://blog.51cto.com/31329846/1845347" target="_blank" rel="noopener">最强 Android Studio 使用小技巧和快捷键-设计师-51CTO博客</a></li>
+</ul>
+<hr>
+<h5 id="VS-Code-1"><a href="#VS-Code-1" class="headerlink" title="VS Code"></a>VS Code</h5><p>在 <code>VS Code</code> 中，<code>选中代码段</code> – <code>右键菜单</code> – <code>重构...</code> – <code>Extract Method</code> :</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20190226120402.png?imageslim" alt=""></p>
+<p>对应的快捷键：<br>    * Win: <code>选中代码段</code> + <code>Ctrl + .</code> + 选择 <code>Extract Method</code><br>    * Mac: <code>选中代码段</code> + <code>Command + .</code> + 选择 <code>Extract Method</code></p>
+<p>参考：</p>
+<ul>
+<li><a href="https://dartcode.org/releases/v2-12/#extract-method-refactor" target="_blank" rel="noopener">v2.12 - Dart Code - Dart &amp; Flutter support for Visual Studio Code</a></li>
+<li><a href="https://code.visualstudio.com/docs/editor/refactoring" target="_blank" rel="noopener">Refactoring source code in Visual Studio Code</a></li>
+</ul>
+<hr>
+<h4 id="匹配括号高亮"><a href="#匹配括号高亮" class="headerlink" title="匹配括号高亮"></a>匹配括号高亮</h4><p>当代码量多了之后，想要找到某一部分代码时，通过匹配的括号来找是比较方便的。</p>
+<h5 id="AS-2"><a href="#AS-2" class="headerlink" title="AS"></a>AS</h5><p>在 <code>AS</code> 中，默认支持匹配括号高亮：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20190226103153.png?imageslim" alt=""></p>
+<h5 id="VS-Code-2"><a href="#VS-Code-2" class="headerlink" title="VS Code"></a>VS Code</h5><p>在 VS Code 中，默认的括号匹配比较简单：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20190226104555.png?imageslim" alt=""></p>
+<p>当代码量多了之后，找起来让人看着有些眼晕。</p>
+<p>这里，推荐一个比较好用的插件：<code>Bracket Pair Colorizer 2</code> :</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20190226104555.png?imageslim" alt=""></p>
+<p>安装之后，相邻的括号颜色不同，区分起来很明显。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20190226105411.png?imageslim" alt=""></p>
+<p>不过，这里我不太喜欢自带的这个匹配线，所以我就把它去掉了。在该插件的官方介绍中，可以看到是通过 <code>&quot;bracket-pair-colorizer-2.showHorizontalScopeLine&quot;</code> 类似的选项定义的，在 <code>用户设置</code> 中可以关闭这些。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20190226110223.png?imageslim" alt=""></p>
+<hr>
+<h4 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h4><h5 id="AS-中快捷键"><a href="#AS-中快捷键" class="headerlink" title="AS 中快捷键"></a>AS 中快捷键</h5><p>格式化代码：<br>    * Win: <code>Ctrl +Alt + L</code><br>    * Mac: <code>Command + Option + L</code></p>
+<p>快速选中整个小部件：<br>    * Win: <code>双击选中部件名称 + Ctrl + W</code><br>    * Mac: <code>双击选中部件名称 + Option + Up</code></p>
+<p>部件操作（Alt + Enter）：<br>    * Win: <code>单击任意组件名称 + Alt + Enter</code><br>    * Mac: <code>单击任意组件名称 + Option + Enter</code></p>
+<p>重命名：<br>    * <code>点击选中任意组件名称 + Shift + F6</code></p>
+<p>查看组件源码:<br>    * Win:<br>        * <code>Ctrl + Click</code><br>        * <code>Ctrl + B</code><br>        * <code>F4</code><br>        * <code>Ctrl + Enter</code><br>    * Mac:<br>        * <code>Command + Click</code><br>        * <code>Command + B</code><br>        * <code>F4</code><br>        * <code>Command + Down</code></p>
+<p>注意：我只找到了跳转过去的快捷键，但没找到跳转回来的快捷键。</p>
+<p>查看 Widget 包含的属性：<br>    * Win: <code>单击任意组件名称 + Ctrl + Shift + I</code><br>    * Mac: <code>单击任意组件名称 + Command + Y</code></p>
+<p>移除没用的 imports:<br>    * Win: <code>Ctrl + Alt + O</code><br>    * Mac: <code>Command + Option + O</code></p>
+<p>上下移动行：<br>    * Win: <code>单击任意行 + Alt + Shift + Up/Down</code><br>    * Mac: <code>单击任意行 + Option + Shift + Up/Down</code></p>
+<p>上下移动方法：<br>    * Win: <code>单击任意方法名称 + Ctrl + Shift + Up/Down</code><br>    * Mac: <code>单击任意方法名称 + Command + Shift + Up/Down</code></p>
+<ul>
+<li><a href="https://juejin.im/post/5c5d970e6fb9a049af6db7cd" target="_blank" rel="noopener">Flutter开发中常用的快捷键 - 掘金</a></li>
+<li><a href="http://w4mxl.github.io/2019/02/12/flutter-ide-shortcuts-for-fast-development/" target="_blank" rel="noopener">提升 Flutter 开发效率的快捷键 | Wml’Blog</a></li>
+<li><a href="https://blog.51cto.com/31329846/1845347" target="_blank" rel="noopener">最强 Android Studio 使用小技巧和快捷键-设计师-51CTO博客</a> <strong>⭐️⭐️⭐️</strong></li>
+</ul>
+<h5 id="VS-Code-中快捷键"><a href="#VS-Code-中快捷键" class="headerlink" title="VS Code 中快捷键"></a>VS Code 中快捷键</h5><p>我们知道 VS Code 的插件非常丰富。其中一款名为 <code>Awesome Flutter Snippets</code> 为我们整理了常用的方法和组件的快捷键操作。</p>
+<hr>
+<h4 id="VS-Code-调试-Flutter"><a href="#VS-Code-调试-Flutter" class="headerlink" title="VS Code 调试 Flutter"></a>VS Code 调试 Flutter</h4><h5 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h5><p>点击 <code>F5</code> 进入调试模式。<br>点击 <code>Shift + F5</code> 退出调试模式。</p>
+<hr>
+<h5 id="“Hot-Reload”-and-“Hot-Restart”"><a href="#“Hot-Reload”-and-“Hot-Restart”" class="headerlink" title="“Hot Reload” and “Hot Restart”"></a>“Hot Reload” and “Hot Restart”</h5><h6 id="调试模式下"><a href="#调试模式下" class="headerlink" title="调试模式下"></a>调试模式下</h6><p>Hot Reload:</p>
+<p>保存后自动重载<br>    * Win: <code>Ctrl + S</code><br>    * Mac: <code>Command + S</code></p>
+<p>点击调试菜单中的 <code>重载按钮</code> 或使用快捷键：<br>    * Win: <code>Ctrl + Shift + F5</code><br>    * Mac: <code>Command + Shift + F5</code></p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20190225140010.png?imageslim" alt=""></p>
+<p>Hot Restart:<br>    * Win: <code>Ctrl + F5</code><br>    * Mac: <code>Control + F5</code></p>
+<ul>
+<li><a href="https://github.com/Dart-Code/Dart-Code/issues/754" target="_blank" rel="noopener">How to do full reload? · Issue #754 · Dart-Code/Dart-Code</a></li>
+<li><a href="https://dartcode.org/docs/key-bindings/#debug-key-bindings" target="_blank" rel="noopener">Key Bindings - Dart Code - Dart &amp; Flutter support for Visual Studio Code</a></li>
+</ul>
+<hr>
+<h6 id="命令模式下"><a href="#命令模式下" class="headerlink" title="命令模式下"></a>命令模式下</h6><p>Hot Reload:<br>    * 在命令窗口输入 <code>r</code></p>
+<p>Hot Restart:<br>    * 在命令窗口输入 <code>R</code></p>
+<hr>
+<h4 id="代码自动格式化"><a href="#代码自动格式化" class="headerlink" title="代码自动格式化"></a>代码自动格式化</h4><h5 id="AS-或-IntelliJ-IDE"><a href="#AS-或-IntelliJ-IDE" class="headerlink" title="AS 或 IntelliJ IDE"></a>AS 或 IntelliJ IDE</h5><h6 id="手动执行"><a href="#手动执行" class="headerlink" title="手动执行"></a>手动执行</h6><p>在代码窗口中，右键单击代码窗口并选择 <code>Reformat code with dartfmt</code> 菜单，实现自动格式化代码。</p>
+<p>相应的快捷键：<br>    * Win: <code>Ctrl + Alt + L</code><br>    * Mac: <code>Command + Option + L</code></p>
+<h6 id="自动执行"><a href="#自动执行" class="headerlink" title="自动执行"></a>自动执行</h6><p>选择菜单 <code>Android Studio</code> – <code>Preferences</code> – 搜索 <code>flutter</code> – 在 <code>Languages &amp; Frameworks</code> 中的 <code>Flutter</code> 右侧界面中，找到 <code>General</code> 选项。</p>
+<p>勾选 <code>Format code on save</code> 一项。也可以将子项 <code>Organize imports on save</code> 同时选中。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20190225202632.png?imageslim" alt=""></p>
+<p>这里我使用的 <code>Android Studio</code> 版本为 <code>Android Studio 3.3.1</code> 。其他版本可能位置有变化。</p>
+<hr>
+<h5 id="VS-Code-3"><a href="#VS-Code-3" class="headerlink" title="VS Code"></a>VS Code</h5><h6 id="手动执行-1"><a href="#手动执行-1" class="headerlink" title="手动执行"></a>手动执行</h6><p>在 <code>VS Code</code> 代码界面中，右键单击代码窗口并选择 <code>Format Document（格式化文档）</code> 菜单，实现自动格式化代码。</p>
+<p>相应的快捷键：<br>    * Win: <code>Alt + Shift + F</code><br>    * Mac: <code>Option + Shift + F</code></p>
+<h6 id="自动执行-1"><a href="#自动执行-1" class="headerlink" title="自动执行"></a>自动执行</h6><p>相比起手动执行的方式，更多人都会选择通过在保存文档时来实现代码的自动格式化。</p>
+<p>在 <code>VS Code</code> 界面中，通过快捷键 <code>Ctrl + ,</code> ( <code>Command + ,</code> in Mac) 打开 <code>设置</code> 窗口，或者通过 <code>文件</code> – <code>首选项</code> – <code>设置</code>（ <code>Code</code> – <code>首选项</code> – <code>设置</code> in Mac） 打开 <code>设置</code> 窗口。在搜索栏中输入 <code>edit:formatonsave</code> 打开设置界面。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20190225194726.png?imageslim" alt=""></p>
+<p>默认情况下，在保存文件时不会自动格式化文件。</p>
+<p>当勾选这一项后，表示在格式化程序可用的前提下，保存文件时会自动格式化。</p>
+<p>也可以选择下面的 <code>在 settings.json 中编辑</code> 一项，来自定义该项。</p>
+<p>当勾选上面的选项后，默认是在 <code>settings.json</code> 中添加了一行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;editor.formatOnSave&quot;: true,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认为 <code>false</code>。</p>
+<h6 id="个性化设置"><a href="#个性化设置" class="headerlink" title="个性化设置"></a>个性化设置</h6><p>比如，我想只在 <code>Dart</code> 代码中实现保存时自动格式化的操作，那么可以这样来设置：编辑 <code>settings.json</code> 文件，增加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;editor.formatOnSave&quot;: false,</span><br><span class="line">    &quot;[dart]&quot;:&#123;</span><br><span class="line">        &quot;editor.formatOnSave&quot;: true,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再比如，我想在所有语言下都支持保存时自动格式化的操作，但只在 <code>javascript</code> 代码中不支持保存时自动格式化的功能，那么可以通过如下的方式来设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;editor.formatOnSave&quot;: true,</span><br><span class="line">    &quot;[javascript]&quot;: &#123;</span><br><span class="line">        &quot;editor.formatOnSave&quot;: false,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可见，<code>VS Code</code> 的设置是非常灵活的。</p>
+<h5 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h5><ul>
+<li><a href="https://flutterchina.club/formatting/" target="_blank" rel="noopener">格式化Flutter代码 - Flutter中文网</a></li>
+</ul>
+<hr>
+<p>至此，关于工具的一些使用技巧也就介绍完了。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>如有疑问或需要技术讨论，请留言或发邮件到 service@itfanr.cc</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Leafney 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Leafney 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2019/03/11/flutter-development-skills/" title="磨刀不误砍柴工 -- Flutter开发技巧">https://www.itfanr.cc/2019/03/11/flutter-development-skills/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/08/flutter-development-environment-configuration/" rel="prev" title="兵马未动，粮草先行 -- Flutter开发环境配置">
+      <i class="fa fa-chevron-left"></i> 兵马未动，粮草先行 -- Flutter开发环境配置
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/22/requirements-for-python/" rel="next" title="关于Python依赖包文件requirements">
+      关于Python依赖包文件requirements <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#StatelessWidget和StatefulWidget"><span class="nav-number">1.</span> <span class="nav-text">StatelessWidget和StatefulWidget</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#快速创建基于StatelessWidget和StatefulWidget的组件"><span class="nav-number">1.1.</span> <span class="nav-text">快速创建基于StatelessWidget和StatefulWidget的组件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将-StatelessWidget-改成-StatefulWidget"><span class="nav-number">1.2.</span> <span class="nav-text">将 StatelessWidget 改成 StatefulWidget</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Alt-Enter-扩展选项"><span class="nav-number">2.</span> <span class="nav-text">Alt+Enter 扩展选项</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#AS"><span class="nav-number">2.1.</span> <span class="nav-text">AS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#VS-Code"><span class="nav-number">2.2.</span> <span class="nav-text">VS Code</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将代码块提取到方法中-Extract-Method"><span class="nav-number">3.</span> <span class="nav-text">将代码块提取到方法中 Extract Method</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#AS-1"><span class="nav-number">3.1.</span> <span class="nav-text">AS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#VS-Code-1"><span class="nav-number">3.2.</span> <span class="nav-text">VS Code</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#匹配括号高亮"><span class="nav-number">4.</span> <span class="nav-text">匹配括号高亮</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#AS-2"><span class="nav-number">4.1.</span> <span class="nav-text">AS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#VS-Code-2"><span class="nav-number">4.2.</span> <span class="nav-text">VS Code</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#快捷键"><span class="nav-number">5.</span> <span class="nav-text">快捷键</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#AS-中快捷键"><span class="nav-number">5.1.</span> <span class="nav-text">AS 中快捷键</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#VS-Code-中快捷键"><span class="nav-number">5.2.</span> <span class="nav-text">VS Code 中快捷键</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VS-Code-调试-Flutter"><span class="nav-number">6.</span> <span class="nav-text">VS Code 调试 Flutter</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#调试"><span class="nav-number">6.1.</span> <span class="nav-text">调试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#“Hot-Reload”-and-“Hot-Restart”"><span class="nav-number">6.2.</span> <span class="nav-text">“Hot Reload” and “Hot Restart”</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#调试模式下"><span class="nav-number">6.2.1.</span> <span class="nav-text">调试模式下</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#命令模式下"><span class="nav-number">6.2.2.</span> <span class="nav-text">命令模式下</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码自动格式化"><span class="nav-number">7.</span> <span class="nav-text">代码自动格式化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#AS-或-IntelliJ-IDE"><span class="nav-number">7.1.</span> <span class="nav-text">AS 或 IntelliJ IDE</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#手动执行"><span class="nav-number">7.1.1.</span> <span class="nav-text">手动执行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#自动执行"><span class="nav-number">7.1.2.</span> <span class="nav-text">自动执行</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#VS-Code-3"><span class="nav-number">7.2.</span> <span class="nav-text">VS Code</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#手动执行-1"><span class="nav-number">7.2.1.</span> <span class="nav-text">手动执行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#自动执行-1"><span class="nav-number">7.2.2.</span> <span class="nav-text">自动执行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#个性化设置"><span class="nav-number">7.2.3.</span> <span class="nav-text">个性化设置</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相关参考"><span class="nav-number">7.3.</span> <span class="nav-text">相关参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leafney"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Leafney</p>
+  <div class="site-description" itemprop="description">Stay Hungry. Stay Foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leafney" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leafney" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hub.docker.com/r/leafney/" title="DockerHub → https:&#x2F;&#x2F;hub.docker.com&#x2F;r&#x2F;leafney&#x2F;" rel="noopener" target="_blank"><i class="fab fa-docker fa-fw"></i>DockerHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:service@itfanr.cc" title="E-Mail → mailto:service@itfanr.cc" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        访客数 <span id="busuanzi_value_site_uv"></span> 人次
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        访问量 <span id="busuanzi_value_site_pv"></span> 次
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f28d68fd5271fd52826d',
+      clientSecret: '70a085c82c8d67b07e5482058272fcab3e969b83',
+      repo        : 'Leafney.github.io',
+      owner       : 'leafney',
+      admin       : ['leafney'],
+      id : 'itfanr_20190311174052',
+      labels: 'comments'.split(',').filter(l => l),
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

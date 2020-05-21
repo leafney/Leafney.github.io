@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.itfanr.cc","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="实践在Docker容器中配置Celery运行环境。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Celery分布式任务队列入门(二)-环境配置">
+<meta property="og:url" content="https://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-second/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="实践在Docker容器中配置Celery运行环境。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171211/cc9H40dDJ5.jpg?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171211/9JEB2m262l.jpg?imageslim">
+<meta property="article:published_time" content="2017-12-10T15:57:14.000Z">
+<meta property="article:modified_time" content="2017-12-11T08:16:18.000Z">
+<meta property="article:author" content="Leafney">
+<meta property="article:tag" content="Celery">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="RabbitMQ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/171211/cc9H40dDJ5.jpg?imageslim">
+
+<link rel="canonical" href="https://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-second/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Celery分布式任务队列入门(二)-环境配置 | IT范儿</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">IT范儿</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">程序员改变世界</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leafney" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-second/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="Stay Hungry. Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Celery分布式任务队列入门(二)-环境配置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-12-10 23:57:14" itemprop="dateCreated datePublished" datetime="2017-12-10T23:57:14+08:00">2017-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2017-12-11 16:16:18" itemprop="dateModified" datetime="2017-12-11T16:16:18+08:00">2017-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Celery%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">Celery分布式任务队列入门</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">实践在Docker容器中配置Celery运行环境。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>实践在Docker容器中配置Celery运行环境。</p>
+<h4 id="创建Docker容器"><a href="#创建Docker容器" class="headerlink" title="创建Docker容器"></a>创建Docker容器</h4><p>在容器 <code>Ubuntu:16.04</code> 系统中来搭建，创建容器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it --name celery1 -p 5672:5672 -p 15673:15672 -v &#x2F;home&#x2F;tiger&#x2F;dckerfile&#x2F;celery1:&#x2F;app ubuntu &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是在Docker容器中不需要 <code>sudo</code> 命令，默认即是 <code>root</code> 权限。下面的命令请根据自己所在系统类型自行添加 <code>sudo</code> 操作。</p>
+<h5 id="更新软件源"><a href="#更新软件源" class="headerlink" title="更新软件源"></a>更新软件源</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># echo &quot;deb http:&#x2F;&#x2F;cn.archive.ubuntu.com&#x2F;ubuntu&#x2F; xenial main restricted universe multiverse&quot; &gt;&gt; &#x2F;etc&#x2F;apt&#x2F;sources.list</span><br><span class="line"># echo &quot;deb http:&#x2F;&#x2F;cn.archive.ubuntu.com&#x2F;ubuntu&#x2F; xenial-security main restricted universe multiverse&quot; &gt;&gt; &#x2F;etc&#x2F;apt&#x2F;sources.list</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># apt-get update</span><br></pre></td></tr></table></figure>
+
+<h5 id="安装Erlang依赖"><a href="#安装Erlang依赖" class="headerlink" title="安装Erlang依赖"></a>安装Erlang依赖</h5><p>Erlang可以通过包管理器来安装，或者直接从官方网站下载安装包来安装。</p>
+<p>执行如下命令安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;tmp</span><br><span class="line">wget http:&#x2F;&#x2F;packages.erlang-solutions.com&#x2F;ubuntu&#x2F;erlang_solutions.asc</span><br><span class="line"># apt-key add erlang_solutions.asc</span><br><span class="line"># apt-get update</span><br><span class="line"># apt-get install erlang</span><br><span class="line"># apt-get install erlang-nox</span><br></pre></td></tr></table></figure>
+
+<p>或者直接从网站 <a href="https://packages.erlang-solutions.com/erlang/#tabs-debian" target="_blank" rel="noopener">Erlang Downloads</a> 下载 <code>.deb</code> 安装包来安装。</p>
+<h5 id="安装RabbitMQ"><a href="#安装RabbitMQ" class="headerlink" title="安装RabbitMQ"></a>安装RabbitMQ</h5><p>执行如下命令通过包管理器来安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># echo &quot;deb https:&#x2F;&#x2F;dl.bintray.com&#x2F;rabbitmq&#x2F;debian xenial main&quot; | tee &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;bintray.rabbitmq.list</span><br><span class="line"></span><br><span class="line"># wget -O- https:&#x2F;&#x2F;www.rabbitmq.com&#x2F;rabbitmq-release-signing-key.asc | apt-key add -</span><br><span class="line"></span><br><span class="line"># apt-get update</span><br><span class="line"># apt-get install rabbitmq-server</span><br></pre></td></tr></table></figure>
+
+<p>发现通过上面方法安装的 <code>Erlang Version</code> 为 <code>Erlang/OTP 18 [erts-7.3] [source] [64-bit] [smp:2:2]</code> ，<br><code>RabbitMQ Version</code> 为 <code>&quot;RabbitMQ&quot;,&quot;3.5.7&quot;</code></p>
+<p>都不是官网上的最新版本，但在软件源中来说已是可安装的最新版本。所以如果想要安装官方的最新版本，可以采用直接从官网获取安装包的方式来安装。</p>
+<h5 id="安装官方最新版"><a href="#安装官方最新版" class="headerlink" title="安装官方最新版"></a>安装官方最新版</h5><p>在Ubuntu系统下直接下载 <code>rabbitmq</code> 的 <code>*.deb</code> 安装包：</p>
+<p>从地址 <a href="https://www.rabbitmq.com/install-debian.html" target="_blank" rel="noopener">Installing on Debian / Ubuntu</a> 看到最新版本是 3.7.0 <a href="https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.0/rabbitmq-server_3.7.0-1_all.deb" target="_blank" rel="noopener">rabbitmq-server_3.7.0-1_all.deb</a></p>
+<p>也可以从网址 <a href="https://www.rabbitmq.com/releases/rabbitmq-server/" target="_blank" rel="noopener">Released Artifacts</a> 选择其他指定版本。</p>
+<p>下面以 <code>rabbitmq-server_3.7.0-1_all.deb</code> 为例安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># wget https:&#x2F;&#x2F;dl.bintray.com&#x2F;rabbitmq&#x2F;all&#x2F;rabbitmq-server&#x2F;3.7.0&#x2F;rabbitmq-server_3.7.0-1_all.deb</span><br><span class="line"># dpkg -i rabbitmq-server_3.7.0-1_all.deb</span><br></pre></td></tr></table></figure>
+
+<p>如果提示依赖其他的包，执行如下命令安装依赖包:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># apt-get -f install</span><br></pre></td></tr></table></figure>
+
+<p>然后再次执行安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># dpkg -i rabbitmq-server_3.7.0-1_all.deb</span><br></pre></td></tr></table></figure>
+
+<p>我在执行 <code>apt-get -f install</code> 时遇到问题，输出提示是要移除 <code>rabbitmq-server</code> ，并没有自动安装其他依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">root@b792ae940e3e:&#x2F;app# dpkg -i rabbitmq-server_3.7.0-1_all.deb </span><br><span class="line">Selecting previously unselected package rabbitmq-server.</span><br><span class="line">(Reading database ... 7744 files and directories currently installed.)</span><br><span class="line">Preparing to unpack rabbitmq-server_3.7.0-1_all.deb ...</span><br><span class="line">Unpacking rabbitmq-server (3.7.0-1) ...</span><br><span class="line">dpkg: dependency problems prevent configuration of rabbitmq-server:</span><br><span class="line"> rabbitmq-server depends on erlang-nox (&gt;&#x3D; 1:19.3) | esl-erlang (&gt;&#x3D; 1:19.3); however:</span><br><span class="line">  Package erlang-nox is not installed.</span><br><span class="line">  Package esl-erlang is not installed.</span><br><span class="line"> rabbitmq-server depends on logrotate; however:</span><br><span class="line">  Package logrotate is not installed.</span><br><span class="line"> rabbitmq-server depends on socat; however:</span><br><span class="line">  Package socat is not installed.</span><br><span class="line"></span><br><span class="line">dpkg: error processing package rabbitmq-server (--install):</span><br><span class="line"> dependency problems - leaving unconfigured</span><br><span class="line">Processing triggers for systemd (229-4ubuntu21) ...</span><br><span class="line">Errors were encountered while processing:</span><br><span class="line"> rabbitmq-server</span><br><span class="line">root@b792ae940e3e:&#x2F;app# apt-get -f install</span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br><span class="line">Correcting dependencies... Done</span><br><span class="line">The following packages will be REMOVED:</span><br><span class="line">  rabbitmq-server</span><br><span class="line">0 upgraded, 0 newly installed, 1 to remove and 2 not upgraded.</span><br><span class="line">1 not fully installed or removed.</span><br><span class="line">After this operation, 13.3 MB disk space will be freed.</span><br><span class="line">Do you want to continue? [Y&#x2F;n]</span><br></pre></td></tr></table></figure>
+
+<p>所以，我选择手动安装 <code>Erland</code> 的 <code>.deb</code> 包。</p>
+<p>从 网站 <a href="https://www.rabbitmq.com/which-erlang.html" target="_blank" rel="noopener">RabbitMQ Erlang Version Requirements</a> 中可以看到RabbitMQ和Erlang版本之间的对应关系。这里上面的我按照的是RabbitMQ的 <code>3.7.0</code> 版本，所以我可以选择Erlang的最新版即 <code>20.1.7</code> 版本安装。下载地址见：<a href="https://packages.erlang-solutions.com/erlang/#tabs-debian" target="_blank" rel="noopener">Erlang Downloads</a> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># wget http:&#x2F;&#x2F;packages.erlang-solutions.com&#x2F;site&#x2F;esl&#x2F;esl-erlang&#x2F;FLAVOUR_1_general&#x2F;esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb</span><br><span class="line"></span><br><span class="line"># dpkg -i esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb</span><br></pre></td></tr></table></figure>
+
+<p>这次安装时也提示缺少依赖，所以我执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># apt-get -f install</span><br></pre></td></tr></table></figure>
+
+<p>结果是找到了相关的依赖包，输入 <code>y</code> 进行安装。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">root@b792ae940e3e:&#x2F;app# ls</span><br><span class="line">esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb  rabbitmq-server_3.7.0-1_all.deb</span><br><span class="line">root@b792ae940e3e:&#x2F;app# dpkg -i esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb </span><br><span class="line">Selecting previously unselected package esl-erlang.</span><br><span class="line">(Reading database ... 7744 files and directories currently installed.)</span><br><span class="line">Preparing to unpack esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb ...</span><br><span class="line">Unpacking esl-erlang (1:20.1.7) ...</span><br><span class="line">dpkg: dependency problems prevent configuration of esl-erlang:</span><br><span class="line"> esl-erlang depends on libwxbase2.8-0 | libwxbase3.0-0 | libwxbase3.0-0v5; however:</span><br><span class="line">  Package libwxbase2.8-0 is not installed.</span><br><span class="line">  Package libwxbase3.0-0 is not installed.</span><br><span class="line">  Package libwxbase3.0-0v5 is not installed.</span><br><span class="line"> esl-erlang depends on libwxgtk2.8-0 | libwxgtk3.0-0 | libwxgtk3.0-0v5; however:</span><br><span class="line">  Package libwxgtk2.8-0 is not installed.</span><br><span class="line">  Package libwxgtk3.0-0 is not installed.</span><br><span class="line">  Package libwxgtk3.0-0v5 is not installed.</span><br><span class="line"> esl-erlang depends on libsctp1; however:</span><br><span class="line">  Package libsctp1 is not installed.</span><br><span class="line"></span><br><span class="line">dpkg: error processing package esl-erlang (--install):</span><br><span class="line"> dependency problems - leaving unconfigured</span><br><span class="line">Errors were encountered while processing:</span><br><span class="line"> esl-erlang</span><br><span class="line">root@b792ae940e3e:&#x2F;app# apt-get -f install</span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br><span class="line">Correcting dependencies... Done</span><br><span class="line">The following additional packages will be installed:</span><br><span class="line">......</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+<p>然后再次安装 <code>esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb</code> 包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># dpkg -i esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb</span><br></pre></td></tr></table></figure>
+
+<p>最后，安装RabbitMQ的包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># dpkg -i rabbitmq-server_3.6.14-1_all.deb</span><br></pre></td></tr></table></figure>
+
+<p>如果中途再出现缺少依赖包的问题，通过 <code>apt-get -f install</code> 来解决。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">root@b792ae940e3e:&#x2F;app# dpkg -i rabbitmq-server_3.7.0-1_all.deb </span><br><span class="line">Selecting previously unselected package rabbitmq-server.</span><br><span class="line">(Reading database ... 29232 files and directories currently installed.)</span><br><span class="line">Preparing to unpack rabbitmq-server_3.7.0-1_all.deb ...</span><br><span class="line">Unpacking rabbitmq-server (3.7.0-1) ...</span><br><span class="line">dpkg: dependency problems prevent configuration of rabbitmq-server:</span><br><span class="line"> rabbitmq-server depends on logrotate; however:</span><br><span class="line">  Package logrotate is not installed.</span><br><span class="line"> rabbitmq-server depends on socat; however:</span><br><span class="line">  Package socat is not installed.</span><br><span class="line"></span><br><span class="line">dpkg: error processing package rabbitmq-server (--install):</span><br><span class="line"> dependency problems - leaving unconfigured</span><br><span class="line">Processing triggers for systemd (229-4ubuntu21) ...</span><br><span class="line">Errors were encountered while processing:</span><br><span class="line"> rabbitmq-server</span><br><span class="line">root@b792ae940e3e:&#x2F;app# apt-get -f install </span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br><span class="line">Correcting dependencies... Done</span><br><span class="line">The following additional packages will be installed:</span><br><span class="line">  cron libpopt0 libwrap0 logrotate socat tcpd</span><br><span class="line">Suggested packages:</span><br><span class="line">  anacron checksecurity exim4 | postfix | mail-transport-agent mailx</span><br><span class="line">The following NEW packages will be installed:</span><br><span class="line">  cron libpopt0 libwrap0 logrotate socat tcpd</span><br><span class="line">0 upgraded, 6 newly installed, 0 to remove and 2 not upgraded.</span><br><span class="line">1 not fully installed or removed.</span><br><span class="line">Need to get 522 kB of archives.</span><br><span class="line">After this operation, 1674 kB of additional disk space will be used.</span><br><span class="line">Do you want to continue? [Y&#x2F;n]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://www.rabbitmq.com/download.html" target="_blank" rel="noopener">Downloading and Installing RabbitMQ</a></li>
+<li><a href="https://www.36nu.com/post/240.html" target="_blank" rel="noopener">RabbitMQ安装方式及常用命令 </a> ☆</li>
+<li><a href="https://packages.erlang-solutions.com/erlang/#tabs-debian" target="_blank" rel="noopener">Erlang Downloads</a></li>
+</ul>
+<hr>
+<h5 id="Run-RabbitMQ-Server"><a href="#Run-RabbitMQ-Server" class="headerlink" title="Run RabbitMQ Server"></a>Run RabbitMQ Server</h5><p>启动 RabbitMQ 服务:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># service rabbitmq-server start</span><br></pre></td></tr></table></figure>
+
+<p>安装 RabbitMQWeb 管理插件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># rabbitmq-plugins enable rabbitmq_management  </span><br><span class="line"># service rabbitmq-server restart</span><br></pre></td></tr></table></figure>
+
+<p>打开浏览器登录：<a href="http://127.0.0.1:15672，登录账号密码默认都是">http://127.0.0.1:15672，登录账号密码默认都是</a> <code>guest</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@730778dc65bd:&#x2F;app# rabbitmq-plugins enable rabbitmq_management</span><br><span class="line">The following plugins have been enabled:</span><br><span class="line">  mochiweb</span><br><span class="line">  webmachine</span><br><span class="line">  rabbitmq_web_dispatch</span><br><span class="line">  amqp_client</span><br><span class="line">  rabbitmq_management_agent</span><br><span class="line">  rabbitmq_management</span><br><span class="line"></span><br><span class="line">Applying plugin configuration to rabbit@730778dc65bd... started 6 plugins.</span><br><span class="line">root@730778dc65bd:&#x2F;app# service rabbitmq-server restart</span><br><span class="line"> * Restarting RabbitMQ Messaging Server rabbitmq-server                                                      [ OK ] </span><br><span class="line">root@730778dc65bd:&#x2F;app#</span><br></pre></td></tr></table></figure>
+
+<p>测试代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">## 查看rabbitmq状态</span><br><span class="line">root@730778dc65bd:&#x2F;app# rabbitmqctl status</span><br><span class="line">Status of node rabbit@730778dc65bd ...</span><br><span class="line">Error: unable to connect to node rabbit@730778dc65bd: nodedown</span><br><span class="line"></span><br><span class="line">DIAGNOSTICS</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line"></span><br><span class="line">attempted to contact: [rabbit@730778dc65bd]</span><br><span class="line"></span><br><span class="line">rabbit@730778dc65bd:</span><br><span class="line">  * connected to epmd (port 4369) on 730778dc65bd</span><br><span class="line">  * epmd reports: node &#39;rabbit&#39; not running at all</span><br><span class="line">                  no other nodes on 730778dc65bd</span><br><span class="line">  * suggestion: start the node</span><br><span class="line"></span><br><span class="line">current node details:</span><br><span class="line">- node name: &#39;rabbitmq-cli-9223@730778dc65bd&#39;</span><br><span class="line">- home dir: &#x2F;var&#x2F;lib&#x2F;rabbitmq</span><br><span class="line">- cookie hash: MwPrvM8WUeAkWCiIWYw2fg&#x3D;&#x3D;</span><br><span class="line"></span><br><span class="line">root@730778dc65bd:&#x2F;app# </span><br><span class="line"></span><br><span class="line">root@730778dc65bd:&#x2F;app# service rabbitmq-server start</span><br><span class="line"> * Starting RabbitMQ Messaging Server rabbitmq-server                                                        [ OK ] </span><br><span class="line">root@730778dc65bd:&#x2F;app# rabbitmqctl status</span><br><span class="line">Status of node rabbit@730778dc65bd ...</span><br><span class="line">[&#123;pid,9527&#125;,</span><br><span class="line"> &#123;running_applications,[&#123;rabbit,&quot;RabbitMQ&quot;,&quot;3.5.7&quot;&#125;,</span><br><span class="line">                        &#123;mnesia,&quot;MNESIA  CXC 138 12&quot;,&quot;4.13.3&quot;&#125;,</span><br><span class="line">                        &#123;xmerl,&quot;XML parser&quot;,&quot;1.3.10&quot;&#125;,</span><br><span class="line">                        &#123;os_mon,&quot;CPO  CXC 138 46&quot;,&quot;2.4&quot;&#125;,</span><br><span class="line">                        &#123;sasl,&quot;SASL  CXC 138 11&quot;,&quot;2.7&quot;&#125;,</span><br><span class="line">                        &#123;stdlib,&quot;ERTS  CXC 138 10&quot;,&quot;2.8&quot;&#125;,</span><br><span class="line">                        &#123;kernel,&quot;ERTS  CXC 138 10&quot;,&quot;4.2&quot;&#125;]&#125;,</span><br><span class="line"> &#123;os,&#123;unix,linux&#125;&#125;,</span><br><span class="line"> &#123;erlang_version,&quot;Erlang&#x2F;OTP 18 [erts-7.3] [source] [64-bit] [smp:2:2] [async-threads:64] [kernel-poll:true]\n&quot;&#125;,</span><br><span class="line"> &#123;memory,[&#123;total,83922208&#125;,</span><br><span class="line">          &#123;connection_readers,0&#125;,</span><br><span class="line">          &#123;connection_writers,0&#125;,</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="RabbitMQ中的vitrual-host"><a href="#RabbitMQ中的vitrual-host" class="headerlink" title="RabbitMQ中的vitrual host"></a>RabbitMQ中的vitrual host</h5><p><code>Virtual host</code>，是起到隔离作用的。每一个 <code>vhost</code> 都有自己的 <code>exchanges</code> 和 <code>queues</code>，它们互不影响。不同的应用可以跑在相同的 <code>rabbitmq</code> 上，使用 <code>vhost</code> 把它们隔离开就行。默认情况下，<code>rabbitmq</code> 安装后，默认的 <code>vhost</code> 是 <code>/</code>。</p>
+<h5 id="创建用户并设置虚拟主机"><a href="#创建用户并设置虚拟主机" class="headerlink" title="创建用户并设置虚拟主机"></a>创建用户并设置虚拟主机</h5><p>可以发现上面我们通过 <code>guest</code> 用户在其他电脑上或外网段访问时，会提示 <code>User can only log in via localhost</code> ，这是因为 <code>guest</code> 是仅允许在 <code>localhost</code> 下才能登陆的。如果我们想在外部访问，可以创建一个新的账户。</p>
+<p>创建用户的同时为该用户指定允许访问的虚拟主机 <code>myvhost</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># rabbitmqctl add_user myuser mypassword</span><br><span class="line"># rabbitmqctl add_vhost myvhost</span><br><span class="line"># rabbitmqctl set_permissions -p myvhost myuser &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br></pre></td></tr></table></figure>
+
+<p>此时，新创建的账户 <code>myuser</code> 也并没有权限在外网访问，可以用 <code>set_user_tags</code> 为用户设置角色：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># rabbitmqctl set_user_tags myuser administrator</span><br></pre></td></tr></table></figure>
+
+<p>然后我们就能在外网通过地址 <code>http://192.168.5.107:15673/</code> 来访问管理端了。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># User: myuser </span><br><span class="line"># UserPwd: hello</span><br><span class="line"># VHost: hellohost</span><br><span class="line"></span><br><span class="line">root@b792ae940e3e:&#x2F;app# rabbitmqctl add_user myuser hello</span><br><span class="line">Adding user &quot;myuser&quot; ...</span><br><span class="line">root@b792ae940e3e:&#x2F;app# rabbitmqctl add_vhost hellohost</span><br><span class="line">Adding vhost &quot;hellohost&quot; ...</span><br><span class="line">root@b792ae940e3e:&#x2F;app# rabbitmqctl set_permissions -p hellohost myuser &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br><span class="line">Setting permissions for user &quot;myuser&quot; in vhost &quot;hellohost&quot; ...</span><br><span class="line">root@b792ae940e3e:&#x2F;app#</span><br></pre></td></tr></table></figure>
+
+<p>然后重启服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># service rabbitmq-server restart</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="Celery"><a href="#Celery" class="headerlink" title="Celery"></a>Celery</h4><p>Celery官方推荐使用 <code>RabbitMQ</code> 或 <code>Redis</code> 来作为中间件。设置也很简单，通过 <code>broker</code> 和 <code>backend</code> 参数即可绑定。</p>
+<h5 id="broker-和-backend"><a href="#broker-和-backend" class="headerlink" title="broker 和 backend"></a>broker 和 backend</h5><p>可以用RabbitMQ和Redis来作为broker或backend：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app &#x3D; Celery(&#39;tasks&#39;, backend&#x3D;&#39;amqp&#39;, broker&#x3D;&#39;amqp:&#x2F;&#x2F;&#39;)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app &#x3D; Celery(&#39;tasks&#39;, backend&#x3D;&#39;redis:&#x2F;&#x2F;localhost&#39;, broker&#x3D;&#39;amqp:&#x2F;&#x2F;&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>注意，虽然推荐使用RabbitMQ来作为 <code>broker</code>，但不推荐其作为 <code>backend</code> 。具体原因我会在后面的文章中说明。</p>
+<h5 id="中间人RabbitMQ"><a href="#中间人RabbitMQ" class="headerlink" title="中间人RabbitMQ"></a>中间人RabbitMQ</h5><p>RabbitMQ 功能完备、稳定，是一个非常可靠的选择。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BROKER_URL &#x3D;transport:&#x2F;&#x2F;userid:password@hostname:port&#x2F;virtual_host</span><br><span class="line"></span><br><span class="line">BROKER_URL &#x3D; &#39;amqp:&#x2F;&#x2F;guest:guest@localhost:5672&#x2F;&#x2F;&#39;</span><br></pre></td></tr></table></figure>
+
+<p>完整的格式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CELERY_BROKER_URL &#x3D; &#39;amqp:&#x2F;&#x2F;[YOUR_NAME]:[PASSWORD]@localhost:[PORT]&#x2F;[VHOST_NAME]&#39;</span><br></pre></td></tr></table></figure>
+
+<h5 id="中间人Redis"><a href="#中间人Redis" class="headerlink" title="中间人Redis"></a>中间人Redis</h5><p>与 <code>RabbitMQ</code> 相比，使用 <code>Redis</code> 作为 <code>broker</code> 缺点是可能因为掉电或异常退出导致数据丢失，优点是使用简单。</p>
+<p>以下命令可以同时安装 <code>celery</code> 和 <code>redis</code> 相关的依赖，但是 <code>redis server</code> 还是必须单独安装的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install -U celery[redis] # -U 的意思是把所有指定的包都升级到最新的版本</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BROKER_URL &#x3D; &#39;redis:&#x2F;&#x2F;localhost:6379&#x2F;&#x2F;&#39;</span><br></pre></td></tr></table></figure>
+
+<h5 id="安装celery"><a href="#安装celery" class="headerlink" title="安装celery"></a>安装celery</h5><p>先安装 <code>python3</code>  <code>pip3</code> 等依赖:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># apt-get install -y python3 python3-pip</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># pip3 install celery</span><br><span class="line"># 或者：</span><br><span class="line"># pip3 install -U Celery</span><br></pre></td></tr></table></figure>
+
+<p>创建一个 <code>tasks.py</code> 文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from celery import Celery</span><br><span class="line"></span><br><span class="line">app &#x3D; Celery(&#39;tasks&#39;, broker&#x3D;&#39;amqp:&#x2F;&#x2F;guest@localhost&#x2F;&#x2F;&#39;)</span><br><span class="line"></span><br><span class="line">@app.task</span><br><span class="line">def add(x, y):</span><br><span class="line">    return x + y</span><br></pre></td></tr></table></figure>
+<p>注意，其中的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app &#x3D; Celery(&#39;tasks&#39;, broker&#x3D;&#39;amqp:&#x2F;&#x2F;guest@localhost&#x2F;&#x2F;&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>中 <code>broker</code> 要改为上面设置的RabbitMQ的信息，所以结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app &#x3D; Celery(&#39;tasks&#39;,broker&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>Celery 的第一个参数是当前模块的名称，这个参数是必须的，这样的话名称可以自动生成。<br>第二个参数是中间人关键字参数，指定你所使用的消息中间人的 URL。</p>
+<h5 id="保存结果"><a href="#保存结果" class="headerlink" title="保存结果"></a>保存结果</h5><p>执行完成后的结果，Celery 需要在某个地方存储或发送任务处理后的状态，可以通过 <code>backend</code> 参数来指定。格式和 <code>broker</code> 一致。</p>
+<p>完整的 <code>tasks.py</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">from celery import Celery</span><br><span class="line"></span><br><span class="line">app &#x3D; Celery(&#39;tasks&#39;,</span><br><span class="line">             broker&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;,</span><br><span class="line">             backend&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;</span><br><span class="line">             )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.task</span><br><span class="line">def add(x, y):</span><br><span class="line">    return x + y</span><br></pre></td></tr></table></figure>
+
+<h5 id="运行Celery"><a href="#运行Celery" class="headerlink" title="运行Celery"></a>运行Celery</h5><p>用 worker 参数执行程序:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ celery -A tasks worker --loglevel&#x3D;info</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">root@b792ae940e3e:&#x2F;app# celery -A tasks worker --loglevel&#x3D;info</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;lib&#x2F;python3.5&#x2F;dist-packages&#x2F;celery&#x2F;platforms.py:795: RuntimeWarning: You&#39;re running the worker with superuser privileges: this is</span><br><span class="line">absolutely not recommended!</span><br><span class="line"></span><br><span class="line">Please specify a different user using the -u option.</span><br><span class="line"></span><br><span class="line">User information: uid&#x3D;0 euid&#x3D;0 gid&#x3D;0 egid&#x3D;0</span><br><span class="line"></span><br><span class="line">  uid&#x3D;uid, euid&#x3D;euid, gid&#x3D;gid, egid&#x3D;egid,</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;lib&#x2F;python3.5&#x2F;dist-packages&#x2F;celery&#x2F;backends&#x2F;amqp.py:68: CPendingDeprecationWarning: </span><br><span class="line">    The AMQP result backend is scheduled for deprecation in     version 4.0 and removal in version v5.0.     Please use RPC backend or a persistent backend.</span><br><span class="line"></span><br><span class="line">  alternative&#x3D;&#39;Please use RPC backend or a persistent backend.&#39;)</span><br><span class="line"> </span><br><span class="line"> -------------- celery@b792ae940e3e v4.1.0 (latentcall)</span><br><span class="line">---- **** ----- </span><br><span class="line">--- * ***  * -- Linux-4.4.0-42-generic-x86_64-with-Ubuntu-16.04-xenial 2017-12-09 13:50:06</span><br><span class="line">-- * - **** --- </span><br><span class="line">- ** ---------- [config]</span><br><span class="line">- ** ---------- .&gt; app:         tasks:0x7f97a8360dd8</span><br><span class="line">- ** ---------- .&gt; transport:   amqp:&#x2F;&#x2F;myuser:**@localhost:5672&#x2F;hellohost</span><br><span class="line">- ** ---------- .&gt; results:     amqp:&#x2F;&#x2F;</span><br><span class="line">- *** --- * --- .&gt; concurrency: 2 (prefork)</span><br><span class="line">-- ******* ---- .&gt; task events: OFF (enable -E to monitor tasks in this worker)</span><br><span class="line">--- ***** ----- </span><br><span class="line"> -------------- [queues]</span><br><span class="line">                .&gt; celery           exchange&#x3D;celery(direct) key&#x3D;celery</span><br><span class="line">                </span><br><span class="line"></span><br><span class="line">[tasks]</span><br><span class="line">  . tasks.add</span><br><span class="line"></span><br><span class="line">[2017-12-09 13:50:06,121: INFO&#x2F;MainProcess] Connected to amqp:&#x2F;&#x2F;myuser:**@127.0.0.1:5672&#x2F;hellohost</span><br><span class="line">[2017-12-09 13:50:06,137: INFO&#x2F;MainProcess] mingle: searching for neighbors</span><br><span class="line">[2017-12-09 13:50:07,178: INFO&#x2F;MainProcess] mingle: all alone</span><br><span class="line">[2017-12-09 13:50:07,228: INFO&#x2F;MainProcess] celery@b792ae940e3e ready.</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>celery</code> 的 <code>worker</code> 已经准备就绪了。</p>
+<p>查看 <code>worker</code> 完整的命令行参数列表:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$  celery worker --help</span><br><span class="line">## 或者：</span><br><span class="line">$ celery help</span><br></pre></td></tr></table></figure>
+
+<h5 id="调用任务"><a href="#调用任务" class="headerlink" title="调用任务"></a>调用任务</h5><p>使用 <code>delay()</code> 方法来调用任务。</p>
+<p>新打开一个控制台界面，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker exec -it celery1 &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
+
+<p>执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># python3</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; from tasks import add</span><br><span class="line">&gt;&gt;&gt; add.delay(4, 4)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@b792ae940e3e:&#x2F;app# python3</span><br><span class="line">Python 3.5.2 (default, Nov 23 2017, 16:37:01) </span><br><span class="line">[GCC 5.4.0 20160609] on linux</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; from tasks import add</span><br><span class="line">&gt;&gt;&gt; add.delay(3,4)</span><br><span class="line">&lt;AsyncResult: e1ae8ea3-8a8f-47c5-befb-e6ba975f0580&gt;</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/171211/cc9H40dDJ5.jpg?imageslim" alt="mark"></p>
+<p>同时，也可以在 <code>RabbitMQ web</code> 管理页面看到新增了一个任务并存储了处理结果：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/171211/9JEB2m262l.jpg?imageslim" alt="mark"></p>
+<p>为了得到调用任务后返回的 <code>AsyncResult</code> 实例，通过一个参数来接收：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; result&#x3D;add.delay(3,4)</span><br></pre></td></tr></table></figure>
+
+<p><code>ready()</code> 方法查看任务是否完成处理:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; result.ready()</span><br><span class="line">True #结果返回 &#96;True&#96; 表示任务处理完成</span><br></pre></td></tr></table></figure>
+
+<p>这里是异步调用，如果我们需要返回的结果，那么要等 <code>ready</code> 状态为 <code>True</code> 才行。</p>
+<p>执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[2017-12-09 13:50:07,228: INFO&#x2F;MainProcess] celery@b792ae940e3e ready.</span><br><span class="line">[2017-12-09 14:00:33,132: INFO&#x2F;MainProcess] Received task: tasks.add[e1ae8ea3-8a8f-47c5-befb-e6ba975f0580]  </span><br><span class="line">[2017-12-09 14:00:33,163: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[e1ae8ea3-8a8f-47c5-befb-e6ba975f0580] succeeded in 0.02956800399988424s: 7</span><br><span class="line">[2017-12-09 14:17:21,033: INFO&#x2F;MainProcess] Received task: tasks.add[c178619e-3af3-41ed-8d2c-6371de80a601]  </span><br><span class="line">[2017-12-09 14:17:21,058: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[c178619e-3af3-41ed-8d2c-6371de80a601] succeeded in 0.024445844999718247s: 7</span><br></pre></td></tr></table></figure>
+
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="http://docs.jinkan.org/docs/celery/getting-started/first-steps-with-celery.html" target="_blank" rel="noopener">Celery 初步</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>如有疑问或需要技术讨论，请留言或发邮件到 service@itfanr.cc</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Leafney 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Leafney 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-second/" title="Celery分布式任务队列入门(二)-环境配置">https://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-second/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Celery/" rel="tag"># Celery</a>
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+              <a href="/tags/RabbitMQ/" rel="tag"># RabbitMQ</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/12/10/celery-distributed-task-queue-introduction-first/" rel="prev" title="Celery分布式任务队列入门(一)-理论">
+      <i class="fa fa-chevron-left"></i> Celery分布式任务队列入门(一)-理论
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/12/10/celery-distributed-task-queue-introduction-third/" rel="next" title="Celery分布式任务队列入门(三)-任务">
+      Celery分布式任务队列入门(三)-任务 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Docker容器"><span class="nav-number">1.</span> <span class="nav-text">创建Docker容器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#更新软件源"><span class="nav-number">1.1.</span> <span class="nav-text">更新软件源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装Erlang依赖"><span class="nav-number">1.2.</span> <span class="nav-text">安装Erlang依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装RabbitMQ"><span class="nav-number">1.3.</span> <span class="nav-text">安装RabbitMQ</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装官方最新版"><span class="nav-number">1.4.</span> <span class="nav-text">安装官方最新版</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Run-RabbitMQ-Server"><span class="nav-number">1.5.</span> <span class="nav-text">Run RabbitMQ Server</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RabbitMQ中的vitrual-host"><span class="nav-number">1.6.</span> <span class="nav-text">RabbitMQ中的vitrual host</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建用户并设置虚拟主机"><span class="nav-number">1.7.</span> <span class="nav-text">创建用户并设置虚拟主机</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Celery"><span class="nav-number">2.</span> <span class="nav-text">Celery</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#broker-和-backend"><span class="nav-number">2.1.</span> <span class="nav-text">broker 和 backend</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#中间人RabbitMQ"><span class="nav-number">2.2.</span> <span class="nav-text">中间人RabbitMQ</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#中间人Redis"><span class="nav-number">2.3.</span> <span class="nav-text">中间人Redis</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装celery"><span class="nav-number">2.4.</span> <span class="nav-text">安装celery</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#保存结果"><span class="nav-number">2.5.</span> <span class="nav-text">保存结果</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#运行Celery"><span class="nav-number">2.6.</span> <span class="nav-text">运行Celery</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#调用任务"><span class="nav-number">2.7.</span> <span class="nav-text">调用任务</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">3.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leafney"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Leafney</p>
+  <div class="site-description" itemprop="description">Stay Hungry. Stay Foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leafney" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leafney" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hub.docker.com/r/leafney/" title="DockerHub → https:&#x2F;&#x2F;hub.docker.com&#x2F;r&#x2F;leafney&#x2F;" rel="noopener" target="_blank"><i class="fab fa-docker fa-fw"></i>DockerHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:service@itfanr.cc" title="E-Mail → mailto:service@itfanr.cc" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        访客数 <span id="busuanzi_value_site_uv"></span> 人次
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        访问量 <span id="busuanzi_value_site_pv"></span> 次
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f28d68fd5271fd52826d',
+      clientSecret: '70a085c82c8d67b07e5482058272fcab3e969b83',
+      repo        : 'Leafney.github.io',
+      owner       : 'leafney',
+      admin       : ['leafney'],
+      id : 'itfanr_20171210235714',
+      labels: 'comments'.split(',').filter(l => l),
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

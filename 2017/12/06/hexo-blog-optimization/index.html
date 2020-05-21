@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.itfanr.cc","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="介绍Hexo博客功能优化项，如 文章置顶、显示版权、访问统计、字数统计、显示更新时间等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo博客功能优化">
+<meta property="og:url" content="https://www.itfanr.cc/2017/12/06/hexo-blog-optimization/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="介绍Hexo博客功能优化项，如 文章置顶、显示版权、访问统计、字数统计、显示更新时间等">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171206/Blk7gcB7CI.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/171206/LC91BEHEcg.png?imageslim">
+<meta property="article:published_time" content="2017-12-06T03:58:33.000Z">
+<meta property="article:modified_time" content="2017-12-06T03:58:33.000Z">
+<meta property="article:author" content="Leafney">
+<meta property="article:tag" content="Hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/171206/Blk7gcB7CI.png?imageslim">
+
+<link rel="canonical" href="https://www.itfanr.cc/2017/12/06/hexo-blog-optimization/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Hexo博客功能优化 | IT范儿</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">IT范儿</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">程序员改变世界</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leafney" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2017/12/06/hexo-blog-optimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="Stay Hungry. Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hexo博客功能优化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-12-06 11:58:33" itemprop="dateCreated datePublished" datetime="2017-12-06T11:58:33+08:00">2017-12-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">Hexo博客搭建</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">介绍Hexo博客功能优化项，如 文章置顶、显示版权、访问统计、字数统计、显示更新时间等</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>介绍Hexo博客功能优化项，如 文章置顶、显示版权、访问统计、字数统计、显示更新时间等</p>
+<h4 id="文章置顶"><a href="#文章置顶" class="headerlink" title="文章置顶"></a>文章置顶</h4><p>在Hexo博客中，有时候我们想要将一些特别的文章一直置顶在首页。Hexo博客中，默认的情况是按照时间倒序来排列的，即新发布的文章排在前面。虽然有一种很简单的方法，就是更改文章的发布时间到一个“未来”的时间点，这样虽然能让文章一直置顶，但是给人的体验和感觉是非常不好的。</p>
+<p>今天介绍一种非常简单而且体验上也非常好的方法。</p>
+<h5 id="安装node插件"><a href="#安装node插件" class="headerlink" title="安装node插件"></a>安装node插件</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm uninstall hexo-generator-index --save</span><br><span class="line">$ npm install hexo-generator-index-pin-top --save</span><br></pre></td></tr></table></figure>
+
+<h5 id="添加标记"><a href="#添加标记" class="headerlink" title="添加标记"></a>添加标记</h5><p>在需要置顶的文章的 <code>Front-matter</code> 中加上 <code>top: true</code> 即可。</p>
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 从0到1学Golang之基础--Go 数组</span><br><span class="line">date: 2017-05-24 22:07:58</span><br><span class="line">tags:</span><br><span class="line">    - Golang</span><br><span class="line">categories: </span><br><span class="line">    - 从0到1学Golang</span><br><span class="line">description: Golang下的数组操作</span><br><span class="line">top: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>ok，现在发布文章，就能看到我们设置的文章已经置顶显示了，即使是之前发布的文章，同时日期也不会被更改。</p>
+<h5 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h5><ul>
+<li><a href="http://www.netcan666.com/2015/11/22/%E8%A7%A3%E5%86%B3Hexo%E7%BD%AE%E9%A1%B6%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener">解决Hexo置顶问题</a></li>
+<li><a href="https://github.com/netcan/hexo-generator-index-pin-top" target="_blank" rel="noopener">hexo-generator-index-pin-top</a></li>
+<li><a href="https://ehlxr.me/2016/08/30/%E4%BD%BF%E7%94%A8Hexo%E5%9F%BA%E4%BA%8EGitHub-Pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%EF%BC%88%E4%B8%89%EF%BC%89/" target="_blank" rel="noopener">使用Hexo基于GitHub Pages搭建个人博客（三）</a></li>
+<li><a href="https://github.com/iissnan/hexo-theme-next/issues/415" target="_blank" rel="noopener">如何置顶post？</a></li>
+</ul>
+<hr>
+<h4 id="显示版权信息"><a href="#显示版权信息" class="headerlink" title="显示版权信息"></a>显示版权信息</h4><p>一般在网络上发表文章时，都要时刻提防着网络爬虫的抓取。特别是有些网站在抓取到你的文章后进行一些词语、段落的修改，公然改为自己发表的文章。完全无视原作者的辛苦。</p>
+<p>为了更好的标明文章的版权，一般我们都会在文章中添加上文章的链接、版权声明等信息，虽然不能完全彻底的抵制文章抄袭的情况，也算是“防君子不防小人”吧。</p>
+<h5 id="启用版权"><a href="#启用版权" class="headerlink" title="启用版权"></a>启用版权</h5><p>我使用的是 <code>Hexo</code> 的 <code>Next</code> 主题。找到主题目录下的 <code>_config.yml</code> 文件，更改以下部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Declare license on posts</span><br><span class="line">post_copyright:</span><br><span class="line">  enable: false</span><br><span class="line">  license: CC BY-NC-SA 3.0</span><br><span class="line">  license_url: https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-nc-sa&#x2F;3.0&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>将其中的 <code>enable: false</code> 改为 <code>enable: true</code> 即可。</p>
+<p>但是改完后，使用 <code>hexo s -g</code> 预览，发现 “本文链接” 部分有问题。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/171206/Blk7gcB7CI.png?imageslim" alt="mark"></p>
+<p>这就需要我们修改主站点的配置文件了。打开主站点的 <code>_config.yml</code> 文件，修改：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/171206/LC91BEHEcg.png?imageslim" alt="mark"></p>
+<p>将 <code>url</code> 部分改成自己站点的域名地址即可。</p>
+<h5 id="相关参考-1"><a href="#相关参考-1" class="headerlink" title="相关参考"></a>相关参考</h5><ul>
+<li><a href="http://www.crocutax.com/2017/05/20/Hexo%E6%8C%81%E7%BB%AD%E4%BC%98%E5%8C%96-%E5%9C%A8%E6%96%87%E7%AB%A0%E5%B0%BE%E9%83%A8%E6%B7%BB%E5%8A%A0%E7%89%88%E6%9D%83%E5%A3%B0%E6%98%8E%E4%BF%A1%E6%81%AF/" target="_blank" rel="noopener">Hexo持续优化-在文章尾部添加版权声明信息</a></li>
+</ul>
+<hr>
+<h4 id="访问统计功能"><a href="#访问统计功能" class="headerlink" title="访问统计功能"></a>访问统计功能</h4><p>在博客中我们一般都比较在意自己博客的访问量，或者哪篇文章比较受欢迎之类的。</p>
+<p>在Hexo的 <code>Next</code> 主题下带有多种统计和分析的功能。这里我选择 <code>不蒜子统计</code>来显示文章的访客数、浏览量等信息。</p>
+<h5 id="启用统计"><a href="#启用统计" class="headerlink" title="启用统计"></a>启用统计</h5><p>找到 <code>Next</code> 主题下的配置文件 <code>_config.yml</code> ，找到 <code>busuanzi_count</code> 部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># Show PV&#x2F;UV of the website&#x2F;page with busuanzi.</span><br><span class="line"># Get more information on http:&#x2F;&#x2F;ibruce.info&#x2F;2015&#x2F;04&#x2F;04&#x2F;busuanzi&#x2F;</span><br><span class="line">busuanzi_count:</span><br><span class="line">  # count values only if the other configs are false</span><br><span class="line">  enable: true</span><br><span class="line">  # custom uv span for the whole site</span><br><span class="line">  site_uv: true</span><br><span class="line">  site_uv_header: 访客数 &lt;i class&#x3D;&quot;fa fa-user&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">  site_uv_footer: 人次</span><br><span class="line">  # custom pv span for the whole site</span><br><span class="line">  site_pv: true</span><br><span class="line">  site_pv_header: 访问量 &lt;i class&#x3D;&quot;fa fa-eye&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">  site_pv_footer: 次</span><br><span class="line">  # custom pv span for one page only</span><br><span class="line">  page_pv: true</span><br><span class="line">  page_pv_header: 阅读量 &lt;i class&#x3D;&quot;fa fa-file-o&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">  page_pv_footer: 次</span><br></pre></td></tr></table></figure>
+
+<p>当 <code>enable: true</code> 时，代表开启全局开关。</p>
+<p>当 <code>site_uv: true</code> 时，代表在页面底部显示站点的UV值。<br>当 <code>site_pv: true</code> 时，代表在页面底部显示站点的PV值。<br>当 <code>page_pv: true</code> 时，代表在文章页面的标题下显示该页面的PV值（阅读数）。</p>
+<h5 id="相关参考-2"><a href="#相关参考-2" class="headerlink" title="相关参考"></a>相关参考</h5><ul>
+<li><a href="http://theme-next.iissnan.com/third-party-services.html#analytics-busuanzi" target="_blank" rel="noopener">不蒜子统计</a></li>
+</ul>
+<hr>
+<h4 id="显示文章更新时间"><a href="#显示文章更新时间" class="headerlink" title="显示文章更新时间"></a>显示文章更新时间</h4><p>在文章列表中我们一般都能看的文章的发布时间。对于一些文章来说，比如涉及到文章中的内容过期，或者软件的升级等等，我们都会进行一些修改。这种情况下，我们就像把文章的更新日期也显示处理，也能让读者看的我们写的之前的文章也是有更新的，不会过时的。</p>
+<h5 id="显示更新日期"><a href="#显示更新日期" class="headerlink" title="显示更新日期"></a>显示更新日期</h5><p>在 <code>Next</code> 主题下添加显示更新时间非常简单，找到主题下的配置文件 <code>_config.yml</code> 的 <code>post_meta</code> 部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Post meta display settings</span><br><span class="line">post_meta:</span><br><span class="line">  item_text: true</span><br><span class="line">  created_at: true</span><br><span class="line">  updated_at: false</span><br><span class="line">  categories: true</span><br></pre></td></tr></table></figure>
+
+<p>将 <code>updated_at: false</code> 修改为 <code>updated_at: true</code> 即可。 </p>
+<p>通过 <code>hexo s -g</code> 预览，可以看到已经自动添加上了更新日期。</p>
+<h5 id="自定义显示更新日期"><a href="#自定义显示更新日期" class="headerlink" title="自定义显示更新日期"></a>自定义显示更新日期</h5><p>对于某些特殊的文章，我们也想能够自定义这个更新的日期。当然，更改起来也非常的简单，Hexo默认就支持更新日期的配置。</p>
+<p>在每一篇文章的 <code>Front-matter</code> 部分，只要添加 <code>updated</code> 参数即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 从0到1学Golang之基础--Go 数组</span><br><span class="line">date: 2017-05-24 22:07:58</span><br><span class="line">updated: 2017-12-01 10:35:18</span><br><span class="line">tags:</span><br><span class="line">    - Golang</span><br><span class="line">categories: </span><br><span class="line">    - 从0到1学Golang</span><br><span class="line">description: Golang下的数组操作</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>这样我们就自定义了这篇文章的更新时间。</p>
+<h5 id="相关参考-3"><a href="#相关参考-3" class="headerlink" title="相关参考"></a>相关参考</h5><ul>
+<li><a href="https://hexo.io/zh-cn/docs/front-matter.html" target="_blank" rel="noopener">Front-matter</a></li>
+</ul>
+<hr>
+<h4 id="添加文章字数统计"><a href="#添加文章字数统计" class="headerlink" title="添加文章字数统计"></a>添加文章字数统计</h4><p>一般为了让读者大概估计阅读文章的时间，有的文章在头部会显示总的字数统计。</p>
+<h5 id="启用字数统计"><a href="#启用字数统计" class="headerlink" title="启用字数统计"></a>启用字数统计</h5><p>首先安装一个依赖插件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i --save hexo-wordcount</span><br></pre></td></tr></table></figure>
+
+<p>然后修改主题配置文件 <code>_config.yml</code> 中的 <code>post_wordcount</code> 部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Post wordcount display settings</span><br><span class="line"># Dependencies: https:&#x2F;&#x2F;github.com&#x2F;willin&#x2F;hexo-wordcount</span><br><span class="line">post_wordcount:</span><br><span class="line">  item_text: true   &#x2F;&#x2F;底部是否显示“总字数”字样</span><br><span class="line">  wordcount: false  &#x2F;&#x2F;文章字数统计</span><br><span class="line">  min2read: false  &#x2F;&#x2F;文章预计阅读时长（分钟）</span><br><span class="line">  totalcount: false  &#x2F;&#x2F;网站总字数，位于底部</span><br><span class="line">  separated_meta: true &#x2F;&#x2F;是否将文章的字数统计信息换行显示</span><br></pre></td></tr></table></figure>
+
+<p>将 <code>wordcount: false</code> 改为 <code>wordcount: true</code> 即可显示单篇文章的总字数了。<br>另外，<code>totalcount</code> 是用来统计整站总的字数的。</p>
+<h5 id="相关参考-4"><a href="#相关参考-4" class="headerlink" title="相关参考"></a>相关参考</h5><ul>
+<li><a href="https://github.com/willin/hexo-wordcount" target="_blank" rel="noopener">hexo-wordcount</a></li>
+<li><a href="https://zcore.coding.me/%E7%95%85%E7%8E%A9Hexo%E2%80%94%E2%80%942%EF%BC%9A%E9%AA%9A%E8%B5%B7%E6%9D%A5%E5%90%A7%EF%BC%8CNexT/" target="_blank" rel="noopener">畅玩Hexo——2：骚起来吧，NexT</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>如有疑问或需要技术讨论，请留言或发邮件到 service@itfanr.cc</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Leafney 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Leafney 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2017/12/06/hexo-blog-optimization/" title="Hexo博客功能优化">https://www.itfanr.cc/2017/12/06/hexo-blog-optimization/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/12/05/the-initial-experience-of-dueros-open-platform/" rel="prev" title="百度人工智能开放平台DuerOS初体验">
+      <i class="fa fa-chevron-left"></i> 百度人工智能开放平台DuerOS初体验
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/12/10/celery-distributed-task-queue-introduction-first/" rel="next" title="Celery分布式任务队列入门(一)-理论">
+      Celery分布式任务队列入门(一)-理论 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#文章置顶"><span class="nav-number">1.</span> <span class="nav-text">文章置顶</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装node插件"><span class="nav-number">1.1.</span> <span class="nav-text">安装node插件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#添加标记"><span class="nav-number">1.2.</span> <span class="nav-text">添加标记</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相关参考"><span class="nav-number">1.3.</span> <span class="nav-text">相关参考</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显示版权信息"><span class="nav-number">2.</span> <span class="nav-text">显示版权信息</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#启用版权"><span class="nav-number">2.1.</span> <span class="nav-text">启用版权</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相关参考-1"><span class="nav-number">2.2.</span> <span class="nav-text">相关参考</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#访问统计功能"><span class="nav-number">3.</span> <span class="nav-text">访问统计功能</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#启用统计"><span class="nav-number">3.1.</span> <span class="nav-text">启用统计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相关参考-2"><span class="nav-number">3.2.</span> <span class="nav-text">相关参考</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显示文章更新时间"><span class="nav-number">4.</span> <span class="nav-text">显示文章更新时间</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#显示更新日期"><span class="nav-number">4.1.</span> <span class="nav-text">显示更新日期</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自定义显示更新日期"><span class="nav-number">4.2.</span> <span class="nav-text">自定义显示更新日期</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相关参考-3"><span class="nav-number">4.3.</span> <span class="nav-text">相关参考</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加文章字数统计"><span class="nav-number">5.</span> <span class="nav-text">添加文章字数统计</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#启用字数统计"><span class="nav-number">5.1.</span> <span class="nav-text">启用字数统计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相关参考-4"><span class="nav-number">5.2.</span> <span class="nav-text">相关参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leafney"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Leafney</p>
+  <div class="site-description" itemprop="description">Stay Hungry. Stay Foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leafney" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leafney" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hub.docker.com/r/leafney/" title="DockerHub → https:&#x2F;&#x2F;hub.docker.com&#x2F;r&#x2F;leafney&#x2F;" rel="noopener" target="_blank"><i class="fab fa-docker fa-fw"></i>DockerHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:service@itfanr.cc" title="E-Mail → mailto:service@itfanr.cc" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        访客数 <span id="busuanzi_value_site_uv"></span> 人次
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        访问量 <span id="busuanzi_value_site_pv"></span> 次
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f28d68fd5271fd52826d',
+      clientSecret: '70a085c82c8d67b07e5482058272fcab3e969b83',
+      repo        : 'Leafney.github.io',
+      owner       : 'leafney',
+      admin       : ['leafney'],
+      id : 'itfanr_20171206115833',
+      labels: 'comments'.split(',').filter(l => l),
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

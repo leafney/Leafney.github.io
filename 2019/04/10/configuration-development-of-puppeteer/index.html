@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.itfanr.cc","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Puppeteer 入门 配置 优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Puppeteer配置小记">
+<meta property="og:url" content="https://www.itfanr.cc/2019/04/10/configuration-development-of-puppeteer/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="Puppeteer 入门 配置 优化">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-04-10T14:19:27.000Z">
+<meta property="article:modified_time" content="2019-04-10T14:27:08.000Z">
+<meta property="article:author" content="Leafney">
+<meta property="article:tag" content="数据抓取">
+<meta property="article:tag" content="Puppeteer">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.itfanr.cc/2019/04/10/configuration-development-of-puppeteer/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Puppeteer配置小记 | IT范儿</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">IT范儿</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">程序员改变世界</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leafney" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2019/04/10/configuration-development-of-puppeteer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="Stay Hungry. Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Puppeteer配置小记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-04-10 22:19:27 / 修改时间：22:27:08" itemprop="dateCreated datePublished" datetime="2019-04-10T22:19:27+08:00">2019-04-10</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">Puppeteer 入门 配置 优化</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近项目中需要实现动态数据的抓取，之前在抓取动态页面的时候都是通过 <code>Phantomjs</code> 、<code>Selenium</code> 、Chrome 或 Firefox的 <code>Headless</code> 模式等方法来实现，自从 Google Chrome 团队推出官方的 <code>Headless Chrome</code> 工具 <code>Puppeteer</code> 之后，似乎之前使用的那些工具一下都黯淡了。</p>
+<p><code>Puppeteer</code> 是一个 <code>Node</code> 代码库，基于 <code>DevTools</code> 协议，提供高级 API 自动化控制谷歌 Chrome 或 Chromium  浏览器。<code>Puppeteer</code> 默认以 <code>无界面方式</code> 运行。</p>
+<p>安装 Puppeteer 过程中会下载完整版的谷歌Chromium浏览器到 <code>node_modules</code> 目录。</p>
+<p>从 <code>1.7.0</code> 版后，谷歌发布了新的 <code>puppeteer-core</code> 安装包，默认不再自动下载谷歌Chromium浏览器。</p>
+<p><code>puppeteer-core</code> 是 <code>Puppeteer</code> 的轻量级版本，复用本地已安装的浏览器，或者连接到远程浏览器。</p>
+<hr>
+<h4 id="安装yarn"><a href="#安装yarn" class="headerlink" title="安装yarn"></a>安装yarn</h4><p>这里我使用 <code>yarn</code> 来管理依赖包。</p>
+<h5 id="Mac"><a href="#Mac" class="headerlink" title="Mac"></a>Mac</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ brew install yarn</span><br><span class="line"># 由于地址源的问题，该命令执行失败</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo npm install -g yarn</span><br><span class="line"># 使用这条命令安装成功</span><br></pre></td></tr></table></figure>
+
+<h5 id="Win"><a href="#Win" class="headerlink" title="Win"></a>Win</h5><p><code>Chocolatey</code> 是一个windows下的包管理器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">choco install yarn</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://chocolatey.org/" target="_blank" rel="noopener">Chocolatey - The package manager for Windows</a></li>
+</ul>
+<hr>
+<h4 id="使用yarn"><a href="#使用yarn" class="headerlink" title="使用yarn"></a>使用yarn</h4><h5 id="查看版本信息"><a href="#查看版本信息" class="headerlink" title="查看版本信息"></a>查看版本信息</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ yarn -v</span><br><span class="line">1.15.2</span><br></pre></td></tr></table></figure>
+
+<h5 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yarn init</span><br></pre></td></tr></table></figure>
+
+<h5 id="添加一个依赖"><a href="#添加一个依赖" class="headerlink" title="添加一个依赖"></a>添加一个依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ yarn add [package]</span><br><span class="line">$ yarn add [package]@[version]</span><br><span class="line">$ yarn add [package]@[tag]</span><br></pre></td></tr></table></figure>
+
+<h5 id="全局安装依赖"><a href="#全局安装依赖" class="headerlink" title="全局安装依赖"></a>全局安装依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yarn global add [package]</span><br></pre></td></tr></table></figure>
+
+<h5 id="更新一个依赖"><a href="#更新一个依赖" class="headerlink" title="更新一个依赖"></a>更新一个依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ yarn upgrade [package]</span><br><span class="line">$ yarn upgrade [package]@[version]</span><br><span class="line">$ yarn upgrade [package]@[tag]</span><br></pre></td></tr></table></figure>
+
+<h5 id="移除一个依赖"><a href="#移除一个依赖" class="headerlink" title="移除一个依赖"></a>移除一个依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yarn remove [package]</span><br></pre></td></tr></table></figure>
+
+<h5 id="安装package-json中所有的依赖项"><a href="#安装package-json中所有的依赖项" class="headerlink" title="安装package.json中所有的依赖项"></a>安装package.json中所有的依赖项</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ yarn</span><br><span class="line"># or:</span><br><span class="line">$ yarn install</span><br></pre></td></tr></table></figure>
+
+<h5 id="查看yarn配置"><a href="#查看yarn配置" class="headerlink" title="查看yarn配置"></a>查看yarn配置</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yarn config list</span><br></pre></td></tr></table></figure>
+
+<h5 id="更改-registry"><a href="#更改-registry" class="headerlink" title="更改 registry"></a>更改 registry</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#安装淘宝镜像</span><br><span class="line">$ yarn config set registry &quot;https:&#x2F;&#x2F;registry.npm.taobao.org&quot;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="安装Puppeteer"><a href="#安装Puppeteer" class="headerlink" title="安装Puppeteer"></a>安装Puppeteer</h4><h5 id="修改地址源"><a href="#修改地址源" class="headerlink" title="修改地址源"></a>修改地址源</h5><p>这里我采用的是 <code>puppeteer-core</code>。由于国内网络原因，需要修改仓库源地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ npm config set registry &quot;https:&#x2F;&#x2F;registry.npm.taobao.org&quot;</span><br><span class="line"></span><br><span class="line">$ yarn config set registry &quot;https:&#x2F;&#x2F;registry.npm.taobao.org&quot;</span><br><span class="line"></span><br><span class="line">$ yarn add puppeteer-core</span><br></pre></td></tr></table></figure>
+
+<h5 id="配置Chrome路径"><a href="#配置Chrome路径" class="headerlink" title="配置Chrome路径"></a>配置Chrome路径</h5><p>使用 <code>puppeteer-core</code>，需要手动指定已安装的Chrome浏览器的安装路径。</p>
+<p>Mac电脑上Chrome浏览器的的安装路径，可以通过在浏览器中输入 <code>chrome:\\version</code> 来查看。</p>
+<p>我的电脑上的路径为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;Applications&#x2F;Google\ Chrome.app&#x2F;Contents&#x2F;MacOS&#x2F;Google\ Chrome</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="Puppeteer配置"><a href="#Puppeteer配置" class="headerlink" title="Puppeteer配置"></a>Puppeteer配置</h4><h5 id="无界面模式"><a href="#无界面模式" class="headerlink" title="无界面模式"></a>无界面模式</h5><p>Puppeteer 默认使用 <code>headless</code> 模式运行，通过设置 <code>headless:false</code> 来显示GUI界面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const browser &#x3D; await puppeteer.launch(&#123;</span><br><span class="line">  headless: false</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="其他配置参数"><a href="#其他配置参数" class="headerlink" title="其他配置参数"></a>其他配置参数</h5><p>其他 <code>puppeteer.launch()</code> 配置项：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">     &#x2F;&#x2F; 若是手动下载的chromium需要指定chromium地址, 默认引用地址为 &#96;&#x2F;项目目录&#x2F;node_modules&#x2F;puppeteer&#x2F;.local-chromium&#x2F;&#96;</span><br><span class="line">    executablePath: &#39;&#x2F;Applications&#x2F;Google\ Chrome.app&#x2F;Contents&#x2F;MacOS&#x2F;Google\ Chrome&#39;,</span><br><span class="line">    &#x2F;&#x2F;设置超时时间</span><br><span class="line">    timeout: 15000,</span><br><span class="line">    &#x2F;&#x2F;如果是访问https页面 此属性会忽略https错误</span><br><span class="line">    ignoreHTTPSErrors: true,</span><br><span class="line">    &#x2F;&#x2F; 打开开发者工具, 当此值为true时, headless总为false</span><br><span class="line">    devtools: false,</span><br><span class="line">    &#x2F;&#x2F; 关闭headless模式, 不会打开浏览器</span><br><span class="line">    headless: false,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="沙箱、共享内存"><a href="#沙箱、共享内存" class="headerlink" title="沙箱、共享内存"></a>沙箱、共享内存</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const browser &#x3D; await puppeteer.launch(&#123;</span><br><span class="line">  args: [&#39;--no-sandbox&#39;, &#39;--disable-dev-shm-usage&#39;]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>--no-sandbox</code>: 去沙箱运行</li>
+<li><code>--disable-dev-shm-usage</code>: 默认情况下，Docker运行一个 <code>/dev/shm</code> 共享内存空间为64MB 的容器。这通常对Chrome来说太小，并且会导致Chrome在渲染大页面时崩溃。要修复，必须运行容器 <code>docker run --shm-size=1gb</code> 以增加 <code>/dev/shm</code> 的容量。从Chrome 65开始，使用 <code>--disable-dev-shm-usage</code> 标志启动浏览器即可，这将会写入共享内存文件 <code>/tmp</code> 而不是 <code>/dev/shm</code> .</li>
+</ul>
+<p>Linux沙箱：在计算机安全领域，沙箱(Sandbox)是一种程序的隔离运行机制，其目的是限制不可信进程的权限。沙箱技术经常被用于执行未经测试的或不可信的客户程序。为了避免不可信程序可能破坏其它程序的运行。</p>
+<ul>
+<li>参考 <a href="https://juejin.im/post/5bbc96785188255c72286403" target="_blank" rel="noopener">截图的诱惑：Docker部署Puppeteer项目 - 掘金</a></li>
+</ul>
+<h5 id="跳转到指定页"><a href="#跳转到指定页" class="headerlink" title="跳转到指定页"></a>跳转到指定页</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">await page.goto(&#39;https:&#x2F;&#x2F;github.com&#x2F;login&#39;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="等待"><a href="#等待" class="headerlink" title="等待"></a>等待</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 等待指定时间 ，second</span><br><span class="line">await page.waitFor(2*1000);</span><br><span class="line"></span><br><span class="line"># 等待某元素显示</span><br><span class="line">await page.waitForSelector(&#39;body.blog&#39;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置视图大小"><a href="#设置视图大小" class="headerlink" title="设置视图大小"></a>设置视图大小</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">await page.setViewport(&#123;width: 1280, height: 600&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>要注意：这里的视图大小指的是网页页面显示的大小，和浏览器界面的大小是两个概念。</p>
+<h5 id="截屏"><a href="#截屏" class="headerlink" title="截屏"></a>截屏</h5><p><code>fullPage</code> 可以控制是否截取整个页面:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">await page.screenshot(&#123;</span><br><span class="line">  path: &#39;jd.png&#39;,</span><br><span class="line">  fullPage: true</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置UserAgent"><a href="#设置UserAgent" class="headerlink" title="设置UserAgent"></a>设置UserAgent</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">await page.setUserAgent(&#39;Mozilla&#x2F;5.0 (iPhone; CPU iPhone OS 9_0_1 like Mac OS X) AppleWebKit&#x2F;601.1.46 (KHTML, like Gecko) Version&#x2F;9.0 Mobile&#x2F;13A404 Safari&#x2F;601.1&#39;)</span><br></pre></td></tr></table></figure>
+
+<h5 id="获取页面内容"><a href="#获取页面内容" class="headerlink" title="获取页面内容"></a>获取页面内容</h5><p>返回页面的完整 <code>html</code> 代码，包括 <code>doctype</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.content();</span><br></pre></td></tr></table></figure>
+
+<h5 id="拦截请求页面中的图片"><a href="#拦截请求页面中的图片" class="headerlink" title="拦截请求页面中的图片"></a>拦截请求页面中的图片</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 拦截请求页面中的图片</span><br><span class="line">await page.setRequestInterception(true);</span><br><span class="line">page.on(&#39;request&#39;, interceptedRequest &#x3D;&gt; &#123;</span><br><span class="line">    let url &#x3D; interceptedRequest.url();</span><br><span class="line">    if (url.indexOf(&#39;.png&#39;) &gt; -1 || url.indexOf(&#39;.jpg&#39;) &gt; -1) &#123;</span><br><span class="line">        interceptedRequest.abort();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        interceptedRequest.continue();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>参考 <a href="https://github.com/chenxiaochun/blog/issues/38" target="_blank" rel="noopener">Puppeteer：模拟浏览器操作行为的利器 · Issue #38 · chenxiaochun/blog</a></li>
+</ul>
+<h5 id="跳转等待页面加载完毕"><a href="#跳转等待页面加载完毕" class="headerlink" title="跳转等待页面加载完毕"></a>跳转等待页面加载完毕</h5><p>有时候使用 <code>timeout:3000</code> 这样的方式，并不能完全确定页面能在相应的时间范围内加载完而导致异常，可以通过如下的参数来实现，而尽量少用 <code>timeout</code> 这种限定性的方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">await page.goto(&#39;https:&#x2F;&#x2F;discordbots.org&#39;, &#123;waitUntil: &#39;domcontentloaded&#39;&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>参考 <a href="https://github.com/GoogleChrome/puppeteer/issues/2482" target="_blank" rel="noopener">UnhandledPromiseRejectionWarning on Navigation Timeout Exceeded · Issue #2482 · GoogleChrome/puppeteer</a></li>
+</ul>
+<h5 id="getBoundingClientRect"><a href="#getBoundingClientRect" class="headerlink" title="getBoundingClientRect()"></a>getBoundingClientRect()</h5><p>getBoundingClientRect()用于获得页面中某个元素的左，上，右和下分别相对浏览器视窗的位置。</p>
+<hr>
+<h4 id="一个例子"><a href="#一个例子" class="headerlink" title="一个例子"></a>一个例子</h4><p>这里，实现了一个简单的页面截屏的功能：</p>
+<p><code>get_png.js</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">const puppeteer &#x3D; require(&#39;puppeteer-core&#39;);</span><br><span class="line">const execPath &#x3D; &#39;&#x2F;Applications&#x2F;Google\ Chrome.app&#x2F;Contents&#x2F;MacOS&#x2F;Google\ Chrome&#39;;</span><br><span class="line"></span><br><span class="line">(async () &#x3D;&gt; &#123;</span><br><span class="line">    const browser &#x3D; await puppeteer.launch(&#123;</span><br><span class="line">        &#x2F;&#x2F; 关闭headless模式, 会打开浏览器</span><br><span class="line">        headless: false,</span><br><span class="line">        executablePath: execPath,</span><br><span class="line">        args: [&#39;--no-sandbox&#39;, &#39;--disable-dev-shm-usage&#39;],</span><br><span class="line">        &#x2F;&#x2F; 超时时间</span><br><span class="line">        timeout: 30000,</span><br><span class="line">    &#125;);</span><br><span class="line">    const page &#x3D; await browser.newPage();</span><br><span class="line">    await page.setViewport(&#123;</span><br><span class="line">        width: 1280,</span><br><span class="line">        height: 800,</span><br><span class="line">        &#x2F;&#x2F; deviceScaleFactor: 1,</span><br><span class="line">        &#x2F;&#x2F; isMobile: true</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    await page.goto(&#39;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;&#39;, &#123; waitUntil: &#39;domcontentloaded&#39; &#125;);</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; wait for some seconds</span><br><span class="line">    await page.waitFor(3000);</span><br><span class="line"></span><br><span class="line">    let title &#x3D; await page.title();</span><br><span class="line">    console.log(title);</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 截屏</span><br><span class="line">    await page.screenshot(&#123; path: &#39;test.png&#39;, fullPage: true &#125;);</span><br><span class="line"></span><br><span class="line">    await browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p>执行 <code>node get_png.js</code> 看效果。</p>
+<hr>
+<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><h5 id="ERR-NAME-RESOLUTION-FAILED"><a href="#ERR-NAME-RESOLUTION-FAILED" class="headerlink" title="ERR_NAME_RESOLUTION_FAILED"></a>ERR_NAME_RESOLUTION_FAILED</h5><p>使用 <code>puppeteer</code> 测试时报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">2019-04-07 19:41:50: received 12260073</span><br><span class="line">2019-04-07 19:41:50: https:&#x2F;&#x2F;item.jd.com&#x2F;12260073.html</span><br><span class="line">2019-04-07 19:41:56: the task data for 12260073 get result error:  Error: net::ERR_NAME_RESOLUTION_FAILED at https:&#x2F;&#x2F;item.jd.com&#x2F;12260073.html</span><br><span class="line">2019-04-07 19:41:56:     at navigate (&#x2F;app&#x2F;node_modules&#x2F;puppeteer-core&#x2F;lib&#x2F;FrameManager.js:101:37)</span><br><span class="line">2019-04-07 19:41:56:     at processTicksAndRejections (internal&#x2F;process&#x2F;task_queues.js:86:5)</span><br><span class="line">2019-04-07 19:41:56:   -- ASYNC --</span><br><span class="line">2019-04-07 19:41:56:     at Frame.&lt;anonymous&gt; (&#x2F;app&#x2F;node_modules&#x2F;puppeteer-core&#x2F;lib&#x2F;helper.js:110:27)</span><br><span class="line">2019-04-07 19:41:56:     at Page.goto (&#x2F;app&#x2F;node_modules&#x2F;puppeteer-core&#x2F;lib&#x2F;Page.js:656:49)</span><br><span class="line">2019-04-07 19:41:56:     at Page.&lt;anonymous&gt; (&#x2F;app&#x2F;node_modules&#x2F;puppeteer-core&#x2F;lib&#x2F;helper.js:111:23)</span><br><span class="line">2019-04-07 19:41:56:     at Object.runPuppet (&#x2F;app&#x2F;src&#x2F;puppet.js:51:16)</span><br><span class="line">2019-04-07 19:41:56:     at processTicksAndRejections (internal&#x2F;process&#x2F;task_queues.js:86:5)</span><br></pre></td></tr></table></figure>
+
+<p>找到一种说法：设置 <code>UserAgent</code> ，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(async function main() &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        const browser &#x3D; await puppeteer.launch(&#123;headless: true&#125;);</span><br><span class="line">        const page &#x3D; await browser.newPage();</span><br><span class="line">        await page.setUserAgent(&#39;Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;68.0.3419.0 Safari&#x2F;537.36&#39;);</span><br><span class="line">        await page.goto(&#39;http:&#x2F;&#x2F;example.com&#39;);</span><br><span class="line">         &#x2F;&#x2F;your code</span><br><span class="line">         await browser.close();</span><br><span class="line">    &#125;</span><br><span class="line">    catch(e)&#123;</span><br><span class="line">        console.log(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>参考 <a href="https://github.com/GoogleChrome/puppeteer/issues/1477#issuecomment-437568281" target="_blank" rel="noopener">page.goto() method generates <code>Error: net::ERR_CONNECTION_RESET</code> error · Issue #1477 · GoogleChrome/puppeteer</a></li>
+</ul>
+<p>经测试观察，添加了 <code>UserAgent</code> 设置后确实不会报错了。</p>
+<h5 id="Promise中的console-log"><a href="#Promise中的console-log" class="headerlink" title="Promise中的console.log"></a>Promise中的console.log</h5><p>在函数内有 <code>console.log(&#39;按f12,我出现在浏览器的console中，并不在node命令行&#39;)</code></p>
+<p>你会发现node命令行看不到这句话，而在Chromium的console中看见。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const result &#x3D; await page.$eval(selector, el &#x3D;&gt; &#123;</span><br><span class="line">    &#x2F;&#x2F;如果需要赋值要返回Promise</span><br><span class="line">    return new Promise(resolve &#x3D;&gt; &#123;</span><br><span class="line">        &#x2F;&#x2F;...一波骚操作</span><br><span class="line">        &#x2F;&#x2F;可以用Dom api啦</span><br><span class="line">        reslove(obj)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br><span class="line">await iframe.$$eval(selector, el &#x3D;&gt; &#123;...&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在page.evaluate中用console是不能在node命令行打印出来的，不过有了监听事件就可以改变这个规则了。也可以在监听事件里面做容错处理。</p>
+<p>如下的方式实现监听事件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">page.on(&#39;console&#39;, msg &#x3D;&gt; &#123;</span><br><span class="line">    console.log(msg);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>参考 <a href="https://juejin.im/post/5af6876b518825426726218f" target="_blank" rel="noopener">我常用的puppeteer爬虫api - 掘金</a></li>
+</ul>
+<hr>
+<h4 id="Docker镜像"><a href="#Docker镜像" class="headerlink" title="Docker镜像"></a>Docker镜像</h4><p>为了部署的方便，我实现了 <code>puppeteer</code> 环境的Docker镜像，具体可查看：</p>
+<ul>
+<li><a href="https://github.com/leafney/alpine-puppeteer" target="_blank" rel="noopener">leafney/alpine-puppeteer: Alpine Docker Puppeteer Environment</a></li>
+</ul>
+<hr>
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="https://zhaoqize.github.io/puppeteer-api-zh_CN/" target="_blank" rel="noopener">Puppeteer v1.14.0</a></li>
+<li><a href="https://juejin.im/post/5bbc96785188255c72286403#heading-4" target="_blank" rel="noopener">截图的诱惑：Docker部署Puppeteer项目 - 掘金</a> <strong>值的参考</strong></li>
+<li><a href="https://juejin.im/post/5a506682f265da3e474435d9" target="_blank" rel="noopener">爬虫利器 Puppeteer 实战 - 掘金</a></li>
+<li><a href="https://juejin.im/post/5ac20c9c5188255c620f3f88" target="_blank" rel="noopener">puppeteer初体验 - 掘金</a></li>
+<li><a href="https://juejin.im/post/5b7a8e796fb9a01a0717b2b9" target="_blank" rel="noopener">「译」如何用 Node.Js 和 Puppeteer 爬取网页 - 掘金</a></li>
+<li><a href="https://www.jianshu.com/p/873f0bb2c3e5" target="_blank" rel="noopener">手动下载 Chrome，解决 puppeteer 无法使用问题 - 简书</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>如有疑问或需要技术讨论，请留言或发邮件到 service@itfanr.cc</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Leafney 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Leafney 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2019/04/10/configuration-development-of-puppeteer/" title="Puppeteer配置小记">https://www.itfanr.cc/2019/04/10/configuration-development-of-puppeteer/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8A%93%E5%8F%96/" rel="tag"># 数据抓取</a>
+              <a href="/tags/Puppeteer/" rel="tag"># Puppeteer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/04/08/deploying-nodejs-applications-with-docker/" rel="prev" title="通过Docker部署Nodejs项目产生的一些思考">
+      <i class="fa fa-chevron-left"></i> 通过Docker部署Nodejs项目产生的一些思考
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/04/26/shell-command-auto-completion-plug-in-zsh-autosuggestions/" rel="next" title="Shell命令自动补全插件zsh-autosuggestions">
+      Shell命令自动补全插件zsh-autosuggestions <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装yarn"><span class="nav-number">1.</span> <span class="nav-text">安装yarn</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Mac"><span class="nav-number">1.1.</span> <span class="nav-text">Mac</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Win"><span class="nav-number">1.2.</span> <span class="nav-text">Win</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用yarn"><span class="nav-number">2.</span> <span class="nav-text">使用yarn</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查看版本信息"><span class="nav-number">2.1.</span> <span class="nav-text">查看版本信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#初始化项目"><span class="nav-number">2.2.</span> <span class="nav-text">初始化项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#添加一个依赖"><span class="nav-number">2.3.</span> <span class="nav-text">添加一个依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#全局安装依赖"><span class="nav-number">2.4.</span> <span class="nav-text">全局安装依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#更新一个依赖"><span class="nav-number">2.5.</span> <span class="nav-text">更新一个依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#移除一个依赖"><span class="nav-number">2.6.</span> <span class="nav-text">移除一个依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装package-json中所有的依赖项"><span class="nav-number">2.7.</span> <span class="nav-text">安装package.json中所有的依赖项</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看yarn配置"><span class="nav-number">2.8.</span> <span class="nav-text">查看yarn配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#更改-registry"><span class="nav-number">2.9.</span> <span class="nav-text">更改 registry</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Puppeteer"><span class="nav-number">3.</span> <span class="nav-text">安装Puppeteer</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#修改地址源"><span class="nav-number">3.1.</span> <span class="nav-text">修改地址源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置Chrome路径"><span class="nav-number">3.2.</span> <span class="nav-text">配置Chrome路径</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Puppeteer配置"><span class="nav-number">4.</span> <span class="nav-text">Puppeteer配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#无界面模式"><span class="nav-number">4.1.</span> <span class="nav-text">无界面模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其他配置参数"><span class="nav-number">4.2.</span> <span class="nav-text">其他配置参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#沙箱、共享内存"><span class="nav-number">4.3.</span> <span class="nav-text">沙箱、共享内存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#跳转到指定页"><span class="nav-number">4.4.</span> <span class="nav-text">跳转到指定页</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#等待"><span class="nav-number">4.5.</span> <span class="nav-text">等待</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置视图大小"><span class="nav-number">4.6.</span> <span class="nav-text">设置视图大小</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#截屏"><span class="nav-number">4.7.</span> <span class="nav-text">截屏</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置UserAgent"><span class="nav-number">4.8.</span> <span class="nav-text">设置UserAgent</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取页面内容"><span class="nav-number">4.9.</span> <span class="nav-text">获取页面内容</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#拦截请求页面中的图片"><span class="nav-number">4.10.</span> <span class="nav-text">拦截请求页面中的图片</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#跳转等待页面加载完毕"><span class="nav-number">4.11.</span> <span class="nav-text">跳转等待页面加载完毕</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#getBoundingClientRect"><span class="nav-number">4.12.</span> <span class="nav-text">getBoundingClientRect()</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个例子"><span class="nav-number">5.</span> <span class="nav-text">一个例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#遇到的问题"><span class="nav-number">6.</span> <span class="nav-text">遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ERR-NAME-RESOLUTION-FAILED"><span class="nav-number">6.1.</span> <span class="nav-text">ERR_NAME_RESOLUTION_FAILED</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Promise中的console-log"><span class="nav-number">6.2.</span> <span class="nav-text">Promise中的console.log</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker镜像"><span class="nav-number">7.</span> <span class="nav-text">Docker镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">8.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leafney"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Leafney</p>
+  <div class="site-description" itemprop="description">Stay Hungry. Stay Foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leafney" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leafney" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hub.docker.com/r/leafney/" title="DockerHub → https:&#x2F;&#x2F;hub.docker.com&#x2F;r&#x2F;leafney&#x2F;" rel="noopener" target="_blank"><i class="fab fa-docker fa-fw"></i>DockerHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:service@itfanr.cc" title="E-Mail → mailto:service@itfanr.cc" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        访客数 <span id="busuanzi_value_site_uv"></span> 人次
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        访问量 <span id="busuanzi_value_site_pv"></span> 次
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f28d68fd5271fd52826d',
+      clientSecret: '70a085c82c8d67b07e5482058272fcab3e969b83',
+      repo        : 'Leafney.github.io',
+      owner       : 'leafney',
+      admin       : ['leafney'],
+      id : 'itfanr_20190410221927',
+      labels: 'comments'.split(',').filter(l => l),
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

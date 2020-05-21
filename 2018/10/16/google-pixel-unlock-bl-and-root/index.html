@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.itfanr.cc","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Google Pixel解锁BL、刷入Twrp及Root 不做过多解释，懂的人自然懂">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google Pixel解锁BL、刷入Twrp及Root折腾小记">
+<meta property="og:url" content="https://www.itfanr.cc/2018/10/16/google-pixel-unlock-bl-and-root/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="Google Pixel解锁BL、刷入Twrp及Root 不做过多解释，懂的人自然懂">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016195733.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016143933.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016144134.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016144340.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016211926.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016212056.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016191327.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016191719.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181017110509.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016212322.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016212428.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016155219.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016161659.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016183455.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184210.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184312.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184418.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184615.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184814.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184312.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016184919.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016185120.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016185217.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016185342.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181016185438.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181017101716.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181017104902.png?imageslim">
+<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20181017105009.png?imageslim">
+<meta property="article:published_time" content="2018-10-16T13:29:13.000Z">
+<meta property="article:modified_time" content="2019-08-27T06:39:56.000Z">
+<meta property="article:author" content="Leafney">
+<meta property="article:tag" content="Skill">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/20181016195733.png?imageslim">
+
+<link rel="canonical" href="https://www.itfanr.cc/2018/10/16/google-pixel-unlock-bl-and-root/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Google Pixel解锁BL、刷入Twrp及Root折腾小记 | IT范儿</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">IT范儿</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">程序员改变世界</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leafney" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2018/10/16/google-pixel-unlock-bl-and-root/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="Stay Hungry. Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Google Pixel解锁BL、刷入Twrp及Root折腾小记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-16 21:29:13" itemprop="dateCreated datePublished" datetime="2018-10-16T21:29:13+08:00">2018-10-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-08-27 14:39:56" itemprop="dateModified" datetime="2019-08-27T14:39:56+08:00">2019-08-27</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">Google Pixel解锁BL、刷入Twrp及Root 不做过多解释，懂的人自然懂</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>因为个人项目上的需要，我从某宝入手了一款二手的Google Pixel 欧版手机。当初选择时主要是考虑到它的大内存–4G内存，可以流畅运行常用的程序。（不过入手之后的感觉就是，要想用好Google的手机，「科学上网」是必备的技能，否则的话，还是用国内的手机吧！）</p>
+<p>因为需要在手机上安装按键精灵的手机版app，而调试按键精灵的脚本又需要获取手机的Root权限，所以就开始了我的Pixel刷机之旅。</p>
+<hr>
+<h4 id="准备工具"><a href="#准备工具" class="headerlink" title="准备工具"></a>准备工具</h4><ol>
+<li>Google Pixel手机 欧版（国际版）</li>
+<li>Android 8.1.0</li>
+<li>Windows或Mac</li>
+<li>twrp</li>
+<li>Magisk</li>
+<li>ss</li>
+</ol>
+<hr>
+<h4 id="欧版判断"><a href="#欧版判断" class="headerlink" title="欧版判断"></a>欧版判断</h4><p>点击Settings(设置) -&gt; System(系统) -&gt; About phone(关于手机) -&gt; Regulatory labels(监管标签) 查看。</p>
+<p>MODEL: G-2PW4200 ，其中 <code>4200</code> 表示欧版，<code>4100</code> 表示美版。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016195733.png?imageslim" alt=""></p>
+<hr>
+<h4 id="解锁Bootloader"><a href="#解锁Bootloader" class="headerlink" title="解锁Bootloader"></a>解锁Bootloader</h4><p>（注意：解锁 Bootloader 重置设备数据，请注意备份。一定不要忘记退出你的Google账号和取消指纹识别及锁屏设置。）</p>
+<p>由于我的手机是新买的，所以这些操作就免了。</p>
+<hr>
+<h5 id="开启USB调试和OEM解锁"><a href="#开启USB调试和OEM解锁" class="headerlink" title="开启USB调试和OEM解锁"></a>开启USB调试和OEM解锁</h5><p>安装「科学上网」工具，并成功接入互联网。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016143933.png?imageslim" alt=""></p>
+<p>选择 「设置-系统-关于手机-版本号」，猛击「版本号」7次开启 「开发者选项」。</p>
+<p>返回「上一页」，在「开发者选项」中开启「USB调试」和「OEM解锁」两个选项。如果「OEM解锁」选项显示为灰色，请检查网络连接是否正常。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016144134.png?imageslim" alt=""></p>
+<p>通过数据线将手机连接至电脑，此时，手机端会弹出 USB 调试申请，点击「允许」。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016144340.png?imageslim" alt=""></p>
+<p>可以通过命令 <code>adb devices</code> 来验证是否允许adb调试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜ adb devices</span><br><span class="line">List of devices attached</span><br><span class="line">FA6XXXXXXX53    device</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="进入-Bootloader模式"><a href="#进入-Bootloader模式" class="headerlink" title="进入 Bootloader模式"></a>进入 Bootloader模式</h5><p>进入bootloader默认有两种方式，第一种是通过在关机状态下「按住电源键+音量减少键」；第二种是通过「ADB命令」进入。</p>
+<p>这里我采用「adb命令」来操作。</p>
+<p>回到命令提示符窗口，键入 <code>adb reboot bootloader</code> 并回车，手机会立即重启至 Bootloader 模式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb reboot bootloader</span><br></pre></td></tr></table></figure>
+
+<p>之后，通过 <code>fastboot devices</code> 命令验证 fastboot 是否成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜ fastboot devices</span><br><span class="line">FA6AB0311758    fastboot</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="解锁-Bootloader"><a href="#解锁-Bootloader" class="headerlink" title="解锁 Bootloader"></a>解锁 Bootloader</h5><p>上一步进入Bootloader页面后，手机界面应该是如下图：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016211926.png?imageslim" alt=""></p>
+<p>在命令提示符窗口键入 <code>fastboot flashing unlock</code> 并回车，手机进入 Bootloader 解锁界面。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜ fastboot flashing unlock</span><br><span class="line">...</span><br><span class="line">OKAY [  0.049s]</span><br><span class="line">finished. total time: 0.049s</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016212056.png?imageslim" alt=""></p>
+<p>对于 <code>Pixel 2 XL</code> 机型，要用如下的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastboot flashing unlock_critical</span><br></pre></td></tr></table></figure>
+
+<p>详情查看：<a href="https://developers.google.com/android/images" target="_blank" rel="noopener">Factory Images for Nexus and Pixel Devices  |  Google APIs for Android  |  Google Developers</a></p>
+<p>在 Bootloader 解锁界面中，使用音量键 <code>+/-</code> 来控制光标，选择「Yes」并按下电源键来进行 Bootloader 解锁。</p>
+<p>确认完毕后,稍作等待。通过 <code>fastboot reboot</code> 命令重启手机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜ fastboot reboot</span><br><span class="line">rebooting...</span><br><span class="line"></span><br><span class="line">finished. total time: 0.050s</span><br></pre></td></tr></table></figure>
+
+<p>稍等片刻之后，你的设备会自动重启。</p>
+<hr>
+<h5 id="判断解锁成功"><a href="#判断解锁成功" class="headerlink" title="判断解锁成功"></a>判断解锁成功</h5><p>当手机重启时出现黑底白字的英文警告页以及屏幕下方出现一把打开的小锁，那 Bootloader 就解锁成功啦。</p>
+<p>重启手机，出现如下两个界面就算解锁成功：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016191327.png?imageslim" alt=""></p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016191719.png?imageslim" alt=""></p>
+<p>当然，还有一种更简单的方法，就是再次进入 <code>fastboot</code> 模式，查看：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181017110509.png?imageslim" alt=""></p>
+<hr>
+<h4 id="解锁Bootloader后的两个问题"><a href="#解锁Bootloader后的两个问题" class="headerlink" title="解锁Bootloader后的两个问题"></a>解锁Bootloader后的两个问题</h4><h5 id="恢复初始"><a href="#恢复初始" class="headerlink" title="恢复初始"></a>恢复初始</h5><p>在解锁 Bootloader 之后，可以看到手机系统已经是完全初始化的状态了。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016212322.png?imageslim" alt=""></p>
+<p>在进入 「关于手机」 界面后，可以发现之前开启的「开发者选项」也是默认关闭了，需要再次点击7次「版本号」开启。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016212428.png?imageslim" alt=""></p>
+<p>那么，在执行后面的操作时是否仍需要再次将「OEM解锁」打开呢？答案是：<strong>不需要</strong>。</p>
+<p>然而，因为后面需要用到 <code>adb</code> 命令去操作手机，所以「USB调试」选项还是需要打开的。</p>
+<p>关于「OEM锁与bootloader锁的关系」，可以看下面的 <a href="#OEM锁与bootloader锁的关系">疑难解答</a> 。</p>
+<hr>
+<h5 id="错误提示"><a href="#错误提示" class="headerlink" title="错误提示"></a>错误提示</h5><p>成功解锁Bootloader后，每次手机启动或重启时，都会出现黑底白字的英文警告页，提示 “Your device software can’t be checked for corruption. Please lock the bootloader”。 </p>
+<p><strong>这没有什么可担心的，这是正常的！</strong></p>
+<p>这仅仅是提示你 Bootloader 被解锁了，直接忽视即可。</p>
+<hr>
+<h4 id="刷入第三方Recovery-TWRP及Root"><a href="#刷入第三方Recovery-TWRP及Root" class="headerlink" title="刷入第三方Recovery:TWRP及Root"></a>刷入第三方Recovery:TWRP及Root</h4><p>由于Pixel及Pixel XL都采用A/B升级系统，因而可以理解为手机里有2个系统，如果你按照传统刷入Twrp的方法刷入的话，那么你并不会获得一个永久的Twrp。所以需要先刷入一个临时的Twrp，在通过临时的Twrp来刷入永久的Twrp从而来获取Root权限。</p>
+<h5 id="下载必要软件"><a href="#下载必要软件" class="headerlink" title="下载必要软件"></a>下载必要软件</h5><p>需要下载临时的Twrp、永久Twrp及Magisk三个文件。</p>
+<p>首先，前往 TWRP 官网 <a href="https://twrp.me/Devices/" target="_blank" rel="noopener">Devices</a> 下载最新版 TWRP 压缩包（.zip）和临时 TWRP 镜像文件（.img）。</p>
+<p>我的Pixel对应选择从这个页面 <a href="https://dl.twrp.me/sailfish/" target="_blank" rel="noopener">Download TWRP for sailfish</a> 下载的 <code>3.2.3-1</code> 版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">twrp-pixel-installer-sailfish-3.2.3-1.zip （永久twrp）</span><br><span class="line">twrp-3.2.3-1-sailfish.img (临时twrp)</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016155219.png?imageslim" alt=""></p>
+<p>从github <a href="https://github.com/topjohnwu/Magisk/releases" target="_blank" rel="noopener">Releases · topjohnwu/Magisk</a> 下载最新的 Magisk 包。 这里我下载的是 <code>17.2</code> 版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Magisk-v17.2.zip</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016161659.png?imageslim" alt=""></p>
+<hr>
+<h5 id="拷贝文件到手机"><a href="#拷贝文件到手机" class="headerlink" title="拷贝文件到手机"></a>拷贝文件到手机</h5><p>假设我电脑上的操作目录为: <code>~/test/pixel</code> 。</p>
+<p>将 <code>twrp-3.2.3-1-sailfish.img</code> 拷贝到该目录下。</p>
+<p>将 <code>twrp-pixel-installer-sailfish-3.2.3-1.zip</code> 和 <code>Magisk-v17.2.zip</code> 拷贝到手机中。</p>
+<p>在将文件拷贝到手机中时，我发现通过数据线连接到电脑时，选择 <code>传输文件</code> 电脑中并没有出现手机存储的盘符，也就无法直接将文件拖拽到手机中。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016183455.png?imageslim" alt=""></p>
+<p>在经过一番摆弄之后，我觉得最靠谱的还是通过 <code>adb</code> 的方式来上传文件。</p>
+<p>连接手机，在手机端弹出「USB调试」点击确定，打开item2，切换到目录 <code>~/test/pixel</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ ls</span><br><span class="line">Magisk-v17.2.zip                          twrp-3.2.3-1-sailfish.img                 twrp-pixel-installer-sailfish-3.2.3-1.zip</span><br></pre></td></tr></table></figure>
+
+<p>查看adb连接状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb devices</span><br><span class="line">List of devices attached</span><br><span class="line">FA6XXXXXXX53    device</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>先通过 <code>adb shell</code> 命令进入手机的bash命令下，在 <code>/sdcard</code> 目录下创建临时文件夹 <code>tmp</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb shell</span><br><span class="line">sailfish:&#x2F; $ cd sdcard&#x2F;</span><br><span class="line">sailfish:&#x2F;sdcard $ mkdir tmp</span><br><span class="line">sailfish:&#x2F;sdcard $ ls</span><br><span class="line">Alarms Android DCIM Download Movies Music Notifications Pictures Podcasts Ringtones tmp</span><br><span class="line">sailfish:&#x2F;sdcard $ ls -al</span><br><span class="line">total 100</span><br><span class="line">drwxrwx--x 13 root sdcard_rw 4096 2018-10-16 17:27 .</span><br><span class="line">drwx--x--x  4 root sdcard_rw 4096 2009-01-01 16:02 ..</span><br><span class="line">drwxrwx--x  2 root sdcard_rw 4096 2009-01-01 16:02 Alarms</span><br><span class="line">drwxrwx--x  3 root sdcard_rw 4096 2009-01-01 16:02 Android</span><br><span class="line">drwxrwx--x  2 root sdcard_rw 4096 2009-01-01 16:02 DCIM</span><br><span class="line">drwxrwx--x  2 root sdcard_rw 4096 2009-01-01 16:02 Download</span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">drwxrwx--x  2 root sdcard_rw 4096 2018-10-16 17:27 tmp</span><br><span class="line">sailfish:&#x2F;sdcard $</span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>adb push &lt;local&gt; &lt;remote&gt;</code> 命令将文件上传到手机的 <code>/sdcard/tmp/</code> 目录中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb push twrp-pixel-installer-sailfish-3.2.3-1.zip &#x2F;sdcard&#x2F;tmp&#x2F;</span><br><span class="line">twrp-pixel-installer-sailfish-3.2.3-1.zip: 1 file pushed. 14.6 MB&#x2F;s (11492088 bytes in 0.753s)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb push Magisk-v17.2.zip &#x2F;sdcard&#x2F;tmp&#x2F;</span><br><span class="line">Magisk-v17.2.zip: 1 file pushed. 16.3 MB&#x2F;s (4174026 bytes in 0.245s)</span><br></pre></td></tr></table></figure>
+
+<p>查看手机中文件列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb shell ls -al &#x2F;sdcard&#x2F;tmp&#x2F;</span><br><span class="line">total 15328</span><br><span class="line">drwxrwx--x  2 root sdcard_rw     4096 2018-10-16 17:32 .</span><br><span class="line">drwxrwx--x 13 root sdcard_rw     4096 2018-10-16 17:27 ..</span><br><span class="line">-rw-rw----  1 root sdcard_rw  4174026 2018-10-16 16:07 Magisk-v17.2.zip</span><br><span class="line">-rw-rw----  1 root sdcard_rw 11492088 2018-10-16 15:56 twrp-pixel-installer-sailfish-3.2.3-1.zip</span><br></pre></td></tr></table></figure>
+
+<p>注：对于为什么将文件拷贝到手机的 <code>/sdcard</code> 目录，可以看下面的 <a href="#adbpush文件时权限不够">疑难解答</a></p>
+<hr>
+<h5 id="刷临时Twrp"><a href="#刷临时Twrp" class="headerlink" title="刷临时Twrp"></a>刷临时Twrp</h5><h6 id="引导进入-Bootloader"><a href="#引导进入-Bootloader" class="headerlink" title="引导进入 Bootloader"></a>引导进入 Bootloader</h6><p>执行命令 <code>adb reboot bootloader</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb reboot bootloader</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h6 id="刷入临时Twrp"><a href="#刷入临时Twrp" class="headerlink" title="刷入临时Twrp"></a>刷入临时Twrp</h6><p>执行命令 <code>fastboot boot *.img</code> 来启动临时Twrp：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel took 5s</span><br><span class="line">➜ fastboot boot twrp-3.2.3-1-sailfish.img</span><br><span class="line">downloading &#39;boot.img&#39;...</span><br><span class="line">OKAY [  0.712s]</span><br><span class="line">booting...</span><br><span class="line">OKAY [  0.903s]</span><br><span class="line">finished. total time: 1.615s</span><br></pre></td></tr></table></figure>
+
+<p>之后，手机会进入到临时的Twrp中：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184210.png?imageslim" alt=""></p>
+<p>滑动下面的 <code>Swipe to Allow Modifications</code> 滑条，进入Twrp操作页面：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184312.png?imageslim" alt=""></p>
+<hr>
+<h5 id="刷入永久Twrp"><a href="#刷入永久Twrp" class="headerlink" title="刷入永久Twrp"></a>刷入永久Twrp</h5><p>选择 <code>Install</code> – 找到目录 <code>/sdcard/tmp/</code> – 选择 <code>twrp*.zip</code> 文件 – 弹出安装界面 – 直接滑动底部的滑条 <code>Swipe to confirm Flash</code> 安装：</p>
+<blockquote>
+<p>这里也间接验证了为什么要选择 <code>/sdcard</code> 目录：点击 <code>Install</code> 按钮后，直接进入的就是 <code>/sdcard</code> 目录，即只能操作这个目录。</p>
+</blockquote>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184418.png?imageslim" alt=""></p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184615.png?imageslim" alt=""></p>
+<p>等待进度条执行完毕，最后会显示 <code>...done</code> 的提示。说明这一步执行完成。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184814.png?imageslim" alt=""></p>
+<hr>
+<h5 id="刷入Magisk"><a href="#刷入Magisk" class="headerlink" title="刷入Magisk"></a>刷入Magisk</h5><p>上一步安装完成后，我们发现界面中只有两个按钮：<code>Wipe cache/dalvik</code> 和 <code>Reboot System</code> 。后一项肯定不能选，如果选择重启，那还有一个 <code>Magisk</code> 文件没有刷入，否则的话还需要走一遍上面的 <code>刷入临时Twrp</code> 的操作；而第一项 清除临时缓存文件，只是我不清楚该文件具体是干什么用的，所以也怕点了之后会出问题。</p>
+<p>这种情况下，我只好上网去查询看看是否有相关的操作介绍，可想而知，这个问题可能太简单了，很难找到相关的介绍。</p>
+<p>正当我一脸迷蒙时，我的手误按了顶部的 “蓝色条” 部分，发现… 界面返回了 <code>Install</code> 页面：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184312.png?imageslim" alt=""></p>
+<p>我只想说，这操作简直是 <code>666</code> 啊！！！</p>
+<p>经过验证，只要点击顶部的「install Zip」 蓝色条部分左侧的「图标」处，就会返回 <code>Team Win Recovery Project</code> 界面。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184919.png?imageslim" alt=""></p>
+<p>依照上面的安装步骤，继续安装 <code>Magisk-v17.2.zip</code> 文件。直到界面中提示 <code>...done</code> 时，说明安装完成。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016185120.png?imageslim" alt=""></p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016185217.png?imageslim" alt=""></p>
+<p>安装完成后，点击下面的 <code>Reboot System</code> 按钮，重启系统。</p>
+<p>不过，这时候发现界面会提示询问是否安装 <code>TWRP App</code> ？</p>
+<p>这里，<strong>千万不要安装</strong>。直接点击中间的 <strong><code>Do Not Install</code></strong> 即可。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016185342.png?imageslim" alt=""></p>
+<p>待手机重启进入系统后，可以发现手机APP中多了一个 <code>Magisk</code> 的脸谱Logo图标。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181016185438.png?imageslim" alt=""></p>
+<p>至此，整个刷机过程就结束了。</p>
+<hr>
+<h4 id="验证是否成功Root"><a href="#验证是否成功Root" class="headerlink" title="验证是否成功Root"></a>验证是否成功Root</h4><p>至于如何验证是否成功Root，最简单的方法就是安装几个需要获取Root权限的软件就可以了。</p>
+<p>可以在「脸谱Logo」的菜单中选择「超级用户」，为相应的软件开启Root权限。</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181017101716.png?imageslim" alt=""></p>
+<hr>
+<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><h5 id="去掉wifi叉号标记"><a href="#去掉wifi叉号标记" class="headerlink" title="去掉wifi叉号标记"></a>去掉wifi叉号标记</h5><p>在国内的网络环境下，通过wifi联网之后，Pixel的wifi图标上会默认显示一个「叉号」。虽然能够正常联网，但对于强迫症来说，还是觉得很碍眼。</p>
+<p>对于这个问题，原理性的解释是：</p>
+<blockquote>
+<p>谷歌原生安卓系统当连接到移动数据网络或者WIFI网络的时候，其NetworkMonitor模块会向特定的服务器发起一个http的请求并利用收到的响应进行网络状态判断。由于谷歌的服务器被GFW屏蔽，所以导致没有返回值，这个时候谷歌安卓系统就会在信号或者wifi上打一个感叹号或叉号。</p>
+</blockquote>
+<p>可以通过换成v2ex的验证方式来解决。在命令提示符中执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell settings put global captive_portal_https_url https:&#x2F;&#x2F;www.google.cn&#x2F;generate_204</span><br></pre></td></tr></table></figure>
+
+<p>然后开启飞行模式，再关闭飞行模式即解决！</p>
+<p>操作前：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181017104902.png?imageslim" alt=""></p>
+<p>执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb shell settings put global captive_portal_https_url https:&#x2F;&#x2F;www.google.cn&#x2F;generate_204</span><br><span class="line"></span><br><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜</span><br></pre></td></tr></table></figure>
+
+<p>操作后：</p>
+<p><img data-src="https://qiniu.itfanr.cc/blog/20181017105009.png?imageslim" alt=""></p>
+<p>如果你想恢复的话，使用下面的命令：（未亲测）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb shell settings delete global captive_portal_server  </span><br><span class="line">adb shell settings put global captive_portal_detection_enabled 1</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="疑难解答"><a href="#疑难解答" class="headerlink" title="疑难解答"></a>疑难解答</h4><h5 id="fastboot-oem-unlock-or-fastboot-flashing-unlock"><a href="#fastboot-oem-unlock-or-fastboot-flashing-unlock" class="headerlink" title="fastboot oem unlock or fastboot flashing unlock"></a><code>fastboot oem unlock</code> or <code>fastboot flashing unlock</code></h5><p>在网上搜索到的一些教程中，有的说是使用 <code>fastboot oem unlock</code> 来解BL，有的说是通过 <code>fastboot flashing unlock</code> 来解BL。</p>
+<p>最终在google的官网中，我找到了如下的介绍：</p>
+<blockquote>
+<p>If necessary, unlock the device’s bootloader using one of the following methods:</p>
+<p>If you are updating a Nexus or Pixel device that is manufactured in 2015 or later (for example, a Nexus 5X, Nexus 6P, Pixel, Pixel XL, Pixel 2 or Pixel 2 XL device), run this command:</p>
+<p>fastboot flashing unlock</p>
+<p>If you are updating an older device, run this command:</p>
+<p>fastboot oem unlock</p>
+</blockquote>
+<p>更多介绍，请看： <a href="https://developers.google.com/android/images" target="_blank" rel="noopener">Factory Images for Nexus and Pixel Devices  |  Google APIs for Android  |  Google Developers</a></p>
+<hr>
+<h5 id="OEM锁与bootloader锁的关系"><a href="#OEM锁与bootloader锁的关系" class="headerlink" title="OEM锁与bootloader锁的关系"></a>OEM锁与bootloader锁的关系</h5><p>OEM锁是限制了bootloader锁，OEM锁系统默认是关闭的，必须在开发者中手动打开。之后 bootloader锁才能进行解锁。</p>
+<p>通俗一点的说，OEM锁只跟bootloader锁有关系，和之后的Root操作没有关系。所以当解锁Bootloader后系统配置被重置了，即使 「开发者选项」中的 「OEM解锁」显示为灰色不能操作，也无关紧要了。</p>
+<p>参考：<a href="http://bbs.zhiyoo.com/thread-13220001-1-1.html" target="_blank" rel="noopener">关于解锁bootloader的重要性.机友们务必细读,生死问题,请勿忽视! - Pixel | Pixel XL 论坛 - 智友论坛</a></p>
+<hr>
+<h5 id="解锁bootloader的好处"><a href="#解锁bootloader的好处" class="headerlink" title="解锁bootloader的好处"></a>解锁bootloader的好处</h5><ol>
+<li>最重要是为自己的手机买了份保险,留了条生路.卡死 系统抽风或变砖后,<br>可在bootloader界面下线刷原厂镜像恢复系统。(不解锁的无法刷机救回)</li>
+<li>作为亲儿子机型，XDA上很多资源，有大量第三方ROM、优化补丁、Recoovery、ROOT</li>
+<li>解锁bootloader后，不ROOT和修改系统文件，不影响在线OTA升级。</li>
+</ol>
+<p>解锁后 开机Google logo下有个小锁和两秒钟的警示语说你的手机已经解了bootloader锁,<br>机友们可以无视之，不影响使用。</p>
+<hr>
+<h5 id="adbpush文件时权限不够"><a href="#adbpush文件时权限不够" class="headerlink" title="adbpush文件时权限不够"></a>adbpush文件时权限不够</h5><p>在使用命令 <code>adb push</code> 将文件 <code>twrp-pixel-installer-sailfish-3.2.3-1.zip</code> 上传到手机时，可能由于权限问题而报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb push twrp-pixel-installer-sailfish-3.2.3-1.zip &#x2F;</span><br><span class="line">adb: error: failed to copy &#39;twrp-pixel-installer-sailfish-3.2.3-1.zip&#39; to &#39;&#x2F;twrp-pixel-installer-sailfish-3.2.3-1.zip&#39;: remote couldn&#39;t create file: Read-only file system</span><br><span class="line">twrp-pixel-installer-sailfish-3.2.3-1.zip: 0 files pushed. 22.7 MB&#x2F;s (1048448 bytes in 0.044s)</span><br></pre></td></tr></table></figure>
+
+<p>我们可以通过 <code>adb shell</code> 命令来进入到手机的bash命令下，也可以直接在后面跟上bash命令来执行。进行验证：</p>
+<p><code>adb shell</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb shell</span><br><span class="line">sailfish:&#x2F; $ </span><br><span class="line">sailfish:&#x2F; $ ls</span><br><span class="line">ls: .&#x2F;verity_key: Permission denied</span><br><span class="line">ls: .&#x2F;init.rc: Permission denied</span><br><span class="line">ls: .&#x2F;postinstall: Permission denied</span><br><span class="line">ls: .&#x2F;init.usb.configfs.rc: Permission denied</span><br><span class="line">ls: .&#x2F;init.zygote64_32.rc: Permission denied</span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<p><code>adb shell mkdir tmp</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb shell mkdir tmp</span><br><span class="line">mkdir: &#39;tmp&#39;: Read-only file system</span><br></pre></td></tr></table></figure>
+
+<p>发现，果然是当前用户的权限不够。</p>
+<p>经过验证，发现当前用户对 <code>/sdcard</code> 目录是有权限进行文件或目录的操作的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb shell</span><br><span class="line">sailfish:&#x2F; $ cd sdcard&#x2F;</span><br><span class="line">sailfish:&#x2F;sdcard $ ls</span><br><span class="line">Alarms Android DCIM Download Movies Music Notifications Pictures Podcasts Ringtones</span><br><span class="line">sailfish:&#x2F;sdcard $ mkdir tmp</span><br><span class="line">sailfish:&#x2F;sdcard $ ls</span><br><span class="line">Alarms Android DCIM Download Movies Music Notifications Pictures Podcasts Ringtones tmp</span><br><span class="line"></span><br><span class="line">sailfish:&#x2F;sdcard $ rm -rf tmp</span><br><span class="line">sailfish:&#x2F;sdcard $ ls</span><br><span class="line">Alarms Android DCIM Download Movies Music Notifications Pictures Podcasts Ringtones</span><br><span class="line">sailfish:&#x2F;sdcard $ exit</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><strong>码字不易，以上操作均为本人实际操作并验证。如果该文章对您有所帮助，可以赠送一杯咖啡！！！</strong></p>
+<hr>
+<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><h5 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h5><ul>
+<li><a href="https://github.com/shadowsocks/shadowsocks-android/releases" target="_blank" rel="noopener">Releases · shadowsocks/shadowsocks-android</a></li>
+<li><a href="https://dl.twrp.me/sailfish/" target="_blank" rel="noopener">Download TWRP for sailfish</a></li>
+<li><a href="https://github.com/topjohnwu/Magisk/releases" target="_blank" rel="noopener">Releases · topjohnwu/Magisk</a></li>
+</ul>
+<h5 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h5><ul>
+<li><a href="https://www.xzymoe.com/pixel-xl-unlockbl-root/" target="_blank" rel="noopener">Pixel XL解锁BL、刷入Twrp及Root教程 | XZYMOE’S BLOG</a> <strong>☆</strong></li>
+<li><a href="https://sspai.com/post/38319" target="_blank" rel="noopener">从 Bootloader 解锁到必备应用推荐：我的 Google Pixel 折腾手记 - 少数派</a></li>
+<li><a href="https://blog.csdn.net/ekeuy/article/details/43112645" target="_blank" rel="noopener">Android ADB命令大全(通过ADB命令查看wifi密码、MAC地址、设备信息、操作文件、查看文件、日志信息、卸载、启动和安装APK等) - mingy的专栏 - CSDN博客</a></li>
+</ul>
+<hr>
+<p><strong>2019年08月27日 Update</strong></p>
+<h4 id="Magisk更新"><a href="#Magisk更新" class="headerlink" title="Magisk更新"></a>Magisk更新</h4><p>将 Magisk 从 <code>v17.2</code> 版本升级到 <code>v19.3</code> 版本。</p>
+<p>可以从 <a href="https://github.com/topjohnwu/Magisk/releases" target="_blank" rel="noopener">Magisk</a> 下载最新版本的Magisk的zip压缩包。</p>
+<h5 id="第一步-adb连接"><a href="#第一步-adb连接" class="headerlink" title="第一步 adb连接"></a>第一步 adb连接</h5><p>要确保手机设备通过adb正确连接。如果提示为 <code>offline</code> 则需要重新设置手机的连接。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜ adb devices</span><br><span class="line">List of devices attached</span><br><span class="line">FA6XXXXXXX53	offline</span><br></pre></td></tr></table></figure>
+
+<p>直到出现 <code>device</code> 时，说明手机正确连接了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜ adb devices</span><br><span class="line">List of devices attached</span><br><span class="line">FA6XXXXXXX53	device</span><br></pre></td></tr></table></figure>
+
+<p>一般出现 <code>offline</code> 的情况可能是usb数据线的问题，或者连接设置的问题。</p>
+<p>这里我的解决方法是：</p>
+<ol>
+<li>断开usb设备连接</li>
+<li>执行命令 <code>adb kill-server</code> 来停止adb服务</li>
+<li>执行命令 <code>adb start-server</code> 来重新运行adb服务</li>
+<li>重新通过usb连接手机设备</li>
+<li>打开 <code>开发者选项</code> ，重新勾选 <code>usb调试</code>，在弹出的窗口选择 <code>确定</code></li>
+<li>再次执行命令 <code>adb devices</code>，发现显示 <code>device</code> 了</li>
+</ol>
+<h5 id="第二步-拷贝Magisk文件"><a href="#第二步-拷贝Magisk文件" class="headerlink" title="第二步 拷贝Magisk文件"></a>第二步 拷贝Magisk文件</h5><p>通过 <code>adb push</code> 命令将新版的Magisk文件拷贝到手机设备中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜ adb push Magisk-v19.3.zip &#x2F;sdcard&#x2F;tmp&#x2F;</span><br><span class="line">Magisk-v19.3.zip: 1 file pushed. 21.0 MB&#x2F;s (5348187 bytes in 0.243s)</span><br></pre></td></tr></table></figure>
+
+<p>这里我之前使用的是 <code>Magisk-v17.2.zip</code> 版本，现在要更新到 <code>Magisk-v19.3.zip</code> 版本。</p>
+<h5 id="第三步-进入Bootloader"><a href="#第三步-进入Bootloader" class="headerlink" title="第三步 进入Bootloader"></a>第三步 进入Bootloader</h5><p>执行 <code>adb reboot bootloader</code> 进入 <code>Bootloader</code> 界面。</p>
+<h5 id="第四步-进入临时Twrp"><a href="#第四步-进入临时Twrp" class="headerlink" title="第四步 进入临时Twrp"></a>第四步 进入临时Twrp</h5><p>通过 <code>twrp*.img</code> 文件，启动进入临时Twrp：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">➜ fastboot boot twrp-3.2.3-1-sailfish.img</span><br><span class="line">ERROR: Couldn&#39;t create a device interface iterator: (e00002bd)</span><br><span class="line">downloading &#39;boot.img&#39;...</span><br><span class="line">OKAY [  0.712s]</span><br><span class="line">booting...</span><br><span class="line">OKAY [  0.893s]</span><br><span class="line">finished. total time: 1.605s</span><br></pre></td></tr></table></figure>
+
+<h5 id="第五步-安装Magisk"><a href="#第五步-安装Magisk" class="headerlink" title="第五步 安装Magisk"></a>第五步 安装Magisk</h5><p>进入 <code>Twrp</code> 页面后，滑动下面的 <code>Swipe to Allow Modifications</code> 滑条，进入Twrp操作页面。</p>
+<p>选择 <code>Install</code> – 找到目录 <code>/sdcard/tmp/</code> – 选择 <code>Magisk-v19.3.zip</code> 文件，滑动 <code>Swipe to confirm Flash</code> 来安装。</p>
+<p>安装完成后，点击下面的 <code>Reboot System</code> 按钮，进入下一步。</p>
+<p>之后，直接点击中间的 <code>Do Not Install</code> 等待手机重启进入系统即可。</p>
+<hr>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>如有疑问或需要技术讨论，请留言或发邮件到 service@itfanr.cc</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Leafney 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Leafney 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2018/10/16/google-pixel-unlock-bl-and-root/" title="Google Pixel解锁BL、刷入Twrp及Root折腾小记">https://www.itfanr.cc/2018/10/16/google-pixel-unlock-bl-and-root/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Skill/" rel="tag"># Skill</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/10/omnigraffle-shortcut-keys/" rel="prev" title="OmniGraffle常用快捷键">
+      <i class="fa fa-chevron-left"></i> OmniGraffle常用快捷键
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/11/12/busuanzi-counter-error/" rel="next" title="Hexo博客Next主题解决不蒜子统计不显示问题">
+      Hexo博客Next主题解决不蒜子统计不显示问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工具"><span class="nav-number">1.</span> <span class="nav-text">准备工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欧版判断"><span class="nav-number">2.</span> <span class="nav-text">欧版判断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解锁Bootloader"><span class="nav-number">3.</span> <span class="nav-text">解锁Bootloader</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开启USB调试和OEM解锁"><span class="nav-number">3.1.</span> <span class="nav-text">开启USB调试和OEM解锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进入-Bootloader模式"><span class="nav-number">3.2.</span> <span class="nav-text">进入 Bootloader模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解锁-Bootloader"><span class="nav-number">3.3.</span> <span class="nav-text">解锁 Bootloader</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#判断解锁成功"><span class="nav-number">3.4.</span> <span class="nav-text">判断解锁成功</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解锁Bootloader后的两个问题"><span class="nav-number">4.</span> <span class="nav-text">解锁Bootloader后的两个问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#恢复初始"><span class="nav-number">4.1.</span> <span class="nav-text">恢复初始</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#错误提示"><span class="nav-number">4.2.</span> <span class="nav-text">错误提示</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#刷入第三方Recovery-TWRP及Root"><span class="nav-number">5.</span> <span class="nav-text">刷入第三方Recovery:TWRP及Root</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#下载必要软件"><span class="nav-number">5.1.</span> <span class="nav-text">下载必要软件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#拷贝文件到手机"><span class="nav-number">5.2.</span> <span class="nav-text">拷贝文件到手机</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷临时Twrp"><span class="nav-number">5.3.</span> <span class="nav-text">刷临时Twrp</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#引导进入-Bootloader"><span class="nav-number">5.3.1.</span> <span class="nav-text">引导进入 Bootloader</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#刷入临时Twrp"><span class="nav-number">5.3.2.</span> <span class="nav-text">刷入临时Twrp</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷入永久Twrp"><span class="nav-number">5.4.</span> <span class="nav-text">刷入永久Twrp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷入Magisk"><span class="nav-number">5.5.</span> <span class="nav-text">刷入Magisk</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证是否成功Root"><span class="nav-number">6.</span> <span class="nav-text">验证是否成功Root</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化"><span class="nav-number">7.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#去掉wifi叉号标记"><span class="nav-number">7.1.</span> <span class="nav-text">去掉wifi叉号标记</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#疑难解答"><span class="nav-number">8.</span> <span class="nav-text">疑难解答</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#fastboot-oem-unlock-or-fastboot-flashing-unlock"><span class="nav-number">8.1.</span> <span class="nav-text">fastboot oem unlock or fastboot flashing unlock</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#OEM锁与bootloader锁的关系"><span class="nav-number">8.2.</span> <span class="nav-text">OEM锁与bootloader锁的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解锁bootloader的好处"><span class="nav-number">8.3.</span> <span class="nav-text">解锁bootloader的好处</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#adbpush文件时权限不够"><span class="nav-number">8.4.</span> <span class="nav-text">adbpush文件时权限不够</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关链接"><span class="nav-number">9.</span> <span class="nav-text">相关链接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#工具"><span class="nav-number">9.1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#教程"><span class="nav-number">9.2.</span> <span class="nav-text">教程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Magisk更新"><span class="nav-number">10.</span> <span class="nav-text">Magisk更新</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#第一步-adb连接"><span class="nav-number">10.1.</span> <span class="nav-text">第一步 adb连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第二步-拷贝Magisk文件"><span class="nav-number">10.2.</span> <span class="nav-text">第二步 拷贝Magisk文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第三步-进入Bootloader"><span class="nav-number">10.3.</span> <span class="nav-text">第三步 进入Bootloader</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第四步-进入临时Twrp"><span class="nav-number">10.4.</span> <span class="nav-text">第四步 进入临时Twrp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第五步-安装Magisk"><span class="nav-number">10.5.</span> <span class="nav-text">第五步 安装Magisk</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leafney"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Leafney</p>
+  <div class="site-description" itemprop="description">Stay Hungry. Stay Foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leafney" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leafney" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hub.docker.com/r/leafney/" title="DockerHub → https:&#x2F;&#x2F;hub.docker.com&#x2F;r&#x2F;leafney&#x2F;" rel="noopener" target="_blank"><i class="fab fa-docker fa-fw"></i>DockerHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:service@itfanr.cc" title="E-Mail → mailto:service@itfanr.cc" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        访客数 <span id="busuanzi_value_site_uv"></span> 人次
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        访问量 <span id="busuanzi_value_site_pv"></span> 次
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f28d68fd5271fd52826d',
+      clientSecret: '70a085c82c8d67b07e5482058272fcab3e969b83',
+      repo        : 'Leafney.github.io',
+      owner       : 'leafney',
+      admin       : ['leafney'],
+      id : 'itfanr_20181016212913',
+      labels: 'comments'.split(',').filter(l => l),
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

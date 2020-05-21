@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.itfanr.cc","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Celery加载配置文件，设置异步任务和定时任务的方法等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Celery分布式任务队列入门(三)-任务">
+<meta property="og:url" content="https://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-third/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="Celery加载配置文件，设置异步任务和定时任务的方法等">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-10T15:57:26.000Z">
+<meta property="article:modified_time" content="2017-12-11T08:21:46.000Z">
+<meta property="article:author" content="Leafney">
+<meta property="article:tag" content="Celery">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-third/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Celery分布式任务队列入门(三)-任务 | IT范儿</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">IT范儿</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">程序员改变世界</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leafney" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-third/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="Stay Hungry. Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Celery分布式任务队列入门(三)-任务
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-12-10 23:57:26" itemprop="dateCreated datePublished" datetime="2017-12-10T23:57:26+08:00">2017-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2017-12-11 16:21:46" itemprop="dateModified" datetime="2017-12-11T16:21:46+08:00">2017-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Celery%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">Celery分布式任务队列入门</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">Celery加载配置文件，设置异步任务和定时任务的方法等</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在上一篇 <a href="/2017/12/10/celery-distributed-task-queue-introduction-second/">Celery分布式任务队列入门(二)-环境配置</a> 中介绍了一种简单任务的创建方法。</p>
+<p>对于任务，在Celery中主要分为 <code>异步任务</code> 和 <code>定时任务</code>，下面详细的来说说。</p>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>Celery中的配置可以直接在应用上设置，也可以使用一个独立的配置模块。</p>
+<h5 id="直接配置"><a href="#直接配置" class="headerlink" title="直接配置"></a>直接配置</h5><p>例如你可以通过修改 <code>CELERY_TASK_SERIALIZER</code> 选项来配置序列化任务载荷的默认的序列化方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.conf.CELERY_TASK_SERIALIZER &#x3D; &#39;json&#39;</span><br></pre></td></tr></table></figure>
+
+<p>一次性设置多个选项，你可以使用 <code>update()</code> 方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">app.conf.update(</span><br><span class="line">    CELERY_TASK_SERIALIZER&#x3D;&#39;json&#39;,</span><br><span class="line">    CELERY_ACCEPT_CONTENT&#x3D;[&#39;json&#39;],  # Ignore other content</span><br><span class="line">    CELERY_RESULT_SERIALIZER&#x3D;&#39;json&#39;,</span><br><span class="line">    CELERY_TIMEZONE&#x3D;&#39;Europe&#x2F;Oslo&#39;,</span><br><span class="line">    CELERY_ENABLE_UTC&#x3D;True,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">from celery import Celery</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CELERY_CONFIG &#x3D; &#123;</span><br><span class="line">    &#39;CELERY_TIMEZONE&#39;: &#39;Asia&#x2F;Shanghai&#39;,</span><br><span class="line">    &#39;CELERY_ENABLE_UTC&#39;: True,</span><br><span class="line">    # content</span><br><span class="line">    &#39;CELERY_TASK_SERIALIZER&#39;: &#39;json&#39;,</span><br><span class="line">    &#39;CELERY_RESULT_SERIALIZER&#39;: &#39;json&#39;,</span><br><span class="line">    &#39;CELERY_ACCEPT_CONTENT&#39;: [&#39;json&#39;],</span><br><span class="line">    &#39;CELERYD_MAX_TASKS_PER_CHILD&#39;: 1</span><br><span class="line">&#125;</span><br><span class="line">SETTINGS &#x3D; &#123;</span><br><span class="line">    &#39;user&#39;: &#39;www-data&#39;,</span><br><span class="line">    &#39;password&#39;: &#39;www-data&#39;,</span><br><span class="line">    &#39;host&#39;: &#39;127.0.0.1&#39;,</span><br><span class="line">    &#39;port&#39;: &#39;5672&#39;,</span><br><span class="line">    &#39;vhost&#39;: &#39;t_celery&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">app &#x3D; Celery(</span><br><span class="line">    &#39;test_celery&#39;,</span><br><span class="line">    broker&#x3D;&#39;amqp:&#x2F;&#x2F;&#123;user&#125;:&#123;password&#125;@&#123;host&#125;:&#123;port&#125;&#x2F;&#123;vhost&#125;&#39;.format(</span><br><span class="line">        **SETTINGS)</span><br><span class="line">)</span><br><span class="line">app.conf.update(**CELERY_CONFIG)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="独立配置模块"><a href="#独立配置模块" class="headerlink" title="独立配置模块"></a>独立配置模块</h5><p>对于大型项目，采用独立配置模块更为有效。</p>
+<p>可以调用 <code>config_from_object()</code> 来让 <code>Celery</code> 实例加载配置模块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.config_from_object(&#39;celeryconfig&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>配置模块通常称为 <code>celeryconfig</code> ，你也可以使用任意的模块名。名为 <code>celeryconfig.py</code> 的模块必须可以从当前目录或 <code>Python</code> 路径加载。</p>
+<p><code>celeryconfig.py</code> 格式一般为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">BROKER_URL &#x3D; &#39;amqp:&#x2F;&#x2F;&#39;</span><br><span class="line">CELERY_RESULT_BACKEND &#x3D; &#39;amqp:&#x2F;&#x2F;&#39;</span><br><span class="line"></span><br><span class="line">CELERY_TASK_SERIALIZER &#x3D; &#39;json&#39;</span><br><span class="line">CELERY_RESULT_SERIALIZER &#x3D; &#39;json&#39;</span><br><span class="line">CELERY_ACCEPT_CONTENT&#x3D;[&#39;json&#39;]</span><br><span class="line">CELERY_TIMEZONE &#x3D; &#39;Europe&#x2F;Oslo&#39;</span><br><span class="line">CELERY_ENABLE_UTC &#x3D; True</span><br></pre></td></tr></table></figure>
+
+<p>检查配置文件的语法错误，可以：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python -m celeryconfig</span><br></pre></td></tr></table></figure>
+
+<p>更多配置参数参考：<a href="http://docs.jinkan.org/docs/celery/configuration.html#configuration" target="_blank" rel="noopener">Configuration and defaults</a></p>
+<p>有关配置的使用可以看我另一篇文章中的详细介绍。</p>
+<hr>
+<h4 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h4><p>在初级篇中我们创建的简单任务 <code>tasks.py</code> 就是一个异步任务。<code>tasks.py</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">from celery import Celery</span><br><span class="line"></span><br><span class="line">app &#x3D; Celery(&#39;tasks&#39;,</span><br><span class="line">             broker&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;,</span><br><span class="line">             backend&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;</span><br><span class="line">             )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.task</span><br><span class="line">def add(x, y):</span><br><span class="line">    return x + y</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建了一个 <code>Celery</code> 实例 <code>app</code> ，指定名称为 <code>tasks</code></li>
+<li>指定消息中间件 <code>broker</code> 使用 <code>RabbitMQ</code> ，指定结果存储 <code>backend</code> 使用 <code>RabbitMQ</code></li>
+<li>创建了一个 <code>Celery</code> 任务 <code>add</code>，当函数被 <code>@app.task</code> 装饰后，就成为可被 <code>Celery</code> 调度的任务</li>
+</ul>
+<h5 id="运行-worker"><a href="#运行-worker" class="headerlink" title="运行 worker"></a>运行 worker</h5><p>在 tasks.py 文件所在目录执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ celery -A tasks worker --loglevel&#x3D;info</span><br></pre></td></tr></table></figure>
+
+<p>这个命令会开启一个在前台运行的 worker。</p>
+<p>参数说明：</p>
+<ul>
+<li><code>worker</code> : 运行 <code>worker</code> 模块</li>
+<li><code>-A: –app=APP</code>  指定使用的 <code>Celery</code> 实例所在的文件模块</li>
+<li><code>-l: -–loglevel=INFO</code> 指定日志级别，默认为 <code>WARNING</code>，可选：<code>DEBUG</code>, <code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>, <code>CRITICAL</code>, <code>FATAL</code></li>
+</ul>
+<p>如果是创建任务模块，可以使用模块名称来启动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ celery -A proj worker -l info</span><br></pre></td></tr></table></figure>
+
+<p>或者使用完整命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ celery worker --app&#x3D;proj -l info</span><br></pre></td></tr></table></figure>
+
+<p>查看完整的帮助信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ celery worker --help</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@b792ae940e3e:&#x2F;app# celery worker --help</span><br><span class="line">usage: celery worker [options] </span><br><span class="line"></span><br><span class="line">Start worker instance.</span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line"></span><br><span class="line">        $ celery worker --app&#x3D;proj -l info</span><br><span class="line">        $ celery worker -A proj -l info -Q hipri,lopri</span><br><span class="line"></span><br><span class="line">        $ celery worker -A proj --concurrency&#x3D;4</span><br><span class="line">        $ celery worker -A proj --concurrency&#x3D;1000 -P eventlet</span><br><span class="line">        $ celery worker --autoscale&#x3D;10,0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="http://docs.celeryproject.org/en/latest/userguide/workers.html#starting-the-worker" target="_blank" rel="noopener">Workers Guide</a></li>
+<li><a href="http://docs.celeryproject.org/en/latest/reference/celery.bin.worker.html#celery-bin-worker" target="_blank" rel="noopener">celery.bin.worker</a></li>
+</ul>
+<p><strong>扩展</strong></p>
+<p>对于参数 <code>-A: –app=APP</code> 表示指定使用的 <code>Celery</code> 实例。即指py文件的文件名（不包括扩展名.py）或项目的模块名</p>
+<p>比如项目结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">testcelery&#x2F;</span><br><span class="line">    |- src&#x2F;</span><br><span class="line">        |- __init__.py</span><br><span class="line">        |- app.py</span><br><span class="line">        |- task.py</span><br></pre></td></tr></table></figure>
+
+<p>那么启动worker任务 <code>task.py</code> 的命令即为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ celery worker -A src.task -l info</span><br></pre></td></tr></table></figure>
+
+<h5 id="调用-Task"><a href="#调用-Task" class="headerlink" title="调用 Task"></a>调用 Task</h5><h6 id="delay调用"><a href="#delay调用" class="headerlink" title="delay调用"></a>delay调用</h6><p>在异步调用方式中，可以通过 <code>delay</code> 或者 <code>apply_async</code> 来实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from tasks import add</span><br><span class="line"></span><br><span class="line">add.delay(3, 4)</span><br></pre></td></tr></table></figure>
+
+<p>示例，创建文件 <code>client.py</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">from tasks import add</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    add.delay(1, 5)</span><br></pre></td></tr></table></figure>
+
+<p>执行 <code>$ python3 client.py</code> 就能调用执行了。</p>
+<h6 id="apply-async"><a href="#apply-async" class="headerlink" title="apply_async"></a>apply_async</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">from tasks import add</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    # add.delay(1, 5)</span><br><span class="line">    add.apply_async(args&#x3D;(5, 6))</span><br></pre></td></tr></table></figure>
+
+<p><code>delay</code> 和 <code>apply_async</code> 这两种调用方式等价，<code>delay</code> 是 <code>apply_async</code> 的简写。用于一个任务消息（task message）。之前的示例中我们发现 <code>add</code> 任务并没有返回 “计算结果”，而是返回了一个对象 <code>AsyncResult</code>，它的作用是被用来检查任务状态，等待任务执行完毕或获取任务结果，如果任务失败，它会返回异常信息或者调用栈。</p>
+<p><code>apply_async</code> 参数</p>
+<p>apply_async 相比 delay的优点就是，apply_async支持更多的参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply_async(args&#x3D;(), kwargs&#x3D;&#123;&#125;, route_name&#x3D;None, **options)</span><br></pre></td></tr></table></figure>
+
+<p>apply_async 常用的参数如下：</p>
+<ul>
+<li><code>countdown</code> ：任务延迟执行的秒数，默认立即执行；<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">task1.apply_async(args&#x3D;(2, 3), countdown&#x3D;5)    # 5 秒后执行任务</span><br></pre></td></tr></table></figure></li>
+<li><code>eta</code> ：任务被执行的绝对时间，参数类型是 <code>datetime</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from datetime import datetime, timedelta</span><br><span class="line"></span><br><span class="line"># 当前 UTC 时间再加 10 秒后执行任务</span><br><span class="line">task1.multiply.apply_async(args&#x3D;[3, 7], eta&#x3D;datetime.utcnow() + timedelta(seconds&#x3D;10))</span><br></pre></td></tr></table></figure></li>
+<li><code>expires</code> : 任务过期时间，参数类型可以是 <code>int</code>，也可以是 <code>datetime</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">task1.multiply.apply_async(args&#x3D;[3, 7], expires&#x3D;10)    # 10 秒后过期</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>更多的参数列表可以在 <a href="http://docs.celeryproject.org/en/latest/reference/celery.app.task.html#celery.app.task.Task.apply_async" target="_blank" rel="noopener">官方文档</a> 中查看。</p>
+<h6 id="send-task调用"><a href="#send-task调用" class="headerlink" title="send_task调用"></a>send_task调用</h6><p>除了使用 <code>delay</code> 的方式，还已通过 <code>send_task()</code> 的方式来调用。同时 <code>send_task()</code> 也支持设置更多的参数。</p>
+<p>示例，<code>client.py</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">from tasks import app</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    # add.delay(1, 5)</span><br><span class="line">    # add.apply_async(args&#x3D;(5, 6))</span><br><span class="line">    app.send_task(&#39;tasks.add&#39;, args&#x3D;(12, 23),)</span><br></pre></td></tr></table></figure>
+
+<p>注意，这里引入的是 <code>app</code> 实例。<code>args</code> 参数是一个元组类型。相应的执行结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[2017-12-10 07:11:38,057: INFO&#x2F;MainProcess] Received task: tasks.add[83fd530f-d800-43c7-bcfe-920a176812e2]  </span><br><span class="line">[2017-12-10 07:11:43,217: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[83fd530f-d800-43c7-bcfe-920a176812e2] succeeded in 5.1578904589996455s: 35</span><br></pre></td></tr></table></figure>
+
+<h5 id="AsyncResult方法"><a href="#AsyncResult方法" class="headerlink" title="AsyncResult方法"></a>AsyncResult方法</h5><p>上一篇文章中我们提到过返回对象 <code>AsyncResult</code> 的 <code>ready()</code> 方法，继续来看一下其他的方法：</p>
+<p><code>ready</code> 为 <code>True</code> 表示已经返回结果了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; result.ready()</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<p><code>status</code> 表示任务执行状态，失败还是成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; result.status</span><br><span class="line">&#39;SUCCESS&#39;</span><br></pre></td></tr></table></figure>
+
+<p><code>result</code> 和 <code>get()</code> 表示返回的结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; result.result</span><br><span class="line">7</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; result.get() </span><br><span class="line">7</span><br></pre></td></tr></table></figure>
+
+<p><code>id</code> 用来查看任务的id属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; result.id</span><br><span class="line">&#39;c178619e-3af3-41ed-8d2c-6371de80a601&#39;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h4><p><code>Celery Beat</code> 进程通过读取配置文件的内容，周期性地将定时任务发往任务队列。</p>
+<p>在Celery的定时任务中，重要的两个方法是 定时器 和 执行器：</p>
+<ul>
+<li>定时器，也叫作 beater，也就是帮助我们计算什么时候执行什么操作</li>
+<li>执行器，也叫作 worker，真正执行任务的地方，我们的任务都是通过这个运行的</li>
+</ul>
+<p>创建Celery定时任务有多中方法。</p>
+<h5 id="通过配置文件方式"><a href="#通过配置文件方式" class="headerlink" title="通过配置文件方式"></a>通过配置文件方式</h5><p>可以在配置文件中通过 <code>CELERYBEAT_SCHEDULE</code> 设置定时。</p>
+<h6 id="简单定时任务"><a href="#简单定时任务" class="headerlink" title="简单定时任务"></a>简单定时任务</h6><p>创建一个Celery的任务 <code>tasks.py</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">from celery import Celery</span><br><span class="line"></span><br><span class="line">app &#x3D; Celery(&#39;tasks&#39;,</span><br><span class="line">             broker&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;,</span><br><span class="line">             backend&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;</span><br><span class="line">             )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.conf.update(</span><br><span class="line">    # 配置定时任务</span><br><span class="line">    CELERYBEAT_SCHEDULE&#x3D;&#123;</span><br><span class="line">        &#39;my_task&#39;: &#123;</span><br><span class="line">            &#39;task&#39;: &#39;tasks.add&#39;,</span><br><span class="line">            &#39;schedule&#39;: 60,</span><br><span class="line">            &#39;args&#39;: (22, 34),</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.task</span><br><span class="line">def add(x, y):</span><br><span class="line">    return x + y</span><br></pre></td></tr></table></figure>
+
+<p>然后，启动这个 <code>worker</code> 进程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># celery -A tasks worker -l info</span><br></pre></td></tr></table></figure>
+
+<p>接着，启动 <code>Celery Beat</code> 进程，定时将任务发送到 <code>Broker</code> ，在另一个命令行窗口下执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># celery beat -A tasks -l info</span><br></pre></td></tr></table></figure>
+
+<p>可以看到提示信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root@b792ae940e3e:&#x2F;app# celery beat -A tasks -l info</span><br><span class="line">celery beat v4.1.0 (latentcall) is starting.</span><br><span class="line">__    -    ... __   -        _</span><br><span class="line">LocalTime -&gt; 2017-12-10 08:48:29</span><br><span class="line">Configuration -&gt;</span><br><span class="line">    . broker -&gt; amqp:&#x2F;&#x2F;myuser:**@localhost:5672&#x2F;hellohost</span><br><span class="line">    . loader -&gt; celery.loaders.app.AppLoader</span><br><span class="line">    . scheduler -&gt; celery.beat.PersistentScheduler</span><br><span class="line">    . db -&gt; celerybeat-schedule</span><br><span class="line">    . logfile -&gt; [stderr]@%INFO</span><br><span class="line">    . maxinterval -&gt; 5.00 minutes (300s)</span><br><span class="line">[2017-12-10 08:48:29,141: INFO&#x2F;MainProcess] beat: Starting...</span><br></pre></td></tr></table></figure>
+
+<p>一段时间后，可以看到执行结果：</p>
+<p><code>beat</code> 执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[2017-12-10 08:49:29,277: INFO&#x2F;MainProcess] Scheduler: Sending due task my_task (tasks.add)</span><br><span class="line">[2017-12-10 08:50:29,289: INFO&#x2F;MainProcess] Scheduler: Sending due task my_task (tasks.add)</span><br><span class="line">[2017-12-10 08:51:29,322: INFO&#x2F;MainProcess] Scheduler: Sending due task my_task (tasks.add)</span><br><span class="line">[2017-12-10 08:52:29,334: INFO&#x2F;MainProcess] Scheduler: Sending due task my_task (tasks.add)</span><br><span class="line">[2017-12-10 08:53:29,375: INFO&#x2F;MainProcess] Scheduler: Sending due task my_task (tasks.add)</span><br><span class="line">[2017-12-10 08:54:29,411: INFO&#x2F;MainProcess] Scheduler: Sending due task my_task (tasks.add)</span><br><span class="line">[2017-12-10 08:55:29,426: INFO&#x2F;MainProcess] Scheduler: Sending due task my_task (tasks.add)</span><br></pre></td></tr></table></figure>
+
+<p><code>workder</code> 执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[2017-12-10 08:41:37,839: INFO&#x2F;MainProcess] celery@b792ae940e3e ready.</span><br><span class="line">[2017-12-10 08:49:29,290: INFO&#x2F;MainProcess] Received task: tasks.add[1667ee3b-58c8-4a1a-be9f-0c20c3086bde]  </span><br><span class="line">[2017-12-10 08:49:29,321: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[1667ee3b-58c8-4a1a-be9f-0c20c3086bde] succeeded in 0.029423292000501533s: 56</span><br><span class="line">[2017-12-10 08:50:29,295: INFO&#x2F;MainProcess] Received task: tasks.add[db2d9ead-c22f-4efe-8d1c-6995f0ce9148]  </span><br><span class="line">[2017-12-10 08:50:29,345: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[db2d9ead-c22f-4efe-8d1c-6995f0ce9148] succeeded in 0.046812374001092394s: 56</span><br><span class="line">[2017-12-10 08:51:29,324: INFO&#x2F;MainProcess] Received task: tasks.add[7b23af5f-a467-4263-9cd0-87486f2df25d]  </span><br><span class="line">[2017-12-10 08:51:29,338: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[7b23af5f-a467-4263-9cd0-87486f2df25d] succeeded in 0.011024585000996012s: 56</span><br><span class="line">[2017-12-10 08:52:29,336: INFO&#x2F;MainProcess] Received task: tasks.add[2f3489e4-625e-460a-bc57-3fdf13456d97]  </span><br><span class="line">[2017-12-10 08:52:29,349: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[2f3489e4-625e-460a-bc57-3fdf13456d97] succeeded in 0.01185457899919129s: 56</span><br><span class="line">[2017-12-10 08:53:29,381: INFO&#x2F;MainProcess] Received task: tasks.add[ec7377fb-1859-4980-861b-2592422aad8c]  </span><br><span class="line">[2017-12-10 08:53:29,408: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[ec7377fb-1859-4980-861b-2592422aad8c] succeeded in 0.021194035000007716s: 56</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>上面定时任务的配置信息表示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 配置定时任务</span><br><span class="line">CELERYBEAT_SCHEDULE&#x3D;&#123;</span><br><span class="line">    &#39;my_task&#39;: &#123;</span><br><span class="line">        &#39;task&#39;: &#39;tasks.add&#39;,</span><br><span class="line">        &#39;schedule&#39;: 60,</span><br><span class="line">        &#39;args&#39;: (22, 34),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><code>my_task</code> 表示当前任务的名称，可以自定义指定</li>
+<li><code>task</code> 表示 <code>tasks.py</code> 模块下的 <code>add</code> 方法</li>
+<li><code>schedule</code> 表示 任务执行的间隔，如果使用 <code>int</code> 类型，则单位是秒；还可以使用 <code>timedelta</code> 类型</li>
+<li><code>args</code> 表示任务函数参数，注意参数类型为元组</li>
+</ul>
+<hr>
+<p>如果不通过 <code>update</code> 来修改，还可以通过设置 <code>beat_schedule</code> 配置项来设置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">from celery import Celery</span><br><span class="line"></span><br><span class="line">app &#x3D; Celery(&#39;tasks&#39;,</span><br><span class="line">             broker&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;,</span><br><span class="line">             backend&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;</span><br><span class="line">             )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.conf.beat_schedule &#x3D; &#123;</span><br><span class="line">    &#39;my_task&#39;: &#123;</span><br><span class="line">        &#39;task&#39;: &#39;tasks.add&#39;,</span><br><span class="line">        &#39;schedule&#39;: 60,</span><br><span class="line">        &#39;args&#39;: (1, 2),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">app.conf.timezone &#x3D; &#39;UTC&#39;</span><br><span class="line"></span><br><span class="line">@app.task</span><br><span class="line">def add(x, y):</span><br><span class="line">    return x + y</span><br></pre></td></tr></table></figure>
+
+<h6 id="多项定时任务"><a href="#多项定时任务" class="headerlink" title="多项定时任务"></a>多项定时任务</h6><p>我们还可以在配置文件中同时定义多个定时任务，只需要在 <code>CELERYBEAT_SCHEDULE</code> 项中添加即可:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 配置定时任务</span><br><span class="line">CELERYBEAT_SCHEDULE&#x3D;&#123;</span><br><span class="line">    &#39;my_task&#39;: &#123;</span><br><span class="line">        &#39;task&#39;: &#39;tasks.add&#39;,</span><br><span class="line">        &#39;schedule&#39;: 60,</span><br><span class="line">        &#39;args&#39;: (22, 34),</span><br><span class="line">    &#125;,</span><br><span class="line">    &#39;your_task&#39;:&#123;</span><br><span class="line">      &#39;task&#39;:&#39;tasks,add&#39;,</span><br><span class="line">      &#39;schedule&#39;:30,</span><br><span class="line">      &#39;args&#39;:(1,4),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相应的执行结果：</p>
+<p><code>beat</code> 执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@b792ae940e3e:&#x2F;app# celery beat -A tasks -l info</span><br><span class="line"></span><br><span class="line">[2017-12-10 09:34:50,113: INFO&#x2F;MainProcess] beat: Starting...</span><br><span class="line">[2017-12-10 09:35:20,151: INFO&#x2F;MainProcess] Scheduler: Sending due task your_task (tasks.add)</span><br><span class="line">[2017-12-10 09:35:50,145: INFO&#x2F;MainProcess] Scheduler: Sending due task your_task (tasks.add)</span><br><span class="line">[2017-12-10 09:35:50,149: INFO&#x2F;MainProcess] Scheduler: Sending due task my_task (tasks.add)</span><br><span class="line">[2017-12-10 09:36:20,166: INFO&#x2F;MainProcess] Scheduler: Sending due task your_task (tasks.add)</span><br><span class="line">[2017-12-10 09:36:50,187: INFO&#x2F;MainProcess] Scheduler: Sending due task your_task (tasks.add)</span><br><span class="line">[2017-12-10 09:36:50,188: INFO&#x2F;MainProcess] Scheduler: Sending due task my_task (tasks.add)</span><br><span class="line">[2017-12-10 09:37:20,208: INFO&#x2F;MainProcess] Scheduler: Sending due task your_task (tasks.add)</span><br></pre></td></tr></table></figure>
+
+<p><code>worker</code> 执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">root@b792ae940e3e:&#x2F;app# celery worker -A tasks -l info</span><br><span class="line"></span><br><span class="line">[2017-12-10 09:34:45,833: INFO&#x2F;MainProcess] celery@b792ae940e3e ready.</span><br><span class="line">[2017-12-10 09:35:20,165: INFO&#x2F;MainProcess] Received task: tasks.add[2b236ccf-c4af-430c-8d4e-a5cbaf331123]  </span><br><span class="line">[2017-12-10 09:35:20,213: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[2b236ccf-c4af-430c-8d4e-a5cbaf331123] succeeded in 0.04618659699917771s: 5</span><br><span class="line">[2017-12-10 09:35:50,151: INFO&#x2F;MainProcess] Received task: tasks.add[01f843bc-8506-4d61-97ce-5f989c576509]  </span><br><span class="line">[2017-12-10 09:35:50,159: INFO&#x2F;MainProcess] Received task: tasks.add[f3230694-ce5a-4bc3-9c92-eea71b9c4949]  </span><br><span class="line">[2017-12-10 09:35:50,187: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[01f843bc-8506-4d61-97ce-5f989c576509] succeeded in 0.03170933700130263s: 5</span><br><span class="line">[2017-12-10 09:35:50,214: INFO&#x2F;ForkPoolWorker-2] Task tasks.add[f3230694-ce5a-4bc3-9c92-eea71b9c4949] succeeded in 0.04673135899975023s: 56</span><br><span class="line">[2017-12-10 09:36:20,168: INFO&#x2F;MainProcess] Received task: tasks.add[410e86bf-2e06-4a7d-965d-92d2e6a72c12]  </span><br><span class="line">[2017-12-10 09:36:20,186: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[410e86bf-2e06-4a7d-965d-92d2e6a72c12] succeeded in 0.01682951399925514s: 5</span><br><span class="line">[2017-12-10 09:36:50,191: INFO&#x2F;MainProcess] Received task: tasks.add[d2b32ff2-8e8e-4903-ad8f-7d12da132739]  </span><br><span class="line">[2017-12-10 09:36:50,193: INFO&#x2F;MainProcess] Received task: tasks.add[dc7fc344-374e-438b-8a0f-85f9e9f08aac]  </span><br><span class="line">[2017-12-10 09:36:50,207: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[d2b32ff2-8e8e-4903-ad8f-7d12da132739] succeeded in 0.013693080998564255s: 5</span><br><span class="line">[2017-12-10 09:36:50,211: INFO&#x2F;ForkPoolWorker-2] Task tasks.add[dc7fc344-374e-438b-8a0f-85f9e9f08aac] succeeded in 0.017022554000504897s: 56</span><br><span class="line">[2017-12-10 09:37:20,213: INFO&#x2F;MainProcess] Received task: tasks.add[49113d2d-a36d-44b0-92dc-9ad0382c26a2]  </span><br><span class="line">[2017-12-10 09:37:20,246: INFO&#x2F;ForkPoolWorker-1] Task tasks.add[49113d2d-a36d-44b0-92dc-9ad0382c26a2] succeeded in 0.027591496000241023s: 5</span><br></pre></td></tr></table></figure>
+
+
+<p>在上面，我们用两个命令启动了 <code>Worker</code> 进程和 <code>Beat</code> 进程，我们也可以将它们放在一个命令中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ celery -B -A tasks worker --loglevel&#x3D;info</span><br></pre></td></tr></table></figure>
+
+<p>相应的执行结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@b792ae940e3e:&#x2F;app# celery -B -A tasks worker -l info</span><br><span class="line"></span><br><span class="line">[2017-12-10 10:07:36,153: INFO&#x2F;MainProcess] celery@b792ae940e3e ready.</span><br><span class="line">[2017-12-10 10:07:36,158: INFO&#x2F;Beat] Scheduler: Sending due task your_task (tasks.add)</span><br><span class="line">[2017-12-10 10:07:36,169: INFO&#x2F;MainProcess] Received task: tasks.add[d92a952e-e3f6-4224-9e8b-dda771740fe2]  </span><br><span class="line">[2017-12-10 10:07:36,221: INFO&#x2F;ForkPoolWorker-2] Task tasks.add[d92a952e-e3f6-4224-9e8b-dda771740fe2] succeeded in 0.049944616001084796s: 5</span><br><span class="line">[2017-12-10 10:08:06,148: INFO&#x2F;Beat] Scheduler: Sending due task your_task (tasks.add)</span><br><span class="line">[2017-12-10 10:08:06,151: INFO&#x2F;MainProcess] Received task: tasks.add[678c33ae-9d2d-40c1-b5ce-25ffbdf763d8]  </span><br><span class="line">[2017-12-10 10:08:06,175: INFO&#x2F;ForkPoolWorker-2] Task tasks.add[678c33ae-9d2d-40c1-b5ce-25ffbdf763d8] succeeded in 0.02311466900027881s: 5</span><br><span class="line">[2017-12-10 10:08:36,148: INFO&#x2F;Beat] Scheduler: Sending due task your_task (tasks.add)</span><br><span class="line">[2017-12-10 10:08:36,149: INFO&#x2F;Beat] Scheduler: Sending due task my_task (tasks.add)</span><br><span class="line">[2017-12-10 10:08:36,150: INFO&#x2F;MainProcess] Received task: tasks.add[b05841b8-a382-4a1a-a583-3695e6d369d2]  </span><br><span class="line">[2017-12-10 10:08:36,152: INFO&#x2F;MainProcess] Received task: tasks.add[baebd820-4a22-496c-8c39-6b9f52d2f22b]  </span><br><span class="line">[2017-12-10 10:08:36,195: INFO&#x2F;ForkPoolWorker-2] Task tasks.add[b05841b8-a382-4a1a-a583-3695e6d369d2] succeeded in 0.04302837300019746s: 5</span><br><span class="line">[2017-12-10 10:08:36,198: INFO&#x2F;ForkPoolWorker-3] Task tasks.add[baebd820-4a22-496c-8c39-6b9f52d2f22b] succeeded in 0.0449830910001765s: 56</span><br></pre></td></tr></table></figure>
+
+<h5 id="时区"><a href="#时区" class="headerlink" title="时区"></a>时区</h5><p>Celery定时任务默认使用UTC时区。我们可以在配置文件中来设置。最终的 <code>tasks.py</code> 文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">from celery import Celery</span><br><span class="line"></span><br><span class="line">app &#x3D; Celery(&#39;tasks&#39;,</span><br><span class="line">             broker&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;,</span><br><span class="line">             backend&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;</span><br><span class="line">             )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.conf.update(</span><br><span class="line">    # 配置所在时区</span><br><span class="line">    CELERY_TIMEZONE&#x3D;&#39;Asia&#x2F;Shanghai&#39;,</span><br><span class="line">    CELERY_ENABLE_UTC&#x3D;True,</span><br><span class="line">    # 官网推荐消息序列化方式为json</span><br><span class="line">    CELERY_ACCEPT_CONTENT&#x3D;[&#39;json&#39;],</span><br><span class="line">    CELERY_TASK_SERIALIZER&#x3D;&#39;json&#39;,</span><br><span class="line">    CELERY_RESULT_SERIALIZER&#x3D;&#39;json&#39;,</span><br><span class="line">    # 配置定时任务</span><br><span class="line">    CELERYBEAT_SCHEDULE&#x3D;&#123;</span><br><span class="line">        &#39;my_task&#39;: &#123;</span><br><span class="line">            &#39;task&#39;: &#39;tasks.add&#39;,</span><br><span class="line">            &#39;schedule&#39;: 60,</span><br><span class="line">            &#39;args&#39;: (22, 34),</span><br><span class="line">        &#125;,</span><br><span class="line">        &#39;your_task&#39;: &#123;</span><br><span class="line">            &#39;task&#39;: &#39;tasks.add&#39;,</span><br><span class="line">            &#39;schedule&#39;: 30,</span><br><span class="line">            &#39;args&#39;: (1, 4),</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.task</span><br><span class="line">def add(x, y):</span><br><span class="line">    return x + y</span><br></pre></td></tr></table></figure>
+
+<h5 id="通过on-after-configure定义"><a href="#通过on-after-configure定义" class="headerlink" title="通过on_after_configure定义"></a>通过on_after_configure定义</h5><p>使用 <code>on_after_configure</code> 处理程序来装饰定时任务。如 <code>tasks.py</code> 文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">from celery import Celery</span><br><span class="line"></span><br><span class="line">app &#x3D; Celery(&#39;tasks&#39;,</span><br><span class="line">             broker&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;,</span><br><span class="line">             backend&#x3D;&#39;amqp:&#x2F;&#x2F;myuser:hello@localhost:5672&#x2F;hellohost&#39;</span><br><span class="line">             )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.on_after_configure.connect</span><br><span class="line">def setup_periodic_tasks(sender, **kwargs):</span><br><span class="line">    # Calls test(&#39;hello&#39;) every 10 seconds.</span><br><span class="line">    sender.add_periodic_task(10.0, add.s(&#39;hello&#39;), name&#x3D;&#39;add every 10&#39;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@app.task</span><br><span class="line">def add(arg):</span><br><span class="line">    print(arg)</span><br><span class="line">    return arg</span><br></pre></td></tr></table></figure>
+
+<p>执行示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root@b792ae940e3e:&#x2F;app# celery -B -A tasks worker -l info</span><br><span class="line"></span><br><span class="line">[2017-12-10 10:53:30,420: INFO&#x2F;MainProcess] celery@b792ae940e3e ready.</span><br><span class="line">[2017-12-10 10:53:30,596: INFO&#x2F;Beat] beat: Starting...</span><br><span class="line">[2017-12-10 10:53:30,620: INFO&#x2F;Beat] Scheduler: Sending due task add every 10 (tasks.add)</span><br><span class="line">[2017-12-10 10:53:30,628: INFO&#x2F;MainProcess] Received task: tasks.add[315383b8-5bd7-48ab-8dd2-c5d39e71f058]  </span><br><span class="line">[2017-12-10 10:53:30,630: WARNING&#x2F;ForkPoolWorker-3] hello</span><br><span class="line">[2017-12-10 10:53:30,667: INFO&#x2F;ForkPoolWorker-3] Task tasks.add[315383b8-5bd7-48ab-8dd2-c5d39e71f058] succeeded in 0.03778552899893839s: &#39;hello&#39;</span><br><span class="line">[2017-12-10 10:53:40,602: INFO&#x2F;Beat] Scheduler: Sending due task add every 10 (tasks.add)</span><br><span class="line">[2017-12-10 10:53:40,607: INFO&#x2F;MainProcess] Received task: tasks.add[5f8ef21e-fbfd-4c82-8dbd-6fa2aeaf4fa4]  </span><br><span class="line">[2017-12-10 10:53:40,610: WARNING&#x2F;ForkPoolWorker-3] hello</span><br><span class="line">[2017-12-10 10:53:40,631: INFO&#x2F;ForkPoolWorker-3] Task tasks.add[5f8ef21e-fbfd-4c82-8dbd-6fa2aeaf4fa4] succeeded in 0.022007824998581782s: &#39;hello&#39;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>同时，<code>add_periodic_task()</code> 方法也能设置其他参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Calls test(&#39;world&#39;) every 30 seconds</span><br><span class="line">sender.add_periodic_task(30.0, add.s(&#39;world&#39;), expires&#x3D;10)</span><br></pre></td></tr></table></figure>
+
+<p>或者也能通过 <code>crontab()</code> 来应用 <code>cron</code> 表达式，实现多种时间的设定。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Executes every Monday morning at 7:30 a.m.</span><br><span class="line">sender.add_periodic_task(</span><br><span class="line">    crontab(hour&#x3D;7, minute&#x3D;30, day_of_week&#x3D;1),</span><br><span class="line">    add.s(&#39;Happy Mondays!&#39;),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="http://docs.celeryproject.org/en/master/userguide/periodic-tasks.html" target="_blank" rel="noopener">Periodic Tasks</a></li>
+<li><a href="http://funhacks.net/2016/12/13/celery/" target="_blank" rel="noopener">异步任务神器 Celery </a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>如有疑问或需要技术讨论，请留言或发邮件到 service@itfanr.cc</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Leafney 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Leafney 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-third/" title="Celery分布式任务队列入门(三)-任务">https://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-third/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Celery/" rel="tag"># Celery</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/12/10/celery-distributed-task-queue-introduction-second/" rel="prev" title="Celery分布式任务队列入门(二)-环境配置">
+      <i class="fa fa-chevron-left"></i> Celery分布式任务队列入门(二)-环境配置
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/01/16/chi-gua-qun-zhong-bu-chi-gua-one/" rel="next" title="百万英雄，看程序员带你如何任性吃瓜(1)">
+      百万英雄，看程序员带你如何任性吃瓜(1) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置"><span class="nav-number">1.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#直接配置"><span class="nav-number">1.1.</span> <span class="nav-text">直接配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#独立配置模块"><span class="nav-number">1.2.</span> <span class="nav-text">独立配置模块</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步任务"><span class="nav-number">2.</span> <span class="nav-text">异步任务</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#运行-worker"><span class="nav-number">2.1.</span> <span class="nav-text">运行 worker</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#调用-Task"><span class="nav-number">2.2.</span> <span class="nav-text">调用 Task</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#delay调用"><span class="nav-number">2.2.1.</span> <span class="nav-text">delay调用</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#apply-async"><span class="nav-number">2.2.2.</span> <span class="nav-text">apply_async</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#send-task调用"><span class="nav-number">2.2.3.</span> <span class="nav-text">send_task调用</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AsyncResult方法"><span class="nav-number">2.3.</span> <span class="nav-text">AsyncResult方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定时任务"><span class="nav-number">3.</span> <span class="nav-text">定时任务</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#通过配置文件方式"><span class="nav-number">3.1.</span> <span class="nav-text">通过配置文件方式</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#简单定时任务"><span class="nav-number">3.1.1.</span> <span class="nav-text">简单定时任务</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#多项定时任务"><span class="nav-number">3.1.2.</span> <span class="nav-text">多项定时任务</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#时区"><span class="nav-number">3.2.</span> <span class="nav-text">时区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通过on-after-configure定义"><span class="nav-number">3.3.</span> <span class="nav-text">通过on_after_configure定义</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">4.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leafney"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Leafney</p>
+  <div class="site-description" itemprop="description">Stay Hungry. Stay Foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leafney" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leafney" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hub.docker.com/r/leafney/" title="DockerHub → https:&#x2F;&#x2F;hub.docker.com&#x2F;r&#x2F;leafney&#x2F;" rel="noopener" target="_blank"><i class="fab fa-docker fa-fw"></i>DockerHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:service@itfanr.cc" title="E-Mail → mailto:service@itfanr.cc" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        访客数 <span id="busuanzi_value_site_uv"></span> 人次
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        访问量 <span id="busuanzi_value_site_pv"></span> 次
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f28d68fd5271fd52826d',
+      clientSecret: '70a085c82c8d67b07e5482058272fcab3e969b83',
+      repo        : 'Leafney.github.io',
+      owner       : 'leafney',
+      admin       : ['leafney'],
+      id : 'itfanr_20171210235726',
+      labels: 'comments'.split(',').filter(l => l),
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

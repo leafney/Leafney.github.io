@@ -106,6 +106,31 @@
       </tags>
   </entry>
   <entry>
+    <title>更改Mac文件的默认打开方式</title>
+    <url>/2020/05/22/mac-default-opening-mode/</url>
+    <content><![CDATA[<h4 id="更改某一个文件的默认打开方式"><a href="#更改某一个文件的默认打开方式" class="headerlink" title="更改某一个文件的默认打开方式"></a>更改某一个文件的默认打开方式</h4><ol>
+<li>右键单击该文件</li>
+<li>按下 <code>Option</code> 键，你会看到 <code>「打开方式」</code> 选项变成了<code>「始终以此方式打开」</code></li>
+<li>选择 <code>「始终以此方式打开」</code> 列表内的某一个应用程序</li>
+</ol>
+<p>注意：这种方式<strong>只适用于</strong>你所选择的<strong>这一个</strong>文件，并<strong>不适用于</strong>其他文件，包括同一类型的文件。</p>
+<hr>
+<h4 id="更改同类型文件的默认打开方式"><a href="#更改同类型文件的默认打开方式" class="headerlink" title="更改同类型文件的默认打开方式"></a>更改同类型文件的默认打开方式</h4><ol>
+<li>右键单击该文件，然后选择 <code>「显示简介」</code> 选项</li>
+<li>找到 <code>「打开方式」</code> 项目，点击 <code>倒三角</code> 选择你想指定的默认应用程序</li>
+<li>单击 <code>「全部更改」</code> 按钮即可生效</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>工具技巧</category>
+      </categories>
+      <tags>
+        <tag>Skill</tag>
+        <tag>Mac</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>七牛云上传traefik生成的Let&#39;s Encrypt自有证书</title>
     <url>/2020/05/22/qiniu-use-https-cert/</url>
     <content><![CDATA[<p>通过 traefik 结合 Let’s Encrypt 生成的 https 自有证书文件，默认会生成 <code>.key</code> 和 <code>.crt</code> 格式的证书。但是如果使用了七牛云的图片外链，七牛云中配置的 https 加速域名也需要上传相应的证书，但证书格式必须为 <code>.pem</code> 的。</p>
@@ -5198,7 +5223,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#x61;&#105;&#x6c;&#64;&#101;&#x78;&#x61;&#x6d;&#112;&#x6c;&#101;&#46;&#x63;&#x6f;&#109;">&#101;&#x6d;&#x61;&#105;&#x6c;&#64;&#101;&#x78;&#x61;&#x6d;&#112;&#x6c;&#101;&#46;&#x63;&#x6f;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#97;&#105;&#108;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#109;">&#x65;&#x6d;&#97;&#105;&#108;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>
@@ -8381,8 +8406,8 @@
 ]]></content>
       <tags>
         <tag>Python</tag>
-        <tag>Alpine</tag>
         <tag>Selenium</tag>
+        <tag>Alpine</tag>
       </tags>
   </entry>
   <entry>
@@ -8530,8 +8555,8 @@
 ]]></content>
       <tags>
         <tag>Python</tag>
-        <tag>Selenium</tag>
         <tag>Ubuntu</tag>
+        <tag>Selenium</tag>
       </tags>
   </entry>
   <entry>

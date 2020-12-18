@@ -1,109 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>冯总语录</title>
-    <url>/2020/05/20/fengzong-yulu/</url>
-    <content><![CDATA[<p>冯总，冯路法。技术主管，CTO。</p>
-<p>一些平时的交谈或会议摘要记录。</p>
-<p><strong>不是什么人生大道理，只不过是经验罢了。</strong></p>
-<hr>
-<blockquote>
-<p>学习 攒钱 攒人品</p>
-</blockquote>
-<blockquote>
-<p>人品要靠平时攒</p>
-</blockquote>
-<blockquote>
-<p>人要有空杯心态</p>
-</blockquote>
-<blockquote>
-<p>定目标要可量化、可实现</p>
-</blockquote>
-<blockquote>
-<p>做产品要做到：抓住用户的痛点、痒点、爽点(延迟满足)</p>
-</blockquote>
-<blockquote>
-<p>凡事有交代，件件有着落，事事有回音</p>
-</blockquote>
-<blockquote>
-<p>做产品有两种，一种是你想要的，一种是用户想要的。多听听用户的想法。</p>
-</blockquote>
-<blockquote>
-<p>不要在冲动的时候做任何决定</p>
-</blockquote>
-<blockquote>
-<p>小问题上屡教不改的人，如果是在重要岗位上，早晚会出问题。</p>
-</blockquote>
-<blockquote>
-<p>先验证商业模式行不行</p>
-</blockquote>
-<blockquote>
-<p>拿到了A轮的企业，就证明了该公司的商业模式可行。</p>
-</blockquote>
-<blockquote>
-<p>看一个公司是否有发展，要看这个公司所处的行业和团队。</p>
-</blockquote>
-<blockquote>
-<p>挑选团队成员，要找互补的人。</p>
-</blockquote>
-<blockquote>
-<p>企业最大的愿景是 “风险共担，利益共享” 八个字。</p>
-</blockquote>
-<blockquote>
-<p>熟悉业务是最重要的。</p>
-</blockquote>
-<blockquote>
-<p>做产品要看能力和资源。</p>
-</blockquote>
-<blockquote>
-<p>确定开发期限，不要说越快越好，要给出具体的时间点。</p>
-</blockquote>
-<blockquote>
-<p>正儿八经的思考，并不一定要去做。思考的是生存，幻想的是生活。</p>
-</blockquote>
-<blockquote>
-<p>当你犹豫不知道该怎么选择的时候，选择其中最保险最安全的一条。</p>
-</blockquote>
-<blockquote>
-<p>用做产品的心态去写代码。</p>
-</blockquote>
-<blockquote>
-<p>不要从一个人的专业能力来评判他的领导能力。</p>
-</blockquote>
-<blockquote>
-<p>技术leader的根本：技术管理、项目管理、团队管理。</p>
-</blockquote>
-<blockquote>
-<p>装睡的人你永远叫不醒。</p>
-</blockquote>
-<blockquote>
-<p>做产品没办法一步到位，但要规划好每一步的发展。</p>
-</blockquote>
-<blockquote>
-<p>去参加技术大会，并不是让你去学技术，你能记住一到两个知识点就已经很不错了。要了解的是技术发展趋势，看看别人都在做什么，别人都在关注什么。（大意）</p>
-</blockquote>
-<blockquote>
-<p>人最难的是找对方向，有事情做。</p>
-</blockquote>
-<blockquote>
-<p>工作可以不严肃，但一定要严谨。</p>
-</blockquote>
-<blockquote>
-<p>要让团队成员如实写周报。所谓的如实，要包括：做的什么？什么进度？什么结果？如果不如实，会误导上级的判断。</p>
-</blockquote>
-<blockquote>
-<p>工作要有主动性思维。</p>
-</blockquote>
-<blockquote>
-<p>给自己定一个清晰的目标，并主动的去做。</p>
-</blockquote>
-<blockquote>
-<p>人最痛苦的时候是没有方向的时候，人最舒服的时候是有方向有目标的时候。</p>
-</blockquote>
-<hr>
+    <title>Docker中批量删除tag为none的镜像</title>
+    <url>/2020/12/18/remove-docker-tag-none-images/</url>
+    <content><![CDATA[<p>当使用Docker进行多阶段构建或者更新镜像版本后，查看所有镜像会发现产生一些tag为 <code>none</code> 的无用镜像，这些镜像被称为悬挂镜像（<code>dangling image</code>）。</p>
+<h4 id="查看所有镜像"><a href="#查看所有镜像" class="headerlink" title="查看所有镜像"></a>查看所有镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看所有标记为-none-的镜像"><a href="#查看所有标记为-none-的镜像" class="headerlink" title="查看所有标记为 none 的镜像"></a>查看所有标记为 <code>none</code> 的镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker images -f &quot;dangling&#x3D;true&quot;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="移除所有标记为-none-的镜像"><a href="#移除所有标记为-none-的镜像" class="headerlink" title="移除所有标记为 none 的镜像"></a>移除所有标记为 <code>none</code> 的镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker rmi $(docker images -f &quot;dangling&#x3D;true&quot; -q)</span><br></pre></td></tr></table></figure>
 ]]></content>
+      <categories>
+        <category>Docker容器技术</category>
+      </categories>
       <tags>
-        <tag>人在帝都</tag>
+        <tag>Docker</tag>
       </tags>
   </entry>
   <entry>
@@ -422,6 +334,112 @@
       </categories>
       <tags>
         <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>冯总语录</title>
+    <url>/2020/05/20/fengzong-yulu/</url>
+    <content><![CDATA[<p>冯总，冯路法。技术主管，CTO。</p>
+<p>一些平时的交谈或会议摘要记录。</p>
+<p><strong>不是什么人生大道理，只不过是经验罢了。</strong></p>
+<hr>
+<blockquote>
+<p>学习 攒钱 攒人品</p>
+</blockquote>
+<blockquote>
+<p>人品要靠平时攒</p>
+</blockquote>
+<blockquote>
+<p>人要有空杯心态</p>
+</blockquote>
+<blockquote>
+<p>定目标要可量化、可实现</p>
+</blockquote>
+<blockquote>
+<p>做产品要做到：抓住用户的痛点、痒点、爽点(延迟满足)</p>
+</blockquote>
+<blockquote>
+<p>凡事有交代，件件有着落，事事有回音</p>
+</blockquote>
+<blockquote>
+<p>做产品有两种，一种是你想要的，一种是用户想要的。多听听用户的想法。</p>
+</blockquote>
+<blockquote>
+<p>不要在冲动的时候做任何决定</p>
+</blockquote>
+<blockquote>
+<p>小问题上屡教不改的人，如果是在重要岗位上，早晚会出问题。</p>
+</blockquote>
+<blockquote>
+<p>先验证商业模式行不行</p>
+</blockquote>
+<blockquote>
+<p>拿到了A轮的企业，就证明了该公司的商业模式可行。</p>
+</blockquote>
+<blockquote>
+<p>看一个公司是否有发展，要看这个公司所处的行业和团队。</p>
+</blockquote>
+<blockquote>
+<p>挑选团队成员，要找互补的人。</p>
+</blockquote>
+<blockquote>
+<p>企业最大的愿景是 “风险共担，利益共享” 八个字。</p>
+</blockquote>
+<blockquote>
+<p>熟悉业务是最重要的。</p>
+</blockquote>
+<blockquote>
+<p>做产品要看能力和资源。</p>
+</blockquote>
+<blockquote>
+<p>确定开发期限，不要说越快越好，要给出具体的时间点。</p>
+</blockquote>
+<blockquote>
+<p>正儿八经的思考，并不一定要去做。思考的是生存，幻想的是生活。</p>
+</blockquote>
+<blockquote>
+<p>当你犹豫不知道该怎么选择的时候，选择其中最保险最安全的一条。</p>
+</blockquote>
+<blockquote>
+<p>用做产品的心态去写代码。</p>
+</blockquote>
+<blockquote>
+<p>不要从一个人的专业能力来评判他的领导能力。</p>
+</blockquote>
+<blockquote>
+<p>技术leader的根本：技术管理、项目管理、团队管理。</p>
+</blockquote>
+<blockquote>
+<p>装睡的人你永远叫不醒。</p>
+</blockquote>
+<blockquote>
+<p>做产品没办法一步到位，但要规划好每一步的发展。</p>
+</blockquote>
+<blockquote>
+<p>去参加技术大会，并不是让你去学技术，你能记住一到两个知识点就已经很不错了。要了解的是技术发展趋势，看看别人都在做什么，别人都在关注什么。（大意）</p>
+</blockquote>
+<blockquote>
+<p>人最难的是找对方向，有事情做。</p>
+</blockquote>
+<blockquote>
+<p>工作可以不严肃，但一定要严谨。</p>
+</blockquote>
+<blockquote>
+<p>要让团队成员如实写周报。所谓的如实，要包括：做的什么？什么进度？什么结果？如果不如实，会误导上级的判断。</p>
+</blockquote>
+<blockquote>
+<p>工作要有主动性思维。</p>
+</blockquote>
+<blockquote>
+<p>给自己定一个清晰的目标，并主动的去做。</p>
+</blockquote>
+<blockquote>
+<p>人最痛苦的时候是没有方向的时候，人最舒服的时候是有方向有目标的时候。</p>
+</blockquote>
+<hr>
+]]></content>
+      <tags>
+        <tag>人在帝都</tag>
       </tags>
   </entry>
   <entry>
@@ -5400,7 +5418,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#97;&#x69;&#x6c;&#x40;&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#x65;&#109;&#97;&#x69;&#x6c;&#x40;&#101;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#99;&#111;&#x6d;">&#x65;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#99;&#111;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

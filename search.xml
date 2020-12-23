@@ -1,6 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>IOS苹方字体的字重和FontWeight值的对应关系</title>
+    <url>/2020/12/23/pingfangsc-and-flutter-fontweight/</url>
+    <content><![CDATA[<h4 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h4><p>在用 <code>Flutter</code> 做移动端开发时，在蓝湖上看到字体的属性为：</p>
+<blockquote>
+<p>字体：  苹方-简 细体<br>字重：  Light</p>
+</blockquote>
+<p>那么，这个 <code>细体 Light</code> 对应的 <code>FontWeight</code> 到底是多少呢？</p>
+<h4 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h4><p>目前 iOS 系统中 <code>苹方-简</code> 字体包含六种字重：</p>
+<p><code>Ultralight</code>、<code>Thin</code>、<code>Light</code>、<code>Regular</code>、<code>Medium</code>、<code>Semibold</code></p>
+<p>和 <code>Flutter</code> 中的 <code>FontWeight值</code> 对应关系如下：</p>
+<table>
+<thead>
+<tr>
+<th>中文</th>
+<th>英文</th>
+<th>FontWeight值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>苹方-简 极细体</td>
+<td>PingFangSC-Ultralight</td>
+<td><code>w100</code></td>
+</tr>
+<tr>
+<td>苹方-简 纤细体</td>
+<td>PingFangSC-Thin</td>
+<td><code>w200</code></td>
+</tr>
+<tr>
+<td>苹方-简 细体</td>
+<td>PingFangSC-Light</td>
+<td><code>w300</code></td>
+</tr>
+<tr>
+<td>苹方-简 常规体</td>
+<td>PingFangSC-Regular</td>
+<td><code>w400</code> or <code>normal</code></td>
+</tr>
+<tr>
+<td>苹方-简 中黑体</td>
+<td>PingFangSC-Medium</td>
+<td><code>w500</code></td>
+</tr>
+<tr>
+<td>苹方-简 中粗体</td>
+<td>PingFangSC-Semibold</td>
+<td><code>w600</code></td>
+</tr>
+</tbody></table>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>需要注意一点：<code>Flutter</code> 中 <code>FontWeight.bold</code> 对应的值是 <code>w700</code> 。</p>
+<p>我在之前的开发中，看到蓝湖中标注为 <code>苹方-简 中黑体 Medium</code> 的字体就会设置为 <code>fontWeight: FontWeight.bold,</code> 后来才发现一直设置的都是错的。</p>
+]]></content>
+      <categories>
+        <category>Flutter之旅</category>
+      </categories>
+      <tags>
+        <tag>Flutter</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker中批量删除tag为none的镜像</title>
     <url>/2020/12/18/remove-docker-tag-none-images/</url>
     <content><![CDATA[<p>当使用Docker进行多阶段构建或者更新镜像版本后，查看所有镜像会发现产生一些tag为 <code>none</code> 的无用镜像，这些镜像被称为悬挂镜像（<code>dangling image</code>）。</p>
@@ -5418,7 +5478,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#99;&#111;&#x6d;">&#x65;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#99;&#111;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#99;&#x6f;&#109;">&#101;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#99;&#x6f;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

@@ -28,23 +28,23 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="调整Nginx配置，为所有域名启用https安全链接">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180919001532.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180919180924.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180919171901.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180924000202.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180924000229.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180919165205.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180919170111.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180919173643.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180919180924.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20180919180907.png?imageslim">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180919001532.png">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180919180924.png">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180919171901.png">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180924000202.png">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180924000229.png">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180919165205.png">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180919170111.png">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180919173643.png">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180919180924.png">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180919180907.png">
 <meta property="article:published_time" content="2018-09-24T12:14:27.000Z">
 <meta property="article:modified_time" content="2018-09-24T12:29:01.000Z">
 <meta property="article:author" content="Leafney">
 <meta property="article:tag" content="Hexo">
 <meta property="article:tag" content="HTTPS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/20180919001532.png?imageslim">
+<meta name="twitter:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180919001532.png">
 
 <link rel="canonical" href="https://www.itfanr.cc/2018/09/24/https-certificate-two-of-nginx-settings/">
 
@@ -273,7 +273,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl;</span><br><span class="line">    server_name www.itfanr.cc;</span><br><span class="line"></span><br><span class="line">    ssl_certificate &#x2F;etc&#x2F;acme.sh&#x2F;itfanr.cc&#x2F;fullchain.cer;</span><br><span class="line">    ssl_certificate_key &#x2F;etc&#x2F;acme.sh&#x2F;itfanr.cc&#x2F;itfanr.cc.key;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line"></span><br><span class="line">    proxy_set_header Host $host;</span><br><span class="line">    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">    proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;localhost:8080&#x2F;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">        listen 80;</span><br><span class="line">        server_name www.itfanr.cc;</span><br><span class="line">        return 301 https:&#x2F;&#x2F;$server_name$request_uri;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>结果，页面却显示了 <code>404 Not Found</code> 的错误。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919001532.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919001532.png" alt=""></p>
 <h4 id="解决多域名下设置证书"><a href="#解决多域名下设置证书" class="headerlink" title="解决多域名下设置证书"></a>解决多域名下设置证书</h4><p>通过相关问题的搜索，结果却没有找到什么有效的解决方法。另外由于我对Nginx的配置也不是特别精通，所以一下子陷入了迷茫中。</p>
 <p>后来，在一篇相关文章 <a href="https://godruoyi.com/posts/let-s-encrypt-generic-domain-name-certificate-application-and-configuration" target="_blank" rel="noopener">Let’s Encrypt 泛域名证书申请及配置</a> 中找到了一种方法。</p>
 <h5 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h5><p>在Nginx的 <code>snippets</code> 目录下，创建一个配置文件，我这里命名为 <code>ssl-itfanr.conf</code>，内容用来设置SSL相关的配置：</p>
@@ -302,9 +302,9 @@
 
 <p>此时，再次访问两个域名地址，可以发现都能够正常访问且都是https安全连接了。</p>
 <p>itfanr.cc:</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919180924.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919180924.png" alt=""></p>
 <p>gogit.itfanr.cc:</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919171901.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919171901.png" alt=""></p>
 <h4 id="设置默认站点"><a href="#设置默认站点" class="headerlink" title="设置默认站点"></a>设置默认站点</h4><p>因为我的域名设置了支持泛域名，所以支持的二级域名都会跳转到我的服务器的IP地址。</p>
 <p>那么，对于一些我们没有添加到二级域名在没有进行定义时，会返回什么呢？这就需要设置 <code>默认站点</code> 了。</p>
 <p>也就是通过参数 <code>default_server</code> 来指定。</p>
@@ -313,17 +313,17 @@
 
 <p>上面的设置说明，当访问域名是没有匹配到我们添加的域名，那么就会返回默认的地址。也就是这里的 Nginx默认的页面。</p>
 <p>比如，我访问 <code>http://abc.itfanr.cc</code> 时：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180924000202.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180924000202.png" alt=""></p>
 <p>而该文件中并没有配置当使用 <code>https</code> 方式访问时，要返回什么默认页面。所以我在上面的 <code>itfanr.conf</code>配置中添加了一项：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">listen 443 default_server;</span><br><span class="line">listen [::]:443 default_server;</span><br><span class="line">server_name itfanr.cc www.itfanr.cc;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <p>默认返回我的博客地址。比如访问 <code>https://abc.itfanr.cc</code> 时：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180924000229.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180924000229.png" alt=""></p>
 <p>另外，要注意的是：只能设置一个网址为默认地址，当设置了多个时会提示错误：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo nginx -t</span><br><span class="line">nginx: [emerg] a duplicate default server for 0.0.0.0:80 in &#x2F;etc&#x2F;nginx&#x2F;sites-enabled&#x2F;default:17</span><br><span class="line">nginx: configuration file &#x2F;etc&#x2F;nginx&#x2F;nginx.conf test failed</span><br></pre></td></tr></table></figure>
 
 <h4 id="解决网站中的-data-类型字体图片无法载入问题"><a href="#解决网站中的-data-类型字体图片无法载入问题" class="headerlink" title="解决网站中的 data 类型字体图片无法载入问题"></a>解决网站中的 <code>data</code> 类型字体图片无法载入问题</h4><p>配置好Nginx的 <code>https</code> 配置后，再次请求网址 <code>https://gogit.itfanr.cc</code>，发现浏览器地址栏中已经显示了安全的 “小绿锁” 标志。但是一打开Chrome浏览器的F12调试工具，发现有一些请求是报错的。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919165205.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919165205.png" alt=""></p>
 <p>可以发现，报错的基本都是前缀为 <code>data:application</code> 类型的字体图片文件。</p>
 <p>通过查询，在 <code>Content-Security-Policy</code> 段中应该包含以下内容：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">font-src &#39;self&#39; data:;</span><br></pre></td></tr></table></figure>
@@ -336,13 +336,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># &#x2F;etc&#x2F;nginx&#x2F;snippets&#x2F;ssl-itfanr.conf</span><br><span class="line"></span><br><span class="line">add_header Content-Security-Policy &quot;default-src &#39;self&#39;; script-src &#39;self&#39; &#39;unsafe-inline&#39; &#39;unsafe-eval&#39; blob: https:; connect-src &#39;self&#39; https:; img-src &#39;self&#39; data: https: blob:; style-src &#39;unsafe-inline&#39; https:; font-src &#39;self&#39; data: https:&quot;;</span><br></pre></td></tr></table></figure>
 
 <p>修改完成后，重新载入Nginx配置，再次刷新网站，发现已经没有 <code>data:application</code> 红色的错误请求链接了：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919170111.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919170111.png" alt=""></p>
 <ul>
 <li><a href="https://stackoverflow.com/questions/45366744/refused-to-load-the-font-datafont-woff-it-violates-the-following-content" target="_blank" rel="noopener">javascript - Refused to load the font ‘data:font/woff…..’it violates the following Content Security Policy directive: “default-src ‘self’”. Note that ‘font-src’ - Stack Overflow</a></li>
 </ul>
 <hr>
 <h4 id="解决七牛云图片外链http无法载入的问题"><a href="#解决七牛云图片外链http无法载入的问题" class="headerlink" title="解决七牛云图片外链http无法载入的问题"></a>解决七牛云图片外链http无法载入的问题</h4><p>访问我的博客网址 <code>https://www.itfanr.cc</code> ，发现有些文章中的七牛云外链图片都不显示了。查看F12调试工具：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919173643.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919173643.png" alt=""></p>
 <p>发现所有的七牛云 <code>http</code> 外链图片均不加载。</p>
 <p>然后我又去七牛云的网站中查看了一下配置，发现如果按照官方的方法切换成 <code>https</code> 的链接，是需要收费的，此时心里是一万头草泥马狂奔的景象…</p>
 <p>无奈只能找寻其他的解决方法了。</p>
@@ -355,9 +355,9 @@
 
 <p>再次刷新页面后，发现如果页面中没有引用到七牛云的图片链接，地址栏中是显示“小绿锁”的，比如首页；而到了文章详情页中，引用了七牛云的图片链接后，地址栏中就会显示“叹号”的不安全标志。</p>
 <p>访问首页，提示“安全连接”：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919180924.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919180924.png" alt=""></p>
 <p>访问带有http外链图片的文章详情，提示“连接并非完全安全”：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919180907.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919180907.png" alt=""></p>
 <p>根据上面的验证发现，必须得整站的链接都是 <code>https</code> 的情况下，才会是一直处于“小绿锁”的安全模式下。那么接下来就是解决整站<code>https</code>的问题了。目前来看，也就是解决七牛云图片链接如何从 <code>http</code> 到 <code>https</code> 的问题。</p>
 <h4 id="遗留的问题"><a href="#遗留的问题" class="headerlink" title="遗留的问题"></a>遗留的问题</h4><p>虽然通过独立出SSL配置，然后在需要启用 <code>https</code> 的域名配置文件 <code>server{}</code> 中 <code>include</code> 的方式能够正常运行，但我心里一直还是有个疑问的：为什么分别指定证书文件地址时配置却不生效？</p>
 <p>由于目前还未找到原因，这个问题暂留，以待后续解答。</p>
@@ -550,7 +550,7 @@
 <div class="copyright">
   
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

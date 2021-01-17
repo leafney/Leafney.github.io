@@ -595,7 +595,7 @@
 <hr>
 <h4 id="扩展优化"><a href="#扩展优化" class="headerlink" title="扩展优化"></a>扩展优化</h4><p>虽然按照上面的方法加上了 “置顶” 标记，不过感觉和自己想象的似乎有那么点差距，但差距在哪也不是很好说。。。</p>
 <p>所以我就上网去找了一下，发现了下面的一个网站的置顶效果（其中的文字我做了替换）：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190905125758.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190905125758.png" alt=""></p>
 <p>恩，就是这样！“置顶” 两个字放在标题前面，红底、白字，非常醒目。</p>
 <p>当然，改起来其实也很简单。。。</p>
 <p>不过可能有的朋友说了，“我也不会写代码呀，让我怎么改？”，或者 “我也不会nodejs呀？” 。。。</p>
@@ -618,12 +618,12 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% endif %&#125;</span><br><span class="line">&lt;a class&#x3D;&quot;post-title-link&quot; href&#x3D;&quot;&#123;&#123; url_for(post.path) &#125;&#125;&quot; itemprop&#x3D;&quot;url&quot;&gt;&#123;#</span><br><span class="line">#&#125; &#123;% if post.top %&#125;&lt;font color&#x3D;&quot;f05050&quot;&gt;[置顶] &lt;&#x2F;font&gt; &#123;% endif %&#125; &#123;&#123; post.title | default(__(&#39;post.untitled&#39;))&#125;&#125;&#123;#</span><br><span class="line">#&#125;&lt;&#x2F;a&gt;&#123;#</span><br></pre></td></tr></table></figure>
 
 <p>最后的效果如下：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190905124633.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190905124633.png" alt=""></p>
 <p>当然，前端能力强的，还可以再美化一下。</p>
 <hr>
 <h4 id="说点别的"><a href="#说点别的" class="headerlink" title="说点别的"></a>说点别的</h4><p>博客嘛，看的就是文章。重要的就是把你在工作、学习或者生活中遇到的问题、获得的经验、得到的收获去分享给别人，可能这就是我写博客的初衷所在吧。</p>
 <p>看到好多朋友的博客搞得非常的“花哨”，什么动态背景啦，什么萌萌哒卡哇伊啦。我一直都不是很感冒。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190905122338.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190905122338.png" alt=""></p>
 <p>可能更关键的原因是：每次我打开带有“动态背景”的博客时，我的MacBook的风扇就会进入 “狂浪” 模式，虽然我一直觉得这可能是Hexo的一个至今未被修复的bug。。。</p>
 <p>你听，耳边想起了：</p>
 <blockquote>
@@ -664,7 +664,7 @@
 <h4 id="Proxy-SwitchyOmega配置"><a href="#Proxy-SwitchyOmega配置" class="headerlink" title="Proxy SwitchyOmega配置"></a>Proxy SwitchyOmega配置</h4><p>在 <code>Proxy SwitchyOmega</code> 安装完成后默认已设置好两个情景模式：<code>auto switch</code> 和<code>proxy</code>。</p>
 <p>我下面的操作是将原来的默认设置删除后并重新添加的（因为之前有一些其他的设置），当然你可以直接按照我下面的方法来修改默认带的这两个模式。</p>
 <h5 id="新增代理模式"><a href="#新增代理模式" class="headerlink" title="新增代理模式"></a>新增代理模式</h5><p>安装完成后会在 Chrome 浏览器右上角显示扩展程序的图标，选择 “选项” 打开 <code>SwitchyOmega</code> 选项设置界面，点击 “新建情景模式”，这里我设置名称为 <code>ss代理</code>（同默认的proxy模式），情景类型选择 “代理服务器”，之后新增一项 <code>SOCKS5</code>的代理信息：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190904123229.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190904123229.png" alt=""></p>
 <p>默认情况下，ss的 <code>SOCKS5</code> 代理端口为 <code>1080</code> 。</p>
 <p>完成之后，点击 “应用选项” 保存设置。</p>
 <h5 id="新增智能切换模式"><a href="#新增智能切换模式" class="headerlink" title="新增智能切换模式"></a>新增智能切换模式</h5><p>再次点击 “新建情景模式”，我设置名称为 “智能切换”（同默认的auto switch模式），情景类型选择 “自动切换模式”，点击 “创建”。</p>
@@ -674,10 +674,10 @@
 </blockquote>
 <p>然后点击 “立即更新情景模式”，之后会在 “规则列表正文” 中显示相应的规则列表。</p>
 <p>在上面的 “切换规则” 中，将 “规则列表规则” 前面的框打<code>√</code>，后面选择上一步设置的 “ss代理”(同默认的proxy模式) ，下面的 “默认情景模式” 选择 “直接连接” 。点击左侧 “应用选项” 保存设置即可。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190904134646.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190904134646.png" alt=""></p>
 <p>这样设置的意思表示：如果网址匹配到规则列表中的网址规则，则会走代理，如果没有匹配到规则及默认的情况下，则会直接访问。</p>
 <h5 id="体验自动代理切换"><a href="#体验自动代理切换" class="headerlink" title="体验自动代理切换"></a>体验自动代理切换</h5><p>将ss的代理模式更改为 “自动代理模式”：点击 <code>SwitchyOmega</code> 图标选择 “智能切换” (同默认的proxy模式) 选项即可。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190904134924.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190904134924.png" alt=""></p>
 <p>然后在Chrome浏览器中打开 <code>google.com</code> 查看是否能正常访问。</p>
 <hr>
 <h4 id="设置本地Ip不走代理"><a href="#设置本地Ip不走代理" class="headerlink" title="设置本地Ip不走代理"></a>设置本地Ip不走代理</h4><p>有时候在本地开发网站项目时，都会通过本地的Ip来访问调试。但某些情况下本地的Ip也会去走SwitchyOmega的代理模式，所以需要将本地的Ip给屏蔽掉。</p>
@@ -704,7 +704,7 @@
 <h5 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h5><p>要启用 “快速切换” 模式，点击：</p>
 <p>“选项” – “界面” –（最下方）“快速切换”，勾选即可启用</p>
 <p>在 “循环切换以下情景模式” 中，加入 “直接连接” 和 “ss代理”（同默认的auto switch模式） 两项：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190904155607.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190904155607.png" alt=""></p>
 <p>最后，点击左侧的 ”应用选项“ 保存设置。</p>
 <h5 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h5><p>在 ”快速切换“ 模式下，<code>SwitchyOmega</code> 图标点击就不会像之前一样弹出 <code>代理列表菜单</code> 了，而是在 “直连” 和 “代理” 之间循环切换。</p>
 <p>如果需要打开 <code>SwitchyOmega</code> 的选项，可以<strong>右击</strong>该图标 – 选择 “选项”。</p>
@@ -718,14 +718,14 @@
 <h5 id="如何设置"><a href="#如何设置" class="headerlink" title="如何设置"></a>如何设置</h5><h6 id="添加多个代理"><a href="#添加多个代理" class="headerlink" title="添加多个代理"></a>添加多个代理</h6><p>在开始设置之前，我们先添加多个代理。比如我这里添加了一个 ”B代理“ 和一个 ”C代理“ 。</p>
 <h6 id="新增虚情景模式"><a href="#新增虚情景模式" class="headerlink" title="新增虚情景模式"></a>新增虚情景模式</h6><p>点击 “新增情景模式” – 设置名称（我这里设置为 “虚拟代理”） – 选择 “虚情景模式” – 创建。</p>
 <p>在 ”虚情景模式“ 的 ”目标“ 中，选择所有的 ”代理“ 模式其中的一项，表示默认使用的代理：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190904153038.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190904153038.png" alt=""></p>
 <p>最后，别忘了点击左侧的 ”应用选项“ 保存设置。</p>
 <h6 id="使用虚情景代理"><a href="#使用虚情景代理" class="headerlink" title="使用虚情景代理"></a>使用虚情景代理</h6><p>选择 “自动代理模式” ：我这里是 “智能切换” 模式（同默认的auto switch模式）。</p>
 <p>将 “规则列表规则” 后面的情景模式更改为我们新设置的 “虚拟情景模式” 代理。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190904153759.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190904153759.png" alt=""></p>
 <p>最后，点击左侧的 ”应用选项“ 保存设置。</p>
 <h6 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h6><p>打开 <code>google.com</code> 页面，依旧选择 “智能切换” （同默认的auto switch模式）代理。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190904154252.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190904154252.png" alt=""></p>
 <p>只是这时可以看到新增的 “虚拟代理” 选项后面多了一个下拉框，可以让我们在多个代理之间选择其中一个来使用。</p>
 <hr>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
@@ -978,7 +978,7 @@
 <li>CI环境</li>
 </ul>
 <p>k3s工作原理：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190831220323.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190831220323.png" alt=""></p>
 <h4 id="k3s安装"><a href="#k3s安装" class="headerlink" title="k3s安装"></a>k3s安装</h4><p>k3s的安装非常简单，可以直接按照官方给出的教程来操作。</p>
 <p>通过 <code>install.sh</code> 脚本来安装，执行如下命令：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -sfL https:&#x2F;&#x2F;get.k3s.io | sh -</span><br></pre></td></tr></table></figure>
@@ -1060,7 +1060,7 @@
 </ul>
 <hr>
 <h4 id="修复TNT破解的Mac软件退出问题"><a href="#修复TNT破解的Mac软件退出问题" class="headerlink" title="修复TNT破解的Mac软件退出问题"></a>修复TNT破解的Mac软件退出问题</h4><p>7月12日，Apple删除了TNT的证书，更新了T2芯片的安全模式。因此很多破解的应用程序在7月12日之后打开会崩溃。例如，CleanMyMac X，BetterZip，1Password，One Switch 等，目前的解决方案是需要自己手动签名，能解决大部份软件崩溃问题。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190713235952.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190713235952.png" alt=""></p>
 <h5 id="安装Xcode"><a href="#安装Xcode" class="headerlink" title="安装Xcode"></a>安装Xcode</h5><p>可以在App Store中下载安装，并且至少运行一次。</p>
 <h5 id="安装Command-Line-Tools-工具"><a href="#安装Command-Line-Tools-工具" class="headerlink" title="安装Command Line Tools 工具"></a>安装Command Line Tools 工具</h5><p>打开终端工具输入如下命令：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xcode-select install</span><br></pre></td></tr></table></figure>
@@ -1098,7 +1098,7 @@
 <li>部署Drone服务时，需要手动指定 <code>nodePort</code> 一项，因为在设置环境变量 <code>DRONE_SERVER_HOST</code> 时需要该端口；</li>
 </ul>
 <h5 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h5><p>gitea安装配置页面，以下几项需要注意：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190710111150.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190710111150.png" alt=""></p>
 <p>创建一个简单的 <code>.drone.yml</code> 文件：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kind: pipeline</span><br><span class="line">name: default</span><br><span class="line"></span><br><span class="line">clone:</span><br><span class="line">  disable: true</span><br><span class="line"></span><br><span class="line">steps:</span><br><span class="line">- name: test_drone</span><br><span class="line">  image: alpine:3.9</span><br><span class="line">  commands:</span><br><span class="line">  - echo &quot;show hello world by drone&quot;</span><br><span class="line">  - echo $(pwd)</span><br><span class="line">  - sleep 10</span><br></pre></td></tr></table></figure>
 
@@ -1117,7 +1117,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ kubectl -n cicd get pods</span><br><span class="line">NAME                                  READY   STATUS      RESTARTS   AGE</span><br><span class="line">drone-deploy-77fb9ff86d-w8q9s         1&#x2F;1     Running     0          17m</span><br><span class="line">drone-job-2-cnbmdfdlov2wqkcsg-c8m56   0&#x2F;1     Completed   0          5m37s</span><br></pre></td></tr></table></figure>
 
 <p>查看Drone UI中的构建情况：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190710211502.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190710211502.png" alt=""></p>
 <h5 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h5><p>查看该Pod的详细描述：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ kubectl -n cicd describe pods drone-job-2-cnbmdfdlov2wqkcsg-c8m56</span><br><span class="line">Name:               drone-job-2-cnbmdfdlov2wqkcsg-c8m56</span><br><span class="line">Namespace:          cicd</span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">Status:             Succeeded</span><br><span class="line">IP:                 10.244.1.121</span><br><span class="line">Controlled By:      Job&#x2F;drone-job-2-cnbmdfdlov2wqkcsg</span><br><span class="line">Containers:</span><br><span class="line">  drone-controller:</span><br><span class="line">    Container ID:   docker:&#x2F;&#x2F;8a2e413b84fe6d9dd361cc17b82881f888ff7376605c83bea0714cd5e439523c</span><br><span class="line">    Image:          drone&#x2F;controller:1.2.1</span><br><span class="line">    Image ID:       docker-pullable:&#x2F;&#x2F;drone&#x2F;controller@sha256:3a57ab277657525b1cfe464d8f38501a4454a5db3d20ca7e56052330df2ec523</span><br><span class="line">    Port:           &lt;none&gt;</span><br><span class="line">    Host Port:      &lt;none&gt;</span><br><span class="line">    State:          Terminated</span><br><span class="line">      Reason:       Completed</span><br><span class="line">      Exit Code:    0</span><br><span class="line">      Started:      Wed, 10 Jul 2019 02:14:44 +0800</span><br><span class="line">      Finished:     Wed, 10 Jul 2019 02:14:57 +0800</span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
@@ -1151,7 +1151,7 @@
     <url>/2019/07/03/launching-vscode-from-command-line/</url>
     <content><![CDATA[<h4 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h4><p>打开 VS Code</p>
 <p>通过快捷键 <code>Command + Shift + P</code> 调出命令面板并输入 <code>shell command</code> ，选择 <code>Shell Command: Install &#39;code&#39; command in PATH</code> 一项即可。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190703154914.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190703154914.png" alt=""></p>
 <p>重启终端窗口，并输入 <code>code .</code> 即可在当前目录下打开<code>VS Code</code>了。</p>
 <p>也可以通过如下命令在<code>VS Code</code>中打开指定的文件：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ code ~&#x2F;Project&#x2F;Leafney.github.io&#x2F;pubblog&#x2F;000Hexo模板.md</span><br></pre></td></tr></table></figure>
@@ -1313,7 +1313,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ crontab -l</span><br><span class="line">0 9 * * * &#x2F;home&#x2F;tiger&#x2F;disk-monitor.sh -t fbbdf72e581f3bcc9469d49708857d2fa93a684 &gt; &#x2F;dev&#x2F;null 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
 
 <h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p>相应的效果如下：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190618204000.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190618204000.png" alt=""></p>
 <h4 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h4><ul>
 <li><a href="https://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/crontab.html" target="_blank" rel="noopener">crontab 定时任务 — Linux Tools Quick Tutorial</a></li>
 </ul>
@@ -1436,9 +1436,9 @@
 <hr>
 <p>找到 Kubernetes在 GitHub上的仓库地址其中的 <code>CHANGELOG.md</code> 文件：<a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG.md#client-binaries-1" target="_blank" rel="noopener">kubernetes/CHANGELOG.md at master · kubernetes/kubernetes</a></p>
 <p>选择指定版本下的 <code>Client Binaries</code> ：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190517123850.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190517123850.png" alt=""></p>
 <p>选择指定的文件下载：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190517124031.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190517124031.png" alt=""></p>
 <p>下载到本地：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ wget https:&#x2F;&#x2F;dl.k8s.io&#x2F;v1.14.1&#x2F;kubernetes-client-darwin-amd64.tar.gz</span><br></pre></td></tr></table></figure>
 
@@ -1778,15 +1778,15 @@
     <title>如何添加URL到shadowsocks的列表让其使用代理访问</title>
     <url>/2019/05/13/ss-add-urls-use-proxy/</url>
     <content><![CDATA[<h4 id="添加自定义网址"><a href="#添加自定义网址" class="headerlink" title="添加自定义网址"></a>添加自定义网址</h4><p>开启 <code>Shadowsockets</code> 的 <code>自动代理模式</code> 一般情况下并不能正常访问到 <code>medium.com</code> 的站点。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190411162943.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190411162943.png" alt=""></p>
 <p>选择 <code>编辑自动模式的PAC...</code> 选项，会打开一个名为 <code>gfwlist.js</code> 的配置文件：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190411163111.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190411163111.png" alt=""></p>
 <p>按照该文件中已有URL的格式，将我们的 <code>medium.com</code> 添加到文件中：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var rules &#x3D; [</span><br><span class="line">  &quot;||medium.com&quot;,</span><br><span class="line">  &quot;||altrec.com&quot;, </span><br><span class="line">  &quot;||darpa.mil&quot;, </span><br><span class="line">  ...</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>保存修改。</p>
 <p>之后直接刷新页面即可，无需重启 <code>ss</code> ，立即生效了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190411163429.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190411163429.png" alt=""></p>
 <hr>
 <h4 id="MAC-下点击“从-GFWList-更新-PAC”，提示“404”错误"><a href="#MAC-下点击“从-GFWList-更新-PAC”，提示“404”错误" class="headerlink" title="MAC 下点击“从 GFWList 更新 PAC”，提示“404”错误"></a>MAC 下点击“从 GFWList 更新 PAC”，提示“404”错误</h4><blockquote>
 <p>由于太久没更新，且 gfwlist.txt 是 hard code 在代码里面的，所以升级 GFWList 会报 404 错误。主要是因为原来的 GFWList 托管在 Google Code 上，现在托管在 GitHub 上。</p>
@@ -1871,11 +1871,11 @@
 <li><a href="https://github.com/gitalk/gitalk/issues/114" target="_blank" rel="noopener">Error: u.concat(…).join is not a function! · Issue #114 · gitalk/gitalk</a></li>
 </ul>
 <h5 id="未找到相关的-Issues-进行评论"><a href="#未找到相关的-Issues-进行评论" class="headerlink" title="未找到相关的 Issues 进行评论"></a>未找到相关的 Issues 进行评论</h5><p>更改为 <code>Gitalk</code> 之后，发现之前使用 <code>Gitment</code> 已经创建了 <code>issues</code> 的文章却提示 <code>未找到相关的 Issues 进行评论</code> :</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190430111233.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190430111233.png" alt=""></p>
 <p>原因是：</p>
 <p><code>Gitalk</code> 评论插件是通过 <code>issues</code> 的 <code>labels</code> 来标识一篇文章的。如果 <code>labels</code> 中存在相应文章的 <code>label</code> 标签，那就说明该文章已经初始化过了。</p>
 <p>比如 我一篇文章设置的 <code>ID</code> 为 <code>itfanr_blog_20190426225702</code> ，默认的 <code>labels</code> 为 <code>gitalk</code>，那么相应的issues如下：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190430115237.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190430115237.png" alt=""></p>
 <p>这两个label一起来标识一篇文章。</p>
 <p>因为上面我将ID值的格式进行了修改：</p>
 <p>原来:</p>
@@ -1950,7 +1950,7 @@
 <p>You can edit your <code>~/.zshrc</code> and change/add the variable  <code>ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=&#39;fg=value&#39;</code> like <code>ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=&#39;fg=66&#39;</code>.</p>
 <p>The number of colors is in any case limited to 256(i.e. the range 0 to 255).</p>
 <p>You can view the detailed colors from here:</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190426214758.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190426214758.png" alt=""></p>
 <p>When the auto prompt appears, press <code>→</code> key or <code>Ctrl(Control) + f</code> to enter the auto prompt command into the current terminal.</p>
 <ul>
 <li><a href="https://stackoverflow.com/questions/47310537/how-to-change-zsh-autosuggestions-color" target="_blank" rel="noopener">linux - How to change zsh-autosuggestions color - Stack Overflow</a></li>
@@ -2241,18 +2241,18 @@
 <li>Win: <code>单击任意组件名称 + Ctrl + .</code></li>
 <li>Mac: <code>单击任意组件名称 + Command + .</code></li>
 </ul>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190225205422.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190225205422.png" alt=""></p>
 <hr>
 <h4 id="将代码块提取到方法中-Extract-Method"><a href="#将代码块提取到方法中-Extract-Method" class="headerlink" title="将代码块提取到方法中 Extract Method"></a>将代码块提取到方法中 Extract Method</h4><p>提取一段代码块，生成一个新的方法。当你发现某个方法里面过于复杂，需要将某一段代码提取成单独的方法时，该技巧是很有用的。</p>
 <h5 id="AS-1"><a href="#AS-1" class="headerlink" title="AS"></a>AS</h5><p>在 <code>AS</code> 中，<code>选中代码段</code> – <code>Menu</code> – <code>Refactor</code> – <code>Extract</code> – <code>Method...</code> ：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190226122412.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190226122412.png" alt=""></p>
 <p>对应的快捷键是：<br>    * Win: <code>选中代码段</code> + <code>Ctrl + Alt + M</code><br>    * Mac: <code>选中代码段</code> + <code>Command + Option + M</code></p>
 <ul>
 <li><a href="https://blog.51cto.com/31329846/1845347" target="_blank" rel="noopener">最强 Android Studio 使用小技巧和快捷键-设计师-51CTO博客</a></li>
 </ul>
 <hr>
 <h5 id="VS-Code-1"><a href="#VS-Code-1" class="headerlink" title="VS Code"></a>VS Code</h5><p>在 <code>VS Code</code> 中，<code>选中代码段</code> – <code>右键菜单</code> – <code>重构...</code> – <code>Extract Method</code> :</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190226120402.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190226120402.png" alt=""></p>
 <p>对应的快捷键：<br>    * Win: <code>选中代码段</code> + <code>Ctrl + .</code> + 选择 <code>Extract Method</code><br>    * Mac: <code>选中代码段</code> + <code>Command + .</code> + 选择 <code>Extract Method</code></p>
 <p>参考：</p>
 <ul>
@@ -2262,16 +2262,16 @@
 <hr>
 <h4 id="匹配括号高亮"><a href="#匹配括号高亮" class="headerlink" title="匹配括号高亮"></a>匹配括号高亮</h4><p>当代码量多了之后，想要找到某一部分代码时，通过匹配的括号来找是比较方便的。</p>
 <h5 id="AS-2"><a href="#AS-2" class="headerlink" title="AS"></a>AS</h5><p>在 <code>AS</code> 中，默认支持匹配括号高亮：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190226103153.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190226103153.png" alt=""></p>
 <h5 id="VS-Code-2"><a href="#VS-Code-2" class="headerlink" title="VS Code"></a>VS Code</h5><p>在 VS Code 中，默认的括号匹配比较简单：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190226104555.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190226104555.png" alt=""></p>
 <p>当代码量多了之后，找起来让人看着有些眼晕。</p>
 <p>这里，推荐一个比较好用的插件：<code>Bracket Pair Colorizer 2</code> :</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190226104555.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190226104555.png" alt=""></p>
 <p>安装之后，相邻的括号颜色不同，区分起来很明显。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190226105411.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190226105411.png" alt=""></p>
 <p>不过，这里我不太喜欢自带的这个匹配线，所以我就把它去掉了。在该插件的官方介绍中，可以看到是通过 <code>&quot;bracket-pair-colorizer-2.showHorizontalScopeLine&quot;</code> 类似的选项定义的，在 <code>用户设置</code> 中可以关闭这些。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190226110223.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190226110223.png" alt=""></p>
 <hr>
 <h4 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h4><h5 id="AS-中快捷键"><a href="#AS-中快捷键" class="headerlink" title="AS 中快捷键"></a>AS 中快捷键</h5><p>格式化代码：<br>    * Win: <code>Ctrl +Alt + L</code><br>    * Mac: <code>Command + Option + L</code></p>
 <p>快速选中整个小部件：<br>    * Win: <code>双击选中部件名称 + Ctrl + W</code><br>    * Mac: <code>双击选中部件名称 + Option + Up</code></p>
@@ -2295,7 +2295,7 @@
 <h5 id="“Hot-Reload”-and-“Hot-Restart”"><a href="#“Hot-Reload”-and-“Hot-Restart”" class="headerlink" title="“Hot Reload” and “Hot Restart”"></a>“Hot Reload” and “Hot Restart”</h5><h6 id="调试模式下"><a href="#调试模式下" class="headerlink" title="调试模式下"></a>调试模式下</h6><p>Hot Reload:</p>
 <p>保存后自动重载<br>    * Win: <code>Ctrl + S</code><br>    * Mac: <code>Command + S</code></p>
 <p>点击调试菜单中的 <code>重载按钮</code> 或使用快捷键：<br>    * Win: <code>Ctrl + Shift + F5</code><br>    * Mac: <code>Command + Shift + F5</code></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190225140010.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190225140010.png" alt=""></p>
 <p>Hot Restart:<br>    * Win: <code>Ctrl + F5</code><br>    * Mac: <code>Control + F5</code></p>
 <ul>
 <li><a href="https://github.com/Dart-Code/Dart-Code/issues/754" target="_blank" rel="noopener">How to do full reload? · Issue #754 · Dart-Code/Dart-Code</a></li>
@@ -2309,14 +2309,14 @@
 <p>相应的快捷键：<br>    * Win: <code>Ctrl + Alt + L</code><br>    * Mac: <code>Command + Option + L</code></p>
 <h6 id="自动执行"><a href="#自动执行" class="headerlink" title="自动执行"></a>自动执行</h6><p>选择菜单 <code>Android Studio</code> – <code>Preferences</code> – 搜索 <code>flutter</code> – 在 <code>Languages &amp; Frameworks</code> 中的 <code>Flutter</code> 右侧界面中，找到 <code>General</code> 选项。</p>
 <p>勾选 <code>Format code on save</code> 一项。也可以将子项 <code>Organize imports on save</code> 同时选中。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190225202632.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190225202632.png" alt=""></p>
 <p>这里我使用的 <code>Android Studio</code> 版本为 <code>Android Studio 3.3.1</code> 。其他版本可能位置有变化。</p>
 <hr>
 <h5 id="VS-Code-3"><a href="#VS-Code-3" class="headerlink" title="VS Code"></a>VS Code</h5><h6 id="手动执行-1"><a href="#手动执行-1" class="headerlink" title="手动执行"></a>手动执行</h6><p>在 <code>VS Code</code> 代码界面中，右键单击代码窗口并选择 <code>Format Document（格式化文档）</code> 菜单，实现自动格式化代码。</p>
 <p>相应的快捷键：<br>    * Win: <code>Alt + Shift + F</code><br>    * Mac: <code>Option + Shift + F</code></p>
 <h6 id="自动执行-1"><a href="#自动执行-1" class="headerlink" title="自动执行"></a>自动执行</h6><p>相比起手动执行的方式，更多人都会选择通过在保存文档时来实现代码的自动格式化。</p>
 <p>在 <code>VS Code</code> 界面中，通过快捷键 <code>Ctrl + ,</code> ( <code>Command + ,</code> in Mac) 打开 <code>设置</code> 窗口，或者通过 <code>文件</code> – <code>首选项</code> – <code>设置</code>（ <code>Code</code> – <code>首选项</code> – <code>设置</code> in Mac） 打开 <code>设置</code> 窗口。在搜索栏中输入 <code>edit:formatonsave</code> 打开设置界面。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190225194726.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190225194726.png" alt=""></p>
 <p>默认情况下，在保存文件时不会自动格式化文件。</p>
 <p>当勾选这一项后，表示在格式化程序可用的前提下，保存文件时会自动格式化。</p>
 <p>也可以选择下面的 <code>在 settings.json 中编辑</code> 一项，来自定义该项。</p>
@@ -2387,7 +2387,7 @@
 
 <p><strong>2019-10-20 更新</strong>：最近在安装最新的 <code>flutter_1.9.1</code> 版本时发现，配置好上面的环境变量后，第一次运行 <code>flutter -h</code> 不会立即显示出下面的结果，就是我们通常所说的 <code>卡住了</code> 。观察发现在第一次执行 <code>flutter -h</code> 命令的时候会去执行一些后台的操作(比如git)，所以<strong>第一次</strong>执行的时候会需要等待一段时间。</p>
 <p>这个时候应该能展示flutter的命令帮助：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190223120927.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190223120927.png" alt=""></p>
 <hr>
 <h4 id="检查flutter环境"><a href="#检查flutter环境" class="headerlink" title="检查flutter环境"></a>检查flutter环境</h4><p>在安装环境的过程中，Flutter官方提供了一个依赖检查的命令 <code>flutter doctor</code> ，可以查看到哪些依赖项或程序没有安装成功。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ flutter doctor</span><br></pre></td></tr></table></figure>
@@ -2429,21 +2429,21 @@
 <p>虽然开发工具上面已经配置了 <code>VS Code</code>也就没必要再安装 <code>Android Studio</code> 了，不过为了方便快捷，这里我选择采用第一种方式来安装。</p>
 <p>这里需要注意的是：最好自备 <code>梯子</code> ，有些Android依赖包下载的过程中可能会由于网络原因需要多次重试。</p>
 <h5 id="安装-Android-Studio-及配置"><a href="#安装-Android-Studio-及配置" class="headerlink" title="安装 Android Studio 及配置"></a>安装 Android Studio 及配置</h5><p>打开官网 <a href="https://developer.android.com/studio/" target="_blank" rel="noopener"></a> ，会直接根据当前系统显示推荐下载版本：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181222203818.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181222203818.png" alt=""></p>
 <p>直接点开安装即可。结果弹出了一个错误页面：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190223153756.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190223153756.png" alt=""></p>
 <p>出现这个错误的原因是：在第一次安装AS，启动后，检测到电脑没有安装 Android SDK。</p>
 <p>相应的解决方法是直接点击 <code>Cancel</code> 选项，在后续的界面中再安装SDK。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190223155254.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190223155254.png" alt=""></p>
 <p>点击 <code>Next</code> 后，我这里选择的是 <code>Custom</code> （自定义）选项。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190223155655.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190223155655.png" alt=""></p>
 <p>可以看到 <code>Android SDK</code> 是默认勾选的。另外两项我这里全部勾选上了。还可以在这里选择自定义安装目录。</p>
 <p>下一页是Android模拟器的内存设置：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190223155931.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190223155931.png" alt=""></p>
 <p>SDK Path 默认为 <code>/Users/xyz/Library/Android/sdk</code> 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190223160142.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190223160142.png" alt=""></p>
 <p>然后就是等待下载安装的过程：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190223160710.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190223160710.png" alt=""></p>
 <p>由于某些资源包是访问的 <code>google.com</code> 网址，如果没有 <code>梯子</code> ，是需要等待很久。。。很久。。。的。</p>
 <p>等待安装完成后，再次查看：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ flutter doctor</span><br><span class="line">Doctor summary (to see all details, run flutter doctor -v):</span><br><span class="line">[✓] Flutter (Channel stable, v1.0.0, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)</span><br><span class="line">[!] Android toolchain - develop for Android devices (Android SDK 28.0.3)</span><br><span class="line">    ✗ Android licenses not accepted.  To resolve this, run: flutter doctor --android-licenses</span><br><span class="line">[!] iOS toolchain - develop for iOS devices (Xcode 10.1)</span><br><span class="line">    ✗ libimobiledevice and ideviceinstaller are not installed. To install with Brew, run:</span><br><span class="line">        brew update</span><br><span class="line">        brew install --HEAD usbmuxd</span><br><span class="line">        brew link usbmuxd</span><br><span class="line">        brew install --HEAD libimobiledevice</span><br><span class="line">        brew install ideviceinstaller</span><br><span class="line">    ✗ ios-deploy not installed. To install with Brew:</span><br><span class="line">        brew install ios-deploy</span><br><span class="line">    ✗ CocoaPods not installed.</span><br><span class="line">        CocoaPods is used to retrieve the iOS platform side&#39;s plugin code that responds to your plugin usage on the Dart</span><br><span class="line">        side.</span><br><span class="line">        Without resolving iOS dependencies with CocoaPods, plugins will not work on iOS.</span><br><span class="line">        For more info, see https:&#x2F;&#x2F;flutter.io&#x2F;platform-plugins</span><br><span class="line">      To install:</span><br><span class="line">        brew install cocoapods</span><br><span class="line">        pod setup</span><br><span class="line">[✓] Android Studio (version 3.3)</span><br><span class="line">    ✗ Flutter plugin not installed; this adds Flutter specific functionality.</span><br><span class="line">    ✗ Dart plugin not installed; this adds Dart specific functionality.</span><br><span class="line">[✓] VS Code (version 1.31.1)</span><br><span class="line">[!] Connected device</span><br><span class="line">    ! No devices available</span><br><span class="line"></span><br><span class="line">! Doctor found issues in 3 categories.</span><br></pre></td></tr></table></figure>
@@ -2467,8 +2467,8 @@
 
 <p>看提示，需要在 <code>Android Studio</code> 中安装两个必要的插件：<code>Flutter plugin</code> 和 <code>Dart plugin</code></p>
 <p>打开 Android Studio，可以不用新建项目，直接选择菜单栏中的 <code>Android Studio</code> – <code>Preferences</code> – 选择或者搜索 <code>Plugins</code> 菜单 – 然后搜索 <code>Flutter</code> 插件，可以看到会自动提示安装依赖的 <code>Dart</code> 插件：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190223183743.png?imageslim" alt=""></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190223184006.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190223183743.png" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190223184006.png" alt=""></p>
 <p>之后，需要重启。</p>
 <p>再次查看：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ flutter doctor</span><br><span class="line">Doctor summary (to see all details, run flutter doctor -v):</span><br><span class="line">[✓] Flutter (Channel stable, v1.0.0, on Mac OS X 10.14.3 18D109, locale zh-Hans-CN)</span><br><span class="line">[✓] Android toolchain - develop for Android devices (Android SDK 28.0.3)</span><br><span class="line">[!] iOS toolchain - develop for iOS devices (Xcode 10.1)</span><br><span class="line">    ✗ libimobiledevice and ideviceinstaller are not installed. To install with Brew, run:</span><br><span class="line">        brew update</span><br><span class="line">        brew install --HEAD usbmuxd</span><br><span class="line">        brew link usbmuxd</span><br><span class="line">        brew install --HEAD libimobiledevice</span><br><span class="line">        brew install ideviceinstaller</span><br><span class="line">    ✗ ios-deploy not installed. To install with Brew:</span><br><span class="line">        brew install ios-deploy</span><br><span class="line">    ✗ CocoaPods not installed.</span><br><span class="line">        CocoaPods is used to retrieve the iOS platform side&#39;s plugin code that responds to your plugin usage on the Dart</span><br><span class="line">        side.</span><br><span class="line">        Without resolving iOS dependencies with CocoaPods, plugins will not work on iOS.</span><br><span class="line">        For more info, see https:&#x2F;&#x2F;flutter.io&#x2F;platform-plugins</span><br><span class="line">      To install:</span><br><span class="line">        brew install cocoapods</span><br><span class="line">        pod setup</span><br><span class="line">[✓] Android Studio (version 3.3)</span><br><span class="line">[✓] VS Code (version 1.31.1)</span><br><span class="line">[!] Connected device</span><br><span class="line">    ! No devices available</span><br><span class="line"></span><br><span class="line">! Doctor found issues in 2 categories.</span><br></pre></td></tr></table></figure>
@@ -2506,7 +2506,7 @@
 <p>然后在 <code>$HOME/.bash_profile</code> 中加入下列代码:</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export ANDROID_HOME&#x3D;$HOME&#x2F;Library&#x2F;Android&#x2F;sdk</span><br><span class="line">export PATH&#x3D;$&#123;PATH&#125;:$&#123;ANDROID_HOME&#125;&#x2F;tools</span><br><span class="line">export PATH&#x3D;$&#123;PATH&#125;:$&#123;ANDROID_HOME&#125;&#x2F;platform-tools</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190311150318.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190311150318.png" alt=""></p>
 <p>重启命令行窗口或者执行 <code>source $HOME/.bash_profile</code> or <code>source $HOME/.zshrc</code> 刷新配置。</p>
 <h5 id="配置Android模拟器"><a href="#配置Android模拟器" class="headerlink" title="配置Android模拟器"></a>配置Android模拟器</h5><p>打开 AS, <code>Android Studio</code> &gt; <code>Tools</code> &gt; <code>Android</code> &gt; <code>AVD Manager and select Create Virtual Device</code> . （更多的去参考一下文档去吧）&gt; <a href="https://flutter.dev/docs/get-started/install/macos#set-up-the-android-emulator" target="_blank" rel="noopener">Set up the Android emulator - Flutter</a></p>
 <p>后来发现，如果没有配置，是会启动一个默认的模拟器。</p>
@@ -2579,10 +2579,10 @@
 <p>选择项目菜单 <code>Runner</code> – General 选项 ，可以看到 <code>Signing</code> 中的 <code>Status</code> 提示错误信息：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Signing for &quot;Runner&quot; requires a development team.</span><br><span class="line">Select a development team in the projct editor.</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190224163145.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190224163145.png" alt=""></p>
 <p>点击 <code>Team</code> 选项的 <code>Add Account...</code> 按钮，登录 <code>Apple ID</code> ，没有则需要创建一个。回到 <code>General</code> 界面，选择 <code>Team</code> 名称。等待验证。</p>
 <h5 id="No-profiles-for-xxx-were-found"><a href="#No-profiles-for-xxx-were-found" class="headerlink" title="No profiles for xxx were found"></a>No profiles for xxx were found</h5><p>现在又提示下面的错误：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190224165204.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190224165204.png" alt=""></p>
 <p>在 VSCode中执行 <code>flutter run</code> 命令：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ flutter run</span><br><span class="line">Launching lib&#x2F;main.dart on xyz的iPhone in debug mode...</span><br><span class="line">Automatically signing iOS for device deployment using specified development team in Xcode project:</span><br><span class="line">9Y41Q9PF28</span><br><span class="line">Starting Xcode build...                                          </span><br><span class="line">Xcode build done.                                            1.3s</span><br><span class="line">Failed to build iOS app</span><br><span class="line">Error output from Xcode build:</span><br><span class="line">↳</span><br><span class="line">    ** BUILD FAILED **</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Xcode&#39;s output:</span><br><span class="line">↳</span><br><span class="line">    &#x3D;&#x3D;&#x3D; BUILD TARGET Runner OF PROJECT Runner WITH CONFIGURATION Debug &#x3D;&#x3D;&#x3D;</span><br><span class="line">    Code Signing Error: No profiles for &#39;com.example.helloWorld&#39; were found:  Xcode couldn&#39;t find any</span><br><span class="line">    iOS App Development provisioning profiles matching &#39;com.example.helloWorld&#39;. Automatic signing is</span><br><span class="line">    disabled and unable to generate a profile. To enable automatic signing, pass</span><br><span class="line">    -allowProvisioningUpdates to xcodebuild.</span><br><span class="line">    Code Signing Error: Code signing is required for product type &#39;Application&#39; in SDK &#39;iOS 12.1&#39;</span><br><span class="line">    Code Signing Error: Code signing is required for product type &#39;Application&#39; in SDK &#39;iOS 12.1&#39;</span><br><span class="line">    Code Signing Error: Code signing is required for product type &#39;Application&#39; in SDK &#39;iOS 12.1&#39;</span><br><span class="line"></span><br><span class="line">Could not build the precompiled application for the device.</span><br><span class="line"></span><br><span class="line">It appears that your application still contains the default signing identifier.</span><br><span class="line">Try replacing &#39;com.example&#39; with your signing id in Xcode:</span><br><span class="line">  open ios&#x2F;Runner.xcworkspace</span><br><span class="line"></span><br><span class="line">Error launching application on xyz的iPhone.</span><br></pre></td></tr></table></figure>
 
@@ -2591,7 +2591,7 @@
 
 <p>通过一番查找，在 Stack Overflow 上找到了一个解决方法：</p>
 <p><strong>将 <code>Bundle Identifier</code> 的值改变一下，比如在结尾随机加上几个数字。</strong></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190224171103.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190224171103.png" alt=""></p>
 <ul>
 <li><a href="https://stackoverflow.com/a/43687946/6246673" target="_blank" rel="noopener">Failed to create provisioning profile</a></li>
 </ul>
@@ -2600,7 +2600,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ flutter run </span><br><span class="line">Launching lib&#x2F;main.dart on xyz的iPhone in debug mode...</span><br><span class="line">Automatically signing iOS for device deployment using specified development team in Xcode project:</span><br><span class="line">9Y41Q9PF28</span><br><span class="line">Starting Xcode build...                                          </span><br><span class="line"> ├─Assembling Flutter resources...                    1.3s</span><br><span class="line"> </span><br><span class="line"> └─Compiling, linking and signing...                  3.4s</span><br><span class="line"> </span><br><span class="line">Xcode build done.                                            6.2s</span><br><span class="line">Installing and launching...                                  4.6s</span><br><span class="line">⢿2019-02-24 17:17:33.270 ios-deploy[15328:80609] [ !! ] Unable to locate DeviceSupport directory with suffix &#39;Symbols&#39;. This probably means you don&#39;t have Xcode installed, you will need to launch the app manually and logging output will not be shown!</span><br><span class="line"> 6.8s</span><br><span class="line">Could not install build&#x2F;ios&#x2F;iphoneos&#x2F;Runner.app on f1b5b10369882093413772c363995b5cda163c34.</span><br><span class="line">Try launching Xcode and selecting &quot;Product &gt; Run&quot; to fix the problem:</span><br><span class="line">  open ios&#x2F;Runner.xcworkspace</span><br><span class="line"></span><br><span class="line">Error launching application on xyz的iPhone.</span><br></pre></td></tr></table></figure>
 
 <h5 id="Device-is-locked"><a href="#Device-is-locked" class="headerlink" title="Device is locked"></a>Device is locked</h5><p>使用 XCode编译，提示如下错误：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190224172722.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190224172722.png" alt=""></p>
 <p>这个问题是需要在手机端开启允许调试。</p>
 <p>依次点击 <code>通用</code> – <code>设备管理</code> – <code>开发者应用</code> – 点击开发者账号 – 点击 <code>信任应用</code> </p>
 <p>再次在 VS Code 中运行：</p>
@@ -2668,7 +2668,7 @@
   <entry>
     <title>为什么我要放弃Python而转投Golang</title>
     <url>/2018/12/21/why-me-give-up-python-to-golang/</url>
-    <content><![CDATA[<p><img data-src="https://qiniu.itfanr.cc/blog/20181221160022.png?imageslim" alt=""></p>
+    <content><![CDATA[<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181221160022.png" alt=""></p>
 <p><strong>扎心了，老铁！！！</strong></p>
 ]]></content>
       <tags>
@@ -2685,7 +2685,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">--------------------------- </span><br><span class="line">Unable to Generate Certificate </span><br><span class="line">--------------------------- </span><br><span class="line">Creation of the interception certificate failed. </span><br><span class="line">makecert.exe returned -1. </span><br><span class="line">Results from C:\Program Files\Fiddler2\MakeCert.exe -ss my -n </span><br><span class="line">&quot;CN&#x3D;DO_NOT_TRUST_FiddlerRoot, O&#x3D;DO_NOT_TRUST, OU&#x3D;Created by </span><br><span class="line">http:&#x2F;&#x2F;www.fiddler2.com&quot; -eku 1.3.6.1.5.5.7.3.1 -r -cy authority -a </span><br><span class="line">sha1 </span><br><span class="line">Error: Can&#39;t create the key of the subject (&#39;JoeSoft&#39;) </span><br><span class="line">Failed </span><br><span class="line">-------------------------------------------</span><br></pre></td></tr></table></figure>
 
 <p>有时候，也可能是下面的错误：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190107192103.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190107192103.png" alt=""></p>
 <hr>
 <h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>在网上搜索，找到一种简单粗暴的方式，经测试后确实有效。</p>
 <ol>
@@ -2698,18 +2698,18 @@
 <hr>
 <h4 id="移除证书"><a href="#移除证书" class="headerlink" title="移除证书"></a>移除证书</h4><p>打开Fiddler，选择 <code>Tools</code> – <code>Fiddler Options</code> – <code>HTTPS</code> 选项，</p>
 <p>去掉勾选 <code>Capture HTTPS CONNECTs</code> 的对勾：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190107191528.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190107191528.png" alt=""></p>
 <p>此时，窗口中右下角的 <code>Remove Interception Certificates</code> 按钮就可以点击了：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190107191642.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190107191642.png" alt=""></p>
 <p>点击移除即可。</p>
 <p>另外需要说明一点的是，即使你的证书移除失败了，也要把 <code>Capture HTTPS CONNECTs</code> 一项前面的对勾取消掉，<strong>这很关键</strong>。</p>
 <hr>
 <h4 id="安装证书"><a href="#安装证书" class="headerlink" title="安装证书"></a>安装证书</h4><p>打开Fiddler，选择 <code>Tools</code> – <code>Fiddler Options</code> – <code>HTTPS</code> 选项，</p>
 <p>勾选 <code>Capture HTTPS CONNECTs</code> <code>Decrypt HTTPS traffic</code> 选项，会弹出安装证书文件的提示，点击确定即可安装。</p>
 <p>点到 <code>第2步</code> 的时候就会弹出安装证书的弹窗，选择 <code>Yes</code>：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190107190523.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190107190523.png" alt=""></p>
 <p>完成后点击最下面的 <code>OK</code> 选项。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181213122350.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181213122350.png" alt=""></p>
 <p><strong>然后将Fiddler关闭，再重新打开。</strong></p>
 <p>之后，就可以对HTTPS的请求进行抓包了。</p>
 <hr>
@@ -2811,32 +2811,32 @@
   <entry>
     <title>Fork别人的项目源作者更新后如何同步更新</title>
     <url>/2018/11/29/synchronize-project-updated-after-fork/</url>
-    <content><![CDATA[<h4 id="fork项目同步更新"><a href="#fork项目同步更新" class="headerlink" title="fork项目同步更新"></a>fork项目同步更新</h4><p><img data-src="https://qiniu.itfanr.cc/blog/20181103172652.png?imageslim" alt=""></p>
+    <content><![CDATA[<h4 id="fork项目同步更新"><a href="#fork项目同步更新" class="headerlink" title="fork项目同步更新"></a>fork项目同步更新</h4><p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181103172652.png" alt=""></p>
 <p>我之前 fork 了 <a href="https://github.com/imroc/req" target="_blank" rel="noopener">https://github.com/imroc/req</a> 这个项目，今天看到这个项目进行了一些更新操作。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181103172619.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181103172619.png" alt=""></p>
 <p>该项目的最新更新：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181103172803.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181103172803.png" alt=""></p>
 <p>我的更新：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181103172830.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181103172830.png" alt=""></p>
 <hr>
 <p>更新操作如下：</p>
 <p>回到我fork过来的项目主页面，点击 <code>New pull request</code> 按钮：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181103173029.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181103173029.png" alt=""></p>
 <p>在进入的界面中，将左侧的 <code>base fork</code> 选为自己的仓库，源fork项目作为右边的 <code>head fork</code> ：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181103173340.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181103173340.png" alt=""></p>
 <p>当选择完左侧 <code>base fork</code> 后，界面会变成如下：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181103173519.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181103173519.png" alt=""></p>
 <p>此时，点击右上角的 <code>compare across forks</code> ，下面就会出现可选择的选框：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181103173811.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181103173811.png" alt=""></p>
 <p>这时，再将左侧选择为自己的仓库，右侧选择为源fork项目：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181103174331.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181103174331.png" alt=""></p>
 <p>可以看到，下面已经显示出了源作者的变更操作。</p>
 <p>点击 <code>Create pull request</code> 按钮，填写提交的信息：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181103174810.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181103174810.png" alt=""></p>
 <p>之后，点击 <code>Create pull request</code> 即可。</p>
 <p>至此，就将源项目的变更在自己的项目下作了一个 <code>Pull requests</code> 的合并请求。点击下面的 <code>Merge pull request</code> ,完成合并。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181103175235.png?imageslim" alt=""></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181103175315.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181103175235.png" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181103175315.png" alt=""></p>
 <hr>
 <h4 id="修改了项目提交更新"><a href="#修改了项目提交更新" class="headerlink" title="修改了项目提交更新"></a>修改了项目提交更新</h4><p>未完待续。。。</p>
 <hr>
@@ -2923,11 +2923,11 @@
     <title>Hexo博客Next主题解决不蒜子统计不显示问题</title>
     <url>/2018/11/12/busuanzi-counter-error/</url>
     <content><![CDATA[<p>今天在查看博客中文章的时候，发现页面中的统计都不显示了：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181112154409.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181112154409.png" alt=""></p>
 <p>看了一下Chrome的控制台，发现是 <code>不蒜子</code> 统计的js文件找不到而报错了：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181112154303.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181112154303.png" alt=""></p>
 <p>打开 <code>不蒜子</code> 的官方网站 <a href="http://ibruce.info/2015/04/04/busuanzi/" target="_blank" rel="noopener">不蒜子 | 不如</a> 居然看到了如下的提示：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181112154539.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181112154539.png" alt=""></p>
 <p>竟然是原来的域名不可用了。</p>
 <p>额。。。看完我只想说：七牛确实坑啊。。。</p>
 <hr>
@@ -2968,18 +2968,18 @@
 <hr>
 <h4 id="欧版判断"><a href="#欧版判断" class="headerlink" title="欧版判断"></a>欧版判断</h4><p>点击Settings(设置) -&gt; System(系统) -&gt; About phone(关于手机) -&gt; Regulatory labels(监管标签) 查看。</p>
 <p>MODEL: G-2PW4200 ，其中 <code>4200</code> 表示欧版，<code>4100</code> 表示美版。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016195733.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016195733.png" alt=""></p>
 <hr>
 <h4 id="解锁Bootloader"><a href="#解锁Bootloader" class="headerlink" title="解锁Bootloader"></a>解锁Bootloader</h4><p>（注意：解锁 Bootloader 重置设备数据，请注意备份。一定不要忘记退出你的Google账号和取消指纹识别及锁屏设置。）</p>
 <p>由于我的手机是新买的，所以这些操作就免了。</p>
 <hr>
 <h5 id="开启USB调试和OEM解锁"><a href="#开启USB调试和OEM解锁" class="headerlink" title="开启USB调试和OEM解锁"></a>开启USB调试和OEM解锁</h5><p>安装「科学上网」工具，并成功接入互联网。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016143933.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016143933.png" alt=""></p>
 <p>选择 「设置-系统-关于手机-版本号」，猛击「版本号」7次开启 「开发者选项」。</p>
 <p>返回「上一页」，在「开发者选项」中开启「USB调试」和「OEM解锁」两个选项。如果「OEM解锁」选项显示为灰色，请检查网络连接是否正常。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016144134.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016144134.png" alt=""></p>
 <p>通过数据线将手机连接至电脑，此时，手机端会弹出 USB 调试申请，点击「允许」。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016144340.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016144340.png" alt=""></p>
 <p>可以通过命令 <code>adb devices</code> 来验证是否允许adb调试：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ adb devices</span><br><span class="line">List of devices attached</span><br><span class="line">FA6XXXXXXX53    device</span><br></pre></td></tr></table></figure>
 
@@ -2994,11 +2994,11 @@
 
 <hr>
 <h5 id="解锁-Bootloader"><a href="#解锁-Bootloader" class="headerlink" title="解锁 Bootloader"></a>解锁 Bootloader</h5><p>上一步进入Bootloader页面后，手机界面应该是如下图：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016211926.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016211926.png" alt=""></p>
 <p>在命令提示符窗口键入 <code>fastboot flashing unlock</code> 并回车，手机进入 Bootloader 解锁界面。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ fastboot flashing unlock</span><br><span class="line">...</span><br><span class="line">OKAY [  0.049s]</span><br><span class="line">finished. total time: 0.049s</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016212056.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016212056.png" alt=""></p>
 <p>对于 <code>Pixel 2 XL</code> 机型，要用如下的命令：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fastboot flashing unlock_critical</span><br></pre></td></tr></table></figure>
 
@@ -3011,15 +3011,15 @@
 <hr>
 <h5 id="判断解锁成功"><a href="#判断解锁成功" class="headerlink" title="判断解锁成功"></a>判断解锁成功</h5><p>当手机重启时出现黑底白字的英文警告页以及屏幕下方出现一把打开的小锁，那 Bootloader 就解锁成功啦。</p>
 <p>重启手机，出现如下两个界面就算解锁成功：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016191327.png?imageslim" alt=""></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016191719.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016191327.png" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016191719.png" alt=""></p>
 <p>当然，还有一种更简单的方法，就是再次进入 <code>fastboot</code> 模式，查看：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181017110509.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181017110509.png" alt=""></p>
 <hr>
 <h4 id="解锁Bootloader后的两个问题"><a href="#解锁Bootloader后的两个问题" class="headerlink" title="解锁Bootloader后的两个问题"></a>解锁Bootloader后的两个问题</h4><h5 id="恢复初始"><a href="#恢复初始" class="headerlink" title="恢复初始"></a>恢复初始</h5><p>在解锁 Bootloader 之后，可以看到手机系统已经是完全初始化的状态了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016212322.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016212322.png" alt=""></p>
 <p>在进入 「关于手机」 界面后，可以发现之前开启的「开发者选项」也是默认关闭了，需要再次点击7次「版本号」开启。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016212428.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016212428.png" alt=""></p>
 <p>那么，在执行后面的操作时是否仍需要再次将「OEM解锁」打开呢？答案是：<strong>不需要</strong>。</p>
 <p>然而，因为后面需要用到 <code>adb</code> 命令去操作手机，所以「USB调试」选项还是需要打开的。</p>
 <p>关于「OEM锁与bootloader锁的关系」，可以看下面的 <a href="#OEM锁与bootloader锁的关系">疑难解答</a> 。</p>
@@ -3034,17 +3034,17 @@
 <p>我的Pixel对应选择从这个页面 <a href="https://dl.twrp.me/sailfish/" target="_blank" rel="noopener">Download TWRP for sailfish</a> 下载的 <code>3.2.3-1</code> 版本：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">twrp-pixel-installer-sailfish-3.2.3-1.zip （永久twrp）</span><br><span class="line">twrp-3.2.3-1-sailfish.img (临时twrp)</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016155219.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016155219.png" alt=""></p>
 <p>从github <a href="https://github.com/topjohnwu/Magisk/releases" target="_blank" rel="noopener">Releases · topjohnwu/Magisk</a> 下载最新的 Magisk 包。 这里我下载的是 <code>17.2</code> 版本：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Magisk-v17.2.zip</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016161659.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016161659.png" alt=""></p>
 <hr>
 <h5 id="拷贝文件到手机"><a href="#拷贝文件到手机" class="headerlink" title="拷贝文件到手机"></a>拷贝文件到手机</h5><p>假设我电脑上的操作目录为: <code>~/test/pixel</code> 。</p>
 <p>将 <code>twrp-3.2.3-1-sailfish.img</code> 拷贝到该目录下。</p>
 <p>将 <code>twrp-pixel-installer-sailfish-3.2.3-1.zip</code> 和 <code>Magisk-v17.2.zip</code> 拷贝到手机中。</p>
 <p>在将文件拷贝到手机中时，我发现通过数据线连接到电脑时，选择 <code>传输文件</code> 电脑中并没有出现手机存储的盘符，也就无法直接将文件拖拽到手机中。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016183455.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016183455.png" alt=""></p>
 <p>在经过一番摆弄之后，我觉得最靠谱的还是通过 <code>adb</code> 的方式来上传文件。</p>
 <p>连接手机，在手机端弹出「USB调试」点击确定，打开item2，切换到目录 <code>~/test/pixel</code> ：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ ls</span><br><span class="line">Magisk-v17.2.zip                          twrp-3.2.3-1-sailfish.img                 twrp-pixel-installer-sailfish-3.2.3-1.zip</span><br></pre></td></tr></table></figure>
@@ -3072,40 +3072,40 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel took 5s</span><br><span class="line">➜ fastboot boot twrp-3.2.3-1-sailfish.img</span><br><span class="line">downloading &#39;boot.img&#39;...</span><br><span class="line">OKAY [  0.712s]</span><br><span class="line">booting...</span><br><span class="line">OKAY [  0.903s]</span><br><span class="line">finished. total time: 1.615s</span><br></pre></td></tr></table></figure>
 
 <p>之后，手机会进入到临时的Twrp中：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184210.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016184210.png" alt=""></p>
 <p>滑动下面的 <code>Swipe to Allow Modifications</code> 滑条，进入Twrp操作页面：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184312.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016184312.png" alt=""></p>
 <hr>
 <h5 id="刷入永久Twrp"><a href="#刷入永久Twrp" class="headerlink" title="刷入永久Twrp"></a>刷入永久Twrp</h5><p>选择 <code>Install</code> – 找到目录 <code>/sdcard/tmp/</code> – 选择 <code>twrp*.zip</code> 文件 – 弹出安装界面 – 直接滑动底部的滑条 <code>Swipe to confirm Flash</code> 安装：</p>
 <blockquote>
 <p>这里也间接验证了为什么要选择 <code>/sdcard</code> 目录：点击 <code>Install</code> 按钮后，直接进入的就是 <code>/sdcard</code> 目录，即只能操作这个目录。</p>
 </blockquote>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184418.png?imageslim" alt=""></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184615.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016184418.png" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016184615.png" alt=""></p>
 <p>等待进度条执行完毕，最后会显示 <code>...done</code> 的提示。说明这一步执行完成。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184814.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016184814.png" alt=""></p>
 <hr>
 <h5 id="刷入Magisk"><a href="#刷入Magisk" class="headerlink" title="刷入Magisk"></a>刷入Magisk</h5><p>上一步安装完成后，我们发现界面中只有两个按钮：<code>Wipe cache/dalvik</code> 和 <code>Reboot System</code> 。后一项肯定不能选，如果选择重启，那还有一个 <code>Magisk</code> 文件没有刷入，否则的话还需要走一遍上面的 <code>刷入临时Twrp</code> 的操作；而第一项 清除临时缓存文件，只是我不清楚该文件具体是干什么用的，所以也怕点了之后会出问题。</p>
 <p>这种情况下，我只好上网去查询看看是否有相关的操作介绍，可想而知，这个问题可能太简单了，很难找到相关的介绍。</p>
 <p>正当我一脸迷蒙时，我的手误按了顶部的 “蓝色条” 部分，发现… 界面返回了 <code>Install</code> 页面：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184312.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016184312.png" alt=""></p>
 <p>我只想说，这操作简直是 <code>666</code> 啊！！！</p>
 <p>经过验证，只要点击顶部的「install Zip」 蓝色条部分左侧的「图标」处，就会返回 <code>Team Win Recovery Project</code> 界面。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016184919.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016184919.png" alt=""></p>
 <p>依照上面的安装步骤，继续安装 <code>Magisk-v17.2.zip</code> 文件。直到界面中提示 <code>...done</code> 时，说明安装完成。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016185120.png?imageslim" alt=""></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016185217.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016185120.png" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016185217.png" alt=""></p>
 <p>安装完成后，点击下面的 <code>Reboot System</code> 按钮，重启系统。</p>
 <p>不过，这时候发现界面会提示询问是否安装 <code>TWRP App</code> ？</p>
 <p>这里，<strong>千万不要安装</strong>。直接点击中间的 <strong><code>Do Not Install</code></strong> 即可。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016185342.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016185342.png" alt=""></p>
 <p>待手机重启进入系统后，可以发现手机APP中多了一个 <code>Magisk</code> 的脸谱Logo图标。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181016185438.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181016185438.png" alt=""></p>
 <p>至此，整个刷机过程就结束了。</p>
 <hr>
 <h4 id="验证是否成功Root"><a href="#验证是否成功Root" class="headerlink" title="验证是否成功Root"></a>验证是否成功Root</h4><p>至于如何验证是否成功Root，最简单的方法就是安装几个需要获取Root权限的软件就可以了。</p>
 <p>可以在「脸谱Logo」的菜单中选择「超级用户」，为相应的软件开启Root权限。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181017101716.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181017101716.png" alt=""></p>
 <hr>
 <h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><h5 id="去掉wifi叉号标记"><a href="#去掉wifi叉号标记" class="headerlink" title="去掉wifi叉号标记"></a>去掉wifi叉号标记</h5><p>在国内的网络环境下，通过wifi联网之后，Pixel的wifi图标上会默认显示一个「叉号」。虽然能够正常联网，但对于强迫症来说，还是觉得很碍眼。</p>
 <p>对于这个问题，原理性的解释是：</p>
@@ -3117,12 +3117,12 @@
 
 <p>然后开启飞行模式，再关闭飞行模式即解决！</p>
 <p>操作前：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181017104902.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181017104902.png" alt=""></p>
 <p>执行命令：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜ adb shell settings put global captive_portal_https_url https:&#x2F;&#x2F;www.google.cn&#x2F;generate_204</span><br><span class="line"></span><br><span class="line">~&#x2F;test&#x2F;pixel</span><br><span class="line">➜</span><br></pre></td></tr></table></figure>
 
 <p>操作后：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181017105009.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181017105009.png" alt=""></p>
 <p>如果你想恢复的话，使用下面的命令：（未亲测）</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">adb shell settings delete global captive_portal_server  </span><br><span class="line">adb shell settings put global captive_portal_detection_enabled 1</span><br></pre></td></tr></table></figure>
 
@@ -3219,7 +3219,7 @@
     <title>OmniGraffle常用快捷键</title>
     <url>/2018/10/10/omnigraffle-shortcut-keys/</url>
     <content><![CDATA[<p>OmniGraffle 是 Mac 上的绘图利器。Graffle 在很多方面对标 Windows 系统上的 Microsoft Visio，是制作各种文档的绝妙工具。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181010134917.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181010134917.png" alt=""></p>
 <hr>
 <h4 id="变换移动"><a href="#变换移动" class="headerlink" title="变换移动"></a>变换移动</h4><p>放大：<code>Cmd+Shift+.</code> 或 <code>z+点击</code></p>
 <p>缩小：<code>Cmd+Shift+,</code> 或 <code>z+Option+点击</code></p>
@@ -3233,7 +3233,7 @@
 <p>文字工具：<code>按住 t 并单击后输入文字</code> 或 <code>按 4 切换：按一次选中 ；按二次保持选中</code></p>
 <p>磁化工具：<code>按住 m 不放并点击形状内任意位置</code> 或 <code>按 9 切换：按一次选中 ；按二次保持选中</code></p>
 <p>其他：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20181010135036.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20181010135036.png" alt=""></p>
 <hr>
 <h4 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h4><p>复制对象：<code>选中对象 + Cmd+d</code></p>
 <hr>
@@ -3278,7 +3278,7 @@
 
 <p>第一次登录，需要输入管理员的密码。</p>
 <p>管理界面：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180930185744.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180930185744.png" alt=""></p>
 <hr>
 <p>更多内容可以查看官方文档。</p>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
@@ -3302,22 +3302,22 @@
 <p>在 “加速域名” 处设置一个自定义的域名，比如我设置的是 <code>qiniu.itfanr.cc</code> 。</p>
 <p>“通信协议” 选择 <code>HTTPS</code> 方式。</p>
 <p>由于要为自定义域名添加证书文件，而之前也没有添加过，所以这里选择 “SSL 证书管理” 来设置。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180924112100.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180924112100.png" alt=""></p>
 <p>在 “SSL证书服务 &gt; 证书管理” 界面中，选择 “上传自有证书” 来添加之前申请到的证书文件。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180920204113.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180920204113.png" alt=""></p>
 <p>设置完成后，等待七牛云处理。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180920203520.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180920203520.png" alt=""></p>
 <p>处理完成后，会给出如下提示：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180920203108.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180920203108.png" alt=""></p>
 <h4 id="在阿里云设置域名CNAME"><a href="#在阿里云设置域名CNAME" class="headerlink" title="在阿里云设置域名CNAME"></a>在阿里云设置域名CNAME</h4><p>七牛云自定义域名添加成功后，还要添加域名的解析。也就是需要在域名服务商处添加一条 <code>CNAME</code> 记录。</p>
 <p>以下是我在阿里云中添加的配置：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180920203411.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180920203411.png" alt=""></p>
 <p>稍等片刻，等待生效。</p>
 <h4 id="设置七牛云图片外链默认域名"><a href="#设置七牛云图片外链默认域名" class="headerlink" title="设置七牛云图片外链默认域名"></a>设置七牛云图片外链默认域名</h4><p>域名解析成功后，还要在七牛云中添加图片的默认域名。</p>
 <p>打开七牛云 “存储空间” 设置，在 “内容管理” 中的 “外链默认域名” 处选择刚刚添加的 自定义域名，之后 “保存默认域名” 即可。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180924113506.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180924113506.png" alt=""></p>
 <p>选择一张图片，通过自定义域名访问：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180920204430.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180920204430.png" alt=""></p>
 <p>可以看到，已经能正常支持https了。</p>
 <h4 id="图片优化"><a href="#图片优化" class="headerlink" title="图片优化"></a>图片优化</h4><p>一般直接截图或者上传本地的图片到七牛云后，通过链接直接访问，图片体积都会很大，加载时间也会很长。</p>
 <p>而七牛云中也有相关的图片优化设置。打开 “存储空间设置” – “图片样式” 选项，在这里可以添加自定义的图片优化方案。</p>
@@ -3327,7 +3327,7 @@
 
 <h4 id="替换Hexo博客中已有的图片链接"><a href="#替换Hexo博客中已有的图片链接" class="headerlink" title="替换Hexo博客中已有的图片链接"></a>替换Hexo博客中已有的图片链接</h4><p>因为之前的文章中也有添加很多的七牛云图片链接，但都是<code>http</code> 的，想要一篇文章一篇文章的替换也很麻烦，所以我就写了一个Py脚本来做替换的事。</p>
 <p>Py脚本主要内容如下：完整代码查看：<a href="https://github.com/Leafney/md-qiniu-imges-replace" target="_blank" rel="noopener">Leafney/md-qiniu-imges-replace: markdown文件中七牛云图片链接替换</a>  </p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def md_img_replace(md_file):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    替换md文件中的图片链接</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    result&#x3D;False</span><br><span class="line">    post&#x3D;md_read(md_file)</span><br><span class="line">    matches &#x3D; re.compile(</span><br><span class="line">        &#39;!\\[.*?\\]\\((.*?)\\)|&lt;img.*?src&#x3D;[\&#39;\&quot;](.*?)[\&#39;\&quot;].*?&gt;&#39;).findall(post)</span><br><span class="line">    </span><br><span class="line">    if matches and len(matches)&gt;0:</span><br><span class="line">        # 该md文件中有图片</span><br><span class="line"></span><br><span class="line">        # 输出文件名称</span><br><span class="line">        print(&#39;文件：[&#123;0&#125;] 中含有图片&#39;.format(md_file))</span><br><span class="line">        new_post&#x3D;post</span><br><span class="line">        for sub_match in matches: # 正则里包含或，所以这里sub_matth是元组</span><br><span class="line">            # print(sub_match)</span><br><span class="line">            for match in sub_match:</span><br><span class="line">                if match and len(match)&gt;0:</span><br><span class="line">                    # 得到单张图片链接</span><br><span class="line">                    print(&#39;找到图片链接：[&#123;0&#125;]&#39;.format(match))</span><br><span class="line">                    # 在这里遍历一遍后，发现我的文章中图片链接的特点主要有三种格式：</span><br><span class="line">                    &quot;&quot;&quot;</span><br><span class="line">                    https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180924112100.png?imageslim  -- 已经符合要求的</span><br><span class="line">                    http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;20180920204113.png   -- 只有旧版链接的</span><br><span class="line">                    http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;180116&#x2F;B2c2Deah5B.png?imageslim -- 旧版链接带优化参数的</span><br><span class="line">                    所以，下面的操作主要针对于上面的三种情况来处理</span><br><span class="line"></span><br><span class="line">                    ***** 所以，这里要改成针对于你自己的文章图片链接来处理 *****</span><br><span class="line">                    </span><br><span class="line">                    &quot;&quot;&quot;</span><br><span class="line">                    # print(&#39;----------------&#39;)</span><br><span class="line"></span><br><span class="line">                    # 判断图片域名是否为 http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F; 是的话，则替换为 https:&#x2F;&#x2F;qiniu.itfanr.cc</span><br><span class="line">                    if match.startswith(&#39;http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#39;):</span><br><span class="line">                        # 记录下替换前的链接</span><br><span class="line">                        old_url&#x3D;match</span><br><span class="line">                        new_url &#x3D; match.replace(</span><br><span class="line">                            &#39;http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#39;, &#39;https:&#x2F;&#x2F;qiniu.itfanr.cc&#39;)</span><br><span class="line">                        # print(&#39;step_1_new_url:[&#123;0&#125;]&#39;.format(new_url))</span><br><span class="line"></span><br><span class="line">                        # 判断是否以 ?imageslim 结尾</span><br><span class="line">                        if not match.endswith(&#39;imageslim&#39;):</span><br><span class="line">                            # 不是，在结尾添加</span><br><span class="line">                            new_url +&#x3D; &#39;?imageslim&#39;</span><br><span class="line">                        </span><br><span class="line">                        print(&#39;step_2_new_url:[&#123;0&#125;]&#39;.format(new_url))</span><br><span class="line">                        # 替换 post 中的 old_url为 new_url，并将新内容写回文件</span><br><span class="line">                        new_post &#x3D; new_post.replace(old_url, new_url)</span><br><span class="line">                        result &#x3D; True</span><br><span class="line">                    </span><br><span class="line">                    print(&#39;----------------&#39;)</span><br><span class="line">        if result:</span><br><span class="line">            # 将内容重新写回文件</span><br><span class="line">            # print(new_post)</span><br><span class="line">            md_write(md_file,new_post)</span><br><span class="line">            print(&#39;ok-修改成功&#39;)</span><br><span class="line">        print(&#39;****************&#39;)</span><br><span class="line">    </span><br><span class="line">    return result</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def md_img_replace(md_file):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    替换md文件中的图片链接</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    result&#x3D;False</span><br><span class="line">    post&#x3D;md_read(md_file)</span><br><span class="line">    matches &#x3D; re.compile(</span><br><span class="line">        &#39;!\\[.*?\\]\\((.*?)\\)|&lt;img.*?src&#x3D;[\&#39;\&quot;](.*?)[\&#39;\&quot;].*?&gt;&#39;).findall(post)</span><br><span class="line">    </span><br><span class="line">    if matches and len(matches)&gt;0:</span><br><span class="line">        # 该md文件中有图片</span><br><span class="line"></span><br><span class="line">        # 输出文件名称</span><br><span class="line">        print(&#39;文件：[&#123;0&#125;] 中含有图片&#39;.format(md_file))</span><br><span class="line">        new_post&#x3D;post</span><br><span class="line">        for sub_match in matches: # 正则里包含或，所以这里sub_matth是元组</span><br><span class="line">            # print(sub_match)</span><br><span class="line">            for match in sub_match:</span><br><span class="line">                if match and len(match)&gt;0:</span><br><span class="line">                    # 得到单张图片链接</span><br><span class="line">                    print(&#39;找到图片链接：[&#123;0&#125;]&#39;.format(match))</span><br><span class="line">                    # 在这里遍历一遍后，发现我的文章中图片链接的特点主要有三种格式：</span><br><span class="line">                    &quot;&quot;&quot;</span><br><span class="line">                    https:&#x2F;&#x2F;gitee.com&#x2F;leafney&#x2F;blogimage&#x2F;raw&#x2F;master&#x2F;blog&#x2F;20180924112100.png  -- 已经符合要求的</span><br><span class="line">                    http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;20180920204113.png   -- 只有旧版链接的</span><br><span class="line">                    http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;180116&#x2F;B2c2Deah5B.png?imageslim -- 旧版链接带优化参数的</span><br><span class="line">                    所以，下面的操作主要针对于上面的三种情况来处理</span><br><span class="line"></span><br><span class="line">                    ***** 所以，这里要改成针对于你自己的文章图片链接来处理 *****</span><br><span class="line">                    </span><br><span class="line">                    &quot;&quot;&quot;</span><br><span class="line">                    # print(&#39;----------------&#39;)</span><br><span class="line"></span><br><span class="line">                    # 判断图片域名是否为 http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F; 是的话，则替换为 https:&#x2F;&#x2F;qiniu.itfanr.cc</span><br><span class="line">                    if match.startswith(&#39;http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#39;):</span><br><span class="line">                        # 记录下替换前的链接</span><br><span class="line">                        old_url&#x3D;match</span><br><span class="line">                        new_url &#x3D; match.replace(</span><br><span class="line">                            &#39;http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#39;, &#39;https:&#x2F;&#x2F;qiniu.itfanr.cc&#39;)</span><br><span class="line">                        # print(&#39;step_1_new_url:[&#123;0&#125;]&#39;.format(new_url))</span><br><span class="line"></span><br><span class="line">                        # 判断是否以 ?imageslim 结尾</span><br><span class="line">                        if not match.endswith(&#39;imageslim&#39;):</span><br><span class="line">                            # 不是，在结尾添加</span><br><span class="line">                            new_url +&#x3D; &#39;?imageslim&#39;</span><br><span class="line">                        </span><br><span class="line">                        print(&#39;step_2_new_url:[&#123;0&#125;]&#39;.format(new_url))</span><br><span class="line">                        # 替换 post 中的 old_url为 new_url，并将新内容写回文件</span><br><span class="line">                        new_post &#x3D; new_post.replace(old_url, new_url)</span><br><span class="line">                        result &#x3D; True</span><br><span class="line">                    </span><br><span class="line">                    print(&#39;----------------&#39;)</span><br><span class="line">        if result:</span><br><span class="line">            # 将内容重新写回文件</span><br><span class="line">            # print(new_post)</span><br><span class="line">            md_write(md_file,new_post)</span><br><span class="line">            print(&#39;ok-修改成功&#39;)</span><br><span class="line">        print(&#39;****************&#39;)</span><br><span class="line">    </span><br><span class="line">    return result</span><br></pre></td></tr></table></figure>
 
 <p>执行过程记录：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">文件：[.&#x2F;_posts&#x2F;https-certificate-two-of-nginx-settings.md] 中含有图片</span><br><span class="line">找到图片链接：[http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;20180919001532.png]</span><br><span class="line">step_2_new_url:[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180919001532.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">找到图片链接：[http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;20180919180924.png]</span><br><span class="line">step_2_new_url:[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180919180924.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">找到图片链接：[http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;20180919171901.png]</span><br><span class="line">step_2_new_url:[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180919171901.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">找到图片链接：[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180924000202.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">找到图片链接：[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180924000229.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">找到图片链接：[http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;20180919165205.png]</span><br><span class="line">step_2_new_url:[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180919165205.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">找到图片链接：[http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;20180919170111.png]</span><br><span class="line">step_2_new_url:[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180919170111.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">找到图片链接：[http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;20180919173643.png]</span><br><span class="line">step_2_new_url:[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180919173643.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">找到图片链接：[http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;20180919180924.png]</span><br><span class="line">step_2_new_url:[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180919180924.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">找到图片链接：[http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;20180919180907.png]</span><br><span class="line">step_2_new_url:[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180919180907.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">ok-修改成功</span><br><span class="line">****************</span><br><span class="line">文件：[.&#x2F;_posts&#x2F;https-certificate-one-of-application.md] 中含有图片</span><br><span class="line">找到图片链接：[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180921175821.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">找到图片链接：[http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;20180918225700.png]</span><br><span class="line">step_2_new_url:[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180918225700.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">找到图片链接：[http:&#x2F;&#x2F;ouej55gp9.bkt.clouddn.com&#x2F;blog&#x2F;20180918232923.png]</span><br><span class="line">step_2_new_url:[https:&#x2F;&#x2F;qiniu.itfanr.cc&#x2F;blog&#x2F;20180918232923.png?imageslim]</span><br><span class="line">----------------</span><br><span class="line">ok-修改成功</span><br><span class="line">****************</span><br></pre></td></tr></table></figure>
@@ -3353,7 +3353,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl;</span><br><span class="line">    server_name www.itfanr.cc;</span><br><span class="line"></span><br><span class="line">    ssl_certificate &#x2F;etc&#x2F;acme.sh&#x2F;itfanr.cc&#x2F;fullchain.cer;</span><br><span class="line">    ssl_certificate_key &#x2F;etc&#x2F;acme.sh&#x2F;itfanr.cc&#x2F;itfanr.cc.key;</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line"></span><br><span class="line">    proxy_set_header Host $host;</span><br><span class="line">    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">    proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;localhost:8080&#x2F;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">        listen 80;</span><br><span class="line">        server_name www.itfanr.cc;</span><br><span class="line">        return 301 https:&#x2F;&#x2F;$server_name$request_uri;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>结果，页面却显示了 <code>404 Not Found</code> 的错误。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919001532.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919001532.png" alt=""></p>
 <h4 id="解决多域名下设置证书"><a href="#解决多域名下设置证书" class="headerlink" title="解决多域名下设置证书"></a>解决多域名下设置证书</h4><p>通过相关问题的搜索，结果却没有找到什么有效的解决方法。另外由于我对Nginx的配置也不是特别精通，所以一下子陷入了迷茫中。</p>
 <p>后来，在一篇相关文章 <a href="https://godruoyi.com/posts/let-s-encrypt-generic-domain-name-certificate-application-and-configuration" target="_blank" rel="noopener">Let’s Encrypt 泛域名证书申请及配置</a> 中找到了一种方法。</p>
 <h5 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h5><p>在Nginx的 <code>snippets</code> 目录下，创建一个配置文件，我这里命名为 <code>ssl-itfanr.conf</code>，内容用来设置SSL相关的配置：</p>
@@ -3382,9 +3382,9 @@
 
 <p>此时，再次访问两个域名地址，可以发现都能够正常访问且都是https安全连接了。</p>
 <p>itfanr.cc:</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919180924.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919180924.png" alt=""></p>
 <p>gogit.itfanr.cc:</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919171901.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919171901.png" alt=""></p>
 <h4 id="设置默认站点"><a href="#设置默认站点" class="headerlink" title="设置默认站点"></a>设置默认站点</h4><p>因为我的域名设置了支持泛域名，所以支持的二级域名都会跳转到我的服务器的IP地址。</p>
 <p>那么，对于一些我们没有添加到二级域名在没有进行定义时，会返回什么呢？这就需要设置 <code>默认站点</code> 了。</p>
 <p>也就是通过参数 <code>default_server</code> 来指定。</p>
@@ -3393,17 +3393,17 @@
 
 <p>上面的设置说明，当访问域名是没有匹配到我们添加的域名，那么就会返回默认的地址。也就是这里的 Nginx默认的页面。</p>
 <p>比如，我访问 <code>http://abc.itfanr.cc</code> 时：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180924000202.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180924000202.png" alt=""></p>
 <p>而该文件中并没有配置当使用 <code>https</code> 方式访问时，要返回什么默认页面。所以我在上面的 <code>itfanr.conf</code>配置中添加了一项：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">listen 443 default_server;</span><br><span class="line">listen [::]:443 default_server;</span><br><span class="line">server_name itfanr.cc www.itfanr.cc;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <p>默认返回我的博客地址。比如访问 <code>https://abc.itfanr.cc</code> 时：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180924000229.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180924000229.png" alt=""></p>
 <p>另外，要注意的是：只能设置一个网址为默认地址，当设置了多个时会提示错误：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo nginx -t</span><br><span class="line">nginx: [emerg] a duplicate default server for 0.0.0.0:80 in &#x2F;etc&#x2F;nginx&#x2F;sites-enabled&#x2F;default:17</span><br><span class="line">nginx: configuration file &#x2F;etc&#x2F;nginx&#x2F;nginx.conf test failed</span><br></pre></td></tr></table></figure>
 
 <h4 id="解决网站中的-data-类型字体图片无法载入问题"><a href="#解决网站中的-data-类型字体图片无法载入问题" class="headerlink" title="解决网站中的 data 类型字体图片无法载入问题"></a>解决网站中的 <code>data</code> 类型字体图片无法载入问题</h4><p>配置好Nginx的 <code>https</code> 配置后，再次请求网址 <code>https://gogit.itfanr.cc</code>，发现浏览器地址栏中已经显示了安全的 “小绿锁” 标志。但是一打开Chrome浏览器的F12调试工具，发现有一些请求是报错的。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919165205.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919165205.png" alt=""></p>
 <p>可以发现，报错的基本都是前缀为 <code>data:application</code> 类型的字体图片文件。</p>
 <p>通过查询，在 <code>Content-Security-Policy</code> 段中应该包含以下内容：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">font-src &#39;self&#39; data:;</span><br></pre></td></tr></table></figure>
@@ -3416,13 +3416,13 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># &#x2F;etc&#x2F;nginx&#x2F;snippets&#x2F;ssl-itfanr.conf</span><br><span class="line"></span><br><span class="line">add_header Content-Security-Policy &quot;default-src &#39;self&#39;; script-src &#39;self&#39; &#39;unsafe-inline&#39; &#39;unsafe-eval&#39; blob: https:; connect-src &#39;self&#39; https:; img-src &#39;self&#39; data: https: blob:; style-src &#39;unsafe-inline&#39; https:; font-src &#39;self&#39; data: https:&quot;;</span><br></pre></td></tr></table></figure>
 
 <p>修改完成后，重新载入Nginx配置，再次刷新网站，发现已经没有 <code>data:application</code> 红色的错误请求链接了：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919170111.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919170111.png" alt=""></p>
 <ul>
 <li><a href="https://stackoverflow.com/questions/45366744/refused-to-load-the-font-datafont-woff-it-violates-the-following-content" target="_blank" rel="noopener">javascript - Refused to load the font ‘data:font/woff…..’it violates the following Content Security Policy directive: “default-src ‘self’”. Note that ‘font-src’ - Stack Overflow</a></li>
 </ul>
 <hr>
 <h4 id="解决七牛云图片外链http无法载入的问题"><a href="#解决七牛云图片外链http无法载入的问题" class="headerlink" title="解决七牛云图片外链http无法载入的问题"></a>解决七牛云图片外链http无法载入的问题</h4><p>访问我的博客网址 <code>https://www.itfanr.cc</code> ，发现有些文章中的七牛云外链图片都不显示了。查看F12调试工具：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919173643.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919173643.png" alt=""></p>
 <p>发现所有的七牛云 <code>http</code> 外链图片均不加载。</p>
 <p>然后我又去七牛云的网站中查看了一下配置，发现如果按照官方的方法切换成 <code>https</code> 的链接，是需要收费的，此时心里是一万头草泥马狂奔的景象…</p>
 <p>无奈只能找寻其他的解决方法了。</p>
@@ -3435,9 +3435,9 @@
 
 <p>再次刷新页面后，发现如果页面中没有引用到七牛云的图片链接，地址栏中是显示“小绿锁”的，比如首页；而到了文章详情页中，引用了七牛云的图片链接后，地址栏中就会显示“叹号”的不安全标志。</p>
 <p>访问首页，提示“安全连接”：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919180924.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919180924.png" alt=""></p>
 <p>访问带有http外链图片的文章详情，提示“连接并非完全安全”：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180919180907.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180919180907.png" alt=""></p>
 <p>根据上面的验证发现，必须得整站的链接都是 <code>https</code> 的情况下，才会是一直处于“小绿锁”的安全模式下。那么接下来就是解决整站<code>https</code>的问题了。目前来看，也就是解决七牛云图片链接如何从 <code>http</code> 到 <code>https</code> 的问题。</p>
 <h4 id="遗留的问题"><a href="#遗留的问题" class="headerlink" title="遗留的问题"></a>遗留的问题</h4><p>虽然通过独立出SSL配置，然后在需要启用 <code>https</code> 的域名配置文件 <code>server{}</code> 中 <code>include</code> 的方式能够正常运行，但我心里一直还是有个疑问的：为什么分别指定证书文件地址时配置却不生效？</p>
 <p>由于目前还未找到原因，这个问题暂留，以待后续解答。</p>
@@ -3484,8 +3484,8 @@
 <p><code>acme.sh</code> 访问阿里云 DNS 是通过阿里云 DNS 公开的 API 以及用户的 <code>AccessKeys</code> 来进行交互的。</p>
 <p>为了保证安全，阿里云 <code>AccessKeys</code> 是使用 <code>阿里云子账户</code> 来添加的。</p>
 <p>登录 <code>[阿里云管理控制台](https://home.console.aliyun.com/)</code> – 点击头像中的 <code>accesskeys</code> – 选择 <code>开始使用子用户AccessKeys</code> {或者直接点击该<a href="https://ak-console.aliyun.com/#/accesskey" target="_blank" rel="noopener">网址</a>} – 设置 <code>用户名</code> – 选择权限中输入“DNS”，选择 <code>AliyunDNSFullAccess(管理员解析（DNS）的权限)</code> 这项 – 之后子账户和AK都创建成功了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180921175821.png?imageslim" alt=""></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180918225700.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180921175821.png" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180918225700.png" alt=""></p>
 <p><code>AliyunDNSFullAccess</code> 表示 “管理员解析（DNS）的权限”，既该账户就有了添加DNS记录和删除DNS记录的权限，但没有其他权限。</p>
 <p>一定要在这一步记录下这个 <code>AccessKey</code> 信息，之后就无法看到了。</p>
 <hr>
@@ -3557,7 +3557,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo nginx -s reload</span><br></pre></td></tr></table></figure>
 
 <p>在浏览器中访问域名，可以看到地址栏中的小绿锁已经出现了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180918232923.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180918232923.png" alt=""></p>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
 <li><a href="https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E" target="_blank" rel="noopener">说明 · Neilpang/acme.sh Wiki</a></li>
 <li><a href="https://github.com/Neilpang/acme.sh/wiki/How-to-issue-a-cert" target="_blank" rel="noopener">How to issue a cert · Neilpang/acme.sh Wiki</a></li>
@@ -3597,15 +3597,15 @@
 <p>其他的必需项是 <code>github_user</code> ，表示你的github账号名称。 <code>github_repo</code> 表示保存评论数据的仓库名称，这里可以使用当前博客所在的仓库名称，也可以单独设置一个专门的仓库。<code>client_id</code> 和 <code>client_secret</code> 为上面创建的值。</p>
 <p>修改完成后，将hexo博客文件上传到github。因为gitment功能必需在线上才能进行操作。</p>
 <h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><h5 id="点击登录github发现一直显示loading"><a href="#点击登录github发现一直显示loading" class="headerlink" title="点击登录github发现一直显示loading"></a>点击登录github发现一直显示loading</h5><p>在创建 <code>OAuth Apps</code> 中填写 <code>Authorization callback URL</code> 时，网站的地址末尾不能带有 <code>/</code> 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180917193416.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180917193416.png" alt=""></p>
 <hr>
 <h5 id="某些文章不能生成Issues"><a href="#某些文章不能生成Issues" class="headerlink" title="某些文章不能生成Issues"></a>某些文章不能生成Issues</h5><p>当点击文章页面底部的 <code>初始化本文的评论页</code> 按钮时，页面会弹出错误信息：<code>Error:Validation Failed</code> 信息。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180917193521.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180917193521.png" alt=""></p>
 <p>通过查看操作请求，gitment会在生成Issues时创建两个 <code>label</code> 标签。</p>
 <p>一个是文章标题的路径: <code>window.location.pathname</code> 值，如 <code>/2018/09/05/pip-install-locale-error-unsupported-locale-setting/</code> ；另一个是定值 <code>gitment</code> 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180917193602.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180917193602.png" alt=""></p>
 <p>而由于 github 中 <code>Issues</code> 的 <code>label</code> 长度限制为最大 <code>50</code> 个字符，当 文章标题长度过长时，该label就会生成失败，而导致初始化错误，弹出 <code>Validation Failed</code> 的提示。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180917193631.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180917193631.png" alt=""></p>
 <p>通过网上的搜索，发现可以使用文章创建时的时间来代替文章标题，作为这个唯一的label标签。</p>
 <p>找到giment的配置：<code>/themes/next/layout/_third-party/comments/gitment.swig</code> 文件：</p>
 <p>找到如下部分：</p>
@@ -3625,7 +3625,7 @@
 <p>然后在 <code>群</code> 设置中选择 <code>群机器人</code> 选项，选择 <code>GitHub机器人</code> ，按照设置流程生成GitHub机器人，即可获取到相应群的WebHook地址，其格式如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;oapi.dingtalk.com&#x2F;robot&#x2F;send?access_token&#x3D;xxxxxxxx</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180917193733.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180917193733.png" alt=""></p>
 <h5 id="在GitHub中设置项目的webhook"><a href="#在GitHub中设置项目的webhook" class="headerlink" title="在GitHub中设置项目的webhook"></a>在GitHub中设置项目的webhook</h5><p>进入 GitHub 的 Hexo 博客仓库，依次点击 <code>Settings</code> – <code>Webhooks &amp; Services</code> – <code>Add Webhook</code> ，新增一项。</p>
 <p>在 <code>payload URL</code> 中填写刚才获得的钉钉WebHook地址；</p>
 <p>在 <code>Content type</code> 选项下选择 <code>application/json</code> 项；</p>
@@ -3633,7 +3633,7 @@
 <p>在 <code>Event</code> 选项下，我这里选择了 <code>issues</code> 相关的所有 <code>event</code> 事件，也可以按照自己的需求自定义。</p>
 <p>然后，点击 <code>Add webhook</code> 按钮即可。</p>
 <p>至此，当 <code>Issues</code> 中有新的评论时，在钉钉手机客户端就能立即接收到提醒了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20180917193816.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180917193816.png" alt=""></p>
 <h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul>
 <li><a href="http://pacez.github.io/2018/03/08/%E8%A7%A3%E5%86%B3Gitment%E5%88%9D%E5%A7%8B%E5%8C%96%E8%AF%84%E8%AE%BA%E6%97%B6validation%20failed/" target="_blank" rel="noopener">解决Gitment初始化评论时validation failed | Pace’s Blog</a></li>
 <li><a href="https://github.com/swlfigo/Study/wiki/Hexo%E5%8D%9A%E5%AE%A2Next%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0Gitment%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E5%9D%91%E7%82%B9" target="_blank" rel="noopener">Hexo博客Next主题添加Gitment评论系统坑点 · swlfigo/Study Wiki</a></li>
@@ -4119,14 +4119,14 @@
 <h4 id="执行效果"><a href="#执行效果" class="headerlink" title="执行效果"></a>执行效果</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">配置文件：.&#x2F;config.yml</span><br><span class="line">设备：android; 图片识别方式：baidu</span><br><span class="line"></span><br><span class="line">请按空格键开始搜索答案...</span><br><span class="line">正在开始搜索....</span><br><span class="line">2018&#x2F;01&#x2F;16 13:33:27 image.go:41: [debug] 保存question截图成功</span><br><span class="line">2018&#x2F;01&#x2F;16 13:33:27 image.go:51: [debug] 保存answer截图成功</span><br><span class="line">2018&#x2F;01&#x2F;16 13:33:27 image.go:22: [debug] 保存完整截图成功，.&#x2F;images&#x2F;screenshot.png</span><br><span class="line">2018&#x2F;01&#x2F;16 13:33:28 qanswer.go:144: [debug] 斗杓东指,天下皆冬</span><br><span class="line">北斗一星为天权</span><br><span class="line">玉衡星是七星中最亮的星</span><br><span class="line">2018&#x2F;01&#x2F;16 13:33:28 qanswer.go:133: [debug] 2.关于北七斗七星,下列说法正确的</span><br><span class="line">是?</span><br><span class="line">识别题目：</span><br><span class="line">关于北七斗七星,下列说法正确的是?</span><br><span class="line">识别答案：</span><br><span class="line">[斗杓东指,天下皆冬 北斗一星为天权 玉衡星是七星中最亮的星]</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;百度搜索&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">关于北七斗七星,下列说法正确的是?</span><br><span class="line">答案：</span><br><span class="line">斗杓东指,天下皆冬 : 结果总数 7400 ， 答案出现频率： 0</span><br><span class="line">北斗一星为天权 : 结果总数 189000 ， 答案出现频率： 0</span><br><span class="line">玉衡星是七星中最亮的星 : 结果总数 383000 ， 答案出现频率： 0</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line"></span><br><span class="line">耗时：7.24113s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">请按空格键开始搜索答案...</span><br></pre></td></tr></table></figure>
 
 <p>另外附上一些执行过程截图：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/180116/B2c2Deah5B.png?imageslim" alt="mark"></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/180116/k9mAhDA6dC.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/180116B2c2Deah5B.png" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/180116k9mAhDA6dC.png" alt="mark"></p>
 <hr>
 <h4 id="出现的问题"><a href="#出现的问题" class="headerlink" title="出现的问题"></a>出现的问题</h4><p>在实际的测试中，我也发现了该项目的一些问题。</p>
 <h5 id="判断逻辑的可行性"><a href="#判断逻辑的可行性" class="headerlink" title="判断逻辑的可行性"></a>判断逻辑的可行性</h5><p>目前该项目中使用的搜索引擎是百度。</p>
 <p>而程序当前对问题答案获取的后台逻辑是：通过将问题和三个不同的答案拼接输出到搜索引擎中进行搜索查询，如使用百度，在搜索结果页面中会输出：“百度为您找到相关结果约487,000个” 类似这样的一段话。而答案的判断逻辑就是看三种答案对应的搜索结果的数据总条数来预测该答案可能为正确的答案。</p>
 <p>但这样的方法并不一定能保证完全的正确，如下面的一个问题：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/180116/2aeEkGG7Bd.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1801162aeEkGG7Bd.png" alt="mark"></p>
 <p>如果按照推荐的答案，要选 “探戈” 。而这道题的正确答案应该是 “森巴” 。</p>
 <p>后来，我又对其他常用的搜索引擎做了对比。如我对比了 <code>Baidu</code> 、<code>Bing国内版</code> 、 <code>Bing国际版</code> 和 <code>Google（需FQ）</code> ，结果发现这四种搜索结果的正确率为：</p>
 <blockquote>
@@ -4139,7 +4139,7 @@
 <p>食物腐烂<br>冰化水<br>玻璃碎成块  </p>
 </blockquote>
 <p>通过百度测试，对于三个答案的搜索结果数量为：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/180116/b1bhafB5i5.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/180116b1bhafB5i5.png" alt="mark"></p>
 <p>可见，按照搜索数量结果来看的话，要选 “玻璃碎成块” ，但正确的答案应该是 “食物腐烂”。</p>
 <p>后来我又使用 google 进行了测试:</p>
 <blockquote>
@@ -4149,15 +4149,15 @@
 <p>所以，我觉得这种判断逻辑只能给出70%的正确率，在答题过程中也仅仅作为参考答案，而不能一味的相信。</p>
 <h5 id="否定句"><a href="#否定句" class="headerlink" title="否定句"></a>否定句</h5><p>如果遇到标题是否定句式的情况，通过上面这种搜索的形式就无法找到正确的答案了，一般搜索出来的也是“肯定句式”下的答案。</p>
 <p>比如下面这个问题：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/180116/K8cJF6i7Dj.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/180116K8cJF6i7Dj.png" alt="mark"></p>
 <p>正确的答案应该是 <code>爱如潮水</code>。</p>
 <h5 id="文字识别出错"><a href="#文字识别出错" class="headerlink" title="文字识别出错"></a>文字识别出错</h5><p>还有一种情况就是图像文字没有识别出来的情况，最后也就不能给出相应的答案了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/180116/JEbI5EbHEB.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/180116JEbI5EbHEB.png" alt="mark"></p>
 <hr>
 <h4 id="其他方法实现"><a href="#其他方法实现" class="headerlink" title="其他方法实现"></a>其他方法实现</h4><p>个人认为类似这种问答类的题目，可行的方式比如对问题进行分词处理，然后对关键词去搜索匹配，通过词频来判断；或者弹出浏览器由用户自己去判断最终的答案，一般像搜索引擎的搜索结果页面，都会有标题和简短的内容，内容中的关键字会被标红显示，由用户自己去判断，准确性会更高一些，但这样耗费的时间也会特别长。应该还有其他的方法吧。</p>
 <p>目前我也在用python来实现一种可能的方法，我会在后续的文章中详细说明，敬请期待吧！</p>
 <p>最后再说一句。如果看到这篇文章后你也对这种“答题吃瓜”的直播问题活动产生了兴趣，可以使用我的邀请码来获得一张复活卡的机会，输入下面的邀请码即可。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/180116/GaimbE8mfm.jpeg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/180116GaimbE8mfm.jpeg" alt="mark"></p>
 <hr>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
 <li><a href="https://github.com/silenceper/qanswer" target="_blank" rel="noopener">qanswer</a></li>
@@ -4522,9 +4522,9 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">root@b792ae940e3e:&#x2F;app# python3</span><br><span class="line">Python 3.5.2 (default, Nov 23 2017, 16:37:01) </span><br><span class="line">[GCC 5.4.0 20160609] on linux</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; from tasks import add</span><br><span class="line">&gt;&gt;&gt; add.delay(3,4)</span><br><span class="line">&lt;AsyncResult: e1ae8ea3-8a8f-47c5-befb-e6ba975f0580&gt;</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
 
 <p>执行结果：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171211/cc9H40dDJ5.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171211cc9H40dDJ5.jpg" alt="mark"></p>
 <p>同时，也可以在 <code>RabbitMQ web</code> 管理页面看到新增了一个任务并存储了处理结果：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171211/9JEB2m262l.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1712119JEB2m262l.jpg" alt="mark"></p>
 <p>为了得到调用任务后返回的 <code>AsyncResult</code> 实例，通过一个参数来接收：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; result&#x3D;add.delay(3,4)</span><br></pre></td></tr></table></figure>
 
@@ -4555,7 +4555,7 @@
 <p>Celery 是一个简单、灵活且可靠的，处理大量消息的分布式系统，并且提供维护这样一个系统的必需工具。它是一个专注于实时处理的任务队列，同时也支持任务调度。</p>
 <a id="more"></a>
 
-<h4 id="主要模块"><a href="#主要模块" class="headerlink" title="主要模块"></a>主要模块</h4><p><img data-src="https://qiniu.itfanr.cc/blog/171211/IdE7bgjLE1.png?imageslim" alt="mark"></p>
+<h4 id="主要模块"><a href="#主要模块" class="headerlink" title="主要模块"></a>主要模块</h4><p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171211IdE7bgjLE1.png" alt="mark"></p>
 <h5 id="任务模块-Task"><a href="#任务模块-Task" class="headerlink" title="任务模块 Task"></a>任务模块 Task</h5><p>包含异步任务和定时任务。其中，异步任务通常在业务逻辑中被触发并发往任务队列，而定时任务由 Celery Beat 进程周期性地将任务发往任务队列。</p>
 <h5 id="消息中间件-Broker"><a href="#消息中间件-Broker" class="headerlink" title="消息中间件 Broker"></a>消息中间件 Broker</h5><p>一个消息传输的中间件，可以理解为一个邮箱，作为消费者和生产者之间的桥梁。接收任务生产者发来的消息（即任务），将任务存入队列。Celery 本身不提供队列服务，官方推荐使用 RabbitMQ 和 Redis 等。</p>
 <h5 id="任务执行单元-Worker"><a href="#任务执行单元-Worker" class="headerlink" title="任务执行单元 Worker"></a>任务执行单元 Worker</h5><p>Worker 是执行任务的处理单元，它实时监控消息队列，获取队列中调度的任务，并执行它。</p>
@@ -4602,9 +4602,9 @@
 
 <p>将其中的 <code>enable: false</code> 改为 <code>enable: true</code> 即可。</p>
 <p>但是改完后，使用 <code>hexo s -g</code> 预览，发现 “本文链接” 部分有问题。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171206/Blk7gcB7CI.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171206Blk7gcB7CI.png" alt="mark"></p>
 <p>这就需要我们修改主站点的配置文件了。打开主站点的 <code>_config.yml</code> 文件，修改：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171206/LC91BEHEcg.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171206LC91BEHEcg.png" alt="mark"></p>
 <p>将 <code>url</code> 部分改成自己站点的域名地址即可。</p>
 <h5 id="相关参考-1"><a href="#相关参考-1" class="headerlink" title="相关参考"></a>相关参考</h5><ul>
 <li><a href="http://www.crocutax.com/2017/05/20/Hexo%E6%8C%81%E7%BB%AD%E4%BC%98%E5%8C%96-%E5%9C%A8%E6%96%87%E7%AB%A0%E5%B0%BE%E9%83%A8%E6%B7%BB%E5%8A%A0%E7%89%88%E6%9D%83%E5%A3%B0%E6%98%8E%E4%BF%A1%E6%81%AF/" target="_blank" rel="noopener">Hexo持续优化-在文章尾部添加版权声明信息</a></li>
@@ -4664,7 +4664,7 @@
 <h4 id="DuerOS唤醒"><a href="#DuerOS唤醒" class="headerlink" title="DuerOS唤醒"></a>DuerOS唤醒</h4><p>百度的DuerOS开发套件个人版需要用户自备一个树莓派3B来结合使用。开发板上带有2颗高灵敏度MEMS麦克风，搭载百度DuerOS SDK，可为用户提供百度海量的信息服务能力。</p>
 <p>按照官方给的硬件安装文档和提供的镜像系统将设备组合成功，插入刷好系统的内存卡，通电等待系统开机。在初次连接时，可以使用百度提供的 “小度之家app” 将系统接入网络。 小度联网成功后，直接说 “小度小度+内容” 即可实现语音式的对话交互操作。</p>
 <p>总体来说，唤醒小度的这一步非常的简单，附上一张设备的合影。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/1HHmf7HcHh.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1712051HHmf7HcHh.jpg" alt="mark"></p>
 <hr>
 <h4 id="接入Python-SDK"><a href="#接入Python-SDK" class="headerlink" title="接入Python SDK"></a>接入Python SDK</h4><p>DuerOS开发平台中也提供了相应的Python SDK，以便于个人开发者通过该SDK来实现想要的技能。</p>
 <h4 id="通过SSH登陆"><a href="#通过SSH登陆" class="headerlink" title="通过SSH登陆"></a>通过SSH登陆</h4><p>官方提供的DuerOS镜像系统是基于Raspbian系统的，所以我们可以按照在树莓派上安装Raspbian系统的方式来配置SSH服务。</p>
@@ -4693,37 +4693,37 @@
 <h5 id="update更新"><a href="#update更新" class="headerlink" title="update更新"></a>update更新</h5><p>修改完成后，更新：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get update</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/mhG80D6keF.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205mhG80D6keF.jpg" alt="mark"></p>
 <h5 id="其他依赖包"><a href="#其他依赖包" class="headerlink" title="其他依赖包"></a>其他依赖包</h5><p>安装其他的依赖包：</p>
 <p>hyper库用来支持http2.0 client, pyaudio用来支持录音，tornado用来完成oauth认证。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install python-dateutil gir1.2-gstreamer-1.0 python-pyaudio libatlas-base-dev python-dev</span><br><span class="line">$ sudo pip install tornado hyper</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/Ha2dDjLkCl.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205Ha2dDjLkCl.jpg" alt="mark"></p>
 <h4 id="下载编译好的openssl和Python安装包"><a href="#下载编译好的openssl和Python安装包" class="headerlink" title="下载编译好的openssl和Python安装包"></a>下载编译好的openssl和Python安装包</h4><p>由于DuerOS运行所需要的依赖环境跟平台是相关的。比如DuerOS是基于Http2 ALPN的，但树莓派官方镜像的OpenSSL并不支持，而对应的Python库依赖于OpenSSL。为了在树莓派平台上支持Python的DuerOS SDK，专门交叉编译了OpenSSL和Python。</p>
 <p><em>从如下地址下载openssl安装包</em>(链接: <a href="https://pan.baidu.com/s/1skAP6WH" target="_blank" rel="noopener">https://pan.baidu.com/s/1skAP6WH</a> 密码: wknz)<br><em>从如下地址下载python2.7.14安装包</em>(链接: <a href="https://pan.baidu.com/s/1o8MHkzK" target="_blank" rel="noopener">https://pan.baidu.com/s/1o8MHkzK</a> 密码: ngx4)</p>
 <p>将下载的两个文件用 <code>FileZilla</code> 传输到树莓派的 <code>/home/pi/Leafney</code> 目录下：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/gead092HB7.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205gead092HB7.jpg" alt="mark"></p>
 <p>然后分别解压：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo tar -zxvf openssl1.1.tar.gz -C &#x2F;usr</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/9BLDE9GllL.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1712059BLDE9GllL.jpg" alt="mark"></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo tar -zxvf python2.7.14.tar.gz -C &#x2F;usr&#x2F;local&#x2F;</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/JkK98AlhB6.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205JkK98AlhB6.jpg" alt="mark"></p>
 <p>替换已有的python：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo rm -rf &#x2F;usr&#x2F;bin&#x2F;python</span><br><span class="line">$ sudo ln -s &#x2F;usr&#x2F;local&#x2F;python2.7.14&#x2F;bin&#x2F;python &#x2F;usr&#x2F;bin&#x2F;python</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/8A48988iE7.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1712058A48988iE7.jpg" alt="mark"></p>
 <h5 id="下载Python-SDK和示例代码"><a href="#下载Python-SDK和示例代码" class="headerlink" title="下载Python SDK和示例代码"></a>下载Python SDK和示例代码</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;MyDuerOS&#x2F;DuerOS-Python-Client.git</span><br><span class="line">$ cd DuerOS-Python-Client</span><br><span class="line">$ git checkout raspberry-dev</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/1H0kJCiD7i.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1712051H0kJCiD7i.jpg" alt="mark"></p>
 <h4 id="初次授权"><a href="#初次授权" class="headerlink" title="初次授权"></a>初次授权</h4><p>如果直接按照官方给出的教程配置 <a href="http://open.duer.baidu.com/forum/topic/show?topicId=244796" target="_blank" rel="noopener">Step by Step带你玩转DuerOS - Python DuerOS SDK[树莓派平台] (3)</a>，下一步就是授权操作了。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;auth.sh</span><br></pre></td></tr></table></figure>
 
 <p>执行后在 <code>Xshell</code> 中有提示 <code>A web page should is opened. If not, go to http://127.0.0.1:3000 to start</code> 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/GBIHDg2A9k.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205GBIHDg2A9k.jpg" alt="mark"></p>
 <p>因为这里是要求访问 <code>127.0.0.1</code> ，所以必须在树莓派系统中通过浏览器来访问。我在Windows系统下通过 <code>树莓派IP+端口3000</code> 的方式访问，会提示 “授权回调页地址错误” 的错误页面。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/AedIAK9chJ.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205AedIAK9chJ.jpg" alt="mark"></p>
 <p>我并没有多余的HDMI数据线来直接连接树莓派和显示器，所以这里我用远程桌面的方式来配置。</p>
 <h4 id="安装远程桌面"><a href="#安装远程桌面" class="headerlink" title="安装远程桌面"></a>安装远程桌面</h4><p>树莓派下的远程桌面我们选择 <code>xrdp</code> 或者 <code>VNC</code> 来实现。</p>
 <h5 id="xrdp"><a href="#xrdp" class="headerlink" title="xrdp"></a>xrdp</h5><p>xrdp 可以使用 windows下的远程桌面直接连接，不过这种方式只适合于Windows系统下连接。</p>
@@ -4731,52 +4731,52 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install xrdp</span><br></pre></td></tr></table></figure>
 
 <p>打开windows系统的 “远程桌面连接” 程序，输入树莓派的IP地址进行连接。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/mDL3h3G9GE.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205mDL3h3G9GE.jpg" alt="mark"></p>
 <p>在弹出的 <code>Login to xrdp</code> 窗口中，输入树莓派的用户名和密码，点击 <code>OK</code> 连接。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/ee14cebf7G.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205ee14cebf7G.jpg" alt="mark"></p>
 <h5 id="VNC"><a href="#VNC" class="headerlink" title="VNC"></a>VNC</h5><p>如果你是MAC系统或者不喜欢Windows自带的远程桌面，可以使用适合于全平台的 <code>VNC</code> 。</p>
 <h6 id="VNC初始化"><a href="#VNC初始化" class="headerlink" title="VNC初始化"></a>VNC初始化</h6><p>在树莓派下执行安装：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install tightvncserver</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/fLbc7ehf6B.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205fLbc7ehf6B.jpg" alt="mark"></p>
 <p>增加一个桌面，执行：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ tightvncserver</span><br></pre></td></tr></table></figure>
 
 <p>会要求设置一个连接的密码并重复输入。</p>
 <p>会询问是否设置一个只读方式的密码，一般选择否 <code>n</code> 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/7d91GlFC56.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1712057d91GlFC56.jpg" alt="mark"></p>
 <h6 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h6><p>从网站 <a href="http://www.realvnc.com/download/viewer/" target="_blank" rel="noopener">vncViewer</a> 下载vncViewer。打开程序后连接：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">your Pi IP:1</span><br><span class="line"></span><br><span class="line"># 比如我的设置：</span><br><span class="line">192.168.5.130:1</span><br></pre></td></tr></table></figure>
 
 <h6 id="关闭桌面"><a href="#关闭桌面" class="headerlink" title="关闭桌面"></a>关闭桌面</h6><p>关闭VNC桌面只需要在树莓派中将VNC的服务kill掉即可。在 <code>Xshell</code> 中操作：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ vncserver -kill :1</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/JDkd7Idcak.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205JDkd7Idcak.jpg" alt="mark"></p>
 <hr>
 <h4 id="再次授权"><a href="#再次授权" class="headerlink" title="再次授权"></a>再次授权</h4><p>再次进入树莓派的 <code>/home/pi/Leafney/DuerOS-Python-Client</code> 目录，启动授权：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd &#x2F;home&#x2F;pi&#x2F;Leafney&#x2F;DuerOS-Python-Client</span><br><span class="line"></span><br><span class="line">$ .&#x2F;auth.sh</span><br></pre></td></tr></table></figure>
 
 <p>通过远程桌面访问，在树莓派的桌面系统下打开浏览器，访问 <code>127.0.0.1:3000</code> 地址，会出现 “百度账号的登陆授权页面” 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/1BBDKhaC6c.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1712051BBDKhaC6c.jpg" alt="mark"></p>
 <p>不过这个是官方的测试账号 <code>GitHub项目测试账号</code>。如果我们想要配置自己的设备，还是需要去申请自己的client_id和client_secret来调用。</p>
 <p>这里我不在继续往下操作，先去申请自己的ClientID信息。</p>
 <p>在 <code>Xshell</code> 中按 <code>Ctrl+C</code> 停止启动的web服务。</p>
 <h4 id="创建设备"><a href="#创建设备" class="headerlink" title="创建设备"></a>创建设备</h4><p>打开 DuerOS开放平台官网 <a href="https://dueros.baidu.com/open" target="_blank" rel="noopener">DuerOS开放平台</a> ，选择右上角 “控制台” – “设备控制台” – 在打开的新页面选择 “配置新设备” 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/BKfi41AImL.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205BKfi41AImL.jpg" alt="mark"></p>
 <p>然后在 <code>请选择终端场景</code> 中选择 “音箱” 点击 “下一步” 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/BfD84IEJJ1.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205BfD84IEJJ1.jpg" alt="mark"></p>
 <p>在 <code>请选择操作系统</code> 界面选择第一项 “Linux” 或者也可以选择最下面的 “点击这里” ，没有太大区别。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/GF9559eF6j.jpg?imageslim" alt="mark"></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/926bH7lJBl.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205GF9559eF6j.jpg" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205926bH7lJBl.jpg" alt="mark"></p>
 <p>输入 “产品名称”，比如这里我取名叫 <code>贾维斯</code> （电影钢铁侠里的人工智能系统），点击 “申请ClientID” ，下面会显示出相应的 client_id 和 client_secret等信息。这里，我们先将这两项记下来以待后面使用。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/ik2hLA9K0C.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205ik2hLA9K0C.jpg" alt="mark"></p>
 <p>接下来是配置 “端能力”的页面，可以自定义选择，或者直接保持默认下一步即可。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/F2jhkif846.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205F2jhkif846.jpg" alt="mark"></p>
 <p>然后会弹出 <code>BOT配置</code> 页面。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/14d0Ik0ddi.jpg?imageslim" alt="mark"></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/im394L0fA7.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/17120514d0Ik0ddi.jpg" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205im394L0fA7.jpg" alt="mark"></p>
 <p>可以看到上面是一些 <code>音乐</code> <code>有声点播</code> <code>有声直播</code> 等等选项；下面有 <code>聊天定制</code> <code>语音唤醒服务</code> <code>自定义控制指令</code> 这些，如果看不懂呢可以不用管，直接下一步。后面会询问是否下载SDK，也不用管，直接点击下面的 “完成” 会提示 “创建产品成功” 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/ldkA768AdC.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205ldkA768AdC.jpg" alt="mark"></p>
 <p>这样我们就创建好了自己的client_id和client_secret。</p>
 <h4 id="设置个人的ClientID信息"><a href="#设置个人的ClientID信息" class="headerlink" title="设置个人的ClientID信息"></a>设置个人的ClientID信息</h4><p>使用 <code>FileZilla</code> 软件，在树莓派的目录 <code>/home/pi/Leafney/DuerOS-Python-Client</code> 下找到 <code>app/auth.py</code> 这个文件，因为在控制台界面下不太方便编辑文件，所以这里我选择将该文件下载到Windows本地来编辑。</p>
 <p>将 <code>auth.py</code> 下载到本地后，推荐使用 <code>SublimeText</code> 或 <code>NotePad++</code> 来进行编辑。</p>
@@ -4789,41 +4789,41 @@
 <p>再将下面的 <code>使用默认的CLIENT_ID和CLIENT_SECRET</code> 一行下面代码行前面加一个井号 <code>#</code> 注释掉这一行。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 使用默认的CLIENT_ID和CLIENT_SECRET</span><br><span class="line"># auth.auth_request()</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/jLciAm6A4f.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205jLciAm6A4f.jpg" alt="mark"></p>
 <p>然后使用 <code>FileZilla</code> 将我们刚刚改好的 <code>auth.py</code> 上传到树莓派中。</p>
 <h4 id="设置授权回调地址"><a href="#设置授权回调地址" class="headerlink" title="设置授权回调地址"></a>设置授权回调地址</h4><p>在浏览器中访问 <code>控制台</code> – <code>设备控制台</code> 页面 <a href="https://dueros.baidu.com/didp/product/listview" target="_blank" rel="noopener">设备控制台</a> , 选择我们刚刚创建的产品点击 “编辑” 选项。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/3ebjjK0LkG.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1712053ebjjK0LkG.jpg" alt="mark"></p>
 <p>在 <code>基础信息</code> 页面，可以查看刚刚创建设备的 client_id 等信息。这里我们点击 <code>OAUTH CONFIG URL</code> 这个链接：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/Ba8jgec5kl.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205Ba8jgec5kl.jpg" alt="mark"></p>
 <p>在新页面的左侧点击 <code>安全设置</code> 选项，在 <code>授权回调页</code> 的输入框中输入如下内容，然后点击 <code>确定</code> 保存修改。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http:&#x2F;&#x2F;127.0.0.1:3000&#x2F;authresponse</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/fgmEh6ei60.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205fgmEh6ei60.jpg" alt="mark"></p>
 <h4 id="使用个人设备授权"><a href="#使用个人设备授权" class="headerlink" title="使用个人设备授权"></a>使用个人设备授权</h4><p>完成上面的配置后，回到 <code>Xshell</code> 中，在树莓派的 <code>/home/pi/Leafney/DuerOS-Python-Client</code> 目录下，再次执行授权命令：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;auth.sh</span><br><span class="line">A web page should is opened. If not, go to http:&#x2F;&#x2F;127.0.0.1:3000 to start</span><br></pre></td></tr></table></figure>
 
 <p>然后在树莓派系统浏览器输入 <code>127.0.0.1:3000</code> 访问。</p>
 <p>可以看到页面右侧的授权应用变成了我自己创建的设备名称。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/744die8bjc.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205744die8bjc.jpg" alt="mark"></p>
 <p>如果你的授权页面中这里显示的是空的，那是因为你用的是中文名称。在“基础信息” 的 “名称”那里需要再次添加一下名称。如果是英文的话，这个名称会直接显示。我觉得这里可能是一个bug。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/1E5cDdb1jg.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1712051E5cDdb1jg.jpg" alt="mark"></p>
 <p>在授权页面输入我的百度账号和密码进行授权。</p>
 <p>看到提示 <code>Succeed to login DuerOS Voice Service</code> 的信息就说明授权成功了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/e6dBAefhid.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205e6dBAefhid.jpg" alt="mark"></p>
 <p>同时在 <code>Xshell</code> 下我们会看到输出相应的授权信息。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/KgGHdJGJ89.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205KgGHdJGJ89.jpg" alt="mark"></p>
 <h4 id="语言唤醒"><a href="#语言唤醒" class="headerlink" title="语言唤醒"></a>语言唤醒</h4><p>执行如下命令：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;wakeup_trigger_start.sh</span><br></pre></td></tr></table></figure>
 
 <p>使用唤醒词 <code>小度小度</code> 就能唤醒了。</p>
 <p>因为我在 <code>Xshell</code> 下操作时发现命令行下的中文会有乱码的情况，所以我改用远程桌面下树莓派上自带的 <code>Terminal</code> 程序来执行。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/e6iEB7LKEm.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205e6iEB7LKEm.jpg" alt="mark"></p>
 <p>也可以使用enter按键唤醒，执行命令：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ .&#x2F;enter_trigger_start.sh</span><br></pre></td></tr></table></figure>
 
 <p>使用enter键回车唤醒。</p>
 <p>这里我尝试了上面的两种唤醒方式，发现不知道是哪里的问题，音箱都没有声音输出。查看输出的日志信息是能看到有音频文件下载成功并播放的。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171205/mFK66gbHId.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171205mFK66gbHId.jpg" alt="mark"></p>
 <h4 id="解决没有声音的问题"><a href="#解决没有声音的问题" class="headerlink" title="解决没有声音的问题"></a>解决没有声音的问题</h4><p>我使用 <code>alsamixer</code> 然后按 <code>F6</code> 切换使用的声卡，发现无论如何切换，似乎都没有效果。</p>
 <p>后来我考虑<strong>将音箱线换到树莓派本身的音频接口</strong>上，发现居然有声音输出了。不过树莓派自带的音频输出杂音还是很吵的。</p>
 <p>这里要注意的是不能在树莓派通电的情况下切换音频口，我发现如果直接将音频线从DuerOS板子的音频口换到树莓派的音频口上时，刚一接触的时候噪音是非常大的，所以最后我是将树莓派关机然后切换的。</p>
@@ -4845,24 +4845,24 @@
     <title>解决Hexo博客搜索异常</title>
     <url>/2017/11/24/resolve-hexo-blog-search-exception/</url>
     <content><![CDATA[<p>最近在更新博客文章时发现之前新添加的搜索功能不太好用了。每次点击了搜索按钮之后，搜索弹框一直显示 “加载中” 的状态。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171124/1KiH0C4BaA.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1711241KiH0C4BaA.png" alt="mark"></p>
 <h4 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h4><p>因为我使用的是 <code>hexo</code> 的 <code>Next</code> 主题中的 <code>Local Search</code> 搜索功能，所以就去 <code>Next</code> 主题的github中查找了类似的 <code>issues</code> ，发现类似问题下作者是建议重新安装该搜索组件来解决的。</p>
 <p>于是我就卸载了该组件，然后重新安装：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm uninstall hexo-generator-searchdb --save</span><br><span class="line"></span><br><span class="line">$ npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/171124/eHlhg3am05.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171124eHlhg3am05.png" alt="mark"></p>
 <p>结果问题依旧。</p>
 <h4 id="探究"><a href="#探究" class="headerlink" title="探究"></a>探究</h4><p>后来我发现 <code>Local Search</code> 的搜索功能是加载的项目目录下的 <code>search.xml</code> 文件：<code>http://localhost:4000/search.xml</code>。于是我在浏览器中打开，居然有报错提示。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171124/68cam2i3k8.png?imageslim" alt="mark"></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171124/jmJc73ClH5.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/17112468cam2i3k8.png" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171124jmJc73ClH5.png" alt="mark"></p>
 <p>按照错误信息的说明，我找到了出错的第 <code>47</code> 行第 <code>35</code> 列，发现和其他内容不同的是这里居然多了一个 “红点”，那么搜索弹窗出不来的问题应该就是这个 “红点” 搞的鬼了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171124/imFDgH4mmE.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171124imFDgH4mmE.png" alt="mark"></p>
 <p>我通过 <code>Sublime Text</code> 打开了源博客文件，发现在段落的开头居然多了两个奇葩的字符：<code>BS</code>。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171124/km78g4i39h.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171124km78g4i39h.png" alt="mark"></p>
 <p>我觉得可能是什么时候复制文件时给加上的。删除后，再次生成。问题解决。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171124/06F5a7GEaL.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/17112406F5a7GEaL.png" alt="mark"></p>
 <p>再次访问搜索的xml文件 <code>http://localhost:4000/search.xml</code> ，发现已经不会再报之前的错误了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171124/B85CK5774h.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171124B85CK5774h.png" alt="mark"></p>
 <p>需要注意的一点：我在查看源博客文件时也使用了 <code>VS Code</code> 编辑器，但是 <code>VS Code</code> 却无法显示出来前面的特殊字符 <code>BS</code>，通过 <code>Sublime Text</code> 才查看到。</p>
 <h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p>在Hexo博客文件的项目目录下有一个 <code>node_modules</code> 目录。每次在windows系统下删除 (拷贝或者移动) 该目录时都会报 <code>文件名或扩展名太长，目录层次超过限制</code> 等错误而导致操作失败。</p>
 <p>解决这个问题只需要使用 <code>unix</code> 或者 <code>linux</code> 下的 <code>rm -rf</code>（强制删除） 命令来删除即可，但要注意操作时一定要慎重，不要误删其他文件。</p>
@@ -4891,76 +4891,76 @@
 <p>具体可以访问：<a href="https://github.com/Leafney/debian-aria2-kode" target="_blank" rel="noopener">Leafney/debian-aria2-kode</a></p>
 <hr>
 <h4 id="创建aria2容器"><a href="#创建aria2容器" class="headerlink" title="创建aria2容器"></a>创建aria2容器</h4><p>打开群晖的docker套件，选择 “注册表” 项，搜索并下载镜像 <code>leafney/debian-aria2-kode</code> 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/h0GeCiKJG3.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117h0GeCiKJG3.png" alt="mark"></p>
 <p>下载完成后，选中该镜像，点击 “启动” 菜单，打开 “创建容器” 界面。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/Dc9aFm6f6c.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117Dc9aFm6f6c.png" alt="mark"></p>
 <p>为该容器设置一个自定义的名称，我这里命名为 <code>aria2-kode</code>，然后打开 “高级设置” 窗口。</p>
 <p>在 “高级设置” 选项卡，选中 “启用自动重新启动” 及 “创建桌面快捷方式” 。</p>
 <p>自动重新启动是在容器不当关机的情况下回尝试自动重启的操作。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/EcA9f5A3Bl.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117EcA9f5A3Bl.png" alt="mark"></p>
 <p>在 “卷” 菜单中，为创建的容器添加一个文件夹用来管理和查看我们通过aria2下载的文件。因为要存储新文件，所以这里不要勾选 “只读” 项。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/b2aick4cmg.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117b2aick4cmg.png" alt="mark"></p>
 <p>在 “端口设置” 菜单中，已经列出了镜像中预设的端口信息，在 “本地端口” 项下，我们为其指定相应的端口，不选择默认的 “自动” 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/A8JD9Behmg.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117A8JD9Behmg.png" alt="mark"></p>
 <p>然后点击 “应用” 按钮。</p>
 <p>回到 “创建容器” 界面，点击 “下一步” 。查看我们设置的容器信息，勾选左下角的 “向导完成后运行此容器” 项，然后点击 “应用” 等待容器启动。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/kD4GleC0Aa.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117kD4GleC0Aa.png" alt="mark"></p>
 <hr>
 <h4 id="查看容器信息"><a href="#查看容器信息" class="headerlink" title="查看容器信息"></a>查看容器信息</h4><p>选择左侧 “容器” 项，可以看到我们刚刚创建的容器已经启动了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/ih68G0fH77.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117ih68G0fH77.png" alt="mark"></p>
 <p>点击顶部的 “详情” 选项，可以查看容器 <code>aria2-kode</code> 的信息。</p>
 <p>在 “日志” 项下，可以查看当前容器运行时输出的日志记录。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/lEiH8f74eJ.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117lEiH8f74eJ.png" alt="mark"></p>
 <hr>
 <h4 id="配置KodExplorer"><a href="#配置KodExplorer" class="headerlink" title="配置KodExplorer"></a>配置KodExplorer</h4><p>在浏览器中输入 <code>群晖ip:6860</code> ，打开 <code>KodExplorer</code> 的登录界面。看到 “运行环境检测” 下输出 “Successful!” 说明我们的容器已经正常的跑起来了。</p>
 <p>首先要设置 <code>KodExplorer</code> 资源管理器的管理员 <code>admin</code> 的密码。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/kaaL1fL1aE.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117kaaL1fL1aE.png" alt="mark"></p>
 <p>然后使用管理员账号登录。登录后可以看到 <code>KodExplorer</code> 的文件管理页面和我们平时使用的资源管理器页面非常的相似，操作起来也没有什么难度。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/AG7Bj3LAaB.png?imageslim" alt="mark"></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/f4J96e8C8l.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117AG7Bj3LAaB.png" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117f4J96e8C8l.png" alt="mark"></p>
 <hr>
 <h4 id="配置aria2"><a href="#配置aria2" class="headerlink" title="配置aria2"></a>配置aria2</h4><p>在浏览器中输入 <code>群晖ip:6801</code> ,打开 <code>AriaNg</code> 的管理页面。进入后会弹出 “认证失败” 的错误弹窗，不用管它。</p>
 <p>选择左侧 “系统设置” 下的 “AriaNg 设置” 项。在右侧选择 “RPC(192.168.x.xx…” 的菜单，然后配置之前创建容器时设置的 “Aria2 RPC 地址” 端口号和 “Aria2 RPC 密钥” 项。</p>
 <p>RPC密钥默认是 <code>123456</code> 。设置完成后点击 “重新加载页面” 应用配置。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/jAGbI57kfb.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117jAGbI57kfb.png" alt="mark"></p>
 <p>然后可以看到 <code>Aria2 状态</code> 已经显示为 “已连接” 的状态了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/EI19DI0LF8.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117EI19DI0LF8.png" alt="mark"></p>
 <p>至此，aria2就配置完成了。选择左侧的 “正在下载” 项新建下载任务即可。</p>
 <hr>
 <h4 id="管理下载文件"><a href="#管理下载文件" class="headerlink" title="管理下载文件"></a>管理下载文件</h4><p>这里我以下载 <code>BaiduExporter</code> 为例来示范如何管理下载的文件。</p>
 <p><a href="https://github.com/acgotaku/BaiduExporter" target="_blank" rel="noopener">BaiduExporter</a></p>
 <h5 id="下载文件"><a href="#下载文件" class="headerlink" title="下载文件"></a>下载文件</h5><p>打开 <code>BaiduExporter</code> 的github页面，在master分支下，选择右侧的 <code>Clone or download</code> 项下的 <code>Download Zip</code> ，右击选择 “复制链接地址” 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/j7blJKDCib.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117j7blJKDCib.png" alt="mark"></p>
 <p>打开 “AriaNg” 页面，在 “正在下载” 页面 “新建” 下载任务。粘贴下载链接，点击 “立即下载” 开始。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/EH82F8J37d.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117EH82F8J37d.png" alt="mark"></p>
 <p>下载完成后，会在 “已完成/已停止” 菜单中显示。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/73fCaB1Dmg.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/17111773fCaB1Dmg.png" alt="mark"></p>
 <h5 id="KodExplorer文件管理"><a href="#KodExplorer文件管理" class="headerlink" title="KodExplorer文件管理"></a>KodExplorer文件管理</h5><p>要查看我们刚刚下载的文件，在浏览器打开 <code>KodExplorer</code> 页面，选择上面的目录路径，点击根目录项，查看所有的文件及目录。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/jBB9DF8b40.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117jBB9DF8b40.png" alt="mark"></p>
 <p>找到 <code>app</code> 目录，打开里面的 <code>aria2down</code> 目录即可查看到我们刚刚下载的文件了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/llG1fjCAB8.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117llG1fjCAB8.png" alt="mark"></p>
 <h5 id="在群晖DSM中查看下载文件"><a href="#在群晖DSM中查看下载文件" class="headerlink" title="在群晖DSM中查看下载文件"></a>在群晖DSM中查看下载文件</h5><p>在创建容器时我们为容器指定了群晖本地的下载文件目录。打开群晖DSM界面 – “File Station” 文件管理器，找到我们设置的目录，可以看到容器为我们自动创建了三个目录，在 <code>aria2down</code> 下就能找到我们刚刚下载的文件了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/6EB6Kjc45f.png?imageslim" alt="mark"></p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/G4j3hE8KH9.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1711176EB6Kjc45f.png" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117G4j3hE8KH9.png" alt="mark"></p>
 <hr>
 <h4 id="百度网盘文件下载"><a href="#百度网盘文件下载" class="headerlink" title="百度网盘文件下载"></a>百度网盘文件下载</h4><p>知道了如何下载和如何管理文件，接下来我们看看具体的应用。因为之前网盘刚兴起的时候，我把大部分的文件都放在到了百度网盘里，但后来网盘逐渐衰落，百度网盘的客户端下载文件还会限速，除非你冲超级会员才行。</p>
 <p>今天，我们就用aria2来解决这个问题。</p>
 <h5 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h5><p>想要下载百度网盘中的文件，首先需要安装一个插件，也就是上面我们已经下载的 <code>BaiduExporter</code>。</p>
 <p>在 <code>KodExplorer</code> 管理界面或群晖的 <code>DSM</code> 界面，选中文件 <code>BaiduExporter-master.zip</code> 右击选择下载均可将该文件下载到当前电脑上，解压后看到一个名为 <code>BaiduExporter.crx</code> 的文件。</p>
 <p>打开 <code>Chrome</code> 浏览器 – “更多工具” – “扩展程序” 界面。将 <code>BaiduExporter.crx</code> 拖放到该页面以安装。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/4ja3030bB1.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1711174ja3030bB1.png" alt="mark"></p>
 <p>打开百度网盘页面，在顶部菜单栏中可以看到多出了一项 “导出下载” 的按钮。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/94ELDGH5hG.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/17111794ELDGH5hG.png" alt="mark"></p>
 <h5 id="设置ARIA2-RPC"><a href="#设置ARIA2-RPC" class="headerlink" title="设置ARIA2 RPC"></a>设置ARIA2 RPC</h5><p>仍在百度网盘页面，选择菜单 “导出下载” – “设置” 项，在 <code>ARIA2 RPC</code> 右侧输入RPC地址，格式为 ：<code>http://192.168.5.120:6800/jsonrpc</code> 。</p>
 <p>因为我的aria2是添加了密钥的，所以最后的rpc地址格式应为：<code>http://token:RPC密钥@192.168.5.120:6800/jsonrpc</code> ，即</p>
 <blockquote>
 <p>设置密码以后需要在导出下面的设置里在 JSONRPC 的地址的 <code>http://</code> 后面 <code>localhost</code> 前面加上 <code>token:你的密码@</code>。</p>
 </blockquote>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/AkL6GebFaB.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117AkL6GebFaB.png" alt="mark"></p>
 <h5 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h5><p>点击应用后，勾选百度网盘中要下载的文件或文件夹，选择 “导出下载” 菜单下的 “ARIA2 RPC”，会弹出 “下载成功，赶紧去看看吧！” 的提示信息。切换到 <code>AriaNg</code> 页面，我们可以看到在百度网盘上选择的文件已经在依次下载了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/GlLGJIkd74.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117GlLGJIkd74.png" alt="mark"></p>
 <p>另外在 <code>KodExplorer</code> 和群晖DSM的资源管理界面，都可以看到正在下载的文件。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/lggD4efImf.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117lggD4efImf.png" alt="mark"></p>
 <h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><p>这里发现一个问题：如果在 <code>Mac10.13</code> 系统上使用release下的 <code>v0.8.5</code> 的版本在百度网盘页面选中文件后，“导出下载” 的按钮就消失了。更新成当前的master版本 <code>v0.9.10</code> 后没有问题。所以上面直接推荐安装master版本。</p>
 <p>具体可以看 github issues：<a href="https://github.com/acgotaku/BaiduExporter/issues/492" target="_blank" rel="noopener">mac os 10.13 无法使用了</a></p>
 <hr>
@@ -4981,7 +4981,7 @@
     <content><![CDATA[<p>群晖的DSM系统上安装Docker套件非常的简单，只要点击一个按钮就行了。</p>
 <p>但是由于某些 “你懂的” 原因，DockerHub的网站是在国外的，而在国内访问起来就会特别的慢。之前我也写过在其他Linux系统如Ubuntu下配置Docker加速器的方法，但经过一番研究发现群晖NAS下的Docker套件配置加速器的方法还是有一定区别的。</p>
 <h4 id="启用Docker套件"><a href="#启用Docker套件" class="headerlink" title="启用Docker套件"></a>启用Docker套件</h4><p>进入群晖的 DSM 系统后，选择桌面的 “套件中心” 图标（或在 “主菜单” 界面中选择 “套件中心”），在左侧找到 “实用工具” 一项，右侧往下拉在 “第三方” 一栏下找到 “Docker” 的图标，点击 “安装套件” ，等待安装完成。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/Dg018bm2b9.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117Dg018bm2b9.png" alt="mark"></p>
 <p>安装完成后，选择 “主菜单” 找到 “Docker” 图标并打开。</p>
 <p>具体的操作可以查看 DSM 的帮助界面，这里主要说明重点的项：</p>
 <ul>
@@ -4991,21 +4991,21 @@
 <li><code>容器</code> 是对创建的容器进行管理。</li>
 </ul>
 <h4 id="未启用加速器"><a href="#未启用加速器" class="headerlink" title="未启用加速器"></a>未启用加速器</h4><p>要在Docker套件中创建容器，我们可以在左侧菜单 “注册表” 项搜索相应的镜像名称，双击下载。但是我们发现下载中的镜像右侧的下载图标在一段时间之内一直显示 “0 B” 的情况，然后就自动消失了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/6K1C7bKB4a.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1711176K1C7bKB4a.png" alt="mark"></p>
 <p>同时在 “映像” 中也会提示 “您未下载任何映像，请进入注册表选项卡以下载。”：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/aG1A4jmC25.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117aG1A4jmC25.png" alt="mark"></p>
 <p>一连试过几次，都是下载中途镜像就自动消失了。</p>
 <h4 id="启用SSH"><a href="#启用SSH" class="headerlink" title="启用SSH"></a>启用SSH</h4><p>要配置Docker的配置文件，还得需要在命令行下来操作。群晖NAS默认没有开启SSH功能，得需要我们先开启才行。</p>
 <p>打开 “控制面板” 图标，选择 “应用程序” – “终端机和SNMP” – 勾选 “启用 SSH 功能” 。端口可以选择默认或自定义，然后点击应用。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/9j5LlAIEHc.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1711179j5LlAIEHc.png" alt="mark"></p>
 <h4 id="启用用户主目录服务"><a href="#启用用户主目录服务" class="headerlink" title="启用用户主目录服务"></a>启用用户主目录服务</h4><p>这时如果你以任何用户身份通过终端使用SSH方式访问NAS的ip地址，登陆后一般会看到一条警告提示：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Could not chdir to home directory &#x2F;var&#x2F;services&#x2F;homes&#x2F;tiger: No such file or directory</span><br></pre></td></tr></table></figure>
 
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/jddEE7660m.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117jddEE7660m.png" alt="mark"></p>
 <p>发生此警告是因为主目录由DSM的“用户主目录服务”控制，默认情况下该主目录服务是禁用的。要防止错误，请通过选中 “控制面板” – “用户账户”菜单 – “高级设置”选项卡 – “家目录”组 – “启用家目录服务” 复选框来启用用户主目录服务。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/KfKI9kDI9j.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117KfKI9kDI9j.png" alt="mark"></p>
 <p>这样再次尝试登陆，会看到警告信息没有了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/aLk3B8mjAI.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117aLk3B8mjAI.png" alt="mark"></p>
 <p>即使您不打算使用该家目录，但还是建议您选择启用用户主目录服务，以防影响其他某些程序的运行。</p>
 <h4 id="临时性Docker加速"><a href="#临时性Docker加速" class="headerlink" title="临时性Docker加速"></a>临时性Docker加速</h4><p>如果是临时性的想要 “加速” 下载镜像，可以选择通过命令的方式，执行 <code>docker pull</code> 时加入国内源地址，格式为：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ docker pull registry.docker-cn.com&#x2F;myname&#x2F;myrepo:mytag</span><br></pre></td></tr></table></figure>
@@ -5063,9 +5063,9 @@
 
 <p>如果没有错误提示，说明docker服务重启正常。</p>
 <p>现在我们再次回到 <code>DSM</code> 操作界面中，重新下载我们需要的Docker镜像即可。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/Bkae1Hj4E4.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117Bkae1Hj4E4.png" alt="mark"></p>
 <p>可以看到现在后面的容量大小一直在增加，很快我们就看到 “消息通知” 里提示我们镜像下载完成了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171117/f2dHLjjm9d.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171117f2dHLjjm9d.png" alt="mark"></p>
 <p>后面就是通过镜像来创建容器了，后文继续。</p>
 <hr>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
@@ -5111,12 +5111,12 @@
 <p>第二步：输入路由器账号和密码登录（如果未更改过一般都是admin）到路由器管理界面</p>
 <p>第三步：在左菜单栏点击 “系统工具” – “备份和载入配置” </p>
 <p>第四步：在右侧对话框中点击 “备份配置文件” 按钮</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171112/bEf4IBJgeA.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171112bEf4IBJgeA.jpg" alt="mark"></p>
 <p>第五步：保存配置文件，名称为 <code>config.bin</code> 。</p>
 <h4 id="通过配置文件找回"><a href="#通过配置文件找回" class="headerlink" title="通过配置文件找回"></a>通过配置文件找回</h4><p>第六步：从网站 <a href="http://www.nirsoft.net/utils/router_password_recovery.html#DownloadLinks" target="_blank" rel="noopener">RouterPassView</a> 下载软件RouterPassView。</p>
 <p>RouterPassView 是 NirSoft 出品的一款路由密码恢复软件，可以查看绝大多数家用路由的配置文件中保存的密码。</p>
 <p>第七步：用 RouterPassView打开备份的配置文件 <code>config.bin</code>, 就能看到当前路由器上已配置的所有账号和密码了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171112/6jeAcDFc4K.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/1711126jeAcDFc4K.jpg" alt="mark"></p>
 <h4 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h4><p>百度网盘链接: <a href="https://pan.baidu.com/s/1qYkKaVq" target="_blank" rel="noopener">Download</a> 密码: hwpx</p>
 ]]></content>
       <tags>
@@ -5137,13 +5137,13 @@
 <p>点击 <code>右上角三点</code> ，选择 <code>手动选择安装包</code></p>
 <p>选择刚刚下载的卡刷包，确定。等待其解密并自动升级。</p>
 <p>升级完成后，在 <code>设置</code> – <code>我的设备</code> – <code>MIUI版本</code> – 进入 “系统升级” 界面</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171113/IKDBk7kbEa.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171113IKDBk7kbEa.png" alt="mark"></p>
 <p>这时如果点击 “检查更新” 的话，收到的应该是MIUI8的最新开发版的更新包,所以这里不点击“立即更新”。(MIUI论坛中官方给出的说法是现在MIUI8开发版可以直接自动检查升级到MIUI9的最新开发版了,不知道我这里为什么不行?如果你的可以,那就直接升级即可,否则继续下面的操作)</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171113/lL6DH0cfdC.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171113lL6DH0cfdC.png" alt="mark"></p>
 <h5 id="卡刷MIUI9最新开发版"><a href="#卡刷MIUI9最新开发版" class="headerlink" title="卡刷MIUI9最新开发版"></a>卡刷MIUI9最新开发版</h5><p>从网址 <a href="http://www.miui.com/download-326.html" target="_blank" rel="noopener">http://www.miui.com/download-326.html</a> 下载 <code>红米Note4X(高通平台)</code> 的最新开发版的完整卡刷包，然后拷贝到手机中，依照上一步的操作方法通过 <code>手动更新</code> 的方式来升级。</p>
 <p>我这里下载到的是当前的最新版本 <code>MIUI9开发版 7.11.9</code> 的版本 : <code>miui_HMNote4X_7.11.9_71db0b04ec_7.0.zip</code> 。</p>
 <p>等待其解密安装包并自动更新完成即可。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/171113/Ck2ElHG14d.png?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/171113Ck2ElHG14d.png" alt="mark"></p>
 <hr>
 <p>上面的整个升级过程要保证手机电量充足,按照步骤操作即可,非常适合小白升级.</p>
 <hr>
@@ -5478,7 +5478,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#99;&#x6f;&#109;">&#101;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#99;&#x6f;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#97;&#x69;&#108;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;">&#101;&#x6d;&#97;&#x69;&#108;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>
@@ -5773,23 +5773,23 @@
 
 <hr>
 <h4 id="设置-Travis-CI"><a href="#设置-Travis-CI" class="headerlink" title="设置 Travis CI"></a>设置 Travis CI</h4><p>使用 GitHub账户登录 <a href="https://travis-ci.org/" target="_blank" rel="noopener">Travis CI官网</a> ，进去后能看到已经自动关联了 GitHub 上的仓库。这里我们选择需要启用的项目，即 <code>yourname/yourname.github.io</code> 。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/170809/gmgDm96jGa.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/170809gmgDm96jGa.jpg" alt="mark"></p>
 <p>然后点击后面的齿轮图标进入设置界面。</p>
 <p>如果你之前已经勾选过项目，可以进到项目主页中，在右上角找到 <code>More options</code> 选项下的 <code>Settings</code> 进入设置界面。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/170809/26B1D9j4eI.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/17080926B1D9j4eI.jpg" alt="mark"></p>
 <hr>
 <h5 id="通用设置"><a href="#通用设置" class="headerlink" title="通用设置"></a>通用设置</h5><p>在 <code>General</code> 区域开启：<code>Build only if .travis.yml is present</code> 表示“只有当 <code>.travis.yml</code> 存在时才构建” ；开启：<code>Build branch updates</code> 表示 “当分支更新时构建” 两个选项，如下：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/170809/34fAK0D1cH.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/17080934fAK0D1cH.jpg" alt="mark"></p>
 <p>Travis CI在自动构建完成后需要push静态文件到仓库的 <code>master</code> 分支下，而访问GitHub的仓库是需要权限的，下面来看看如何配置权限。</p>
 <h5 id="配置-Access-Token"><a href="#配置-Access-Token" class="headerlink" title="配置 Access Token"></a>配置 Access Token</h5><p>如下图，<code>Environment Variables</code> 区域就是用来添加权限信息的。我们需要填写一个Token的名称和值，该名称可以在配置文件中以 <code>${变量名}</code> 来引用，该Token我们需要从Github中获取。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/170809/37cGl0m6me.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/17080937cGl0m6me.jpg" alt="mark"></p>
 <hr>
 <h5 id="从GitHub获取Access-Token"><a href="#从GitHub获取Access-Token" class="headerlink" title="从GitHub获取Access Token"></a>从GitHub获取Access Token</h5><p>之前我们在使用命令 <code>hexo d</code> 部署hexo博客到GitHub上时，是因为本地有 <code>SSH key</code>，当交给 Travis 去自动部署时我们也需要设置可操作权限，这里我们使用GitHub提供的token变量来实现。</p>
 <p>登陆 <code>GitHub</code> –<code>Settings</code> 选项，找到 <code>Personal access tokens</code> 页面。</p>
 <p>点击右上角的 <code>Generate new token</code> 按钮会生成新的token，点击后提示输入密码后继续，然后来到如下界面，取个名字（我这里取 <code>Travis_Token</code> 下面的配置文件中会用到)，勾选相应权限，这里只需要 <code>repo</code> 下全部和 <code>user</code> 下的 <code>user:email</code> 即可。</p>
-<p> <img data-src="https://qiniu.itfanr.cc/blog/170809/L8IgF7ijH5.jpg?imageslim" alt="mark"></p>
+<p> <img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/170809L8IgF7ijH5.jpg" alt="mark"></p>
 <p>生成完成后，将该token拷贝下来。这里需要注意的是该token只有这个时候才能看到，当再次进入这个页面时就只会显示之前设置的名称了。如果忘记了只能重新生成一个。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/170809/dHK41IbL4h.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/170809dHK41IbL4h.jpg" alt="mark"></p>
 <hr>
 <h5 id="在Travis-CI中配置"><a href="#在Travis-CI中配置" class="headerlink" title="在Travis CI中配置"></a>在Travis CI中配置</h5><p>将上面获取到的token添加到 <code>Environment Variables</code> 部分，值为该 <code>token</code> ,而名称即为上面设置的 <code>Travis_Token</code> (请更改为个人所设置名称)。<strong>不勾选</strong>后面的 <code>Display value in build log</code> . 否则会在日志文件中暴露你的 <code>token</code> 信息，而日志文件是公开可见的。</p>
 <p>至此我们已经配置好了要构建的仓库和访问的token，接下来就是如何构建的问题了。</p>
@@ -5801,7 +5801,7 @@
 <p>配置文件中的操作也很简单，这也是网上找到的比较常见的一种配置格式了。然而，这份配置文件中却隐藏着一个大坑。至于如何跳过去，后面再详说。</p>
 <hr>
 <h5 id="实现自动部署"><a href="#实现自动部署" class="headerlink" title="实现自动部署"></a>实现自动部署</h5><p>当 <code>.travis.yml</code> 配置文件修改完成后，将其提交到远程仓库的 <code>hexo</code> 分支下，此时如果之前的配置一切ok，我们应该能在 <code>Travis CI</code> 的博客项目主页页面中看到自动构建已经在开始执行了。上面会显示出构建过程中的日志信息及状态等。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/170809/ii4E0ca8G4.jpg?imageslim" alt="mark"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/170809ii4E0ca8G4.jpg" alt="mark"></p>
 <hr>
 <h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><h5 id="问题一：提示-travis-yml-文件格式错误"><a href="#问题一：提示-travis-yml-文件格式错误" class="headerlink" title="问题一：提示 .travis.yml 文件格式错误"></a>问题一：提示 <code>.travis.yml</code> 文件格式错误</h5><p>在 <code>Travis CI</code> 的日志文件中，如果遇到下面的错误提示，那可能就是 <code>.travis.yml</code> 文件的格式有问题。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ERROR: An error occured while trying to parse your .travis.yml file.</span><br><span class="line">Please make sure that the file is valid YAML.</span><br><span class="line">http:&#x2F;&#x2F;lint.travis-ci.org can check your .travis.yml.</span><br><span class="line">The log message was: Build config file had a parse error: found character that cannot start any token while scanning for the next token at line 6 column 1.</span><br></pre></td></tr></table></figure>
@@ -11398,7 +11398,7 @@
 </li>
 </ol>
 <hr>
-<h4 id="Crontab格式"><a href="#Crontab格式" class="headerlink" title="Crontab格式"></a>Crontab格式</h4><p><img data-src="https://qiniu.itfanr.cc/blog/20180924223515.png?imageslim" alt="crontab格式"></p>
+<h4 id="Crontab格式"><a href="#Crontab格式" class="headerlink" title="Crontab格式"></a>Crontab格式</h4><p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180924223515.png" alt="crontab格式"></p>
 <p>minute   hour   day   month   week   command  </p>
 <p>其中：</p>
 <ul>

@@ -28,15 +28,15 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="并不是说“外国的月亮比较圆”，我们只是想要看到它更真实的样子">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190411162943.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190411163111.png?imageslim">
-<meta property="og:image" content="https://qiniu.itfanr.cc/blog/20190411163429.png?imageslim">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20190411162943.png">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20190411163111.png">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20190411163429.png">
 <meta property="article:published_time" content="2019-05-12T23:23:03.000Z">
 <meta property="article:modified_time" content="2019-05-12T23:25:52.000Z">
 <meta property="article:author" content="Leafney">
 <meta property="article:tag" content="Shadowsocks">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://qiniu.itfanr.cc/blog/20190411162943.png?imageslim">
+<meta name="twitter:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20190411162943.png">
 
 <link rel="canonical" href="https://www.itfanr.cc/2019/05/13/ss-add-urls-use-proxy/">
 
@@ -249,15 +249,15 @@
 
       
         <h4 id="添加自定义网址"><a href="#添加自定义网址" class="headerlink" title="添加自定义网址"></a>添加自定义网址</h4><p>开启 <code>Shadowsockets</code> 的 <code>自动代理模式</code> 一般情况下并不能正常访问到 <code>medium.com</code> 的站点。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190411162943.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190411162943.png" alt=""></p>
 <p>选择 <code>编辑自动模式的PAC...</code> 选项，会打开一个名为 <code>gfwlist.js</code> 的配置文件：</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190411163111.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190411163111.png" alt=""></p>
 <p>按照该文件中已有URL的格式，将我们的 <code>medium.com</code> 添加到文件中：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var rules &#x3D; [</span><br><span class="line">  &quot;||medium.com&quot;,</span><br><span class="line">  &quot;||altrec.com&quot;, </span><br><span class="line">  &quot;||darpa.mil&quot;, </span><br><span class="line">  ...</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>保存修改。</p>
 <p>之后直接刷新页面即可，无需重启 <code>ss</code> ，立即生效了。</p>
-<p><img data-src="https://qiniu.itfanr.cc/blog/20190411163429.png?imageslim" alt=""></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20190411163429.png" alt=""></p>
 <hr>
 <h4 id="MAC-下点击“从-GFWList-更新-PAC”，提示“404”错误"><a href="#MAC-下点击“从-GFWList-更新-PAC”，提示“404”错误" class="headerlink" title="MAC 下点击“从 GFWList 更新 PAC”，提示“404”错误"></a>MAC 下点击“从 GFWList 更新 PAC”，提示“404”错误</h4><blockquote>
 <p>由于太久没更新，且 gfwlist.txt 是 hard code 在代码里面的，所以升级 GFWList 会报 404 错误。主要是因为原来的 GFWList 托管在 Google Code 上，现在托管在 GitHub 上。</p>
@@ -464,7 +464,7 @@
 <div class="copyright">
   
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

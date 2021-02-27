@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>提高Github国内访问速度</title>
+    <url>/2021/02/27/github-so-faster/</url>
+    <content><![CDATA[<p>最近几天发现访问Github速度有点慢，偶尔还会出现下面的情况。但是通过手机访问是正常的，突然间反应过来可能是DNS的问题。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210227174038.png" alt="20210227174038"></p>
+<p>Github在中国大陆访问速度特别慢的原因，主要还是GitHub的分发加速网络的域名遭到DNS污染导致的。</p>
+<p>一般情况下，通过修改Hosts文件就能解决这个问题。另外还可以使用代理，当然，使用代理的方法这里暂且不表。</p>
+<h4 id="获取被污染域名实际ip地址"><a href="#获取被污染域名实际ip地址" class="headerlink" title="获取被污染域名实际ip地址"></a>获取被污染域名实际ip地址</h4><p>这里推荐下面两个ip查询工具来获得这些github域名的ip地址</p>
+<ol>
+<li><a href="http://tool.chinaz.com/dns" target="_blank" rel="noopener">站长工具 http://tool.chinaz.com/dns</a></li>
+<li><a href="https://www.ipaddress.com/ip-lookup" target="_blank" rel="noopener">https://www.ipaddress.com/ip-lookup</a></li>
+</ol>
+<h4 id="修改系统hosts文件"><a href="#修改系统hosts文件" class="headerlink" title="修改系统hosts文件"></a>修改系统hosts文件</h4><p>打开 <code>hosts</code> 文件，在文件末尾添加以下格式的内容：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">140.82.114.3 github.com</span><br></pre></td></tr></table></figure>
+
+<p>这里推荐使用 <code>SwitchHosts</code> 这个小工具来管理系统的Hosts文件。</p>
+<ul>
+<li><a href="https://github.com/oldj/SwitchHosts/releases" target="_blank" rel="noopener">SwitchHosts release</a></li>
+</ul>
+<p>之后，待本机的DNS缓存刷新生效，就能享受高速的Github访问了。</p>
+<h4 id="需要获取哪些域名"><a href="#需要获取哪些域名" class="headerlink" title="需要获取哪些域名"></a>需要获取哪些域名</h4><p>不过，Github的域名除了主域名 <code>github.com</code> 之外，还有好多的二级域名。例如有时候虽然我们能正常的访问github主页或仓库页面，但会发现头像加载不出来。</p>
+<p>这里我整理了我使用的Github相关的 <code>hosts</code> 文件，你可以直接使用。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># github</span><br><span class="line"></span><br><span class="line">140.82.114.3 github.com</span><br><span class="line">140.82.113.4 gist.github.com</span><br><span class="line">185.199.109.133 raw.github.com</span><br><span class="line">185.199.109.153 assets-cdn.github.com</span><br><span class="line"></span><br><span class="line">185.199.109.133 raw.githubusercontent.com</span><br><span class="line">185.199.109.133 gist.githubusercontent.com</span><br><span class="line">185.199.109.133 camo.githubusercontent.com</span><br><span class="line">185.199.109.133 cloud.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars0.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars1.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars2.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars3.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars4.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars5.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars6.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars7.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars8.githubusercontent.com</span><br><span class="line"></span><br><span class="line">52.216.29.28 github-production-release-asset-2e65be.s3.amazonaws.com</span><br></pre></td></tr></table></figure>
+
+
+<p>这是目前最新的github可用DNS地址。</p>
+<p>如果你使用的时候发现访问慢，可以依照上面的操作步骤更新这些地址。</p>
+]]></content>
+      <categories>
+        <category>Git操作系列</category>
+      </categories>
+      <tags>
+        <tag>Github</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Golang国内代理选哪个</title>
     <url>/2021/02/22/golang-proxy-choice/</url>
     <content><![CDATA[<p>目前在国内，比较有名的golang代理有两个： <code>goproxy.io</code> 和 <code>goproxy.cn</code> 。</p>
@@ -5526,7 +5561,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#x61;&#x69;&#x6c;&#64;&#x65;&#120;&#97;&#109;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#x65;&#109;&#x61;&#x69;&#x6c;&#64;&#x65;&#120;&#97;&#109;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#97;&#x69;&#108;&#64;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#x6d;">&#x65;&#109;&#97;&#x69;&#108;&#64;&#101;&#120;&#x61;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

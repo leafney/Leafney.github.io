@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20210227174038.png">
 <meta property="article:published_time" content="2021-02-27T11:37:12.000Z">
-<meta property="article:modified_time" content="2021-02-27T11:47:56.000Z">
+<meta property="article:modified_time" content="2021-02-28T03:13:17.000Z">
 <meta property="article:author" content="Leafney">
 <meta property="article:tag" content="Github">
 <meta name="twitter:card" content="summary">
@@ -222,10 +222,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-02-27 19:37:12 / 修改时间：19:47:56" itemprop="dateCreated datePublished" datetime="2021-02-27T19:37:12+08:00">2021-02-27</time>
+              <time title="创建时间：2021-02-27 19:37:12" itemprop="dateCreated datePublished" datetime="2021-02-27T19:37:12+08:00">2021-02-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-28 11:13:17" itemprop="dateModified" datetime="2021-02-28T11:13:17+08:00">2021-02-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -259,11 +265,10 @@
 <p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210227174038.png" alt="20210227174038"></p>
 <p>Github在中国大陆访问速度特别慢的原因，主要还是GitHub的分发加速网络的域名遭到DNS污染导致的。</p>
 <p>一般情况下，通过修改Hosts文件就能解决这个问题。另外还可以使用代理，当然，使用代理的方法这里暂且不表。</p>
-<h4 id="获取被污染域名实际ip地址"><a href="#获取被污染域名实际ip地址" class="headerlink" title="获取被污染域名实际ip地址"></a>获取被污染域名实际ip地址</h4><p>这里推荐下面两个ip查询工具来获得这些github域名的ip地址</p>
-<ol>
-<li><a href="http://tool.chinaz.com/dns" target="_blank" rel="noopener">站长工具 http://tool.chinaz.com/dns</a></li>
+<h4 id="获取被污染域名实际ip地址"><a href="#获取被污染域名实际ip地址" class="headerlink" title="获取被污染域名实际ip地址"></a>获取被污染域名实际ip地址</h4><p>这里推荐使用下面的查询工具来获得这些github域名的ip地址</p>
+<ul>
 <li><a href="https://www.ipaddress.com/ip-lookup" target="_blank" rel="noopener">https://www.ipaddress.com/ip-lookup</a></li>
-</ol>
+</ul>
 <h4 id="修改系统hosts文件"><a href="#修改系统hosts文件" class="headerlink" title="修改系统hosts文件"></a>修改系统hosts文件</h4><p>打开 <code>hosts</code> 文件，在文件末尾添加以下格式的内容：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">140.82.114.3 github.com</span><br></pre></td></tr></table></figure>
 
@@ -337,7 +342,10 @@
     <a href="/2021/02/22/golang-proxy-choice/" rel="prev" title="Golang国内代理选哪个">
       <i class="fa fa-chevron-left"></i> Golang国内代理选哪个
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/28/flutter-commonly-used-code-snippets/" rel="next" title="Flutter常见效果实现代码段整理">
+      Flutter常见效果实现代码段整理 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -413,7 +421,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-count">134</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

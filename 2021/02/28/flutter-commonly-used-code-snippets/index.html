@@ -21,23 +21,20 @@
     var CONFIG = {"hostname":"www.itfanr.cc","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Linux下的计划任务 Crontab 是用于设置周期性被执行的任务的工具">
+  <meta name="description" content="Flutter代码写多了之后，你就会发现常用的就那么几段代码。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux下的计划任务-Crontab">
-<meta property="og:url" content="https://www.itfanr.cc/2016/03/28/the-plan-task-in-linux-cronlib/index.html">
+<meta property="og:title" content="Flutter常见效果实现代码段整理">
+<meta property="og:url" content="https://www.itfanr.cc/2021/02/28/flutter-commonly-used-code-snippets/index.html">
 <meta property="og:site_name" content="IT范儿">
-<meta property="og:description" content="Linux下的计划任务 Crontab 是用于设置周期性被执行的任务的工具">
+<meta property="og:description" content="Flutter代码写多了之后，你就会发现常用的就那么几段代码。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180924223515.png">
-<meta property="article:published_time" content="2016-03-28T01:53:10.000Z">
-<meta property="article:modified_time" content="2018-09-24T14:37:38.000Z">
+<meta property="article:published_time" content="2021-02-28T03:18:43.000Z">
+<meta property="article:modified_time" content="2021-02-28T03:41:19.000Z">
 <meta property="article:author" content="Leafney">
-<meta property="article:tag" content="Linux">
-<meta property="article:tag" content="Crontab">
+<meta property="article:tag" content="Flutter">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20180924223515.png">
 
-<link rel="canonical" href="https://www.itfanr.cc/2016/03/28/the-plan-task-in-linux-cronlib/">
+<link rel="canonical" href="https://www.itfanr.cc/2021/02/28/flutter-commonly-used-code-snippets/">
 
 
 <script id="page-configurations">
@@ -50,7 +47,7 @@
   };
 </script>
 
-  <title>Linux下的计划任务-Crontab | IT范儿</title>
+  <title>Flutter常见效果实现代码段整理 | IT范儿</title>
   
 
 
@@ -201,7 +198,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2016/03/28/the-plan-task-in-linux-cronlib/">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2021/02/28/flutter-commonly-used-code-snippets/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -214,32 +211,29 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Linux下的计划任务-Crontab
+          Flutter常见效果实现代码段整理
         </h1>
 
         <div class="post-meta">
+          <i class="fa fa-thumbtack"></i>
+          <font color='#f05050'>[置顶]</font>
+          <span class="post-meta-divider">|</span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2016-03-28 09:53:10" itemprop="dateCreated datePublished" datetime="2016-03-28T09:53:10+08:00">2016-03-28</time>
+              <time title="创建时间：2021-02-28 11:18:43 / 修改时间：11:41:19" itemprop="dateCreated datePublished" datetime="2021-02-28T11:18:43+08:00">2021-02-28</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-09-24 22:37:38" itemprop="dateModified" datetime="2018-09-24T22:37:38+08:00">2018-09-24</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">开发笔记</span></a>
+                  <a href="/categories/Flutter%E4%B9%8B%E6%97%85/" itemprop="url" rel="index"><span itemprop="name">Flutter之旅</span></a>
                 </span>
             </span>
 
@@ -251,7 +245,7 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
-            <div class="post-description">Linux下的计划任务 Crontab 是用于设置周期性被执行的任务的工具</div>
+            <div class="post-description">Flutter代码写多了之后，你就会发现常用的就那么几段代码。</div>
 
         </div>
       </header>
@@ -262,106 +256,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Crontab  用于设置周期性被执行的任务的工具</p>
-<h4 id="检查cron服务"><a href="#检查cron服务" class="headerlink" title="检查cron服务"></a>检查cron服务</h4><p>检查crontab工具是否安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ crontab -l</span><br></pre></td></tr></table></figure>
-
-<p>检查crond服务是启动</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$service crond status</span><br></pre></td></tr></table></figure>
-
-<p>注意: 在Ubuntu系统下,查看crontab服务是: <code>service cron status</code></p>
-<h4 id="安装cron"><a href="#安装cron" class="headerlink" title="安装cron"></a>安装cron</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install vixie-cron</span><br><span class="line">$ sudo apt-get install crontabs</span><br></pre></td></tr></table></figure>
-
-<p>如果在输入<code>crontab -l</code>之后,提示”<code>no crontab for root</code>“的信息,则说明系统中没有设置crontab,需要先进行设置.</p>
-<p>crontab是一个文本文件，用来存放你要运行的命令。</p>
-<p>执行命令<code>crontab -e</code>,会提示:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">no crontab for root - using an empty one</span><br><span class="line"></span><br><span class="line">Select an editor. ....</span><br><span class="line">.....</span><br></pre></td></tr></table></figure>
-<p>这样的提示,然后选择一个编辑器(这里我选 vim:tiny)即可.然后会进入crontab编辑页面,在编辑页面中直接输入<code>shift+:</code>,然后输入<code>wq</code>保存,一个新的crontab就生成了.<br>然后再执行<code>crontab -l</code> 就能看到刚刚编辑过的crontab文件了.</p>
-<p>参考:<br><a href="http://www.2cto.com/os/201110/109339.html" target="_blank" rel="noopener">Linux提示no crontab for root的解决办法</a><br><a href="http://www.cnblogs.com/daxian2012/articles/2589894.html" target="_blank" rel="noopener">Ubuntu下crontab命令的用法</a></p>
-<hr>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p>执行<code>crontab -e</code>打开crontab文件 </p>
-<p>写入以下命令:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*&#x2F;1 * * * * date &gt;&gt; &#x2F;tmp&#x2F;log.txt</span><br></pre></td></tr></table></figure>
-
-<p>表示:每分钟将当前时间写入到tmp目录下的log.txt文件中  </p>
-<p>查看log.txt文件,执行命令:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tail -f &#x2F;tmp&#x2F;log.txt</span><br></pre></td></tr></table></figure>
-
-<p>表示查看log.txt文件的最后几行  </p>
-<p>查看crontab服务运行状态:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ service cron status</span><br></pre></td></tr></table></figure>
+        <p>整理开发中常用到的 <code>Flutter</code> 代码段。感觉有帮助的话给个 <strong>支持</strong>。</p>
+<h3 id="Scaffold相关"><a href="#Scaffold相关" class="headerlink" title="Scaffold相关"></a>Scaffold相关</h3><h4 id="点击页面空白处收回键盘"><a href="#点击页面空白处收回键盘" class="headerlink" title="点击页面空白处收回键盘"></a>点击页面空白处收回键盘</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">  <span class="keyword">return</span> Scaffold(</span><br><span class="line">    body: GestureDetector(</span><br><span class="line">      onTap: () &#123;</span><br><span class="line">        <span class="comment">// 收回键盘</span></span><br><span class="line">        FocusScope.of(context).requestFocus(FocusNode());</span><br><span class="line">      &#125;,</span><br><span class="line">    child: Container(</span><br><span class="line">      <span class="comment">// 防止点击穿透</span></span><br><span class="line">      color: Colors.transparent, </span><br><span class="line">      ),</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h4 id="crontab-配置文件的格式"><a href="#crontab-配置文件的格式" class="headerlink" title="crontab 配置文件的格式"></a>crontab 配置文件的格式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* * * * * COMMAND</span><br></pre></td></tr></table></figure>
+<h4 id="延时执行"><a href="#延时执行" class="headerlink" title="延时执行"></a>延时执行</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 延时1s执行返回</span></span><br><span class="line">Future.delayed(<span class="built_in">Duration</span>(seconds: <span class="number">1</span>), ()&#123;</span><br><span class="line">  Navigator.of(context).pop();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>1* 分钟 0~59</li>
-<li>2* 小时 0~23</li>
-<li>3* 日期 1~31</li>
-<li>4* 月份 1~12</li>
-<li>5* 星期 1-7 (0或者7表示星期天)</li>
-</ul>
-<h5 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h5><ol>
-<li><p>每晚 21:30重启apache</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">30 21 * * * service httpd restart</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>每月 1 10 22日的4:45重启apache</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">45 4 1,10,22 * * service httpd restart</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>每月1到10日的4:45重启apache</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">45 4 1-10 * * service httpd restart</span><br></pre></td></tr></table></figure>
-<p>用<code>-</code>表示间隔</p>
-</li>
-<li><p>每隔2分钟重启Apache服务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*&#x2F;2 * * * * service httpd restart  &#x2F;&#x2F;偶数分钟内</span><br><span class="line">1-59&#x2F;2 * * * * service httpd restart  &#x2F;&#x2F;奇数分钟内</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>晚上11点到早上7点之间,每隔一小时重启apache</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 23-7&#x2F;1 * * * * service httpd retart</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>每天18点到23点之间每隔30分钟重启apache</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0-59&#x2F;30 18-23 * * * service httpd restart</span><br><span class="line">0,30 18-23 * * * service httpd restart</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="Container相关"><a href="#Container相关" class="headerlink" title="Container相关"></a>Container相关</h3><h4 id="Container设置阴影"><a href="#Container设置阴影" class="headerlink" title="Container设置阴影"></a>Container设置阴影</h4><p>通过 <code>BoxShadow</code> 实现：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Container(</span><br><span class="line">  decoration: BoxDecoration(</span><br><span class="line">    <span class="comment">// 阴影</span></span><br><span class="line">    boxShadow: [</span><br><span class="line">      BoxShadow(</span><br><span class="line">        offset: Offset(<span class="number">0</span>, <span class="number">1</span>),</span><br><span class="line">        blurRadius: <span class="number">6</span>,</span><br><span class="line">        spreadRadius: <span class="number">0</span>,</span><br><span class="line">        color: Color(<span class="number">0xFFEEEEEE</span>),</span><br><span class="line">      )</span><br><span class="line">    ],</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
 
-</li>
-</ol>
-<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><ol>
-<li><code>*</code> 表示任何时间都匹配</li>
-<li>可以用 <code>A,B,C</code> 表示A或者B或者C时执行命令</li>
-<li>可以用 <code>A-B</code> 表示A到B之间时执行命令</li>
-<li>可以用 <code>*/A</code> 表示每A分钟(小时等)执行一次命令</li>
-</ol>
-<h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><ol>
-<li>第三和第五个域之间是”或”的关系:<br>四月的第一个星期天早晨1时59分运行a.sh<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">59 1 1-7 4 * test &#96;date + \%w&#96; -eq &amp;&amp; &#x2F;root&#x2F;a.sh</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="Container实现线性渐变"><a href="#Container实现线性渐变" class="headerlink" title="Container实现线性渐变"></a>Container实现线性渐变</h4><p>通过 <code>LinearGradient</code> 实现：</p>
+<p>示例一：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Container(</span><br><span class="line">  decoration: BoxDecoration(</span><br><span class="line">    gradient: LinearGradient(</span><br><span class="line">      begin: Alignment(<span class="number">0</span>, <span class="number">0.5</span>),</span><br><span class="line">      end: Alignment(<span class="number">0.5</span>, <span class="number">1</span>),</span><br><span class="line">      colors: [</span><br><span class="line">        Color(<span class="number">0xFFFA9914</span>),</span><br><span class="line">        Color(<span class="number">0x00EEEEEE</span>),</span><br><span class="line">      ],</span><br><span class="line">    ),</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
 
-</li>
-</ol>
+<p>示例二：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Container(</span><br><span class="line">  width: <span class="number">200</span>,</span><br><span class="line">  height: <span class="number">200</span>,</span><br><span class="line">  decoration: BoxDecoration(</span><br><span class="line">    <span class="comment">// 默认是从左往右的渐变</span></span><br><span class="line">    gradient: LinearGradient(</span><br><span class="line">      <span class="comment">// 设置从上往下的渐变</span></span><br><span class="line">      begin: Alignment.topCenter,</span><br><span class="line">      end: Alignment.bottomCenter,</span><br><span class="line">      <span class="comment">// 渐变的色值数组</span></span><br><span class="line">      colors: [</span><br><span class="line">        Colors.red,</span><br><span class="line">        Colors.blue,</span><br><span class="line">      ],</span><br><span class="line">      <span class="comment">// 通过 stops 属性控制渐变色大小</span></span><br><span class="line">      stops: [</span><br><span class="line">        <span class="number">0.5</span>,</span><br><span class="line">        <span class="number">1</span>,</span><br><span class="line">      ],</span><br><span class="line">    ),</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+
 <hr>
-<h4 id="Crontab格式"><a href="#Crontab格式" class="headerlink" title="Crontab格式"></a>Crontab格式</h4><p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20180924223515.png" alt="crontab格式"></p>
-<p>minute   hour   day   month   week   command  </p>
-<p>其中：</p>
-<ul>
-<li>minute：表示分钟，可以是从0到59之间的任何整数。  </li>
-<li>hour：表示小时，可以是从0到23之间的任何整数。  </li>
-<li>day：表示日期，可以是从1到31之间的任何整数。  </li>
-<li>month：表示月份，可以是从1到12之间的任何整数。  </li>
-<li>week：表示星期几，可以是从0到7之间的任何整数，这里的0或7代表星期日。  </li>
-<li>command：要执行的命令，可以是系统命令，也可以是自己编写的脚本文件。  </li>
-</ul>
-<h5 id="在以上各个字段中，还可以使用以下特殊字符："><a href="#在以上各个字段中，还可以使用以下特殊字符：" class="headerlink" title="在以上各个字段中，还可以使用以下特殊字符："></a>在以上各个字段中，还可以使用以下特殊字符：</h5><ul>
-<li>星号（*）：代表所有可能的值，例如month字段如果是星号，则表示在满足其它字段的制约条件后每月都执行该命令操作。</li>
-<li>逗号（,）：可以用逗号隔开的值指定一个列表范围，例如，“1,2,5,7,8,9”</li>
-<li>中杠（-）：可以用整数之间的中杠表示一个整数范围，例如“2-6”表示“2,3,4,5,6”</li>
-<li>正斜线（/）：可以用正斜线指定时间的间隔频率，例如“0-23/2”表示每两小时执行一次。同时正斜线可以和星号一起使用，例如*/10，如果用在minute字段，表示每十分钟执行一次。</li>
-</ul>
+<h4 id="Container设置圆角"><a href="#Container设置圆角" class="headerlink" title="Container设置圆角"></a>Container设置圆角</h4><p>通过 <code>borderRadius</code> 实现：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Container(</span><br><span class="line">  decoration: BoxDecoration(</span><br><span class="line">    borderRadius: BorderRadius.circular(<span class="number">4</span>),</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+
 <hr>
-<h4 id="Crontab定时调用Python脚本"><a href="#Crontab定时调用Python脚本" class="headerlink" title="Crontab定时调用Python脚本"></a>Crontab定时调用Python脚本</h4><ul>
-<li>指定python脚本文件中的头信息  <code>#!/bin/sh</code></li>
-</ul>
+<h4 id="Container设置指定角为圆角"><a href="#Container设置指定角为圆角" class="headerlink" title="Container设置指定角为圆角"></a>Container设置指定角为圆角</h4><p>通过 <code>BorderRadius.only</code> 实现：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Container(</span><br><span class="line">  decoration: BoxDecoration(</span><br><span class="line">    borderRadius: BorderRadius.only(</span><br><span class="line">      topLeft: Radius.circular(<span class="number">5</span>),</span><br><span class="line">      bottomLeft: Radius.circular(<span class="number">5</span>),</span><br><span class="line">    ),</span><br><span class="line">  ),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+
 <hr>
-<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><ul>
-<li><a href="http://www.cnblogs.com/peida/archive/2013/01/08/2850483.html" target="_blank" rel="noopener">每天一个linux命令（50）：crontab命令 - peida - 博客园</a></li>
-<li><a href="http://man.linuxde.net/crontab" target="_blank" rel="noopener">crontab命令_Linux crontab 命令用法详解：提交和管理用户的需要周期性执行的任务</a></li>
-<li><a href="http://www.acwind.net/blog/archives/1304" target="_blank" rel="noopener">crontab 中 python 脚本执行失败的解决方法 | CoCo的小黑屋</a></li>
-</ul>
+<h4 id="其他组件"><a href="#其他组件" class="headerlink" title="其他组件"></a>其他组件</h4><h4 id="进入页面后输入框获取焦点，键盘自动弹出"><a href="#进入页面后输入框获取焦点，键盘自动弹出" class="headerlink" title="进入页面后输入框获取焦点，键盘自动弹出"></a>进入页面后输入框获取焦点，键盘自动弹出</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TextField(</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 键盘自动弹出</span></span><br><span class="line">    autofocus: <span class="keyword">true</span>,</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><strong>未完待续~</strong></p>
 
     </div>
 
@@ -397,7 +322,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://www.itfanr.cc/2016/03/28/the-plan-task-in-linux-cronlib/" title="Linux下的计划任务-Crontab">https://www.itfanr.cc/2016/03/28/the-plan-task-in-linux-cronlib/</a>
+    <a href="https://www.itfanr.cc/2021/02/28/flutter-commonly-used-code-snippets/" title="Flutter常见效果实现代码段整理">https://www.itfanr.cc/2021/02/28/flutter-commonly-used-code-snippets/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -408,8 +333,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Linux/" rel="tag"># Linux</a>
-              <a href="/tags/Crontab/" rel="tag"># Crontab</a>
+              <a href="/tags/Flutter/" rel="tag"># Flutter</a>
           </div>
 
         
@@ -417,11 +341,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2016/04/17/webapi-action-url-extend/" rel="next" title="Web API中路由中加了action后其他get、post开头的方法如何直接访问">
-      Web API中路由中加了action后其他get、post开头的方法如何直接访问 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/02/27/github-so-faster/" rel="prev" title="提高Github国内访问速度">
+      <i class="fa fa-chevron-left"></i> 提高Github国内访问速度
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -481,7 +405,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#检查cron服务"><span class="nav-number">1.</span> <span class="nav-text">检查cron服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装cron"><span class="nav-number">2.</span> <span class="nav-text">安装cron</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例"><span class="nav-number">3.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#crontab-配置文件的格式"><span class="nav-number">4.</span> <span class="nav-text">crontab 配置文件的格式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#案例"><span class="nav-number">4.1.</span> <span class="nav-text">案例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#总结"><span class="nav-number">4.2.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#注意"><span class="nav-number">4.3.</span> <span class="nav-text">注意</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Crontab格式"><span class="nav-number">5.</span> <span class="nav-text">Crontab格式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在以上各个字段中，还可以使用以下特殊字符："><span class="nav-number">5.1.</span> <span class="nav-text">在以上各个字段中，还可以使用以下特殊字符：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Crontab定时调用Python脚本"><span class="nav-number">6.</span> <span class="nav-text">Crontab定时调用Python脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关链接"><span class="nav-number">7.</span> <span class="nav-text">相关链接</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Scaffold相关"><span class="nav-number">1.</span> <span class="nav-text">Scaffold相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#点击页面空白处收回键盘"><span class="nav-number">1.1.</span> <span class="nav-text">点击页面空白处收回键盘</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#延时执行"><span class="nav-number">1.2.</span> <span class="nav-text">延时执行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Container相关"><span class="nav-number">2.</span> <span class="nav-text">Container相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Container设置阴影"><span class="nav-number">2.1.</span> <span class="nav-text">Container设置阴影</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Container实现线性渐变"><span class="nav-number">2.2.</span> <span class="nav-text">Container实现线性渐变</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Container设置圆角"><span class="nav-number">2.3.</span> <span class="nav-text">Container设置圆角</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Container设置指定角为圆角"><span class="nav-number">2.4.</span> <span class="nav-text">Container设置指定角为圆角</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他组件"><span class="nav-number">2.5.</span> <span class="nav-text">其他组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进入页面后输入框获取焦点，键盘自动弹出"><span class="nav-number">2.6.</span> <span class="nav-text">进入页面后输入框获取焦点，键盘自动弹出</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -671,7 +595,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'Leafney.github.io',
       owner       : 'leafney',
       admin       : ['leafney'],
-      id : 'itfanr_20160328095310',
+      id : 'itfanr_20210228111843',
       labels: 'comments'.split(',').filter(l => l),
         language: 'zh-CN',
       distractionFreeMode: false

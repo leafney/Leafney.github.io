@@ -43,6 +43,52 @@
       </tags>
   </entry>
   <entry>
+    <title>科学上网mac客户端V2rayU使用技巧</title>
+    <url>/2021/03/25/science-online-mac-client-v2rayu/</url>
+    <content><![CDATA[<h4 id="V2rayU-介绍"><a href="#V2rayU-介绍" class="headerlink" title="V2rayU 介绍"></a>V2rayU 介绍</h4><p>V2rayU,基于v2ray核心的mac版客户端,用于科学上网,使用swift编写,支持vmess,shadowsocks,socks5等服务协议,支持订阅, 支持二维码,剪贴板导入,手动配置,二维码分享等</p>
+<p>GitHub: <a href="https://github.com/yanue/V2rayU" target="_blank" rel="noopener">https://github.com/yanue/V2rayU</a></p>
+<hr>
+<h4 id="V2rayU-中如何添加自定义规则"><a href="#V2rayU-中如何添加自定义规则" class="headerlink" title="V2rayU 中如何添加自定义规则"></a>V2rayU 中如何添加自定义规则</h4><p>打开 <code>偏好设置</code> –  <code>Pac</code> 选项，在底部 <code>填写手动规则</code> 输入框中输入域名，之后点击 <code>保存设置并从GFW List 更新</code> 按钮即可。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">||github.com</span><br><span class="line">||fabric.io</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210325103158.png" alt="20210325103158"></p>
+<p>个人添加的规则，会被保存到文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;Applications&#x2F;V2rayU.app&#x2F;Contents&#x2F;Resources&#x2F;pac&#x2F;user-rule.txt</span><br></pre></td></tr></table></figure>
+
+<p>保存后立即生效。</p>
+<p>相关：</p>
+<ul>
+<li><a href="https://github.com/yanue/V2rayU/issues/102" target="_blank" rel="noopener">关于Pac设置的问题</a></li>
+<li><a href="https://github.com/yanue/V2rayU/issues/465" target="_blank" rel="noopener">https://github.com/yanue/V2rayU/issues/465</a></li>
+</ul>
+<hr>
+<h4 id="V2rayU-实现局域网共享"><a href="#V2rayU-实现局域网共享" class="headerlink" title="V2rayU 实现局域网共享"></a>V2rayU 实现局域网共享</h4><p>打开 <code>偏好设置</code> – <code>Advance</code> 选项，找到 <code>本机http监听Host</code> 项，将 <code>127.0.0.1</code> 改成 <code>0.0.0.0</code> 就可以了。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210325103057.png" alt="20210325103057"></p>
+<p>相关：</p>
+<ul>
+<li><a href="https://github.com/v2ray/v2ray-core/issues/210" target="_blank" rel="noopener">https://github.com/v2ray/v2ray-core/issues/210</a></li>
+</ul>
+<hr>
+<h4 id="V2rayU-彻底卸载方法"><a href="#V2rayU-彻底卸载方法" class="headerlink" title="V2rayU 彻底卸载方法"></a>V2rayU 彻底卸载方法</h4><p>关键分两步：<code>停止v2ray-core, 然后卸载V2rayU.app</code></p>
+<p>第一步: 卸载V2rayU.app</p>
+<p>推荐使用 <code>AppCleaner</code></p>
+<p>第二步: 彻底删除相关文件及服务</p>
+<p>命令: </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd ~&#x2F;Library&#x2F;LaunchAgents&#x2F;</span><br><span class="line">&#x2F;bin&#x2F;launchctl remove yanue.v2rayu.v2ray-core</span><br><span class="line">&#x2F;bin&#x2F;launchctl remove yanue.v2rayu.http</span><br><span class="line"></span><br><span class="line">rm -f ~&#x2F;Library&#x2F;LaunchAgents&#x2F;yanue.v2rayu.v2ray-core.plist</span><br><span class="line">rm -f ~&#x2F;Library&#x2F;Preferences&#x2F;net.yanue.V2rayU.plist</span><br><span class="line">rm -f ~&#x2F;Library&#x2F;Logs&#x2F;V2rayU.log</span><br></pre></td></tr></table></figure>
+
+<p>重点:</p>
+<p>主要是使用 <code>launchctl</code> 命令停止 <code>yanue.v2rayu.v2ray-core</code> 服务(会自动启动)</p>
+<p>相关：</p>
+<ul>
+<li><a href="https://github.com/yanue/V2rayU/issues/697" target="_blank" rel="noopener">https://github.com/yanue/V2rayU/issues/697</a></li>
+</ul>
+<hr>
+]]></content>
+      <tags>
+        <tag>Shadowsocks</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>提高Github国内访问速度</title>
     <url>/2021/02/27/github-so-faster/</url>
     <content><![CDATA[<p>最近几天发现访问Github速度有点慢，偶尔还会出现下面的情况。但是通过手机访问是正常的，突然间反应过来可能是DNS的问题。</p>
@@ -66,7 +112,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># github</span><br><span class="line"></span><br><span class="line">140.82.114.3 github.com</span><br><span class="line">140.82.113.4 gist.github.com</span><br><span class="line">185.199.109.133 raw.github.com</span><br><span class="line">185.199.109.153 assets-cdn.github.com</span><br><span class="line"></span><br><span class="line">185.199.109.133 raw.githubusercontent.com</span><br><span class="line">185.199.109.133 gist.githubusercontent.com</span><br><span class="line">185.199.109.133 camo.githubusercontent.com</span><br><span class="line">185.199.109.133 cloud.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars0.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars1.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars2.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars3.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars4.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars5.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars6.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars7.githubusercontent.com</span><br><span class="line">185.199.109.133 avatars8.githubusercontent.com</span><br><span class="line"></span><br><span class="line">52.216.29.28 github-production-release-asset-2e65be.s3.amazonaws.com</span><br></pre></td></tr></table></figure>
 
 
-<p>这是目前最新的github可用DNS地址。</p>
+<p>这是目前最新的github可用ip地址。</p>
 <p>如果你使用的时候发现访问慢，可以依照上面的操作步骤更新这些地址。</p>
 ]]></content>
       <categories>
@@ -5602,7 +5648,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#97;&#x69;&#108;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#99;&#x6f;&#x6d;">&#x65;&#109;&#97;&#x69;&#108;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#46;&#99;&#x6f;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#x61;&#105;&#108;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#111;&#109;">&#101;&#x6d;&#x61;&#105;&#108;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#111;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

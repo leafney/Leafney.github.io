@@ -43,6 +43,76 @@
       </tags>
   </entry>
   <entry>
+    <title>如何制作我的gif动图</title>
+    <url>/2021/03/27/how-to-make-gif/</url>
+    <content><![CDATA[<p>一般在给他人进行功能演示时，通过动图演示是最直接的方法。而录制 <code>mp4</code> 视频文件太大，不利于分享，制作成 <code>gif</code> 动图则是最好的选择。</p>
+<h4 id="如何制作gif动图"><a href="#如何制作gif动图" class="headerlink" title="如何制作gif动图"></a>如何制作gif动图</h4><p>在 <code>Mac</code> 系统下，可以录制gif动态图片的工具有很多。经过我个人的测试，发现如果没有特殊需求的话，<code>LICEcap</code> 就是一款非常符合要求的gif动图工具。</p>
+<p><code>LICEcap</code> 是一款非常简洁易用的动画录屏软件。而且是 <code>GPL</code> 协议的自由软件，开源免费。</p>
+<p>LICEcap官网 <a href="https://www.cockos.com/licecap/" target="_blank" rel="noopener">Cockos Incorporated | LICEcap</a></p>
+<p>对于该软件的使用我就不做过多的介绍了。一般情况下我就是保持默认选项即可。</p>
+<p>如果对于录制后的 <code>gif</code> 文件要求不是很高的话，可以适当降低 <code>Max FPS</code> 的值，以降低最后保存时文件的大小。</p>
+<hr>
+<h4 id="进一步优化gif文件大小"><a href="#进一步优化gif文件大小" class="headerlink" title="进一步优化gif文件大小"></a>进一步优化gif文件大小</h4><p>某些情况下即使我们降低了 <code>FPS</code> 的值，生成的 <code>gif</code>  文件还是会很大。</p>
+<p>那么可以通过另一款小工具 <code>Gifsicle</code> 来压缩优化文件大小。</p>
+<p><strong>gifsicle</strong> 是一个用于操作 GIF 图片的命令行工具，可以对gif文件进行修改尺寸大小、颜色、帧率等等。</p>
+<ul>
+<li>Gifsicle官网 <a href="https://www.lcdf.org/gifsicle/" target="_blank" rel="noopener">Gifsicle: Command-Line Animated GIFs</a></li>
+</ul>
+<p>Mac用户推荐使用 <code>homebrew</code> 进行安装：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew install gifsicle</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="gifsicle常用命令"><a href="#gifsicle常用命令" class="headerlink" title="gifsicle常用命令"></a>gifsicle常用命令</h4><h5 id="根据图像自动优化"><a href="#根据图像自动优化" class="headerlink" title="根据图像自动优化"></a>根据图像自动优化</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gifsicle -O3 input.gif -o output.gif</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li><code>-O(--optimize)[LEVEL]</code>   (注意这里是大写字母<code>O</code>)<ul>
+<li><code>-O1</code>  仅存储每个图像的更改部分。 这是默认值。</li>
+<li><code>-O2</code>  使用透明度进一步缩小文件。</li>
+<li><code>-O3</code>  尝试几种优化方法（通常速度较慢，有时效果更好）。</li>
+</ul>
+</li>
+<li><code>-o(--output) file</code>   输出到文件</li>
+</ul>
+<h5 id="按比例缩小图像"><a href="#按比例缩小图像" class="headerlink" title="按比例缩小图像"></a>按比例缩小图像</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gifsicle input.gif --scale 0.5 -o output.gif</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li><code>--scale</code>  将图像的宽和高缩小为原来的 0.5 倍</li>
+</ul>
+<h5 id="缩小图像尺寸"><a href="#缩小图像尺寸" class="headerlink" title="缩小图像尺寸"></a>缩小图像尺寸</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gifsicle input.gif --resize 300x200 -o output.gif</span><br></pre></td></tr></table></figure>
+
+
+
+<p>参数说明：</p>
+<ul>
+<li><code>--resize[width x height]</code>   将输出 GIF 的大小调整为给定的宽度和高度。</li>
+</ul>
+<h5 id="减少图片颜色"><a href="#减少图片颜色" class="headerlink" title="减少图片颜色"></a>减少图片颜色</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gitsicle -O3 input.gif -o output.gif --colors 256</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li><code>-k [num](--colors [num])</code>   将输出gif的颜色数量减少到 <code>num</code> 。<code>num</code> 的取值为 <code>2</code>  到 <code>256</code>  之间。 <code>num</code>  越小，图片质量损失越大。</li>
+</ul>
+<h5 id="其他设置"><a href="#其他设置" class="headerlink" title="其他设置"></a>其他设置</h5><p>更多设置可以查看帮助或者官方文档</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gitsicle -h</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>Gifsicle文档 <a href="https://www.lcdf.org/gifsicle/man.html" target="_blank" rel="noopener">Gifsicle Man Page</a></li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>工具技巧</category>
+      </categories>
+      <tags>
+        <tag>Tools</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>科学上网mac客户端V2rayU使用技巧</title>
     <url>/2021/03/25/science-online-mac-client-v2rayu/</url>
     <content><![CDATA[<h4 id="V2rayU-介绍"><a href="#V2rayU-介绍" class="headerlink" title="V2rayU 介绍"></a>V2rayU 介绍</h4><p>V2rayU,基于v2ray核心的mac版客户端,用于科学上网,使用swift编写,支持vmess,shadowsocks,socks5等服务协议,支持订阅, 支持二维码,剪贴板导入,手动配置,二维码分享等</p>
@@ -5648,7 +5718,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#x61;&#105;&#108;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#111;&#109;">&#101;&#x6d;&#x61;&#105;&#108;&#x40;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#111;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#109;&#x61;&#x69;&#x6c;&#x40;&#x65;&#120;&#97;&#109;&#x70;&#108;&#x65;&#46;&#x63;&#x6f;&#109;">&#101;&#109;&#x61;&#x69;&#x6c;&#x40;&#x65;&#120;&#97;&#109;&#x70;&#108;&#x65;&#46;&#x63;&#x6f;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

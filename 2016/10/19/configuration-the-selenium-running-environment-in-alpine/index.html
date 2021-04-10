@@ -29,7 +29,7 @@
 <meta property="og:description" content="Alpine 微小的Linux系统">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-10-19T14:38:31.000Z">
-<meta property="article:modified_time" content="2021-04-08T12:08:12.338Z">
+<meta property="article:modified_time" content="2021-04-10T09:06:06.467Z">
 <meta property="article:author" content="Leafney">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="Alpine">
@@ -226,6 +226,9 @@
         </h1>
 
         <div class="post-meta">
+
+          
+            
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
@@ -239,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-08 20:08:12" itemprop="dateModified" datetime="2021-04-08T20:08:12+08:00">2021-04-08</time>
+                <time title="修改时间：2021-04-10 17:06:06" itemprop="dateModified" datetime="2021-04-10T17:06:06+08:00">2021-04-10</time>
               </span>
 
           
@@ -490,7 +493,10 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div id="toc-div">
           <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置环境"><span class="nav-number">1.</span> <span class="nav-text">配置环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装依赖"><span class="nav-number">2.</span> <span class="nav-text">安装依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#设置软件安装源"><span class="nav-number">2.1.</span> <span class="nav-text">设置软件安装源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装依赖包"><span class="nav-number">2.2.</span> <span class="nav-text">安装依赖包</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#支持的浏览器及-WebDriver-驱动"><span class="nav-number">3.</span> <span class="nav-text">支持的浏览器及 WebDriver 驱动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Selenium调用Chrome浏览器"><span class="nav-number">4.</span> <span class="nav-text">Selenium调用Chrome浏览器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-Chromium"><span class="nav-number">4.1.</span> <span class="nav-text">安装 Chromium</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-ChromeDriver"><span class="nav-number">4.2.</span> <span class="nav-text">安装 ChromeDriver</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#通过-apk-安装"><span class="nav-number">4.2.1.</span> <span class="nav-text">通过 apk 安装</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#测试-ChromeDriver"><span class="nav-number">4.2.2.</span> <span class="nav-text">测试 ChromeDriver</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Selenium调用Firefox浏览器"><span class="nav-number">5.</span> <span class="nav-text">Selenium调用Firefox浏览器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-Firefox-浏览器"><span class="nav-number">5.1.</span> <span class="nav-text">安装 Firefox 浏览器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-geckodriver"><span class="nav-number">5.2.</span> <span class="nav-text">安装 geckodriver</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#下载-geckodriver"><span class="nav-number">5.2.1.</span> <span class="nav-text">下载 geckodriver</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#将-geckodriver-放到系统-PATH-目录下"><span class="nav-number">5.2.2.</span> <span class="nav-text">将 geckodriver 放到系统 PATH 目录下</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#测试-geckodriver"><span class="nav-number">5.2.3.</span> <span class="nav-text">测试 geckodriver</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装虚拟显示器-xvfb"><span class="nav-number">6.</span> <span class="nav-text">安装虚拟显示器 xvfb</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要用-xvfb"><span class="nav-number">6.1.</span> <span class="nav-text">为什么要用 xvfb??</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#执行如下命令安装"><span class="nav-number">6.2.</span> <span class="nav-text">执行如下命令安装</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试-selenium-调用浏览器获取网页"><span class="nav-number">7.</span> <span class="nav-text">测试 selenium 调用浏览器获取网页</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Chrome-版本"><span class="nav-number">7.1.</span> <span class="nav-text">Chrome 版本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Firefox-版本"><span class="nav-number">7.2.</span> <span class="nav-text">Firefox 版本</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker实现"><span class="nav-number">8.</span> <span class="nav-text">Docker实现</span></a></li></ol></div>
+
+        </div>
       </div>
       <!--/noindex-->
 
@@ -506,7 +512,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">136</span>
+          <span class="site-state-item-count">137</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -519,7 +525,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-count">56</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

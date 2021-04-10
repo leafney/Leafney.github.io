@@ -253,6 +253,9 @@
         </h1>
 
         <div class="post-meta">
+
+          
+            
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
@@ -665,7 +668,10 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div id="toc-div">
           <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备工具"><span class="nav-number">1.</span> <span class="nav-text">准备工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欧版判断"><span class="nav-number">2.</span> <span class="nav-text">欧版判断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解锁Bootloader"><span class="nav-number">3.</span> <span class="nav-text">解锁Bootloader</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开启USB调试和OEM解锁"><span class="nav-number">3.1.</span> <span class="nav-text">开启USB调试和OEM解锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进入-Bootloader模式"><span class="nav-number">3.2.</span> <span class="nav-text">进入 Bootloader模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解锁-Bootloader"><span class="nav-number">3.3.</span> <span class="nav-text">解锁 Bootloader</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#判断解锁成功"><span class="nav-number">3.4.</span> <span class="nav-text">判断解锁成功</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解锁Bootloader后的两个问题"><span class="nav-number">4.</span> <span class="nav-text">解锁Bootloader后的两个问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#恢复初始"><span class="nav-number">4.1.</span> <span class="nav-text">恢复初始</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#错误提示"><span class="nav-number">4.2.</span> <span class="nav-text">错误提示</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#刷入第三方Recovery-TWRP及Root"><span class="nav-number">5.</span> <span class="nav-text">刷入第三方Recovery:TWRP及Root</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#下载必要软件"><span class="nav-number">5.1.</span> <span class="nav-text">下载必要软件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#拷贝文件到手机"><span class="nav-number">5.2.</span> <span class="nav-text">拷贝文件到手机</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷临时Twrp"><span class="nav-number">5.3.</span> <span class="nav-text">刷临时Twrp</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#引导进入-Bootloader"><span class="nav-number">5.3.1.</span> <span class="nav-text">引导进入 Bootloader</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#刷入临时Twrp"><span class="nav-number">5.3.2.</span> <span class="nav-text">刷入临时Twrp</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷入永久Twrp"><span class="nav-number">5.4.</span> <span class="nav-text">刷入永久Twrp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#刷入Magisk"><span class="nav-number">5.5.</span> <span class="nav-text">刷入Magisk</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证是否成功Root"><span class="nav-number">6.</span> <span class="nav-text">验证是否成功Root</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化"><span class="nav-number">7.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#去掉wifi叉号标记"><span class="nav-number">7.1.</span> <span class="nav-text">去掉wifi叉号标记</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#疑难解答"><span class="nav-number">8.</span> <span class="nav-text">疑难解答</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#fastboot-oem-unlock-or-fastboot-flashing-unlock"><span class="nav-number">8.1.</span> <span class="nav-text">fastboot oem unlock or fastboot flashing unlock</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#OEM锁与bootloader锁的关系"><span class="nav-number">8.2.</span> <span class="nav-text">OEM锁与bootloader锁的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解锁bootloader的好处"><span class="nav-number">8.3.</span> <span class="nav-text">解锁bootloader的好处</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#adbpush文件时权限不够"><span class="nav-number">8.4.</span> <span class="nav-text">adbpush文件时权限不够</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关链接"><span class="nav-number">9.</span> <span class="nav-text">相关链接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#工具"><span class="nav-number">9.1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#教程"><span class="nav-number">9.2.</span> <span class="nav-text">教程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Magisk更新"><span class="nav-number">10.</span> <span class="nav-text">Magisk更新</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#第一步-adb连接"><span class="nav-number">10.1.</span> <span class="nav-text">第一步 adb连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第二步-拷贝Magisk文件"><span class="nav-number">10.2.</span> <span class="nav-text">第二步 拷贝Magisk文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第三步-进入Bootloader"><span class="nav-number">10.3.</span> <span class="nav-text">第三步 进入Bootloader</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第四步-进入临时Twrp"><span class="nav-number">10.4.</span> <span class="nav-text">第四步 进入临时Twrp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#第五步-安装Magisk"><span class="nav-number">10.5.</span> <span class="nav-text">第五步 安装Magisk</span></a></li></ol></li></ol></div>
+
+        </div>
       </div>
       <!--/noindex-->
 
@@ -681,7 +687,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">136</span>
+          <span class="site-state-item-count">137</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -694,7 +700,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-count">56</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

@@ -31,8 +31,9 @@
 <meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20190905125758.png">
 <meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20190905124633.png">
 <meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20190905122338.png">
+<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20210410164655.png">
 <meta property="article:published_time" content="2019-09-05T03:55:54.000Z">
-<meta property="article:modified_time" content="2019-09-05T06:24:33.000Z">
+<meta property="article:modified_time" content="2021-04-10T08:32:32.000Z">
 <meta property="article:author" content="Leafney">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary">
@@ -228,15 +229,24 @@
         </h1>
 
         <div class="post-meta">
+
+          
+            
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-09-05 11:55:54 / 修改时间：14:24:33" itemprop="dateCreated datePublished" datetime="2019-09-05T11:55:54+08:00">2019-09-05</time>
+              <time title="创建时间：2019-09-05 11:55:54" itemprop="dateCreated datePublished" datetime="2019-09-05T11:55:54+08:00">2019-09-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-10 16:32:32" itemprop="dateModified" datetime="2021-04-10T16:32:32+08:00">2021-04-10</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -273,6 +283,7 @@
 <hr>
 <h4 id="置顶标记"><a href="#置顶标记" class="headerlink" title="置顶标记"></a>置顶标记</h4><p>从网上简单的搜索了一下，找到了如下的代码段。修改博客文件目录中的 <code>/themes/next/layout/_macro/post.swig</code> 文件：</p>
 <p>直接搜索 <code>class=&quot;post-meta</code> 在 <code>&lt;div class=&quot;post-meta&quot;&gt;</code> 和 <code>&lt;span class=&quot;post-time&quot;&gt;</code> 之间加入如下的代码段：</p>
+<p><strong>该写法已过时，可以查看文章底部的更新</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;post-meta&quot;&gt;</span><br><span class="line"> </span><br><span class="line"> &#123;% if post.top %&#125;</span><br><span class="line">    &lt;i class&#x3D;&quot;fa fa-thumb-tack&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">    &lt;font color&#x3D;7D26CD&gt;置顶&lt;&#x2F;font&gt;</span><br><span class="line">    &lt;span class&#x3D;&quot;post-meta-divider&quot;&gt;|&lt;&#x2F;span&gt;</span><br><span class="line">  &#123;% endif %&#125;</span><br><span class="line"></span><br><span class="line">  &lt;span class&#x3D;&quot;post-time&quot;&gt;</span><br></pre></td></tr></table></figure>
 
 <p>保存修改。执行 <code>hexo s -g</code> 查看效果。</p>
@@ -280,6 +291,10 @@
 <h4 id="颜色修改"><a href="#颜色修改" class="headerlink" title="颜色修改"></a>颜色修改</h4><p>对于“置顶”两字的颜色，默认的颜色 <code>7D26CD</code> 我不是很喜欢，所以把它改成了稍微偏红的颜色 <code>#f05050</code> ，当然你也可以随意更改，看个人喜好了。</p>
 <p><code>#</code> 号有没有无所谓，大小写随意不影响，不过为了符合标准建议写成这样：<code>color=&quot;#f05050&quot;</code>。</p>
 <p>需要注意的是，修改后必须重新执行 <code>hexo s -g</code> 命令才能看到效果，并不是像文章更新的那样刷新页面就立即生效的。</p>
+<hr>
+<h4 id="图标修改"><a href="#图标修改" class="headerlink" title="图标修改"></a>图标修改</h4><p>对于需要的图标，可以从网站 <a href="https://fontawesome.com/icons" target="_blank" rel="noopener">Icons | Font Awesome</a> 中获取。例如我这里就是使用的一个 <code>图钉</code> 的Icon。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;i class&#x3D;&quot;fa fa-thumb-tack&quot;&gt;&lt;&#x2F;i&gt;</span><br></pre></td></tr></table></figure>
+
 <hr>
 <h4 id="扩展优化"><a href="#扩展优化" class="headerlink" title="扩展优化"></a>扩展优化</h4><p>虽然按照上面的方法加上了 “置顶” 标记，不过感觉和自己想象的似乎有那么点差距，但差距在哪也不是很好说。。。</p>
 <p>所以我就上网去找了一下，发现了下面的一个网站的置顶效果（其中的文字我做了替换）：</p>
@@ -321,6 +336,19 @@
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
 <li><a href="http://wangwlj.com/2018/01/09/blog_pin_post/" target="_blank" rel="noopener">Hexo博客彻底解决置顶问题 | wangwlj’s Blog</a></li>
 </ul>
+<hr>
+<h4 id="置顶标记更新"><a href="#置顶标记更新" class="headerlink" title="置顶标记更新"></a>置顶标记更新</h4><p><strong>更新于：2021-04-10</strong></p>
+<p>对于上面添加的 <code>置顶标记</code> 提示文字，其实可以参考已有的 <code>发表于</code> <code>更新于</code> 这些副标题的格式来实现。正好显示在同一行上，格式也要统一嘛！</p>
+<p>提取 <code>发表于</code> 部分的html代码段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;span class&#x3D;&quot;post-meta-item&quot;&gt;</span><br><span class="line">    &lt;span class&#x3D;&quot;post-meta-item-icon&quot;&gt;</span><br><span class="line">    &lt;i class&#x3D;&quot;far fa-calendar&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">    &lt;&#x2F;span&gt;</span><br><span class="line">    &lt;span class&#x3D;&quot;post-meta-item-text&quot;&gt;发表于&lt;&#x2F;span&gt;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    &lt;time title&#x3D;&quot;创建时间：2021-02-28 11:18:43 &#x2F; 修改时间：11:41:19&quot; itemprop&#x3D;&quot;dateCreated datePublished&quot; datetime&#x3D;&quot;2021-02-28T11:18:43+08:00&quot;&gt;2021-02-28&lt;&#x2F;time&gt;</span><br><span class="line">&lt;&#x2F;span&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>对其进行优化，我们只需要显示提示文字，不需要后面的带下划线部分，最终得到的就是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;span class&#x3D;&quot;post-meta-item&quot;&gt;</span><br><span class="line">  &lt;span class&#x3D;&quot;post-meta-item-icon&quot;&gt;</span><br><span class="line">      &lt;i class&#x3D;&quot;fas fa-thumbtack&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">  &lt;&#x2F;span&gt;</span><br><span class="line">  &lt;span class&#x3D;&quot;post-meta-item-text&quot;&gt;</span><br><span class="line">      &lt;font color&#x3D;&#39;#f05050&#39;&gt;[置顶]&lt;&#x2F;font&gt;</span><br><span class="line">  &lt;&#x2F;span&gt;</span><br><span class="line">&lt;&#x2F;span&gt;</span><br></pre></td></tr></table></figure>
+
+<p>完整代码：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210410164655.png" alt="20210410164655"></p>
+<hr>
 
     </div>
 
@@ -442,7 +470,10 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#置顶标记"><span class="nav-number">1.</span> <span class="nav-text">置顶标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#颜色修改"><span class="nav-number">2.</span> <span class="nav-text">颜色修改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#扩展优化"><span class="nav-number">3.</span> <span class="nav-text">扩展优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说点别的"><span class="nav-number">4.</span> <span class="nav-text">说点别的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">5.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+          <div id="toc-div">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#置顶标记"><span class="nav-number">1.</span> <span class="nav-text">置顶标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#颜色修改"><span class="nav-number">2.</span> <span class="nav-text">颜色修改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图标修改"><span class="nav-number">3.</span> <span class="nav-text">图标修改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#扩展优化"><span class="nav-number">4.</span> <span class="nav-text">扩展优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说点别的"><span class="nav-number">5.</span> <span class="nav-text">说点别的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">6.</span> <span class="nav-text">相关参考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#置顶标记更新"><span class="nav-number">7.</span> <span class="nav-text">置顶标记更新</span></a></li></ol></div>
+
+        </div>
       </div>
       <!--/noindex-->
 
@@ -458,7 +489,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">136</span>
+          <span class="site-state-item-count">137</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -471,7 +502,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-count">56</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

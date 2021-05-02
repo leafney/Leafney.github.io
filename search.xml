@@ -43,6 +43,121 @@
       </tags>
   </entry>
   <entry>
+    <title>Gitee开始对代码审查了？</title>
+    <url>/2021/05/02/gitee-code-review/</url>
+    <content><![CDATA[<p>今天在整理博客文章时，发现某些文章中的图片不显示了：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210502130611.png" alt="20210502130611"></p>
+<p>将图片链接在浏览器中打开，竟然只提示了一段文字：</p>
+<blockquote>
+<p>根据相关法律政策,该内容无法显示</p>
+</blockquote>
+<p>打开 Gitee 中的仓库，发现该图片也不能预览了:</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210502131924.png" alt="20210502131924"></p>
+<hr>
+<h4 id="探究"><a href="#探究" class="headerlink" title="探究"></a>探究</h4><p>我在网上搜索了一下，发现这个问题是最近才出现的，而且遇到这个问题的人还不少：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210502131518.png" alt="20210502131518"></p>
+<p>记得之前因为 Github <code>被Q</code> 的原因，好多开源项目都选择了国内的 <code>Gitee</code> 作为国内代码仓库来同步管理，然而现在我却看到好多的项目已经开始在考虑 <code>迁移</code> 了：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210502131837.png" alt="20210502131837"></p>
+<hr>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>看了相关的讨论，似乎 <code>Gitee</code> 有一个 <code>屏蔽词</code> 的字库，只要遇到相关的关键词文件就会被屏蔽掉。让人生气的是它并不会告诉你是什么词不合理，只会返回给你一句 <code>根据相关法律政策,该内容无法显示</code> 。</p>
+<p>如果知道是什么词的话，我们改一下重新上传就好了。但现在这明显就是个 <code>黑盒</code> ，让人根本摸不着头脑的那种。</p>
+<p>对于图片也是。我的文章中被屏蔽的那个图片是我在网上找到的一个 <code>表情包</code> 的图片，这也不能用了？？？</p>
+<hr>
+<h4 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h4><p>我的博客中的图片是在年初的时候从七牛云迁移到Gitee的，现在看来又要考虑选择其他的图床了。</p>
+<p>当时还写了一个工具来实现快速替换：<a href="https://github.com/leafney/md-qiniu-imges-replace" target="_blank" rel="noopener">leafney/md-qiniu-imges-replace: markdown文件中七牛云图片链接替换</a></p>
+<p>使用的Gitee的代码项目也需要考虑迁移到其他平台了，现在来看还是Github要更保险一些。</p>
+<p>下一步，需要去考察一下其他的图床平台。</p>
+<hr>
+<p>未完待续…</p>
+]]></content>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>App Store中评论的昵称如何修改</title>
+    <url>/2021/05/02/change-nickname-for-appstore/</url>
+    <content><![CDATA[<p>使用iPhone时遇到好用的App，或者是遇到喜欢的App中某些功能有bug或是好的想法想要反馈给开发者，最简单的方法就是前往App Store给应用进行评论。</p>
+<p>当然，作为App开发者，平时我们也是经常会在App Store后台中查看用户的反馈信息来做出下一步的开发计划和评论反馈。</p>
+<p>有时候在评论发表完之后再回看时，发现自己发表评论后显示的昵称和自己的AppleID昵称不一致，或者想要进行修改，但是却找不到修改的入口？</p>
+<hr>
+<p>在App Store中首次评论应用时，需要设置一个昵称。不过大部分用户已经完全忘记了当时自己是如何设置的，或者是随手就乱填了一个名字。</p>
+<p>就像我在首次使用评论功能时，我把要评论的内容设置成了昵称。</p>
+<p>我的评论：<br><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210502112009.jpg" alt="20210502112009"></p>
+<p>我使用的昵称：<br><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210502112023.png" alt="20210502112023"></p>
+<hr>
+<p>其实这个昵称修改非常简单：</p>
+<ol>
+<li>在 Mac 上打开 <code>App Store</code></li>
+<li>使用AppleID登录</li>
+<li>点击左下角 <code>账户名称</code>，在右侧页面中点击 <code>查看信息</code></li>
+<li>在弹出的 <code>账户信息</code> 页面中下拉，找到 <code>管理</code> 一栏</li>
+<li>选择 <code>更改昵称</code>，更改昵称后 <code>提交</code> 即可</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>工具技巧</category>
+      </categories>
+      <tags>
+        <tag>IOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>树莓派设置Samba文件共享</title>
+    <url>/2021/05/02/raspberry-pi-setup-samba/</url>
+    <content><![CDATA[<p>在树莓派上编辑文件时，如果是单个的文本文件，可以直接通过 <code>vim</code> 来编辑操作。如果是多个文件，就需要使用 <code>sftp</code> 相关的软件来实现文件上传了。</p>
+<p>其实还有一种更简单的方法，那就是通过 Samba服务实现文件共享。</p>
+<hr>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>执行如下命令来安装 Samba 服务：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line"></span><br><span class="line">sudo apt-get install samba samba-common-bin</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>编辑Samba配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vim &#x2F;etc&#x2F;samba&#x2F;smb.conf</span><br></pre></td></tr></table></figure>
+
+<p>在配置文件底部添加如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[raspi_share]</span><br><span class="line">comment &#x3D; raspi files dir</span><br><span class="line">path &#x3D; &#x2F;home&#x2F;pi&#x2F;samba</span><br><span class="line">valid users &#x3D; pi</span><br><span class="line">browseable &#x3D; yes</span><br><span class="line">public &#x3D; yes</span><br><span class="line">read only &#x3D; no</span><br><span class="line">writeable &#x3D; yes</span><br><span class="line">create mask &#x3D; 0777</span><br><span class="line">directory mask &#x3D; 0777</span><br></pre></td></tr></table></figure>
+
+<h5 id="配置参数"><a href="#配置参数" class="headerlink" title="配置参数"></a>配置参数</h5><p><code>[raspi_share]</code> 表示这是一组共享设置。在 <code>Samba</code> 中通过中括号 <code>[xxx]</code> 的形式来标识区分。</p>
+<p><code>comment = &quot;xxxx&quot;</code> 表示对该共享的描述信息。 </p>
+<p>上面配置中，我们通过 <code>path</code> 指定了一个待共享的目录路径 <code>/home/pi/samba</code> 。默认情况下，不设置 <code>path</code> 的话，就是当前账户的 <code>家目录</code> 。</p>
+<p><code>valid users = pi</code> 表示允许访问该共享的用户，如果是多个用户可以通过逗号 <code>,</code> 来分隔；也可以通过 <code>@+组名</code> 的方式来设置可访问的群组。</p>
+<p><code>browseable = yes/no</code> 表示该共享是否可以浏览。</p>
+<p><code>public = yes/no</code> 表示该共享是否允许 <code>guest</code> 账户访问。</p>
+<p><code>read only = yes/no</code> 表示是否可读写。</p>
+<p><code>writable = yes/no</code> 表示是否可写。</p>
+<p><code>create mask = 0777</code> 表示客户端上传文件的默认权限</p>
+<p><code>directory mask = 0777</code> 表示客户端创建目录的默认权限</p>
+<hr>
+<h4 id="设置账户"><a href="#设置账户" class="headerlink" title="设置账户"></a>设置账户</h4><p>在使用之前需要为 Samba 设置一个账户。</p>
+<p>这里使用当前用户 <code>pi</code> 来作为 Samba 用户，通过如下命令设置其密码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo smbpasswd -a pi</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="关于Samba账户"><a href="#关于Samba账户" class="headerlink" title="关于Samba账户"></a>关于Samba账户</h5><p>Samba 需要 Linux 账户才能使用，可以使用 <code>已有账户</code> 或 <code>创建新用户</code>。</p>
+<p>虽然用户名可以和 Linux 系统共享，但 Samba 使用的是单独的密码管理。</p>
+<p>这里我们通过smb自己的工具 <code>smbpasswd</code> 来给系统用户设置Samba密码的，客户端就用这个密码来访问Samba的资源。</p>
+<hr>
+<h4 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h4><p>重启服务：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo systemctl restart smbd</span><br></pre></td></tr></table></figure>
+
+<p>之后就可以在PC上通过目录来共享访问了。</p>
+<hr>
+<h4 id="MacOS访问"><a href="#MacOS访问" class="headerlink" title="MacOS访问"></a>MacOS访问</h4><p>在 MacOS 上访问共享目录，只需要打开 <code>Finder</code> ，选择 <code>菜单栏</code> – <code>前往</code> – <code>连接服务器</code> ，在弹出的窗口中输入 <code>smb://192.168.1.123</code> 即树莓派的ip 后选择 <code>连接</code> – 输入设置的账户和密码后就能访问了。</p>
+<hr>
+<h4 id="Windows访问"><a href="#Windows访问" class="headerlink" title="Windows访问"></a>Windows访问</h4><p>在 <code>运行</code> (Win+R) 中输入 <code>\\192.168.1.123</code> 即树莓派的ip 后即可进行访问。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
+      <tags>
+        <tag>RaspberryPi</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>什么! 有人模仿我的脸，还要模仿我的面 ???</title>
     <url>/2021/04/19/do-not-copy-my-blog/</url>
     <content><![CDATA[<p>之前我的博客源代码一直是放在 <code>github</code> 上采用公开的仓库来存放的。当时选择同一个仓库的不同分支来存放博客的 <code>md源文件</code> 于 <code>blog</code> 分支，编译后的 <code>hexo html文件</code> 于 <code>master</code> 分支上。</p>
@@ -5955,7 +6070,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#97;&#105;&#x6c;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#111;&#109;">&#x65;&#109;&#97;&#105;&#x6c;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#111;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#97;&#x69;&#108;&#64;&#101;&#120;&#97;&#109;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;">&#x65;&#x6d;&#97;&#x69;&#108;&#64;&#101;&#120;&#97;&#109;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

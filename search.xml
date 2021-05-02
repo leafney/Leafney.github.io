@@ -43,6 +43,83 @@
       </tags>
   </entry>
   <entry>
+    <title>是时候升级GORM新版本了</title>
+    <url>/2021/05/02/time-to-upgrade-new-version-gorm/</url>
+    <content><![CDATA[<p>多个golang项目中使用的 gorm 版本一直是 <code>github.com/jinzhu/gorm v1.9.15</code>  ，最近在处理数据库操作时又去gorm的官网上看了看官方文档，却发现按照官网文档中的介绍应用后却没有生效。</p>
+<p>排查一番后才发现，gorm的版本更新了，现在官网上展示的默认文档是 <code>v2.x</code> 的使用文档，而 <code>v2.x</code> 和之前的 <code>v1.x</code> 相比是 <code>完全的从零开始</code>，某些方法在用法上已经更改了。</p>
+<p>这里，列举两个比较明显的改变。</p>
+<h4 id="添加索引"><a href="#添加索引" class="headerlink" title="添加索引"></a>添加索引</h4><p>通过gorm为指定的字段添加索引，在字段声明中设置索引和唯一索引：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    AId  <span class="keyword">int64</span>  <span class="string">`json:"aid" gorm:"column:aid;not null;default:0;uniqueIndex:aid;comment:'视频id'"`</span></span><br><span class="line">    Name <span class="keyword">string</span> <span class="string">`json:"name" gorm:"column:name;type:varchar(64);not null;default:'';index:name;comment:'视频名称'"`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>结果在执行时只看到了一条创建索引的命令输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[2021-04-28 10:25:58]  [52.98ms]  CREATE INDEX name ON &#96;archive_video&#96;(name)   </span><br><span class="line">[0 rows affected or returned ]</span><br></pre></td></tr></table></figure>
+
+
+
+<p>按照gorm官方文档中的介绍，<code>uniqueIndex</code> 标签的作用与 <code>index</code> 类似，它等效于 <code>index:,unique</code> ：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name1 <span class="keyword">string</span> <span class="string">`gorm:"uniqueIndex"`</span></span><br><span class="line">    Name2 <span class="keyword">string</span> <span class="string">`gorm:"uniqueIndex:idx_name,sort:desc"`</span></span><br><span class="line">    Name3 <span class="keyword">string</span> <span class="string">`gorm:"index:idx_name,unique"`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>但在测试后发现，唯一索引 <code>gorm:&quot;uniqueIndex&quot;</code> 似乎不生效。</p>
+<p>这就是其中的一个版本变化：</p>
+<blockquote>
+<p>在 gorm v1 中，唯一索引使用 <code>unique_index</code> 下划线形式，而在 gorm v2 中，改成了使用 <code>camelCase</code> 风格的写法。</p>
+</blockquote>
+<p>我使用的是 <code>v1.9.15</code> 版本，所以需要改成 <code>unique_index</code> 才行。</p>
+<p>正确的 v1 风格的写法：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name1 <span class="keyword">string</span> <span class="string">`gorm:"unique_index"`</span></span><br><span class="line">    Name2 <span class="keyword">string</span> <span class="string">`gorm:"unique_index:idx_name,sort:desc"`</span></span><br><span class="line">    Name3 <span class="keyword">string</span> <span class="string">`gorm:"index:idx_name,unique"`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>正确的 v2 风格的写法：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name  <span class="keyword">string</span> <span class="string">`gorm:"index"`</span></span><br><span class="line">    Name2 <span class="keyword">string</span> <span class="string">`gorm:"index:idx_name,unique"`</span></span><br><span class="line">    Name3 <span class="keyword">string</span> <span class="string">`gorm:"uniqueIndex"`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h4 id="批量插入"><a href="#批量插入" class="headerlink" title="批量插入"></a>批量插入</h4><p>gorm v1 中不支持批量插入，v2 中才支持。</p>
+<p><code>v2.x</code> 中直接通过 <code>db.model().create()</code> 即可插入批量数据。一种示例如下：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 使用事务，批量插入</span></span><br><span class="line">err = db.Transaction(<span class="function"><span class="keyword">func</span><span class="params">(tx *gorm.DB)</span> <span class="title">error</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// create支持批量插入</span></span><br><span class="line">	<span class="keyword">var</span> users = <span class="built_in">make</span>([]model.User, <span class="number">0</span>)</span><br><span class="line">	<span class="keyword">for</span> _, p := <span class="keyword">range</span> info &#123;</span><br><span class="line">		users = <span class="built_in">append</span>(users, model.User&#123;</span><br><span class="line">			CId:      p.CId,</span><br><span class="line">			Name:     p.Name,</span><br><span class="line">			Title:    p.Title,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 返回 nil 提交事务</span></span><br><span class="line">	<span class="keyword">return</span> tx.Model(&amp;model.User&#123;&#125;).Create(&amp;users).Error</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>而在 <code>v1.x</code> 中，要想实现批量插入，可以通过执行 <code>原生SQL(db.Exec)</code> 的方法来完成。</p>
+<p>mysql实现批量插入的sql语句为：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`users`</span> <span class="keyword">VALUES</span> (?,?,?),(?,?,?),(?,?,?);</span><br></pre></td></tr></table></figure>
+
+<p>所以，只需要将要插入的数据进行一下sql拼接即可。</p>
+<p>一种示例如下：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// BatchSave 批量插入数据</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BatchSave</span><span class="params">(db *gorm.DB, emps []*Employee)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> buffer bytes.Buffer</span><br><span class="line">	sql := <span class="string">"insert into `employees` (`name`,`age`,`addr`) values "</span></span><br><span class="line">	<span class="keyword">if</span> _, err := buffer.WriteString(sql); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> i, e := <span class="keyword">range</span> emps &#123;</span><br><span class="line">		<span class="keyword">if</span> i == <span class="built_in">len</span>(emps)<span class="number">-1</span> &#123;</span><br><span class="line">            <span class="comment">// 最后一项</span></span><br><span class="line">            buffer.WriteString(fmt.Sprintf(<span class="string">"('%s',%d,'%s');"</span>, e.Name, e.Age, e.Addr))</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            buffer.WriteString(fmt.Sprintf(<span class="string">"('%s',%d,'%s'),"</span>, e.Name, e.Age, e.Addr))</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> db.Exec(buffer.String()).Error</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h4 id="吐槽一下"><a href="#吐槽一下" class="headerlink" title="吐槽一下"></a>吐槽一下</h4><p>在 gorm <code>v2.x</code> 的升级文档中看到下面的说明：</p>
+<blockquote>
+<p><strong>注意</strong> GORM <code>v2.0.0</code> 发布的 git tag 是 <code>v1.20.0</code></p>
+</blockquote>
+<p>我当前使用的 <code>v1.x</code> 的版本是 <code>v1.9.15</code> 。不过看到官方的代码仓库中却找不到这个tag，能看到的只有如下的 <code>v1.9.19</code> ：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210502170029.png" alt="20210502170029"></p>
+<p>而我想要下载这个最高的版本 <code>v1.9.19</code> ，却发现 <code>go get github.com/jinzhu/gorm@v1.9.19</code>  是找不到的。</p>
+<p>一般来说按照惯例，大版本的变化应该定义为 <code>v2.x.x</code> 的tag才比较合适。</p>
+<p>不得不说，gorm这个版本定义的还真让人迷糊啊。</p>
+<p>另外一个槽点就是文档，我这代码要不报错，光看文档我还真不清楚文档和使用的版本是不一致的。</p>
+<hr>
+<h4 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h4><ul>
+<li><a href="http://v1.gorm.io/zh_CN/docs/" target="_blank" rel="noopener">GORM v1  指南 | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</a></li>
+<li><a href="https://gorm.io/zh_CN/docs/v2_release_note.html" target="_blank" rel="noopener">GORM 2.0 发布说明 | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</a></li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>Golang</category>
+      </categories>
+      <tags>
+        <tag>Golang</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Gitee开始对代码审查了？</title>
     <url>/2021/05/02/gitee-code-review/</url>
     <content><![CDATA[<p>今天在整理博客文章时，发现某些文章中的图片不显示了：</p>
@@ -6070,7 +6147,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#97;&#x69;&#108;&#64;&#101;&#120;&#97;&#109;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;">&#x65;&#x6d;&#97;&#x69;&#108;&#64;&#101;&#120;&#97;&#109;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#111;&#x6d;">&#101;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#111;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

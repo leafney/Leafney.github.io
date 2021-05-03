@@ -43,6 +43,44 @@
       </tags>
   </entry>
   <entry>
+    <title>MacOS下禁用新版 Microsoft Edge 自动更新</title>
+    <url>/2021/05/03/disable-automatic-update-for-edge-on-macos/</url>
+    <content><![CDATA[<p>已经不是第一次遇到在用Edge浏览器看着看着网页然后突然间浏览器窗口自动退出，直到右上角出现 <code>Microsoft Edge 自动更新中</code> 的提示后我才知道是怎么回事。</p>
+<p>但让人不爽的是：更新完之后，我之前打开的浏览器窗口和页面都不会自动恢复，并且在历史记录中也找到。</p>
+<p>一般如果是浏览器崩溃的话，在历史记录的最近访问中还可以通过 <code>恢复刚刚打开的窗口</code> 来进行找回。而这种强制自动更新的退出却看不到刚刚打开的那些窗口。 </p>
+<p>我也去微软Edge的官网中查找了如何禁用掉Edge的自动更新功能，但看到官网在相关问题的回复后，就更加不爽了：</p>
+<blockquote>
+<p>十分抱歉，目前新版本 Microsoft Edge 浏览器是不支持通过修改自身设置来达到 “禁用更新” 目的的。不过您可以放心，新版本 Microsoft Edge 的更新功能并不会对用户的正常工作造成影响，如果下载更新后浏览器处于启动状态的话，不会自动重启强制更新，而是会在浏览器的右上角弹出提示。</p>
+</blockquote>
+<p>特别是其中的 <strong>不会自动重启强制更新，而是会在浏览器的右上角弹出提示</strong> ，当然也确实在自动更新前会有几次升级的提示信息出现，但如果我不去鸟他的话，最后就会出现我上面遇到的 <strong>强制自动更新</strong> 的情况出现。</p>
+<hr>
+<p>看了网上相关的 <code>民间解决方法</code> ，觉得下面的方法倒是可以试一试：</p>
+<p>找到Edge的更新程序：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ ls &#x2F;Library&#x2F;Application\ Support&#x2F;Microsoft&#x2F;MAU2.0&#x2F;</span><br><span class="line">Microsoft AutoUpdate.app</span><br></pre></td></tr></table></figure>
+
+<p>查看一下该文件的权限：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ ls -al &#x2F;Library&#x2F;Application\ Support&#x2F;Microsoft&#x2F;MAU2.0&#x2F;</span><br><span class="line">total 0</span><br><span class="line">drwxr-xr-x  3 root  wheel  96  4 15 20:05 .</span><br><span class="line">drwxr-xr-x  3 root  wheel  96  4 15 20:05 ..</span><br><span class="line">drwxrwxr-x  3 root  wheel  96  4 15 20:05 Microsoft AutoUpdate.app</span><br></pre></td></tr></table></figure>
+
+<p>可以看到当前权限是 <code>775</code>。</p>
+<p>修改其权限为 <code>644</code>，使其不能执行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ sudo chmod -R 644 &#x2F;Library&#x2F;Application\ Support&#x2F;Microsoft&#x2F;MAU2.0&#x2F;Microsoft\ AutoUpdate.app</span><br><span class="line">Password:</span><br></pre></td></tr></table></figure>
+
+<p>后期如果想要改回来以保持Edge的最新版本的话，只需要执行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo chmod -R 775 &#x2F;Library&#x2F;Application\ Support&#x2F;Microsoft&#x2F;MAU2.0&#x2F;Microsoft\ AutoUpdate.app</span><br></pre></td></tr></table></figure>
+
+<p>让其恢复可执行权限即可。</p>
+<p>修改后在Edge的 <code>设置-- 关于</code> 中可以看到有相关的错误提示出现，不鸟他就好了：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210503104624.png" alt="20210503104624"></p>
+<hr>
+]]></content>
+      <categories>
+        <category>工具技巧</category>
+      </categories>
+      <tags>
+        <tag>Tools</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>是时候升级GORM新版本了</title>
     <url>/2021/05/02/time-to-upgrade-new-version-gorm/</url>
     <content><![CDATA[<p>多个golang项目中使用的 gorm 版本一直是 <code>github.com/jinzhu/gorm v1.9.15</code>  ，最近在处理数据库操作时又去gorm的官网上看了看官方文档，却发现按照官网文档中的介绍应用后却没有生效。</p>
@@ -6147,7 +6185,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#111;&#x6d;">&#101;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#111;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#97;&#109;&#112;&#x6c;&#101;&#46;&#x63;&#111;&#109;">&#x65;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#97;&#109;&#112;&#x6c;&#101;&#46;&#x63;&#111;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

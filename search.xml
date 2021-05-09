@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>科学上网mac客户端V2rayU使用技巧</title>
+    <url>/2021/03/25/science-online-mac-client-v2rayu/</url>
+    <content><![CDATA[<h4 id="V2rayU-介绍"><a href="#V2rayU-介绍" class="headerlink" title="V2rayU 介绍"></a>V2rayU 介绍</h4><p>V2rayU,基于v2ray核心的mac版客户端,用于科学上网,使用swift编写,支持vmess,shadowsocks,socks5等服务协议,支持订阅, 支持二维码,剪贴板导入,手动配置,二维码分享等</p>
+<p>GitHub: <a href="https://github.com/yanue/V2rayU" target="_blank" rel="noopener">https://github.com/yanue/V2rayU</a></p>
+<hr>
+<h4 id="V2rayU-中如何添加自定义规则"><a href="#V2rayU-中如何添加自定义规则" class="headerlink" title="V2rayU 中如何添加自定义规则"></a>V2rayU 中如何添加自定义规则</h4><p>打开 <code>偏好设置</code> –  <code>Pac</code> 选项，在底部 <code>填写手动规则</code> 输入框中输入域名，之后点击 <code>保存设置并从GFW List 更新</code> 按钮即可。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">||github.com</span><br><span class="line">||fabric.io</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210325103158.png" alt="20210325103158"></p>
+<p>个人添加的规则，会被保存到文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;Applications&#x2F;V2rayU.app&#x2F;Contents&#x2F;Resources&#x2F;pac&#x2F;user-rule.txt</span><br></pre></td></tr></table></figure>
+
+<p>保存后立即生效。</p>
+<p>相关：</p>
+<ul>
+<li><a href="https://github.com/yanue/V2rayU/issues/102" target="_blank" rel="noopener">关于Pac设置的问题</a></li>
+<li><a href="https://github.com/yanue/V2rayU/issues/465" target="_blank" rel="noopener">https://github.com/yanue/V2rayU/issues/465</a></li>
+</ul>
+<hr>
+<h4 id="V2rayU-实现局域网共享"><a href="#V2rayU-实现局域网共享" class="headerlink" title="V2rayU 实现局域网共享"></a>V2rayU 实现局域网共享</h4><p>打开 <code>偏好设置</code> – <code>Advance</code> 选项，找到 <code>本机http监听Host</code> 项，将 <code>127.0.0.1</code> 改成 <code>0.0.0.0</code> 就可以了。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210325103057.png" alt="20210325103057"></p>
+<p>相关：</p>
+<ul>
+<li><a href="https://github.com/v2ray/v2ray-core/issues/210" target="_blank" rel="noopener">https://github.com/v2ray/v2ray-core/issues/210</a></li>
+</ul>
+<hr>
+<h4 id="V2rayU-彻底卸载方法"><a href="#V2rayU-彻底卸载方法" class="headerlink" title="V2rayU 彻底卸载方法"></a>V2rayU 彻底卸载方法</h4><p>关键分两步：<code>停止v2ray-core, 然后卸载V2rayU.app</code></p>
+<p>第一步: 卸载V2rayU.app</p>
+<p>推荐使用 <code>AppCleaner</code></p>
+<p>第二步: 彻底删除相关文件及服务</p>
+<p>命令: </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd ~&#x2F;Library&#x2F;LaunchAgents&#x2F;</span><br><span class="line">&#x2F;bin&#x2F;launchctl remove yanue.v2rayu.v2ray-core</span><br><span class="line">&#x2F;bin&#x2F;launchctl remove yanue.v2rayu.http</span><br><span class="line"></span><br><span class="line">rm -f ~&#x2F;Library&#x2F;LaunchAgents&#x2F;yanue.v2rayu.v2ray-core.plist</span><br><span class="line">rm -f ~&#x2F;Library&#x2F;Preferences&#x2F;net.yanue.V2rayU.plist</span><br><span class="line">rm -f ~&#x2F;Library&#x2F;Logs&#x2F;V2rayU.log</span><br></pre></td></tr></table></figure>
+
+<p>重点:</p>
+<p>主要是使用 <code>launchctl</code> 命令停止 <code>yanue.v2rayu.v2ray-core</code> 服务(会自动启动)</p>
+<p>相关：</p>
+<ul>
+<li><a href="https://github.com/yanue/V2rayU/issues/697" target="_blank" rel="noopener">https://github.com/yanue/V2rayU/issues/697</a></li>
+</ul>
+<hr>
+<h4 id="3-0正式版"><a href="#3-0正式版" class="headerlink" title="3.0正式版"></a>3.0正式版</h4><p>最近看到V2rayU的 github issues 上有好多报 <code>3.0正式版</code> 有问题的，建议先不要升级使用。</p>
+<p>这里的 <code>3.0正式版</code> 对应的tag是 <code>3.0.3</code> 。</p>
+<p>我目前使用的是 <code>3.0预览版</code> ，对应的tag是 <code>3.0.0.preview</code> 。平时使用上没有问题，功能正常。</p>
+<hr>
+]]></content>
+      <tags>
+        <tag>Shadowsocks</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Flutter常见效果实现代码段整理</title>
     <url>/2021/02/28/flutter-commonly-used-code-snippets/</url>
     <content><![CDATA[<p>整理开发中常用到的 <code>Flutter</code> 代码段。感觉有帮助的话给个 <strong>支持</strong>。</p>
@@ -40,6 +90,42 @@
       </categories>
       <tags>
         <tag>Flutter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何将电脑上的音乐导入iPhone</title>
+    <url>/2021/05/09/import-music-from-pc-to-iphone/</url>
+    <content><![CDATA[<p>平时在手机上听歌一般都会选择 <code>某Q</code> 或者 <code>某易</code> 来听，但奈何最近几年音乐的版权意识越来越严重，好多想听的歌曲在这个App上有，而在另一个App上却没有，不得不两个App换着听；或者只能妥协的去听非原唱的歌曲。</p>
+<p>有时候你还会遇到，之前一直能听的歌曲，在一段时间后却被 <code>置灰</code> 不能播放了。也是非常无奈的。</p>
+<p>最终，我选择使用iPhone上的 <code>音乐</code> App来作为我的主要音乐播放软件。平时只需要播放本地的音乐文件即可。</p>
+<p>一方面是简单，没有其他App上的一些社交、短视频等杂乱内容；另一方面是自己上传的音乐文件不会因为版权问题而被删除或禁用。当然，缺点也很明显，就是不能想听什么就能直接搜索播放。</p>
+<hr>
+<h4 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h4><p>将Mac上的音乐文件导入iPhone中，操作也很简单。只需要一条数据线即可。</p>
+<p>首先，将iPhone连接到Mac上。</p>
+<p>在 Mac 上打开 <code>音乐</code> App，选择菜单栏的 <code>文件</code> – <code>导入</code> </p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210509113429.png" alt="20210509113429"></p>
+<p>然后在左侧菜单中 <code>资料库</code> 找到 <code>最近添加</code> </p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210509113538.png" alt="20210509113538"></p>
+<p>找到刚刚上传的音乐文件，选择 <code>三个点</code> – <code>添加到播放列表</code> </p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210509113748.png" alt="20210509113748"></p>
+<p>在 <code>Finder</code> 的左侧菜单中找到iPhone设备，点击右侧的 <code>音乐</code> 项，</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210509120217.png" alt="20210509120217"></p>
+<p>然后在 <code>同步</code> 项中可以选择 <code>整个音乐资料库</code> 或者 <code>自定义的艺人、专辑、播放列表</code> </p>
+<p>完整同步：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210509114145.png" alt="20210509114145"></p>
+<p>单独选择：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210509114438.png" alt="20210509114438"></p>
+<p>点击底部的 <code>同步</code> 即可将音乐文件传输到iPhone中。</p>
+<p>这里，我是在 Mac 上单独设置了一个 <code>播放列表</code>，用来存放所有我需要同步到iPhone上的音乐。所以每次只需要将这个 <code>播放列表</code> 整个同步到iPhone上即可。当然，也可以按自己的喜好直接上传单个音乐文件。</p>
+<hr>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p>不过，这种同步的办法，iPhone上的音乐App中现有歌曲将被同步的歌曲替换。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>工具技巧</category>
+      </categories>
+      <tags>
+        <tag>Tools</tag>
       </tags>
   </entry>
   <entry>
@@ -557,52 +643,6 @@
       </categories>
       <tags>
         <tag>Tools</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>科学上网mac客户端V2rayU使用技巧</title>
-    <url>/2021/03/25/science-online-mac-client-v2rayu/</url>
-    <content><![CDATA[<h4 id="V2rayU-介绍"><a href="#V2rayU-介绍" class="headerlink" title="V2rayU 介绍"></a>V2rayU 介绍</h4><p>V2rayU,基于v2ray核心的mac版客户端,用于科学上网,使用swift编写,支持vmess,shadowsocks,socks5等服务协议,支持订阅, 支持二维码,剪贴板导入,手动配置,二维码分享等</p>
-<p>GitHub: <a href="https://github.com/yanue/V2rayU" target="_blank" rel="noopener">https://github.com/yanue/V2rayU</a></p>
-<hr>
-<h4 id="V2rayU-中如何添加自定义规则"><a href="#V2rayU-中如何添加自定义规则" class="headerlink" title="V2rayU 中如何添加自定义规则"></a>V2rayU 中如何添加自定义规则</h4><p>打开 <code>偏好设置</code> –  <code>Pac</code> 选项，在底部 <code>填写手动规则</code> 输入框中输入域名，之后点击 <code>保存设置并从GFW List 更新</code> 按钮即可。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">||github.com</span><br><span class="line">||fabric.io</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210325103158.png" alt="20210325103158"></p>
-<p>个人添加的规则，会被保存到文件：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;Applications&#x2F;V2rayU.app&#x2F;Contents&#x2F;Resources&#x2F;pac&#x2F;user-rule.txt</span><br></pre></td></tr></table></figure>
-
-<p>保存后立即生效。</p>
-<p>相关：</p>
-<ul>
-<li><a href="https://github.com/yanue/V2rayU/issues/102" target="_blank" rel="noopener">关于Pac设置的问题</a></li>
-<li><a href="https://github.com/yanue/V2rayU/issues/465" target="_blank" rel="noopener">https://github.com/yanue/V2rayU/issues/465</a></li>
-</ul>
-<hr>
-<h4 id="V2rayU-实现局域网共享"><a href="#V2rayU-实现局域网共享" class="headerlink" title="V2rayU 实现局域网共享"></a>V2rayU 实现局域网共享</h4><p>打开 <code>偏好设置</code> – <code>Advance</code> 选项，找到 <code>本机http监听Host</code> 项，将 <code>127.0.0.1</code> 改成 <code>0.0.0.0</code> 就可以了。</p>
-<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210325103057.png" alt="20210325103057"></p>
-<p>相关：</p>
-<ul>
-<li><a href="https://github.com/v2ray/v2ray-core/issues/210" target="_blank" rel="noopener">https://github.com/v2ray/v2ray-core/issues/210</a></li>
-</ul>
-<hr>
-<h4 id="V2rayU-彻底卸载方法"><a href="#V2rayU-彻底卸载方法" class="headerlink" title="V2rayU 彻底卸载方法"></a>V2rayU 彻底卸载方法</h4><p>关键分两步：<code>停止v2ray-core, 然后卸载V2rayU.app</code></p>
-<p>第一步: 卸载V2rayU.app</p>
-<p>推荐使用 <code>AppCleaner</code></p>
-<p>第二步: 彻底删除相关文件及服务</p>
-<p>命令: </p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd ~&#x2F;Library&#x2F;LaunchAgents&#x2F;</span><br><span class="line">&#x2F;bin&#x2F;launchctl remove yanue.v2rayu.v2ray-core</span><br><span class="line">&#x2F;bin&#x2F;launchctl remove yanue.v2rayu.http</span><br><span class="line"></span><br><span class="line">rm -f ~&#x2F;Library&#x2F;LaunchAgents&#x2F;yanue.v2rayu.v2ray-core.plist</span><br><span class="line">rm -f ~&#x2F;Library&#x2F;Preferences&#x2F;net.yanue.V2rayU.plist</span><br><span class="line">rm -f ~&#x2F;Library&#x2F;Logs&#x2F;V2rayU.log</span><br></pre></td></tr></table></figure>
-
-<p>重点:</p>
-<p>主要是使用 <code>launchctl</code> 命令停止 <code>yanue.v2rayu.v2ray-core</code> 服务(会自动启动)</p>
-<p>相关：</p>
-<ul>
-<li><a href="https://github.com/yanue/V2rayU/issues/697" target="_blank" rel="noopener">https://github.com/yanue/V2rayU/issues/697</a></li>
-</ul>
-<hr>
-]]></content>
-      <tags>
-        <tag>Shadowsocks</tag>
       </tags>
   </entry>
   <entry>
@@ -6185,7 +6225,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#97;&#109;&#112;&#x6c;&#101;&#46;&#x63;&#111;&#109;">&#x65;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#97;&#109;&#112;&#x6c;&#101;&#46;&#x63;&#111;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#97;&#105;&#x6c;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#x65;&#x6d;&#97;&#105;&#x6c;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

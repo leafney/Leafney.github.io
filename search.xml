@@ -94,7 +94,7 @@
       </tags>
   </entry>
   <entry>
-    <title>Dart中通过判断字符串是否为空</title>
+    <title>Dart中判断字符串是否为空</title>
     <url>/2021/05/11/whether-string-is-null-or-empty-in-dart/</url>
     <content><![CDATA[<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>在 Dart 中判断字符串是否为空，我们可以通过 <code>isEmpty</code> 或 <code>isNotEmpty</code> 来处理。</p>
 <p>但是，在Dart中 <code>String</code> 默认值为 <code>null</code>:</p>
@@ -6311,7 +6311,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#101;&#120;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#101;&#120;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#x63;&#111;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#97;&#105;&#108;&#x40;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#101;&#x6d;&#97;&#105;&#108;&#x40;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#x2e;&#99;&#x6f;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

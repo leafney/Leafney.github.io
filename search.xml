@@ -41,7 +41,8 @@
 <li><a href="https://github.com/yanue/V2rayU/issues/697" target="_blank" rel="noopener">https://github.com/yanue/V2rayU/issues/697</a></li>
 </ul>
 <hr>
-<h4 id="3-0正式版"><a href="#3-0正式版" class="headerlink" title="3.0正式版"></a>3.0正式版</h4><p>最近看到V2rayU的 github issues 上有好多报 <code>3.0正式版</code> 有问题的，建议先不要升级使用。</p>
+<h4 id="3-0正式版"><a href="#3-0正式版" class="headerlink" title="3.0正式版"></a>3.0正式版</h4><p><code>Updated: 2021-05-09</code></p>
+<p>最近看到V2rayU的 github issues 上有好多报 <code>3.0正式版</code> 有问题的，建议先不要升级使用。</p>
 <p>这里的 <code>3.0正式版</code> 对应的tag是 <code>3.0.3</code> 。</p>
 <p>我目前使用的是 <code>3.0预览版</code> ，对应的tag是 <code>3.0.0.preview</code> 。平时使用上没有问题，功能正常。</p>
 <hr>
@@ -84,6 +85,91 @@
 
 <hr>
 <p><strong>未完待续~</strong></p>
+]]></content>
+      <categories>
+        <category>Flutter之旅</category>
+      </categories>
+      <tags>
+        <tag>Flutter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Dart中通过判断字符串是否为空</title>
+    <url>/2021/05/11/whether-string-is-null-or-empty-in-dart/</url>
+    <content><![CDATA[<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>在 Dart 中判断字符串是否为空，我们可以通过 <code>isEmpty</code> 或 <code>isNotEmpty</code> 来处理。</p>
+<p>但是，在Dart中 <code>String</code> 默认值为 <code>null</code>:</p>
+<p>dart version &lt; 2.12:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void main()&#123;</span><br><span class="line">  String a;</span><br><span class="line">  print(a); &#x2F;&#x2F; null</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>dart version &gt;= 2.12:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void main()&#123;</span><br><span class="line">  String? ss;</span><br><span class="line">  print(ss); &#x2F;&#x2F; null</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个时候如果通过 <code>isEmpty</code> 去判断该字符串是否为空时，可能会遇到下面的报错：</p>
+<blockquote>
+<p>The getter ‘isEmpty’ was called on null</p>
+</blockquote>
+<p>相应的解决方法就是通过使用 <code>?</code> 和 <code>!</code> 来处理：</p>
+<blockquote>
+<p>if <code>message</code> returns <code>null</code>. You might want:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if(message?.isEmpty ?? true)</span><br></pre></td></tr></table></figure>
+
+<p>不过有时候就会感觉这样处理起来就会很繁琐。</p>
+<p>像在 <code>C#</code> 中对于字符串的处理，就有 <code>isNullOrEmpty</code> 的方法来判断字符串是否为 <code>null</code> 或 <code>空字符串</code> ，然而在 <code>Dart</code> 中却没有提供类似于 <code>isNullOrEmpty</code> 的方法，flutter issues 中相关的讨论表示也不会提供：</p>
+<ul>
+<li><a href="https://github.com/dart-lang/sdk/issues/11155" target="_blank" rel="noopener">Can we implement String.IsNullOrEmpty and String.IsNullOrWhiteSpace as part of the core libraries · Issue #11155 · dart-lang/sdk</a></li>
+</ul>
+<hr>
+<h4 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h4><p>既然官方没有提供，那我们可以自己来实现相应的处理方法来解决。</p>
+<h4 id="帮助类或扩展方法"><a href="#帮助类或扩展方法" class="headerlink" title="帮助类或扩展方法"></a>帮助类或扩展方法</h4><p>我们可以通过帮助类或者扩展方法来实现。</p>
+<p>帮助类不必多说。对于扩展方法，可以参考如下的示例：</p>
+<p>扩展：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">extension NumberParsing on String &#123;</span><br><span class="line">  int parseInt() &#123;</span><br><span class="line">    return int.parse(this);</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; ···</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#39;string_apis.dart&#39;;</span><br><span class="line">&#x2F;&#x2F; ···</span><br><span class="line">print(&#39;42&#39;.parseInt()); &#x2F;&#x2F; Use an extension method.</span><br></pre></td></tr></table></figure>
+
+<p>完整的实现代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="built_in">String</span>? ss;</span><br><span class="line">  <span class="built_in">print</span>(ss);</span><br><span class="line"></span><br><span class="line"><span class="comment">//   ss = " ";</span></span><br><span class="line"><span class="comment">//   ss="hello";</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">print</span>(ss);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'isNullOrEmpty: <span class="subst">$&#123;ss.isNullOrEmpty()&#125;</span>'</span>);</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'isNotNullAndEmpty: <span class="subst">$&#123;ss.isNotNullAndEmpty()&#125;</span>'</span>);</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'getStrValue: <span class="subst">$&#123;ss.getStrValue(val: <span class="string">"x"</span>)&#125;</span>'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'-------'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'StrUtils.isNullOrEmpty: <span class="subst">$&#123;StrUtils.isNullOrEmpty(ss)&#125;</span>'</span>);</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'StrUtils.isNotNullAndEmpty: <span class="subst">$&#123;StrUtils.isNotNullAndEmpty(ss)&#125;</span>'</span>);</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">'StrUtils.getStrValue: <span class="subst">$&#123;StrUtils.getStrValue(ss)&#125;</span>'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// use Extension</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extension</span> StringExtensions <span class="keyword">on</span> <span class="built_in">String</span>? &#123;</span><br><span class="line">  <span class="comment">/// <span class="markdown">string is null or empty</span></span></span><br><span class="line">  <span class="built_in">bool</span> isNullOrEmpty() =&gt; <span class="keyword">this</span> == <span class="keyword">null</span> || <span class="keyword">this</span>!.trim().isEmpty;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="markdown">string not null and empty</span></span></span><br><span class="line">  <span class="built_in">bool</span> isNotNullAndEmpty() =&gt; <span class="keyword">this</span> != <span class="keyword">null</span> &amp;&amp; <span class="keyword">this</span>!.trim().isNotEmpty;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="markdown">if string is null or empty ,return default value</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//   String getNullOrEmptyVal(&#123;String val = ""&#125;) &#123;</span></span><br><span class="line"><span class="comment">//     if(this.isNullOrEmpty())&#123;</span></span><br><span class="line"><span class="comment">//       return val;</span></span><br><span class="line"><span class="comment">//     &#125;</span></span><br><span class="line"><span class="comment">//     return this!;</span></span><br><span class="line"><span class="comment">//   &#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">String</span> getStrValue(&#123;<span class="built_in">String</span> val = <span class="string">""</span>&#125;) =&gt; <span class="keyword">this</span>.isNullOrEmpty() ? val : <span class="keyword">this</span>!;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// use Function</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StrUtils</span> </span>&#123;</span><br><span class="line">  StrUtils._();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="markdown">string is null or empty</span></span></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> isNullOrEmpty(<span class="built_in">String</span>? s) =&gt; s == <span class="keyword">null</span> || s.trim().isEmpty;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="markdown">string not null and empty</span></span></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">bool</span> isNotNullAndEmpty(<span class="built_in">String</span>? s) =&gt; s != <span class="keyword">null</span> &amp;&amp; s.trim().isNotEmpty;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="markdown">if string is null or empty ,return default value</span></span></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">String</span> getStrValue(<span class="built_in">String</span>? s, &#123;<span class="built_in">String</span> val = <span class="string">""</span>&#125;) =&gt;</span><br><span class="line">      isNullOrEmpty(s) ? val : s!;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以在 DartPad 中查看运行结果：<a href="https://dartpad.dev/f2bfd6d5d1c8c190597c35c759c21361?null_safety=true" target="_blank" rel="noopener">Dart String add isNullOrEmpty</a></p>
+<p>附：<a href="https://dart.dev/guides/language/extension-methods" target="_blank" rel="noopener">Extension methods | Dart</a></p>
+<hr>
+<h4 id="第三方插件"><a href="#第三方插件" class="headerlink" title="第三方插件"></a>第三方插件</h4><p>当然，除了自己实现，也可以使用 <code>quiver</code> 插件来解决。</p>
+<p>具体可查看：<a href="https://pub.dev/packages/quiver" target="_blank" rel="noopener">quiver - pub.dev</a></p>
+<p>相应的源码：<a href="https://github.com/google/quiver-dart/blob/master/lib/strings.dart" target="_blank" rel="noopener">quiver-dart/strings.dart at master · google/quiver-dart</a></p>
+<hr>
+]]></content>
+      <categories>
+        <category>Flutter之旅</category>
+      </categories>
+      <tags>
+        <tag>Flutter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Flutter2报错 Bad state: Insecure HTTP is not allowed by platform</title>
+    <url>/2021/05/10/flutter2-insecure-http-is-not-allowed-by-platform/</url>
+    <content><![CDATA[<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>在将Flutter项目升级到 <code>Flutter 2</code> 之后：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">environment:</span><br><span class="line">  sdk: &quot;&gt;&#x3D;2.12.0 &lt;3.0.0&quot;</span><br></pre></td></tr></table></figure>
+
+<p>发现在使用 <code>dio</code> 发起请求时遇到了App崩溃的问题。</p>
+<p>调试发现请求发出后会一直卡住，没有发出请求，也没有报错信息提示（在 <code>VS Code</code> 中）。</p>
+<p>后来我用 <code>AS</code> 重新创建了一个空项目只添加 <code>dio</code> 用来测试请求。发现 <code>https</code> 链接的请求正常，访问本地的 <code>http</code> 链接会报错。错误信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Reloaded 0 libraries in 47ms.</span><br><span class="line">[VERBOSE-2:ui_dart_state.cc(186)] Unhandled Exception: DioError [DioErrorType.other]: Bad state: Insecure HTTP is not allowed by platform: http:&#x2F;&#x2F;172.21.40.40:9999&#x2F;version</span><br><span class="line">#0      _HttpClient._openUrl (dart:_http&#x2F;http_impl.dart:2434:7)</span><br><span class="line">#1      _HttpClient.openUrl (dart:_http&#x2F;http_impl.dart:2341:7)</span><br><span class="line">#2      De</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h4><p>后来，在Flutter网站中搜索到相关的文档，给出了如下的解决方法。</p>
+<p><a href="https://flutter.dev/docs/release/breaking-changes/network-policy-ios-android#allowing-cleartext-connection-for-debug-builds" target="_blank" rel="noopener">Insecure HTTP connections are disabled by default on iOS and Android - Flutter</a></p>
+<h5 id="Android端"><a href="#Android端" class="headerlink" title="Android端"></a>Android端</h5><p>修改Flutter项目中 <code>android/app/src/mian/AdnroidManifest.xml</code> 文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;uses-permission android:name&#x3D;&quot;android.permission.INTERNET&quot; &#x2F;&gt;</span><br><span class="line">&lt;application</span><br><span class="line">        android:name&#x3D;&quot;io.flutter.app.FlutterApplication&quot;</span><br><span class="line">        android:label&#x3D;&quot;receipt&quot;</span><br><span class="line">        android:usesCleartextTraffic&#x3D;&quot;true&quot;</span><br><span class="line">        android:icon&#x3D;&quot;@mipmap&#x2F;ic_launcher&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>即在上面的 <code>&lt;application&gt;</code> 中添加 <code>android:usesCleartextTraffic=&quot;true&quot;</code> 一行。</p>
+<h5 id="IOS端"><a href="#IOS端" class="headerlink" title="IOS端"></a>IOS端</h5><p>在文件 <code>ios/Runner/info.plist</code> 中添加以下键值对：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;key&gt;NSAppTransportSecurity&lt;&#x2F;key&gt;</span><br><span class="line">   &lt;dict&gt;</span><br><span class="line">       &lt;key&gt;NSAllowsArbitraryLoads&lt;&#x2F;key&gt;</span><br><span class="line">       &lt;true&#x2F;&gt;</span><br><span class="line">   &lt;&#x2F;dict&gt;</span><br></pre></td></tr></table></figure>
+
+<p>重新运行项目后，测试能够正常访问本地的 <code>http</code> 链接了。</p>
+<hr>
 ]]></content>
       <categories>
         <category>Flutter之旅</category>
@@ -6225,7 +6311,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#97;&#105;&#x6c;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#x65;&#x6d;&#97;&#105;&#x6c;&#64;&#101;&#120;&#97;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#101;&#120;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#101;&#120;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#x63;&#111;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

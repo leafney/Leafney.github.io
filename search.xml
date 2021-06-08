@@ -100,6 +100,30 @@
       </tags>
   </entry>
   <entry>
+    <title>vue生命周期函数</title>
+    <url>/2021/06/02/vue-lifecycle/</url>
+    <content><![CDATA[<h4 id="钩子函数"><a href="#钩子函数" class="headerlink" title="钩子函数"></a>钩子函数</h4><ul>
+<li>beforeCreate</li>
+<li>created</li>
+<li>beforeMount</li>
+<li>mounted</li>
+<li>beforeUpdate</li>
+<li>updated</li>
+<li>beforeDestroy</li>
+<li>destroyed</li>
+</ul>
+<hr>
+<h4 id="图示"><a href="#图示" class="headerlink" title="图示"></a>图示</h4><p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210608172331.png" alt="20210608172331"></p>
+<hr>
+]]></content>
+      <categories>
+        <category>前端开发</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>今年还是单身狗，明年让你过六一</title>
     <url>/2021/06/01/not-being-a-single-dog/</url>
     <content><![CDATA[<p>女：<strong>你吃饭了吗？</strong><br>回：还没呢，如果你亲自下厨，我就能尝尝你的手艺了！<br>女：我不太会做饭<br>回：没关系，我可以教你呀！<br>提示：重点不是吃了或者没吃，而是她想找你聊天了。重点是延续这个话题，顺势拉近关系。</p>
@@ -6392,7 +6416,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#x61;&#105;&#x6c;&#x40;&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#111;&#109;">&#x65;&#x6d;&#x61;&#105;&#x6c;&#x40;&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#111;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#109;">&#x65;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

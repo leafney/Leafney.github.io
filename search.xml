@@ -126,13 +126,26 @@
   <entry>
     <title>今年还是单身狗，明年让你过六一</title>
     <url>/2021/06/01/not-being-a-single-dog/</url>
-    <content><![CDATA[<p>女：<strong>你吃饭了吗？</strong><br>回：还没呢，如果你亲自下厨，我就能尝尝你的手艺了！<br>女：我不太会做饭<br>回：没关系，我可以教你呀！<br>提示：重点不是吃了或者没吃，而是她想找你聊天了。重点是延续这个话题，顺势拉近关系。</p>
+    <content><![CDATA[<h4 id="你吃饭了吗"><a href="#你吃饭了吗" class="headerlink" title="你吃饭了吗"></a>你吃饭了吗</h4><p>女：<strong>你吃饭了吗？</strong><br>回：还没呢，如果你亲自下厨，我就能尝尝你的手艺了！<br>女：我不太会做饭<br>回：没关系，我可以教你呀！</p>
+<p>提示：重点不是吃了或者没吃，而是她想找你聊天了。重点是延续这个话题，顺势拉近关系。</p>
 <hr>
-<p>女：<strong>今天好热呀，我都不想出门了</strong><br>回：和我一起就不会热啦<br>女：为什么呀<br>回：因为心“近”自然凉嘛<br>提示：女生说不想出门，潜台词是不想一个人出门。</p>
+<h4 id="好热啊不想出门"><a href="#好热啊不想出门" class="headerlink" title="好热啊不想出门"></a>好热啊不想出门</h4><p>女：<strong>今天好热呀，我都不想出门了</strong><br>回：和我一起就不会热啦<br>女：为什么呀<br>回：因为心“近”自然凉嘛</p>
+<p>提示：女生说不想出门，潜台词是不想一个人出门。</p>
 <hr>
-<p>如果女生经常发 “哈哈哈哈哈哈”，如何机智回复？<br>可以回：你这么喜欢笑，我就感觉你这个人吧 笑里藏刀<br>女生肯定不明所以<br>然后接着回：我跟你不一样，我笑里藏仙女。再发一段哈哈哈，然后把她的名字夹在这段话里。</p>
+<h4 id="哈哈哈哈哈"><a href="#哈哈哈哈哈" class="headerlink" title="哈哈哈哈哈"></a>哈哈哈哈哈</h4><p><strong>如果女生经常发 “哈哈哈哈哈哈”，如何机智回复？</strong><br>可以回：你这么喜欢笑，我就感觉你这个人吧 笑里藏刀<br>女生肯定不明所以<br>然后接着回：我跟你不一样，我笑里藏仙女。再发一段哈哈哈，然后把她的名字夹在这段话里。</p>
 <hr>
-<p>女：<strong>我出门了</strong><br>回：记得带伞，千万别淋雨，不然就会。。。<br>女：不然什么<br>再回：不然就会可爱到发芽了<br>提示：千万不要回复 注意安全 巴拉巴拉的那些，难道她不知道注意安全吗？</p>
+<h4 id="我出门了"><a href="#我出门了" class="headerlink" title="我出门了"></a>我出门了</h4><p>女：<strong>我出门了</strong><br>回：记得带伞，千万别淋雨，不然就会。。。<br>女：不然什么<br>再回：不然就会可爱到发芽了</p>
+<p>提示：千万不要回复 注意安全 巴拉巴拉的那些，难道她不知道注意安全吗？</p>
+<hr>
+<h4 id="心情不好"><a href="#心情不好" class="headerlink" title="心情不好"></a>心情不好</h4><p>女：<strong>我心情不好</strong><br>回：看你这样，我也挺难过的。谁这么讨厌呀，惹我们家小仙女，怎么会有这样的人<br>女生一般会说一下<br>再回：别生气了，有什么烦恼是一顿火锅解决不了的呀，走，我带你去敞开吃一顿</p>
+<p>提示：千万不要回复：怎么了，怎么回事？巴拉巴拉的这些。因为女生已经跟你说心情不好了，你就不要再刨根问底的问她了。你要先解决她的情绪问题。女生难过第一时间找你倾诉，肯定是因为相信你，希望你能理解她的心情。</p>
+<hr>
+<h4 id="开场白"><a href="#开场白" class="headerlink" title="开场白"></a>开场白</h4><p>朋友介绍的女生如何开场？</p>
+<p>发：你看我们是走过程还是直接开始？</p>
+<p>提示：如果女生看懂是玩笑，那么接下来就会很好聊了。要是女孩没看懂，他就会敷衍的回个表情，你就直接说<br>发：好，那我们就直接从这个表情开始吧！</p>
+<hr>
+<h4 id="忘记回消息"><a href="#忘记回消息" class="headerlink" title="忘记回消息"></a>忘记回消息</h4><p>女：忘记回你消息了<br>回：没关系呀，你用意念回复的时候，我也在用意念<br>女生可能不明所以<br>再回：我用意念把你胖揍了一顿，说起来还是我过分一点</p>
+<p>提示：虽然不是故意不回你消息，但我们可以趁机调侃一下</p>
 <hr>
 <p>附：内容来源于抖音。</p>
 ]]></content>
@@ -195,6 +208,172 @@
       <tags>
         <tag>Golang</tag>
         <tag>Gorm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Telegram开发 - Google Voice 保号</title>
+    <url>/2021/05/20/develop-with-telegram-for-google-voice-keep-alive/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Telegram开发</category>
+      </categories>
+      <tags>
+        <tag>Telegram</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Telegram开发 - Telegram 入门</title>
+    <url>/2021/05/16/develop-with-telegram-for-start/</url>
+    <content><![CDATA[<p>既然 <code>Google Voice</code> 账号已经准备好了，接下来就开始注册 Telegram。</p>
+<hr>
+<h4 id="坎坷的开始"><a href="#坎坷的开始" class="headerlink" title="坎坷的开始"></a>坎坷的开始</h4><p>经过我的一番验证后发现，<code>telegram</code> 的 <code>初次注册</code> <strong>必须要</strong> 通过手机来进行操作才可以。</p>
+<p>虽然官网上有 <code>Windows</code> 和 <code>MacOS</code> 的客户端，还有 <code>网页端</code>，但是你在这些设备上注册时，会提示你验证码已发送到你的移动设备上。</p>
+<p>一开始想着用电脑的话操作上更快一些，所以就没有用手机来注册。不过在经历了 <code>网页端</code> 和 <code>MacOS端</code> 的 <code>注册绊脚石</code> 之后，才深切体会到了这一点。</p>
+<hr>
+<h4 id="接收验证码"><a href="#接收验证码" class="headerlink" title="接收验证码"></a>接收验证码</h4><p>在 <code>chrome</code> 浏览器中打开 <code>google voice</code> 主页面，准备接收验证码。</p>
+<p>在手机端的 <code>telegram</code> 输入上面的 <code>google voice</code> 账号。注意区号要改为 <code>+1</code>。点击 <code>next</code> 等待发送验证码。</p>
+<p>但是，我却发现我的 <code>google voice</code> 页面中一直收不到相应的短信验证码。</p>
+<p>然后发现手机端的 <code>telegram</code> 会在3分钟之后未输入验证码的情况下发送语音验证码。</p>
+<p>但是，我在接收到语音验证码时，因为手误操作失败了，能够听到对方的声音，但我却没法分辨出来英文中的验证码是什么，只听到对方说的让我 <code>按1</code> 或者 <code>按2</code>，最后收到了如下的错误提示：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613140838.png" alt="20210613140838"></p>
+<p>当我想再次申请发送验证码时，<code>telegram</code> App上只提示我 <code>telegram dialed your number</code> ，却找不到如何来重新发送验证码。</p>
+<hr>
+<h4 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h4><p>此时似乎陷入了一个僵局的状态：</p>
+<ol>
+<li>除了手机端，我无法通过其他客户端来进行第一次的注册激活。</li>
+<li>手机端上因为已经给我发送过验证码，但是我既没有接收到短信，又错过了接收语音。而现在却找不到如何重新发送验证码。</li>
+</ol>
+<p>最后，抱着尝试的心态，我把手机上的 <code>telegram App</code> 卸载了，然后重新安装。此时发现我又能重新进入到发送验证码的流程了。</p>
+<hr>
+<h4 id="再次无语"><a href="#再次无语" class="headerlink" title="再次无语"></a>再次无语</h4><p>不过让人无语的是，我的 <code>google voice</code> 中又没有接收到相应的短信验证码。</p>
+<p>因为这次我换了 <code>edge</code> 浏览器来打开 <code>google voice</code> 的页面，却发现接听到的语音电话听不到对方的声音，最后又完美的错过了接听。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613141158.png" alt="20210613141158"></p>
+<p>不得已，我又换回了 <code>chrome</code> 浏览器。</p>
+<hr>
+<h4 id="出现转机"><a href="#出现转机" class="headerlink" title="出现转机"></a>出现转机</h4><p>当再次在 <code>chrome</code> 浏览器中打开 <code>Voice</code> 网站时，我发现在 <code>google voice</code> 页面的上部有一个感叹号的提示，信息如下：</p>
+<blockquote>
+<p>您的浏览器可能阻止了来电响铃。请更改浏览器设置，以允许 voice.google.com 响铃。</p>
+</blockquote>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613141514.png" alt="20210613141514"></p>
+<p>本来在第一次的时候我就发现了这个提示，不过当时没有太在意，觉得只是响铃而已，没什么关系的。但现在我感觉 <strong>两次都接收不到验证码可能跟这个警告有关系</strong>。</p>
+<p>然后看了后面的 <code>了解详情</code> ，在 <code>chrome</code> 浏览器的新标签页中输入 <code>chrome://settings/content/sound</code> ，</p>
+<p>在打开的 <code>声音</code> 设置页中，将 <code>允许网站播放声音(推荐)</code> 设为启用，当然，这一项默认就是启用状态。</p>
+<p>然后在下面的 <code>允许</code> 区域右侧点击 <code>添加</code> ，将 <code>voice.google.com</code> 添加到下面。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613141705.png" alt="20210613141705"></p>
+<p>再次回到 <code>google voice</code> 页面中，刷新页面，发现顶部的警告已经没有了。</p>
+<p>我再次尝试上面的操作，卸载App，重新进行注册流程，等待发送验证码。</p>
+<p>这次，发现 <code>google voice</code> 居然收到了相应短信通知，同时在浏览器的右上角也会有通知提醒出现。也会接收到邮件通知。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613141957.png" alt="20210613141957"></p>
+<p>输入验证码，继续后续的注册流程。</p>
+<hr>
+<h4 id="MacOS端"><a href="#MacOS端" class="headerlink" title="MacOS端"></a>MacOS端</h4><p><code>telegram</code> 的 MacOS端要登录也必须使用代理才可以，但在设置代理时可能会出现一些问题。</p>
+<p>打开MacOS上的 <code>telegram</code> 后，在主页面选择右上角的 <code>代理设置</code> 来新增 <code>socket</code> 代理。</p>
+<p>不过可能会出现添加代理后，一直处于 <code>转圈</code> 的状态，显示 <code>socks5:connecting...</code> 的信息。等待或者重新设置也一直是这个样子。</p>
+<p>最终，在经过多次尝试后我总算找到其中的 <code>窍门</code>:</p>
+<ol>
+<li>点击 <code>添加代理</code> ，输入 <code>SOCKS5</code> 的 <code>Server</code> 和 <code>Port</code> 后，直接点击右上角的 <code>Done</code> 。</li>
+<li>此时，界面中应该是会显示之前遇到的 <code>转圈</code> 的状态</li>
+<li>那么，不用去管它。直接退出 <code>telegram</code> 程序</li>
+<li>再次打开 <code>telegram</code> ，你会发现 <code>代理设置</code> 中的代理此时已经显示 <code>connected</code> 了。</li>
+</ol>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613142253.png" alt="20210613142253"></p>
+<p>Ok，就是这么莫名其妙！！！</p>
+<hr>
+<h4 id="设置中文"><a href="#设置中文" class="headerlink" title="设置中文"></a>设置中文</h4><p>默认情况下，Telegram设置中的可选语言中并不包含中文的选项。但我们可以通过插件的方式来安装。</p>
+<p>直接复制下面的链接，发送到聊天窗口中，然后点击该链接安装即可。</p>
+<p>中文语言包:</p>
+<ul>
+<li>简体中文：<code>tg://setlanguage?lang=zh-hans-raw</code></li>
+<li>繁体中文：<code>tg://setlanguage?lang=zh-hant-raw</code></li>
+</ul>
+<p>该中文语言包支持各个客户端。</p>
+<hr>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>最后，还是要总结一下上面的经验：</p>
+<ol>
+<li>在 <code>google voice</code> 的操作过程中，一定要启用 <code>全局代理</code>，更保险一些</li>
+<li>手机端的 <code>telegram</code> 注册时，也要 <code>启用代理</code>，因为 <code>你懂得</code> 的原因</li>
+<li><code>google voice</code> 的操作一定要使用 <code>chrome</code> 浏览器来操作，不过使用 <code>edge</code> 浏览器也可以，我后来感觉应该是某些设置没有打开之前才会听不到语音</li>
+</ol>
+<hr>
+]]></content>
+      <categories>
+        <category>Telegram开发</category>
+      </categories>
+      <tags>
+        <tag>Telegram</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Telegram开发 - Google Voice 账号转移</title>
+    <url>/2021/05/12/develop-with-telegram-for-google-voice-account-transfer/</url>
+    <content><![CDATA[<p>从开发的角度来说，Telegram是一个可玩性很高的App，主要是可以通过其内置的机器人开发一些不错的工具。而从社交App的角度而言，其又是一个私密性很高的通讯软件。</p>
+<p>额。。。说的都是废话。。。</p>
+<hr>
+<h4 id="下载telgram"><a href="#下载telgram" class="headerlink" title="下载telgram"></a>下载telgram</h4><p>在国内的App Store下，可以直接下载 <code>telegram</code> App。也可以直接通过国内的 <code>+86</code> 手机号注册。</p>
+<p>我是在网上看了相关的讨论，因为 <code>telegram</code> 必须用手机号来注册，但国内的手机号都是实名制的，可能会出现一些问题。所以，最后决定选择大多说人推荐的采用 <code>google voice</code> 账号来注册。</p>
+<h4 id="购买账号"><a href="#购买账号" class="headerlink" title="购买账号"></a>购买账号</h4><p>如果自己去注册 <code>Google Voice</code> 账号的话，除了需要有 <code>科学上网</code> 的前提，还需要提供一个真实的美国的家庭地址和可用的电话号码。当然，这个信息可以直接从网上去搜索相关信息来用。</p>
+<p>不过，为了方便，我们可以直接在淘宝上去购买可用的账号，一般的话，10块钱左右就能搞定。</p>
+<p>毕竟有时候，能用钱解决的问题，都是小事儿。</p>
+<hr>
+<h4 id="处理账号"><a href="#处理账号" class="headerlink" title="处理账号"></a>处理账号</h4><p>淘宝买家会提供给我们一个可用的google账号，附带可用的 <code>google voice</code> 账号。</p>
+<p>我们首先要做的就是 <code>修改密码</code> 。</p>
+<p>这里，一般有两种处理方式：</p>
+<p>第一种，我们可以保留该 <code>google</code> 账号。这种就相当于我们购买了一个 <code>google voice</code> 账号，又白得了一个 <code>google</code> 账号。那我们可以修改密码和验证邮箱后自己使用。</p>
+<p>如果你选择这种方式的话，恭喜你，后面的内容就不需要看了，可以直接晋级下一关。</p>
+<p>不过这种方式不好的一点是：一般这种 <code>google</code> 账号都是随便乱码注册的，账号名杂乱无序不好记忆，我们每次使用的时候要么你需要拷贝过来使用，要么就需要花费一些时间来记忆一下。体验上不太好。</p>
+<p>第二种方式，则是将 <code>google voice</code> 账号迁移到自己的 <code>google</code> 账号下。一般情况下都会有自己的 <code>google</code> 账号，而我们只需要将购买到的 <code>voice</code> 账号转移到自己的 <code>google</code> 账号下，就可以了。</p>
+<p>这里，我选择的是第二种。</p>
+<p>在将该账号迁移到自己的名下之前，需要做一些准备工作：</p>
+<ol>
+<li>保证启用 <code>全局代理</code></li>
+<li>清空浏览器缓存</li>
+</ol>
+<p>启用全局代理，是为了防止在账号转移过程中，<code>google voice</code> 会检测当前所处ip地址是否为美国地区。</p>
+<p>我们可以访问 <a href="https://whoer.net" target="_blank" rel="noopener">WHOER</a> 查看一下自己的ip信息。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613125420.png" alt="20210613125420"></p>
+<p>将页面向下拉，可以查看具体的位置信息，已验证代理是否真实。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613125532.png" alt="20210613125532"></p>
+<hr>
+<h4 id="转移流程"><a href="#转移流程" class="headerlink" title="转移流程"></a>转移流程</h4><h5 id="开始转移"><a href="#开始转移" class="headerlink" title="开始转移"></a>开始转移</h5><p>打开 <code>Google Voice</code> 官网 <a href="https://voice.google.com" target="_blank" rel="noopener">Voice</a>，登录购买到的 <code>Google Voice</code> 账号。</p>
+<p>点击右上角 <code>设置</code> ，</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613132454.png" alt="20210613132454"></p>
+<p>点击 <code>Account</code> 部分的 <code>Transfer</code> 按钮。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613132515.png" alt="20210613132515"></p>
+<p>在打开的新页面中，再次点击 <code>Transfer</code> ，</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613132609.png" alt="20210613132609"></p>
+<p>显示一个弹窗：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613132809.png" alt="20210613132809"></p>
+<p>点击下面的 <code>Sign-in to another account.</code> ，登录自己的google账号，此时，点击右上角头像可以看到当前已经登录成功的两个账号。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613132843.png" alt="20210613132843"></p>
+<hr>
+<h5 id="登录个人账号"><a href="#登录个人账号" class="headerlink" title="登录个人账号"></a>登录个人账号</h5><p>刷新一下当前页面，再次点击 <code>Transfer</code> </p>
+<p>会看到自己的google账号现在是显示为灰色的不可点击状态。</p>
+<p>显示灰色说明当前这个账号没有开通 <code>voice</code> 服务，我们先要去开通一下。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613133123.png" alt="20210613133123"></p>
+<hr>
+<h5 id="开通voice服务"><a href="#开通voice服务" class="headerlink" title="开通voice服务"></a>开通voice服务</h5><p>点击 <code>Cancel</code> 按钮取消弹窗。</p>
+<p>点击右上角头像切换到自己的 <code>google</code> 账号下，然后在新打开的页面窗口中点击右上角的 <code>Sign In</code> 。</p>
+<p>之后会显示 <code>欢迎使用 Google Voice</code> 的提示信息，</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613133856.png" alt="20210613133856"></p>
+<p>点击继续，会提示 <code>选择一个 Google Voice 号码</code> 的信息。不用去管它。显示出该信息就表示我们成功开通了 voice服务。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613133929.png" alt="20210613133929"></p>
+<p>关掉当前窗口，回到上一个页面。</p>
+<hr>
+<h5 id="转移"><a href="#转移" class="headerlink" title="转移"></a>转移</h5><p>刷新一下当前页面，再次点击 <code>Transfer</code></p>
+<p>此时会看到自己的 google 账号显示为可勾选状态，勾选后点击 <code>Transer</code> 按钮。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613134202.png" alt="20210613134202"></p>
+<p>当看到如下页面的提示信息后，说明账号转移成功了。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210613134214.png" alt="20210613134214"></p>
+<p>此时刷新页面后，可以看到购买的 <code>google</code> 账号下已经没有这个 <code>voice</code> 号码了。切换到自己的 <code>google</code> 账号下，已经可以看到 <code>voice</code> 号码了。</p>
+<hr>
+<p>至此，<code>Google Vocie</code> 账号转移成功。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>Telegram开发</category>
+      </categories>
+      <tags>
+        <tag>Telegram</tag>
       </tags>
   </entry>
   <entry>
@@ -6416,7 +6595,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#109;">&#x65;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#x2e;&#99;&#x6f;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#97;&#105;&#108;&#64;&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#x65;&#109;&#97;&#105;&#108;&#64;&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

@@ -100,6 +100,84 @@
       </tags>
   </entry>
   <entry>
+    <title>听说北京的数字人民币红包你没有中签</title>
+    <url>/2021/06/12/beijing-e-cny-red-packet/</url>
+    <content><![CDATA[<p>这两天在北京很火的一个事情就是数字人民币红包了。这可是国家发钱呀，想想都开心。</p>
+<h4 id="让人羡慕"><a href="#让人羡慕" class="headerlink" title="让人羡慕"></a>让人羡慕</h4><p>这次的“京彩” 红包金额是 <code>200</code> 元，通过数字人民币的形式发放，主要面向 <code>北京城市副中心</code>、<code>东城区</code>、<code>朝阳区</code>、<code>海淀区</code>、<code>石景山区</code>、<code>延庆区</code> 的在京消费者。没有户籍限制，只有地域上的限制。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210618004550.JPG" alt="20210618004550"></p>
+<p>奈何5~7号这几天我正好离京回老家了，想参加但是有区域上的限制。登录App后直接就提示GPS显示不在北京，没有参与资格。</p>
+<p>等到11号回到北京后，看到小伙伴们发过来的中签的截图，别提心里有多羡慕了。</p>
+<p>特别是看头条上，每刷一条动态基本上都是关于数字人民币中签的信息，感觉就是受到了二次伤害呀！</p>
+<hr>
+<h4 id="有点意思"><a href="#有点意思" class="headerlink" title="有点意思"></a>有点意思</h4><p>偶然间看到其中有个头条用户发的动态：其中一张图片是中了北京的200元“京彩”红包，另一张图片是30元的数字人民币红包。</p>
+<p>看到这个，我就来了兴趣。这两天除了北京的“京彩” 红包，没听说有其他城市要发放数字人民币的红包呀。那200元的红包我没领到，来个30元的红包我也不会嫌少的呀。。。</p>
+<p>然后，我就查看了下面的评论。看到一个用户评论询问是在哪里领的30元的红包但并未得到回复。再往下翻看，看到了一个 “京东” 的字眼。</p>
+<p>之后我迫不及待的打开了京东，但京东首页上并没有找到相关的信息。</p>
+<p>看了看各个菜单，各种推荐页依然没找到任何线索。最后只得在搜索框中输入 “数字人民币” 看看是否有结果，没想到竟然跳转到了一个新的页面，赫然写着 “领30元数字人民币红包” 的信息：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210618004701.jpg" alt="20210618004701"></p>
+<p>还真是 “柳暗花明又一村” 啊。</p>
+<p>点击进去，让我大失所望的是提示下面的信息：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210618004726.jpg" alt="20210618004726"></p>
+<p>点开右上角的 “活动规则”，居然看到其中一条：<code>预约登记时所处地理位置在成都市(以GPS定位为准)</code> 的要求。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210618004801.jpg" alt="20210618004801"></p>
+<p>哎呀，真是白高兴一场。</p>
+<hr>
+<h4 id="事情没那么简单"><a href="#事情没那么简单" class="headerlink" title="事情没那么简单"></a>事情没那么简单</h4><p>不过，让我又有些疑惑的是：头条上的那个网友是怎么领取的两张呢？</p>
+<p>一张地区限制必须是<code>北京市</code>，一张地区限制必须是<code>成都市</code>。</p>
+<p>一种可能是他之前人在成都，然后5号之后来北京了，并且一直在北京待到今天。</p>
+<p>另一种可能是他用了某些“技巧”，符合了这两次的限制要求。</p>
+<p>顿时，我心里就有了一个大胆的想法。</p>
+<hr>
+<h4 id="大胆的想法"><a href="#大胆的想法" class="headerlink" title="大胆的想法"></a>大胆的想法</h4><p>我猜想他使用了 <code>模拟GPS</code> 的方式，设置了一个成都的位置，然后让“京东” 识别出他当前在 <code>成都市</code> ，继而符合了地区上的限制要求。</p>
+<p>然后我上网搜了一下相关的方法，大部分是通过安装一个模拟GPS位置的软件的方式来实现。但因为我使用的是iPhone手机，如果使用这种软件，则必须要求手机系统越狱才可以。</p>
+<p>看到这儿，顿时又没了兴趣。</p>
+<hr>
+<h4 id="换种思路"><a href="#换种思路" class="headerlink" title="换种思路"></a>换种思路</h4><p>晚上在写Flutter项目的时候，忽而来了灵感：如果用开发App的方式来模拟定位呢？这样的话我可以任意指定一个位置，只要骗过“京东App”就可以了！</p>
+<hr>
+<h4 id="试试看"><a href="#试试看" class="headerlink" title="试试看"></a>试试看</h4><p>因为之前并没有开发过地图方面的App，所以只能求助于Google了。别说，还真让我找到了相关的方法。</p>
+<h5 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h5><p>打开 <code>XCode</code> ，随便创建一个 <code>IOS</code> 项目，这里我选择 <code>swift</code> 语言。当然，开发语言随意，这不是重点。</p>
+<p>然后选择 <code>菜单栏</code> – <code>File</code> – <code>New</code> – <code>File...</code> 打开，在右上角搜索 <code>gpx</code> – 添加一个 <code>GPX File</code> 文件到项目文件中。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210618004820.png" alt="20210618004820"></p>
+<h5 id="获取坐标"><a href="#获取坐标" class="headerlink" title="获取坐标"></a>获取坐标</h5><p>然后，我们需要获取一个可用的坐标。</p>
+<p>记得之前在做 <code>o2o</code> 类项目时在网页上使用过百度或高德的相关地图接口，可以获取一个地址的坐标经纬度。</p>
+<p>然后我就找到了百度的 <a href="https://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank" rel="noopener">百度坐标拾取器</a> 工具页面。</p>
+<p>我选择的地址是 <code>成都市青羊区金河路口宽窄巷子景区</code>，相应的经纬度坐标为 <code>104.059763,30.669938</code> 。</p>
+<p>将坐标添加到文件 <code>Location.gpx</code> 中的指定位置。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210618004832.png" alt="20210618004832"></p>
+<p>下面是最重要的一步操作：</p>
+<p>选择 <code>菜单栏</code> – <code>Product</code> – <code>Scheme</code> – <code>Edit Scheme...</code> – 选择左侧的 <code>Run</code> – 点击右侧的 <code>Options</code> – 在 <code>Default Location</code> 下拉框中点击 – <code>Add GPS Exchange to Project...</code> 找到刚才的 <code>Location.gpx</code> 文件。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210618004845.png" alt="20210618004845"></p>
+<p>编译项目，连接真机进行调试。</p>
+<h5 id="真机调试"><a href="#真机调试" class="headerlink" title="真机调试"></a>真机调试</h5><p>等待 <code>XCode</code> 自动唤起 <code>App</code> ，此时App上会显示默认的 <code>Hello World</code>。这就说明App被成功运行了。</p>
+<p>直接最小化，打开 <code>百度地图App</code>，此时我们可以看到当前地图上显示的就会是 <code>成都市</code> 内的某个位置了。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210618004858.jpg" alt="20210618004858"></p>
+<p>当然，由于坐标系的原因，显示的位置跟我们设置的坐标会有稍许偏差，不过不影响。</p>
+<p>换用 <code>高德地图App</code>，可以看到当前也显示的是 <code>成都市</code> 。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210618004909.jpg" alt="20210618004909"></p>
+<p>也就是说，这种方式是可行的。成功骗过了iPhone上地图类App获取的坐标位置。</p>
+<hr>
+<h4 id="见证奇迹"><a href="#见证奇迹" class="headerlink" title="见证奇迹"></a>见证奇迹</h4><p>打开“京东App”，在搜索框中输入 <code>数字人民币</code> 打开领取页面。</p>
+<p>点击后发现这次我们成功进入了领取的页面，也显示出了 “立即领取” 的按钮。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210618004926.jpg" alt="20210618004926"></p>
+<p>直接点击。阿欧，没想到竟然。。。</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210618004936.jpg" alt="20210618004936"></p>
+<p>哎，算了，不折腾了。睡觉去吧！</p>
+<hr>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>从理论和实际测试上而言，都验证了这种方式可行。</p>
+<p>不过，从道德的角度来说，这样做似乎有些不妥。</p>
+<p>嗯，还是把机会留给别人吧！</p>
+<p>至于为什么，哈哈哈！！！</p>
+<hr>
+<h4 id="one-more-thing"><a href="#one-more-thing" class="headerlink" title="one more thing"></a>one more thing</h4><p>经测试，这种方法也能用于 <code>钉钉打卡</code> :</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210618011555.jpg" alt="20210618011555"></p>
+<p>不过，还是有限制条件的。</p>
+<hr>
+]]></content>
+      <tags>
+        <tag>Niubility</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vue生命周期函数</title>
     <url>/2021/06/02/vue-lifecycle/</url>
     <content><![CDATA[<h4 id="钩子函数"><a href="#钩子函数" class="headerlink" title="钩子函数"></a>钩子函数</h4><ul>
@@ -124,7 +202,7 @@
       </tags>
   </entry>
   <entry>
-    <title>今年还是单身狗，明年让你过六一</title>
+    <title>今天还是单身狗，明年让你过六一</title>
     <url>/2021/06/01/not-being-a-single-dog/</url>
     <content><![CDATA[<h4 id="你吃饭了吗"><a href="#你吃饭了吗" class="headerlink" title="你吃饭了吗"></a>你吃饭了吗</h4><p>女：<strong>你吃饭了吗？</strong><br>回：还没呢，如果你亲自下厨，我就能尝尝你的手艺了！<br>女：我不太会做饭<br>回：没关系，我可以教你呀！</p>
 <p>提示：重点不是吃了或者没吃，而是她想找你聊天了。重点是延续这个话题，顺势拉近关系。</p>
@@ -213,7 +291,18 @@
   <entry>
     <title>Telegram开发 - Google Voice 保号</title>
     <url>/2021/05/20/develop-with-telegram-for-google-voice-keep-alive/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉，您输入的密码错误，请检查后重新输入。" data-whm="抱歉, 当前文章不能被校验, 不过您还是可以看看解密后的内容。">
+  <script id="hbeData" type="hbeData" data-hmacdigest="7bdc9ee48f321a5a4963b2124ba40e19fd75d42a8cfa33939cb28ec8635c0d81">d636f693ee2a15a11c80bfecb03e7c947b194440812489d561b3ab07c6987524</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">当前文章暂不对外可见，请输入密码后查看！</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
       <categories>
         <category>Telegram开发</category>
       </categories>
@@ -5162,7 +5251,7 @@
       </tags>
   </entry>
   <entry>
-    <title>百万英雄，看程序员带你如何任性吃瓜(1)</title>
+    <title>百万英雄，看程序员带你如何任性吃瓜</title>
     <url>/2018/01/16/chi-gua-qun-zhong-bu-chi-gua-one/</url>
     <content><![CDATA[<p>今天中午的时候没事，随手打开掘金app打算看看最近有什么好文章。看到热门推荐下有一篇文章名为 <a href="https://juejin.im/entry/5a5c189e518825733d69093d" target="_blank" rel="noopener">qanswer：冲顶大会等游戏答题神器（Golang）</a> 号称《冲顶大会》,《百万英雄》等答题游戏的答题神器，让人顺利吃鸡！</p>
 <p>因为我最近也一直在关注西瓜视频里的“百万英雄”这个“全民直播答题吃瓜”的活动，但无奈自己的知识储备量太少，最高的一次答到第9题就被kill了。看到这篇文章顿时来了兴趣，准备好好研究一番。</p>
@@ -5284,7 +5373,7 @@
 </ul>
 ]]></content>
       <tags>
-        <tag>直播问答</tag>
+        <tag>Niubility</tag>
       </tags>
   </entry>
   <entry>
@@ -6595,7 +6684,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#97;&#105;&#108;&#64;&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#x65;&#109;&#97;&#105;&#108;&#64;&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#97;&#105;&#108;&#x40;&#x65;&#x78;&#97;&#109;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;">&#101;&#x6d;&#97;&#105;&#108;&#x40;&#x65;&#x78;&#97;&#109;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

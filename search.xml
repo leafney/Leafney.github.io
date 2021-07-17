@@ -103,6 +103,26 @@
       </tags>
   </entry>
   <entry>
+    <title>这就是人生啊</title>
+    <url>/2021/07/17/this-is-life/</url>
+    <content><![CDATA[<blockquote>
+<p>当我被迫生活时，才发现梦想好像挺一文不值的。</p>
+</blockquote>
+<blockquote>
+<p>雷军：其实创业是个高风险行业，就是创业失败是必然的，成功是偶然的。</p>
+</blockquote>
+<blockquote>
+<p>创业是普通人改变命运的最佳途径。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>人生随感</category>
+      </categories>
+      <tags>
+        <tag>人生感悟</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MacOS下为iTerm终端设置代理-优化篇</title>
     <url>/2021/07/17/setting-up-proxy-for-iterm-terminal-on-macos-optimization/</url>
     <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉，您输入的密码错误，请检查后重新输入。" data-whm="抱歉, 当前文章不能被校验, 不过您还是可以看看解密后的内容。">
@@ -367,7 +387,7 @@
         <category>人生随感</category>
       </categories>
       <tags>
-        <tag>人在帝都</tag>
+        <tag>人生感悟</tag>
       </tags>
   </entry>
   <entry>
@@ -985,7 +1005,7 @@
         <category>人生随感</category>
       </categories>
       <tags>
-        <tag>人在帝都</tag>
+        <tag>人生感悟</tag>
       </tags>
   </entry>
   <entry>
@@ -1479,7 +1499,7 @@
         <category>人生随感</category>
       </categories>
       <tags>
-        <tag>人在帝都</tag>
+        <tag>人生感悟</tag>
       </tags>
   </entry>
   <entry>
@@ -1823,6 +1843,7 @@
 <hr>
 ]]></content>
       <tags>
+        <tag>人生感悟</tag>
         <tag>人在帝都</tag>
       </tags>
   </entry>
@@ -6822,7 +6843,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#109;&#x61;&#x69;&#x6c;&#64;&#x65;&#x78;&#x61;&#x6d;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#109;">&#101;&#109;&#x61;&#x69;&#x6c;&#64;&#x65;&#x78;&#x61;&#x6d;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#97;&#105;&#108;&#64;&#101;&#120;&#x61;&#x6d;&#112;&#108;&#x65;&#46;&#99;&#111;&#x6d;">&#x65;&#x6d;&#97;&#105;&#108;&#64;&#101;&#120;&#x61;&#x6d;&#112;&#108;&#x65;&#46;&#99;&#111;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

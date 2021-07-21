@@ -103,6 +103,34 @@
       </tags>
   </entry>
   <entry>
+    <title>Vue刷新即报错 Uncaught SyntaxError: Unexpected token &#39;&lt;&#39;</title>
+    <url>/2021/07/21/vue-error-of-unexpected-token/</url>
+    <content><![CDATA[<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>vue项目在调试时，发现一刷新页面就显示白屏了。具体错误为：</p>
+<blockquote>
+<p>Uncaught SyntaxError: Unexpected token ‘&lt;’</p>
+</blockquote>
+<p>控制台中显示上面的错误提示，页面白屏。查看详细的文件错误，也只是显示在页头部分：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210721115315.png" alt="20210721115315"></p>
+<hr>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>将 <code>vue.config.js</code> 中的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">  publicPath: &#39;.&#x2F;&#39;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>改为如下，即可。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">module.exports &#x3D; &#123;</span><br><span class="line">  publicPath: &#39;&#x2F;&#39;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul>
+<li><a href="https://stackoverflow.com/questions/51210795/vue-cli-uncaught-syntaxerror-unexpected-token" target="_blank" rel="noopener">javascript - vue cli - Uncaught SyntaxError: Unexpected token &lt; - Stack Overflow</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Vue前端开发</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>天气太晒，叮咚买菜？</title>
     <url>/2021/07/20/ding-dong-shopping/</url>
     <content><![CDATA[<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210720123040.png" alt="20210720123040"></p>
@@ -6881,7 +6909,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#97;&#x69;&#x6c;&#64;&#x65;&#x78;&#97;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#109;">&#101;&#x6d;&#97;&#x69;&#x6c;&#64;&#x65;&#x78;&#97;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#x61;&#105;&#108;&#64;&#101;&#x78;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#x6d;">&#101;&#x6d;&#x61;&#105;&#108;&#64;&#101;&#x78;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

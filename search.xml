@@ -103,6 +103,18 @@
       </tags>
   </entry>
   <entry>
+    <title>Golang通过经纬度计算两点之间的距离</title>
+    <url>/2021/08/13/get-distance-by-lat-and-lon/</url>
+    <content><![CDATA[<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">计算两个坐标点之间的距离</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"math"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 张自忠路站</span></span><br><span class="line">	lat1:=<span class="number">39.939889</span></span><br><span class="line">	lng1:=<span class="number">116.423528</span></span><br><span class="line">	<span class="comment">// 阜成门站</span></span><br><span class="line">	lat2:=<span class="number">39.929488</span></span><br><span class="line">	lng2:=<span class="number">116.362875</span></span><br><span class="line"></span><br><span class="line">	fmt.Println(GetDistance(lat1, lat2, lng1, lng2))</span><br><span class="line">    <span class="comment">// 得到结果 5.2991238</span></span><br><span class="line">    <span class="comment">// 百度地图测距 5.3km</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回单位为：千米</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetDistance</span><span class="params">(lat1, lat2, lng1, lng2 <span class="keyword">float64</span>)</span> <span class="title">float64</span></span> &#123;</span><br><span class="line">	radius := <span class="number">6371000.0</span> <span class="comment">//6378137.0</span></span><br><span class="line">	rad := math.Pi / <span class="number">180.0</span></span><br><span class="line">	lat1 = lat1 * rad</span><br><span class="line">	lng1 = lng1 * rad</span><br><span class="line">	lat2 = lat2 * rad</span><br><span class="line">	lng2 = lng2 * rad</span><br><span class="line">	theta := lng2 - lng1</span><br><span class="line">	dist := math.Acos(math.Sin(lat1)*math.Sin(lat2) + math.Cos(lat1)*math.Cos(lat2)*math.Cos(theta))</span><br><span class="line">	<span class="keyword">return</span> dist * radius / <span class="number">1000</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Golang</category>
+      </categories>
+      <tags>
+        <tag>Golang</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vue刷新即报错 Uncaught SyntaxError: Unexpected token &#39;&lt;&#39;</title>
     <url>/2021/07/21/vue-error-of-unexpected-token/</url>
     <content><![CDATA[<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>vue项目在调试时，发现一刷新页面就显示白屏了。具体错误为：</p>
@@ -6850,7 +6862,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#109;&#97;&#x69;&#108;&#x40;&#x65;&#120;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#99;&#111;&#x6d;">&#101;&#109;&#97;&#x69;&#108;&#x40;&#x65;&#120;&#97;&#109;&#x70;&#108;&#101;&#x2e;&#99;&#111;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#x61;&#105;&#x6c;&#x40;&#101;&#x78;&#97;&#x6d;&#112;&#108;&#x65;&#46;&#99;&#111;&#109;">&#x65;&#x6d;&#x61;&#105;&#x6c;&#x40;&#101;&#x78;&#97;&#x6d;&#112;&#108;&#x65;&#46;&#99;&#111;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

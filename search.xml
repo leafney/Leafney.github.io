@@ -61,6 +61,39 @@
       </tags>
   </entry>
   <entry>
+    <title>go-zero微服务框架实践-入门</title>
+    <url>/2021/09/27/micro-service-framework-go-zero-start/</url>
+    <content><![CDATA[<h3 id="goctl命令"><a href="#goctl命令" class="headerlink" title="goctl命令"></a>goctl命令</h3><h4 id="创建api模板文件"><a href="#创建api模板文件" class="headerlink" title="创建api模板文件"></a>创建api模板文件</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">goctl api -o user.api</span><br></pre></td></tr></table></figure>
+
+<h4 id="生成api服务，使用驼峰命名格式"><a href="#生成api服务，使用驼峰命名格式" class="headerlink" title="生成api服务，使用驼峰命名格式"></a>生成api服务，使用驼峰命名格式</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">goctl api go -api user.api -dir . -style GoZero</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建rpc模板文件"><a href="#创建rpc模板文件" class="headerlink" title="创建rpc模板文件"></a>创建rpc模板文件</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">goctl rpc template -o user.proto</span><br></pre></td></tr></table></figure>
+
+<h4 id="生成rpc服务，使用驼峰命名格式"><a href="#生成rpc服务，使用驼峰命名格式" class="headerlink" title="生成rpc服务，使用驼峰命名格式"></a>生成rpc服务，使用驼峰命名格式</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">goctl rpc proto -src user.proto -dir . -style GoZero</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="通过sql文件生成不带缓存的model，使用驼峰命名格式"><a href="#通过sql文件生成不带缓存的model，使用驼峰命名格式" class="headerlink" title="通过sql文件生成不带缓存的model，使用驼峰命名格式"></a>通过sql文件生成不带缓存的model，使用驼峰命名格式</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">goctl model mysql ddl -src user.sql -dir . -style GoZero</span><br><span class="line"></span><br><span class="line">goctl model mysql ddl -src user.sql -dir&#x3D;&quot;.&#x2F;user&quot; -style GoZero</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="通过连接数据库生成不带缓存的model，使用驼峰命名格式"><a href="#通过连接数据库生成不带缓存的model，使用驼峰命名格式" class="headerlink" title="通过连接数据库生成不带缓存的model，使用驼峰命名格式"></a>通过连接数据库生成不带缓存的model，使用驼峰命名格式</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">goctl model mysql datasource -url&#x3D;&quot;user:password@tcp(127.0.0.1:3306)&#x2F;database&quot; -table&#x3D;&quot;*&quot; -dir&#x3D;&quot;.&#x2F;user&quot; -style GoZero</span><br></pre></td></tr></table></figure>
+
+<h4 id="通过sql文件生成带缓存的model，使用驼峰命名格式"><a href="#通过sql文件生成带缓存的model，使用驼峰命名格式" class="headerlink" title="通过sql文件生成带缓存的model，使用驼峰命名格式"></a>通过sql文件生成带缓存的model，使用驼峰命名格式</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">goctl model mysql ddl -src user.sql -dir . -c -style GoZero</span><br><span class="line"></span><br><span class="line">goctl model mysql ddl -src user.sql -dir&#x3D;&quot;.&#x2F;user&quot; -c -style GoZero</span><br></pre></td></tr></table></figure>
+
+<h4 id="通过连接数据库生成带缓存的model，使用驼峰命名格式"><a href="#通过连接数据库生成带缓存的model，使用驼峰命名格式" class="headerlink" title="通过连接数据库生成带缓存的model，使用驼峰命名格式"></a>通过连接数据库生成带缓存的model，使用驼峰命名格式</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">goctl model mysql datasource -url&#x3D;&quot;user:password@tcp(127.0.0.1:3306)&#x2F;database&quot; -table&#x3D;&quot;*&quot; -dir&#x3D;&quot;.&#x2F;user&quot; -c -style GoZero</span><br></pre></td></tr></table></figure>
+
+<h4 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">go run user.go -f etc&#x2F;User-Api.yaml</span><br></pre></td></tr></table></figure>
+
+<hr>
+]]></content>
+      <categories>
+        <category>go-zero实践</category>
+      </categories>
+      <tags>
+        <tag>Golang</tag>
+        <tag>go-zero</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>为了5毛钱，我和北京公交杠上了</title>
     <url>/2021/08/15/beijing-bus-card-deduct-more-money/</url>
     <content><![CDATA[<p>平时上下班，我习惯了坐公交通勤。</p>
@@ -6903,7 +6936,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#x61;&#x69;&#x6c;&#x40;&#x65;&#x78;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#x65;&#109;&#x61;&#x69;&#x6c;&#x40;&#x65;&#x78;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#99;&#x6f;&#109;">&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#99;&#x6f;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

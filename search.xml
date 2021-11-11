@@ -61,6 +61,88 @@
       </tags>
   </entry>
   <entry>
+    <title>Git采用强制覆盖法合并代码提交</title>
+    <url>/2021/11/11/git-mandatory-coverage-merge-branch/</url>
+    <content><![CDATA[<p>有这样一种场景：</p>
+<p>我和同事A合作开发同一个功能模块。我们从 <code>dev</code> 分支分别 <code>checkout</code> 出一个自己的分支来进行开发，完成后再合并到 <code>dev</code> 分支上去进行测试。</p>
+<p>可能出现的情况是，我们同时提交代码到 <code>dev</code> 分支上，然后出现了冲突的情况。将自己的分支合并到 <code>dev</code> 分支后，结果在执行 <code>git push</code> 的时候却提交不上去了：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ git push origin dev:dev</span><br><span class="line">To ssh:&#x2F;&#x2F;github.com&#x2F;example&#x2F;demo_project</span><br><span class="line"> ! [rejected]          dev -&gt; dev (non-fast-forward)</span><br><span class="line">error: failed to push some refs to &#39;ssh:&#x2F;&#x2F;github.com&#x2F;example&#x2F;demo_project&#39;</span><br><span class="line">hint: Updates were rejected because the tip of your current branch is behind</span><br><span class="line">hint: its remote counterpart. Integrate the remote changes (e.g.</span><br><span class="line">hint: &#39;git pull ...&#39;) before pushing again.</span><br><span class="line">hint: See the &#39;Note about fast-forwards&#39; in &#39;git push --help&#39; for details.</span><br></pre></td></tr></table></figure>
+
+<p>错误信息中提示需要先执行 <code>git pull</code> 拉取最新代码，但执行后发现并没有代码被拉取下来。</p>
+<hr>
+<p>遇到这种情况的时候，可以采用强制覆盖法来实现代码的合并提交。</p>
+<p>例如我当前的开发分支为 <code>test</code>，测试分支 <code>dev</code> 。</p>
+<ol>
+<li><p>拉取远端分支： <code>git pull origin dev:dev</code></p>
+</li>
+<li><p>合并我的开发分支到本地 <code>dev</code> 分支：</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git checkout dev</span><br><span class="line">git merge test</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>然后将 <code>dev</code> 提交到远端结果报上面的错误</li>
+</ol>
+<p>解决方法：</p>
+<p>核心思路是：通过拉取远端的 <code>origin/dev</code> 分支强制覆盖本地的 <code>dev</code> 分支，然后再执行分支合并，最后将本地的 <code>dev</code> 分支提交到远端。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git checkout dev</span><br><span class="line"></span><br><span class="line">git fetch --all</span><br><span class="line"></span><br><span class="line">git reset --hard origin&#x2F;dev # 这里 dev 要修改为对应的分支名</span><br><span class="line"></span><br><span class="line">git pull</span><br></pre></td></tr></table></figure>
+
+<p>这样操作后，会将本地的 <code>dev</code> 分支拉取为远端的最新提交。</p>
+<p>然后再执行合并的操作就不会出现冲突的情况了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git merge test</span><br><span class="line"></span><br><span class="line">git push origin dev:dev</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Git操作系列</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>有时候，我们需要换个角度看问题</title>
+    <url>/2021/10/22/think-about-the-problem-use-another-way/</url>
+    <content><![CDATA[<p>随着公司人员队伍的不断壮大，10月份之后我们就搬到了新的办公楼进行办公。</p>
+<p>但公司的整体装修是在九月底完成的，也就是从装修完成到正式入驻，新的办公室只经过了一个国庆假期的 <code>甲醛通风散味时间</code>。</p>
+<p>可想而知，办公室里的环境非常不适合办公，在里面待不了几分钟就会头晕。</p>
+<p>虽然公司里面摆满了各种绿植和炭包，但这种方式见效太慢了。</p>
+<p>后来，公司又购买了几台小米空气净化器，一天24小时开着，但奈何公司面积太大，效果也并不是很明显。</p>
+<p>再后来的一天，公司来了几个师傅，看着他们对几台小米的空气净化器做了改造，顿时我就好奇起来。</p>
+<p>改造后的效果如下：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20211107100140.JPG" alt="20211107100140"></p>
+<p>让我感觉奇怪的地方是：</p>
+<ol>
+<li>他们居然把小米空气净化器放在了外面</li>
+<li>下面一侧的挡板换成了一个带开口的挡板</li>
+<li>把上面的出气口接到了窗户里面</li>
+<li>把窗户封起来了</li>
+</ol>
+<p>当时我的第一感觉就是：这不是脑残吗？这不是净化外面的空气吹到了屋里吗？这是什么情况？</p>
+<p>按照常理来说，空气净化器我们都是放在室内，室内的空气经过净化器的不断循环处理后以使室内空气质量达到优秀。</p>
+<p>但他们却把净化器放到了外面。。。</p>
+<hr>
+<p>本着 <code>一探究竟</code> 的想法，我就想搞清楚他们为什么要这么设计，但我也不好意思直接去问那些安装师傅们。</p>
+<p>直到我看到师傅们拆下来的装配件的纸箱子时，为我打开了一个突破口。</p>
+<p>我看到这些纸箱子上面写着 <code>MATE</code> 的标志，上网一搜才了解。</p>
+<p>原来这个装置叫 <code>MATE米皮新风系统</code>，或者叫 <code>米皮新风机</code> 。是将小米空气净化器改装成新风机的操作。这种改装，相比起直接购买一台新风机来说，更便宜。</p>
+<hr>
+<p>那新风机相比净化器有什么优势呢？</p>
+<p>这种 <code>米皮新风机</code> 的工作原理是：向室内不断注入新鲜纯净的空气，将室内浑浊的空气稀释并挤出去，实现无死角净化。</p>
+<p>具体的对比可以看一下官方的广告：</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20211111100910.png" alt="20211111100910"></p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20211111100959.png" alt="20211111100959"></p>
+<hr>
+<p>描述的效果确实挺厉害的，但具体的净化效果怎样，还要看真实的实践测试了。</p>
+<p>不过相比起购买一台正宗的新风机而言，<code>米皮新风机</code> 确实是一种非常便宜的改装方案。</p>
+]]></content>
+      <categories>
+        <category>人生随感</category>
+      </categories>
+      <tags>
+        <tag>人生感悟</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>go-zero微服务框架实践-入门</title>
     <url>/2021/09/27/micro-service-framework-go-zero-start/</url>
     <content><![CDATA[<h3 id="goctl命令"><a href="#goctl命令" class="headerlink" title="goctl命令"></a>goctl命令</h3><h4 id="创建api模板文件"><a href="#创建api模板文件" class="headerlink" title="创建api模板文件"></a>创建api模板文件</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">goctl api -o user.api</span><br></pre></td></tr></table></figure>
@@ -6936,7 +7018,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#99;&#x6f;&#109;">&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#101;&#x78;&#97;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#99;&#x6f;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#97;&#x69;&#x6c;&#x40;&#x65;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#101;&#x6d;&#97;&#x69;&#x6c;&#x40;&#x65;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#x63;&#111;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

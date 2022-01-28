@@ -61,6 +61,51 @@
       </tags>
   </entry>
   <entry>
+    <title>Mysql中使用sum()函数返回null的问题</title>
+    <url>/2022/01/28/mysql-sum-function-return-null/</url>
+    <content><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在项目中使用 <code>Mysql</code> 中的 <code>sum()</code> 函数求和时，调试时发现报出下面的错误信息：</p>
+<blockquote>
+<p>sql: Scan error on column index 0, name &quot;total&quot;: converting NULL to int64 is unsupported</p>
+</blockquote>
+<p>我相应执行的sql语句如下：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">SUM</span>(consume) <span class="keyword">as</span> total <span class="keyword">FROM</span> task_income <span class="keyword">WHERE</span> consume_type=<span class="number">3</span> <span class="keyword">AND</span> uid=<span class="number">20</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>为了找到原因，我在 <code>Navicat</code> 中执行了一遍出问题的sql和参数，发现结果中确实是返回了 <code>null</code> :</p>
+<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/typora/20220128151226.png" alt="20220128151226"></p>
+<p>按我之前开发时的想法：</p>
+<ul>
+<li>如果有相应的数据，返回求和后的值</li>
+<li>如果没有符合条件的数据，返回 <code>0</code></li>
+</ul>
+<p>结果，当没有符合条件的数据时却返回了 <code>null</code> 。</p>
+<hr>
+<h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>可以通过结合使用 <code>ISNULL</code> 或 <code>COALESCE</code> 函数来解决。</p>
+<p>相应的示例如下：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">IFNULL</span>(<span class="keyword">SUM</span>(Column1), <span class="number">0</span>) <span class="keyword">AS</span> total FROM...</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">COALESCE</span>(<span class="keyword">SUM</span>(Column1), <span class="number">0</span>) <span class="keyword">AS</span> total FROM...</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>上面说道，使用  <code>ISNULL</code> 或 <code>COALESCE</code> 函数都可以解决为 <code>null</code> 的问题，那么这两个函数有什么区别呢？</p>
+<ul>
+<li><code>ISNULL</code> 函数接受两个参数，如果第一个参数不是 <code>null</code> 会直接返回，如果第一个参数是 <code>null</code> ，则返回第二个参数</li>
+<li><code>COALESCE</code> 函数可以接受两个或多个参数，并返回第一个非 <code>null</code> 的参数，如果所有参数都为 <code>null</code>，则会返回 <code>null</code> </li>
+</ul>
+<hr>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://stackoverflow.com/questions/7602271/how-do-i-get-sum-function-in-mysql-to-return-0-if-no-values-are-found" target="_blank" rel="noopener">How do I get SUM function in MySQL to return ‘0’ if no values are found? - Stack Overflow</a></li>
+<li><a href="https://stackoverflow.com/questions/18528468/what-is-the-difference-bewteen-ifnull-and-coalesce-in-mysql/43205713" target="_blank" rel="noopener">sql - What is the difference bewteen ifnull and coalesce in mysql? - Stack Overflow</a></li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>开发笔记</category>
+      </categories>
+      <tags>
+        <tag>Mysql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>苹果钱包北京一卡通刷卡再次被异常扣费后</title>
     <url>/2022/01/18/after-beijing-bus-card-abnormal-deduction/</url>
     <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>1月18日，本来今天是心情很好的一天，结果却遇到了这种糟心的事。</p>
@@ -7243,7 +7288,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#97;&#x69;&#108;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#x65;&#x6d;&#97;&#x69;&#108;&#x40;&#101;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#x63;&#111;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#x6d;&#97;&#x69;&#x6c;&#x40;&#x65;&#x78;&#97;&#109;&#112;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#109;">&#x65;&#x6d;&#97;&#x69;&#x6c;&#x40;&#x65;&#x78;&#97;&#109;&#112;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

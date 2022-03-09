@@ -91,7 +91,7 @@
 <p>所以，我们不能按照 <code>key</code> 或者 <code>value</code> 来进行排序。</p>
 <hr>
 <h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>但Golang中切片 <code>Slice</code> 是 <code>有序的</code>。 我们可以结果使用 <code>Slice</code> 来实现对 <code>Map</code> 的排序。</p>
-<h4 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h4><p>我们先将上面的 <code>map</code> 转缓存一个 <code>slice</code> :</p>
+<h4 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h4><p>我们先将上面的 <code>map</code> 转换成一个 <code>slice</code> :</p>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> KVPair <span class="keyword">struct</span> &#123;  </span><br><span class="line">   Key <span class="keyword">string</span>  </span><br><span class="line"> Val <span class="keyword">float64</span>  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line">tmpList := <span class="built_in">make</span>([]KVPair, <span class="number">0</span>)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">for</span> k, v := <span class="keyword">range</span> result &#123;  </span><br><span class="line">   tmpList = <span class="built_in">append</span>(tmpList, KVPair&#123;Key: k, Val: v&#125;)  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>上面创建了一个 <code>结构体切片</code> ，然后将 <code>map</code> 的值添加到切片中。</p>
@@ -4819,7 +4819,59 @@
 </ol>
 <p>待后续多次验证。</p>
 <p><strong>经验证：</strong> 以上结论 <strong>错误</strong>。</p>
-<p>| 请求网址 | 返回结果类型 | proxy格式 | proxy是否带http | 请求结果 |<br>| ——- | ——– | ——– | ——– |<br>| <code>http://ip38.com/</code> | <code>html</code> | <code>http://27.203.219.181:8060</code> | 是 | ok，已验证 |<br>| <code>http://ip38.com/</code> | <code>html</code> | <code>27.203.219.181:8060</code> | 否 | 请求正常，代理未生效,已验证 |<br>|  <code>https://www.cnblogs.com/</code> | <code>html</code> | <code>http://27.203.219.181:8060</code> | 是 | <code>error,malformed HTTP response &quot;&lt;html&gt;&quot;</code>,已验证  |<br>|  <code>https://www.cnblogs.com/</code> | <code>html</code> | <code>27.203.219.181:8060</code> | 否 |  ok，已验证 |<br>| <code>https://p.3.cn/prices/mgets</code> | <code>json</code> | <code>http://27.203.219.181:8060</code> | 是 | <code>error,malformed HTTP response &quot;&lt;html&gt;&quot;</code>,已验证  |<br>| <code>https://p.3.cn/prices/mgets</code> | <code>json</code> | <code>27.203.219.181:8060</code> | 否 |  ok,已验证  |</p>
+<table>
+<thead>
+<tr>
+<th>请求网址</th>
+<th>返回结果类型</th>
+<th>proxy格式</th>
+<th>proxy是否带http</th>
+<th>请求结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>http://ip38.com/</code></td>
+<td><code>html</code></td>
+<td><code>http://27.203.219.181:8060</code></td>
+<td>是</td>
+<td>ok，已验证</td>
+</tr>
+<tr>
+<td><code>http://ip38.com/</code></td>
+<td><code>html</code></td>
+<td><code>27.203.219.181:8060</code></td>
+<td>否</td>
+<td>请求正常，代理未生效,已验证</td>
+</tr>
+<tr>
+<td><code>https://www.cnblogs.com/</code></td>
+<td><code>html</code></td>
+<td><code>http://27.203.219.181:8060</code></td>
+<td>是</td>
+<td><code>error,malformed HTTP response &quot;&lt;html&gt;&quot;</code>,已验证</td>
+</tr>
+<tr>
+<td><code>https://www.cnblogs.com/</code></td>
+<td><code>html</code></td>
+<td><code>27.203.219.181:8060</code></td>
+<td>否</td>
+<td>ok，已验证</td>
+</tr>
+<tr>
+<td><code>https://p.3.cn/prices/mgets</code></td>
+<td><code>json</code></td>
+<td><code>http://27.203.219.181:8060</code></td>
+<td>是</td>
+<td><code>error,malformed HTTP response &quot;&lt;html&gt;&quot;</code>,已验证</td>
+</tr>
+<tr>
+<td><code>https://p.3.cn/prices/mgets</code></td>
+<td><code>json</code></td>
+<td><code>27.203.219.181:8060</code></td>
+<td>否</td>
+<td>ok,已验证</td>
+</tr>
+</tbody></table>
 <p>即：</p>
 <ul>
 <li>请求 <code>http://ip38.com/</code> 时，需要使用 proxy格式为 <code>http://27.203.219.181:8060</code> 才能访问成功。</li>
@@ -7435,7 +7487,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#109;&#x61;&#x69;&#108;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#101;&#109;&#x61;&#x69;&#108;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#46;&#99;&#x6f;&#109;">&#101;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#x78;&#x61;&#109;&#x70;&#108;&#x65;&#46;&#99;&#x6f;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

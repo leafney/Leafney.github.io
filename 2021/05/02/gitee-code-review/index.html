@@ -28,16 +28,16 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="根据相关法律政策,该内容无法显示">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20210502130611.png">
-<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20210502131924.png">
-<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20210502131518.png">
-<meta property="og:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20210502131837.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20210502130611.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20210502131924.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20210502131518.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20210502131837.png">
 <meta property="article:published_time" content="2021-05-02T04:59:40.000Z">
 <meta property="article:modified_time" content="2021-05-02T05:38:19.000Z">
 <meta property="article:author" content="Leafney">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gitee.com/leafney/blogimage/raw/master/blog/20210502130611.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20210502130611.png">
 
 <link rel="canonical" href="https://www.itfanr.cc/2021/05/02/gitee-code-review/">
 
@@ -262,18 +262,18 @@
 
       
         <p>今天在整理博客文章时，发现某些文章中的图片不显示了：</p>
-<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210502130611.png" alt="20210502130611"></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20210502130611.png" alt="20210502130611"></p>
 <p>将图片链接在浏览器中打开，竟然只提示了一段文字：</p>
 <blockquote>
 <p>根据相关法律政策,该内容无法显示</p>
 </blockquote>
 <p>打开 Gitee 中的仓库，发现该图片也不能预览了:</p>
-<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210502131924.png" alt="20210502131924"></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20210502131924.png" alt="20210502131924"></p>
 <hr>
 <h4 id="探究"><a href="#探究" class="headerlink" title="探究"></a>探究</h4><p>我在网上搜索了一下，发现这个问题是最近才出现的，而且遇到这个问题的人还不少：</p>
-<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210502131518.png" alt="20210502131518"></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20210502131518.png" alt="20210502131518"></p>
 <p>记得之前因为 Github <code>被Q</code> 的原因，好多开源项目都选择了国内的 <code>Gitee</code> 作为国内代码仓库来同步管理，然而现在我却看到好多的项目已经开始在考虑 <code>迁移</code> 了：</p>
-<p><img data-src="https://gitee.com/leafney/blogimage/raw/master/blog/20210502131837.png" alt="20210502131837"></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20210502131837.png" alt="20210502131837"></p>
 <hr>
 <h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>看了相关的讨论，似乎 <code>Gitee</code> 有一个 <code>屏蔽词</code> 的字库，只要遇到相关的关键词文件就会被屏蔽掉。让人生气的是它并不会告诉你是什么词不合理，只会返回给你一句 <code>根据相关法律政策,该内容无法显示</code> 。</p>
 <p>如果知道是什么词的话，我们改一下重新上传就好了。但现在这明显就是个 <code>黑盒</code> ，让人根本摸不着头脑的那种。</p>

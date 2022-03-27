@@ -61,6 +61,40 @@
       </tags>
   </entry>
   <entry>
+    <title>写在Gitee图床挂了之后</title>
+    <url>/2022/03/27/gitee-images-game-over/</url>
+    <content><![CDATA[<h3 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h3><p>大早上的刷头条说gitee图床挂了，惊得我立马起床打开电脑去看我的博客，果然如此，图片都打不开了，将图片链接直接在浏览器打开后显示的却是gitee的logo，我擦。。。</p>
+<p>想起去年的时候gitee就曾搞过这么一出，也是图片无法外链访问，后来过了几天自己好了，当时我也就没太在意。</p>
+<p>毕竟白嫖的，咱也不好骂人不是，还是赶紧想想解决方法吧</p>
+<hr>
+<h3 id="铺垫"><a href="#铺垫" class="headerlink" title="铺垫"></a>铺垫</h3><p>看到网友们的解决办法，也就是下面的几种：</p>
+<ul>
+<li>七牛云</li>
+<li>阿里云oss/腾讯云oss</li>
+<li>github</li>
+</ul>
+<p>当然还有其他的我就不一一列举了。</p>
+<p>嗯，还是说说我自己的解决方法吧。</p>
+<p>我之前就是用的七牛云，怎么说呢，你别看什么每个月给你免费10G的流量，但一细看其实是只有http域名才免流量，而https并不是免费的。我之前是用的自己的域名，然后申请的https证书。麻烦的地方就是每隔三个月需要手动的更换一次https证书。如果忘记了更改那图片就访问不了了。</p>
+<p>七牛云主要的扣费点还是https的流量费，每个月博客访问量少的话大概10块钱以内吧，具体还是要看你的图片请求量多少来算。</p>
+<p>后来就换到了gitee仓库。当时没考虑用github的原因还是 “众所周知” 你懂得。</p>
+<p>对于oss来说，个人是感觉太重了。不过花钱买安心，也算是一个不错的选择。</p>
+<p>不过这里我需要提醒一点，你购买时花的钱仅仅是容量费，后续的使用是需要花流量费的。而流量费可不是一笔小数目。建议可以体验几个月后再下决心使用。</p>
+<p>最后看了一下发现 <code>Github+jsDelivr</code> 实现图床的方法，对于白嫖党来说应该算是一个不错的选择了。</p>
+<hr>
+<h3 id="高潮"><a href="#高潮" class="headerlink" title="高潮"></a>高潮</h3><p>配置方法比较简单，这里我就不详细的说了。</p>
+<p>我使用的图片上传工具是 <code>[uPic](https://github.com/gee1k/uPic)</code> 相比起 <code>PicGo</code> 的话支持配置多个目录来应对多种场景：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220327160636.png" alt="20220327160636"></p>
+<p>刚刚看到有人评论说gitee仓库的图片又可以查看了，可惜呀。。。我已经 <code>删库跑路</code> 了。</p>
+<hr>
+<h3 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h3><p>最后还想感慨一句：</p>
+<p>希望国内的各个大厂在收割用户韭菜的时候，能够手下留情一点，不要总是 <code>耍猴</code> 。</p>
+]]></content>
+      <tags>
+        <tag>Gitee</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Golang中Map按照Value大小排序</title>
     <url>/2022/03/09/golang-map-sorted-by-value/</url>
     <content><![CDATA[<p>Golang中的 <code>map</code> 默认是 <code>无序的</code> 。</p>
@@ -1439,6 +1473,7 @@
 ]]></content>
       <tags>
         <tag>Hexo</tag>
+        <tag>Gitee</tag>
       </tags>
   </entry>
   <entry>
@@ -7487,7 +7522,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#101;&#x6d;&#x61;&#x69;&#108;&#64;&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#111;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#x61;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#x6d;">&#101;&#x6d;&#x61;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#x6d;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

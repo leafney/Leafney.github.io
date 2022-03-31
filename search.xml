@@ -4618,7 +4618,7 @@
     <content><![CDATA[<p>Flutter是一个由谷歌开发的开源移动应用软件开发工具包，用于为Android和iOS开发应用，同时也将是Google Fuchsia下开发应用的主要工具。</p>
 <h4 id="系列文章列表"><a href="#系列文章列表" class="headerlink" title="系列文章列表"></a>系列文章列表</h4><ol>
 <li><a href="/2019/03/08/flutter-get-start/">打开新世界的大门 – Flutter介绍 | IT范儿</a></li>
-<li><a href="/2019/03/08/flutter-devemopment-environment-configuration/">兵马未动，粮草先行 – Flutter开发环境配置 | IT范儿</a></li>
+<li><a href="/2019/03/08/flutter-development-environment-configuration/">兵马未动，粮草先行 – Flutter开发环境配置 | IT范儿</a></li>
 <li><a href="/2019/03/11/flutter-development-skills/">磨刀不误砍柴工 – Flutter开发技巧 | IT范儿</a></li>
 </ol>
 ]]></content>
@@ -7522,7 +7522,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#x6d;&#x61;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#x6d;">&#101;&#x6d;&#x61;&#105;&#x6c;&#64;&#x65;&#x78;&#x61;&#x6d;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#x61;&#x69;&#108;&#x40;&#x65;&#120;&#97;&#109;&#x70;&#x6c;&#101;&#x2e;&#99;&#111;&#109;">&#x65;&#109;&#x61;&#x69;&#108;&#x40;&#x65;&#120;&#97;&#109;&#x70;&#x6c;&#101;&#x2e;&#99;&#111;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

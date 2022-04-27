@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.itfanr.cc","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="从0到1打造一款个人家庭All-in-One小主机，用技术让生活变得更美好">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenWrt软路由无法通过域名访问内网服务">
+<meta property="og:url" content="https://www.itfanr.cc/2022/04/26/my-home-server-configuration-openwrt-unknown-host/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="从0到1打造一款个人家庭All-in-One小主机，用技术让生活变得更美好">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-26T15:42:19.000Z">
+<meta property="article:modified_time" content="2022-04-26T17:51:16.000Z">
+<meta property="article:author" content="Leafney">
+<meta property="article:tag" content="AIO小主机">
+<meta property="article:tag" content="OpenWrt">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.itfanr.cc/2022/04/26/my-home-server-configuration-openwrt-unknown-host/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>OpenWrt软路由无法通过域名访问内网服务 | IT范儿</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?eac19a9eb5ae3d4b5784857872188c97";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">IT范儿</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">程序员改变世界</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leafney" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2022/04/26/my-home-server-configuration-openwrt-unknown-host/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="Stay Hungry. Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OpenWrt软路由无法通过域名访问内网服务
+        </h1>
+
+        <div class="post-meta">
+
+          
+            <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                    <i class="fas fa-lock"></i>
+                </span>
+                <span class="post-meta-item-text">
+                    <font color='#FD7E13'>[加密]</font>
+                </span>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-26 23:42:19" itemprop="dateCreated datePublished" datetime="2022-04-26T23:42:19+08:00">2022-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-27 01:51:16" itemprop="dateModified" datetime="2022-04-27T01:51:16+08:00">2022-04-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%B6%E5%BA%ADAIO%E5%B0%8F%E4%B8%BB%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">家庭AIO小主机</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">从0到1打造一款个人家庭All-in-One小主机，用技术让生活变得更美好</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉，您输入的密码错误，请检查后重新输入。" data-whm="抱歉, 当前文章不能被校验, 不过您还是可以看看解密后的内容。">
+  <script id="hbeData" type="hbeData" data-hmacdigest="d72655bb8b7534994f9805ded60949047e817060023aebed02961ece1210ad5e">4afdbebaee16c21e3073a0d28dfc931d442e0171b63d58bfa2e30b1e1ede360b98996d12512ad4cad3573754d604797a5436c6bb18ca0301431b56a59d2adf08838a656746e21cec5edd0418e47e0e2ccee2128423afda4641d94005e0e8857144552a904e9aa783c1b8dcf2adff5b33d9bc1ae9626fe3705835716393299edc712f5f7a845a468cc28ae55656a0bfdf5ac747d0bfceb3a056b5ce925d8e1fb9258ae909e8e940c1e7b67bf6196793fc96fa1df900d9b2d45f988c733b997ee8432b71c9fedcf3346f96609aefc3fc312c40baf53617e71908b0aacbf86fa8017bd59027f54ab64d626a3eb0ccd8e781c904910401fd8237fc7e0118c64ac1df4628295fd13761522f73df0e38eb1ee4266a778fb1f6b8f67531b11dd91b83b2815f0a427402e11c2b038480502b48ab4eda021d0cbcec97c14c85df8dd5eb501c185586e2957f1f004f4000773468c9744f271dbd3f23b057ca40ae1669a60109a17e982e14787120a30b8b8dc15ddf18660ef0a3db9a8e8898f3173f6170491a955f4ed73844393d9483d278fd069a8ca7f2d607e8b8cf46f8c34de75af3e7036a8a6d972d2a23dac8869f751d21d08b168230740f5996353601ba8920b62f616ed0decdb956d6dff4f7c8654fe568421d511eff87c6921f151dae113e317211797dac900673c246ed48676cece20beaeafb3faa3507fbfd664542e28a06cb7b35e3ccc5ced47495bcab1c12840592e600979e1e577cfce893f0dce37b2e45494fc5fee99a2979c6db5e4870e92b829f616c77951bffcaed5a1e4e38bdae2556c3da309ba84269b555f17d89681d3d9d28308f75b7c2ad26fd5fd66d511050a0291a51d6ea042b6564c730e1ded136d5b5e9f52f14dccbd9b215b6ddc1962069995214c99fad8e5eef7111c96e204f368a5108ea672283d8b3a9c19eb3f9bc60469c0e02945d7fd32e5141aa22ba8a5ea9f58728efe2e17cc7fdd165c0e4fba5df31e27947bf672c981b7dd349ed7ef862dd9c13d9286cd746e58a5e9eb13b27442fc6830e4e87c3611ef0b949f171394a00cf5d83247b1117e5a96b4392fcdebe870b58cf203f0fe38ecb13aa7c9b1e8c2d74712b24cbd66243921e7e93099371f4f59789ed389108d90c0efa59c1869131a185573a9c1e82fa7366afd8b2250b66364d963f063d6b31c326133e602d102b3a536f59c633edcf01d86c5d525c8bbdc0592d4ea8c4031485819d54756f76e82bcce722a63aa5ae2a315c3e5acd94d8dd90c0676fcde85f5628cf995d976da52738d82aae58395451ffe8f9f20a91c91d260db46cad35cda7e82c3054fe6222ad9aaa6ffa8ef1d2ad3d1167549a207dcc90fe135123a95e69c63d9c52fe71e12633f9b9d6e9732579d2161657f4cedf1befeb6a029426afa28bd8b06fe96594185c934a0124dd3011b3349a274305b2041e27327d0c7eaa80f4f44ab3106ba510648ac804c214a8556d19a12e0bdbcaba6f50016c6a18386785b2cb6750010f109dfee9b6817d476f22d6f69b97d029a38d436cc56a1480f8d3e10876243d0719f8f288b552c34965457ccbb2067367360f5051240cb2f2d8c3f7768afed5f99c6191df37b594d89db583bc6afbe2e489b16247eefd07322d2c44ba3218397eecce72da5fe94002d77e2d8339d4e957f9016df1adf1b671a27028369d5b48d6ecd119d3cfabc21fbe671d5b4a49ce26e0bf67d7da9fcec6ed7443cc8d715e9fcfc4398e0c9a89cd3711ed3b3e83069fafbdba989b6d359eda3a5c11f88211a0ff9e4d4ce395c4b4cad3451bf30a03f9a3413bdbdc7bf20dff8c6b5b5860a207cc9c29cd82ca64660190d0f1da9b7d19fb1e403001d767c4abd3aa3de4cbc1af94908455bcb7fabf70849228973694b909aee0347431ac48500ff56f543343b9fdbc8937ac48a1666e5272a3fb5b9715af34be75f1480d16874413ffc4d64a03f7413e8c863de0bc8f5e5d0d68552d02dd6161ec1f8bfcf5af68b912645e75efa8b36d207258ba0bd2fd85a398091549426d329e05a5ae5e5cd1353886740a5d81fa8ce57233d28fb87ec65604424abf6bb6160c37614d8fc86171979819980519fbb5103d6b6bbeaee41e6f763ee45c547c24f368dabe198b9ecad9fab2ae319620f27cc5f8dc936adef121545c20c01b8206bb0fd3e59bae582ff579d66cab2d61b665be3f4535345a8f2774a3fab642c1c9dc93ca2b4a86d22d37f1885ae393d2e255b978de6adc7b3bd2f04b4aa31a8745afdd0c7a82186d2f9abc95bfe37a639d6bee5220c4ac735376aa1c58f4ffa07793288fabb380ec1b2f9eb992b3700ffb7ada847ea72e46a06f7cfe9ec8a4c2357c6e9445af517743a52b5f04a037619f07ee1d8a735657ef444d8ee73b142d04f14e162518400e5674bde87c9b0f8b1a157c32f288c07312e93071c664e3217893cbccfd89317d0136a3468e0de7b8e867ba4a6246503ae8591b15d70ded58e73c3bfb92041f111ce59036243b3a169f1ba5d707bfc05a20b746aa8b447f5115fc777d80b5c05e89f7dfc4bd63f325f24d512beb0ed2950d1b59b5d6b7ba1487a12949ba82cc5b22364fd66c3c1002a169d0119b1a4e91cc2b8be2ae8aa7a38d903f66ed62a40bee1130e11c9261069672eb6fecab47ad29dfe9a9b85be11a5067a7ca41ff733b3ef4b01889b41ce220e9b7c53ddca377fe522e489abf6275d812f8adf6fc8420097c8c7cac8c2064fc094dc62f7507bb8dcca6c0fef27ae0808b9bf5f4e0be999e05fdcc31d9ec45cd5a2e16f88a2dc5c243f41905f6a9821ce9677c7b4864abefa10ff485c2fd4d76d7605461413c070d43e685b3062ff243a17737705686cb7c2be275a8b9eaf005a808d47d11b00b31df767303355beebf93a077853d415652920e14aec67da1b30132e790cd40460e489fa6774ba0b61ba100028f2655f2192ab8e70b6581afcd09884b6aa94b3067fcf15d9cf158c2216025a79e64c8f719c9bbd08d5af47bebff89bb36784f427061b76f7cbf9d457c58cd437ac408bec5a1f57ab01185344a97187cebf158ccfd74d64b11dc93f3df6c9cccf970788e1ac721122ae725df1debec5e3ae95088dc9ddcc23fa5a8daef4a53d17aa5f79e97a015ab4bb284d4c1460a9e8126895ebd0e885734e4f4df84869ba50f6cbb3ad52ac0ad592b292253ccd6f6c6c333e42d87f353f21db80073721db51315404aa16380bb2e12f53af18a302a92a3937415739532df6a03487a9f25d83c23b74e0d5c7856d2f3d3a4c0dddc24bc1ce484457786650ce52106e3da177a9e994b77be4b6ed276d7c94e36e6572c86cfe957e094e654baceb8b4fb80923a429f401eb5193c1695a3ced6956687edf9e9d0367f259fe56000926a9ed07a2dfc7e7819bea5d65f2d97bcb656d120aca34870d51b39072fa09a4e2ef830376656669dc410791e3356b32d7c02b94a189999466f57f31b0dd9d48e23dc92d206a205705a10c8a2fe510fcd14b2e0764f2b0ed11d4d650c7e2fec6d7279c797cca27ef64a92d27e8f94fe7e8ecf83aecafda939ef2cee14ca552feedc7bb42025f07e05de3312b0c8d359cf75e38f77d3adcd710a9168cb874281684c931ec5c118b7fa0dde10bd1ff0ec29edad97e35d30fc970d20d0e099e07d4e324a149abab777aebfcfd57f6271d18076068f3fdc3248fe111307e41c07659aecd2f19c62f10009013f0c013181c00024f6fa51dacdb3e7bb95b9b3dbcf8c9c9d2c2d883e8764d8df90e30723e90a116e3733d2b199bd256f494c9bbcd7363742175b02e7ec70862469ed02a95c77d3775dfb91bc90846ebf7bf33f84a81f421db3606f36aa98caba01301c74046e23a7a318b3e5bec1a0eaa6ad8d1d01ce4021a46dec1884942d35917e23f72a3251a394cb9d203b7b65d75395d6ee5fd781d5bff2423756995763514bdc842292833dfd10fddc7ac909873fa08e5ee94c3347d6ba8f55bf81565849bd8f9fc333eb7cb8615d00c9ab25949de47a1883f320c8259592b74b99a1baaad91a302a82c2b3d8fbf37ae4344dd0cb82b0795e666a52f992ee0e8510e1578d8d0afa3104766b8663b3cef9203f21aeeae07dc87e3ee82290a898159fb32a09300854c25a930a10102092db3d967765932af780883cd1fbceab5ca562229d49d80d81a71c710c8f6b09fa5394cb88c1bd9efe1f74ee1e279affed5db4edd2a1817eb4bc111682de43c1e9193126cd83f6b9c294e27a1d6805147db6fc468fcf83fc30a47105dfe0738cbb5b400f006ace18d6cba9e363a74966f2059398d1c17a4a2eb9d30d8c209aa36e03c20cbe9e6e24f8e2e9a5af7d6e2ceaf1bd4d48d96863f5d6102f9d81accd63e461c8c2c0075d2a7ce6aa371bfc63f07aa39519f9d401489049ffc3fa3cda8bef44c12d27b7e41b879db542ab538692f24da611ee8c6c592e5ed72af6ca134860da2c8d1be69f27ee89504048d861085489c8f848c1274afcd1a3b57271280b0609dbe87269b67edf44eb0ed89d7acc145db03542ce80bfd8537ace4a7369e214ea6023bc1060c1025a1bcb2392949854beb060413180315f02caa9220783ccf8b7ecbc5a1364ecf192085a6ec3669f03a21fd93dac6e484dde6add596bdd5534dd5ebf9c7bcafc51eb80f28f9ab1653e8d5b0f98b12a769a57b3640399cdfb40830e23ddaa79fc6ae7a9954a4f9617924f3b0bde2d95bc3d8b3915d1fd3e5c486760fb17a7a7a988c0c31e11af09924d9091516a43039895a61f37a6b6d37a17e49f9398c72a6ca054335242e428bbc5b328a880d26e23900f3b42bb87aa5ed812aacdbecd508319030e6324ba8a3a8381bfc500c84ae02094e12ed9804753061771f87f416b7c7eae418a16d6853e7b8e649b7bfa406bfcfd097d9aac4b90b57bc3f00c47739f0d412b7c1e1f17539501c49eea2324c325d50aa7ebe9ecc28c0cf6bccb5706f57406f656066e32e17f578f8ce772deb11c22546f0aa3d7b8a9281474c33eb9d0898c05aad95d88e237811e1a3aeb771329b88f60a73ef1ac4ab45775dc3fdc140ad08615d382d147ca2f8693cbd0720ed16c297dabc8d827c4a3f7d9801c5566205e5f8675cc153750bb80b16901a616c6e532f8f1d6922eef49174e380559a93932f06b00c74abed9e2c2a38d4bb470c635c9cf35de3dafcff610e475b375c480e5f8b2a3e2fc441534e98795eeee3b5fc1d1f4e88d6b5bb46a15a25ae50d19b6f2432079e881aa9b075c1a92ee85ccfd988d93e528b2a46cb008fcd73ad3d280e43ad57e9226c8912546da32c678d6df04ff2f145220dbe90f7eeb07622d5d9c87cc987b2c608f076a24d0205ff730ececa55e6ed437e11c1e24534a7692575be6a9170694df9ca68d20510591397c404244d32395d53ed895f7e62b718282041f0a949e8e0b32d4ee6d27d7be073437a1a5416a31cc966e0c68c7716564d5d596ac838401f9f9623d94e0eb8ce74df317c20b689398f23dcc27889bb2c665b51a6c7b049cb989d61d89ecd1c5cae80c136eab2540682f41ed5df79a94d0b24b06a23139e453f22576bd28205cf17b51082028a989e65d5a717223464ec3bc907ca376d70ef5f60fdf8ec3ab57aaec5c33c5263ea2b80336c3f22a41004b2c4affad59fb0bc04d944539354728049b7032601bdf6263a45ba1712b47d093a8754567866f77e4dc0a5c7635247d313d4429611c7dc82a6854108ed32ca58d7210b15cb85a601d800b963ec6ffa139f247c1c5f44955b57166f0bf56afeb057310d8d7561f62a54f8befd57b74c93e7ad95ef912fe9883de753670d56345c4825a7de833103f53afd54d13257c1b2f2db83c5c5be2c3e2c127d9025fc8fcd677e78f183aba498198deadb6e3e5abe7f4e0bad343b3d69d0c06bc467f3f32ac5724a310b99cb085fa2e520b4ba8d59ffa4b0ac998a5acc855d0795ffe60643517c76568ae6380bfc27a35b48315a8667dfd115691daac9d3cf7ec4a9017ffd3a30be08cee1d9488b0b4173c137dd251520efe6184ff77016265db77e0036a8d48f7915ea55c7a4f611704e96605c2bac73f934b8063163892fe0bcf45df41ed69520c8606243512956563428dab1df24d05f238172383b792c0b4db9424655638ea433c4b9f568c9b7521124ffafaff2f6e3c88e01d4354fb77d72a23e1ec379b5fa93adc6580fae1b4eaa942e272d70348fd334a227e091064d9f40ea5e4fdbb21ba06b5318694c0c09be1ec1c7f58edd0d4a1df2fa4c7487ce9a23dbe665abf1302d311d89ca38195d85d9d313ee2c51b2fc5a9ff7f98399d0f4a648a1bd31228bae3dbf1c407f2d61634d6af7e5474ec9b534f35528c34c1a2aa2694348cdcfd461128faf3a7388ed8b93eb20744e75ba2d351964967f06dbde2bb8991546bc9329b341dd3e90b31abaf62863adbad8e294875d4384660f5ec485a1254fe6a5a5b9ad3fb1c2a65fa8dbccf617bd5d776193341959c918cef1577183c882cfd7afb055c795ed2dc48f0793ce9c70943bbc87e120541201471b065b36448f91c271bc89165c74626d747abcf907374908f18a4a5f4de7d32132a6d7f5a5330301c15e5b0b651625da846b9eb89ab2b8c8fdef075c7c077cb0ce5b647f65264c6ac5759f2816bc15113821625ad9a21349374cb7df50231ae129b4e7a6e73788fcbb77b53623819775456befc5176594a5476391f8b0a4eaa2a9c5d6bd578bd3b223f304e13ff3fc6cc368fea0efa86e3f7a2806d5280df2362e5d3bfa023b7e00baf2fd763c5970312cf658ef5abea40ac6d619dcd5bea8532911e3b9a34c5a622151ed3230d64f73237218d26a78e5ecdd46677b251a4d89d0b99dfff17fe298b9be584d08e662fbd778ff67230f505f636938335927b5de947af28cbccd55adebc14d8121e8e5c83dba6dcaef4d02a13d55a6a5020ac8bdeb12c23dd51e9f2c7a47a75ffdb4a4b283f6f83ddab5a4466624f6dc64fe4972be8f99865995eb7cd4594de0d4a18099340a7685338acbc4259bc41b7bd64aea58b2d9f36f5d27aa8afc55ae51f67232c57ce752a988ed2bf0c3be6028af7945686d41431eead7038e0ff369aab2ff36bf92fe18326f85277abb6b81b9bf8b0fb1e626e744d9db4d2f83b0e856925f5cca54acce225a367dbc294d91d0a739d0e8f18a41df5d52fb007ba7e9a3c024fe4a3fb431f44640e9215b67afb242a66f5278c480c1d1575d9a27a6ebdcba76b739504a9ba2f16093d9885036a8ca1ddb47b2de4409418c05eb27488355a932b6ddc9ddce1c5000f4804d14d74e6a1c371fdcfea3c4a8d56481d7e405770272ea33cde5df8f0c45a37b66f9bcf7b973949000a0d7fccbb9754701eedb7945aa20ff7248f0e88d3c668521ac5c9a4cc45fba1ca3d58d0a4701c103cd227672a3267384289027575d5293f69b7ab503674c36dbc47c8a4154488c2d68449825cf96159e7737db5f804ddf472853e24853f8c0ae81d1202e973e7442d801ae5f1edc511e416f1465f</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">当前文章暂不对外可见，请输入密码后查看！</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>如有疑问或需要技术讨论，请留言或发邮件到 service@itfanr.cc</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    码字不易，鼓励一下
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Leafney 微信鼓励">
+        <p>微信鼓励</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Leafney 支付宝鼓励">
+        <p>支付宝鼓励</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2022/04/26/my-home-server-configuration-openwrt-unknown-host/" title="OpenWrt软路由无法通过域名访问内网服务">https://www.itfanr.cc/2022/04/26/my-home-server-configuration-openwrt-unknown-host/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AIO%E5%B0%8F%E4%B8%BB%E6%9C%BA/" rel="tag"># AIO小主机</a>
+              <a href="/tags/OpenWrt/" rel="tag"># OpenWrt</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/19/my-home-server-configuration-openwrt-zerotier/" rel="prev" title="OpenWrt配置ZeroTier实现异地组网及私有Moon节点搭建">
+      <i class="fa fa-chevron-left"></i> OpenWrt配置ZeroTier实现异地组网及私有Moon节点搭建
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div id="toc-div" style="display:none">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前提"><span class="nav-number">1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#找寻"><span class="nav-number">2.</span> <span class="nav-text">找寻</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#防火墙"><span class="nav-number">2.1.</span> <span class="nav-text">防火墙</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#联网配置"><span class="nav-number">2.2.</span> <span class="nav-text">联网配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#域名劫持"><span class="nav-number">2.3.</span> <span class="nav-text">域名劫持</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意事项"><span class="nav-number">3.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+
+        </div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leafney"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Leafney</p>
+  <div class="site-description" itemprop="description">Stay Hungry. Stay Foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">182</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leafney" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leafney" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hub.docker.com/r/leafney/" title="DockerHub → https:&#x2F;&#x2F;hub.docker.com&#x2F;r&#x2F;leafney&#x2F;" rel="noopener" target="_blank"><i class="fab fa-docker fa-fw"></i>DockerHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:service@itfanr.cc" title="E-Mail → mailto:service@itfanr.cc" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        访客数 <span id="busuanzi_value_site_uv"></span> 人次
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        访问量 <span id="busuanzi_value_site_pv"></span> 次
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f28d68fd5271fd52826d',
+      clientSecret: '78dcf9e469d35b463903642be740b85f198fec97',
+      repo        : 'Leafney.github.io',
+      owner       : 'leafney',
+      admin       : ['leafney'],
+      id : 'itfanr_20220426234219',
+      labels: 'comments'.split(',').filter(l => l),
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

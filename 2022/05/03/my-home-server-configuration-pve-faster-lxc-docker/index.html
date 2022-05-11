@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.itfanr.cc","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="从0到1打造一款个人家庭All-in-One小主机，用技术让生活变得更美好">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PVE配置-镜像加速及LXC容器安装Docker">
+<meta property="og:url" content="https://www.itfanr.cc/2022/05/03/my-home-server-configuration-pve-faster-lxc-docker/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="从0到1打造一款个人家庭All-in-One小主机，用技术让生活变得更美好">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504123638.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504123659.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124901.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504123753.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504123816.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504123836.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124122.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124138.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124149.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124201.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124209.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124217.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504132335.png">
+<meta property="article:published_time" content="2022-05-03T13:50:45.000Z">
+<meta property="article:modified_time" content="2022-05-04T05:34:52.000Z">
+<meta property="article:author" content="Leafney">
+<meta property="article:tag" content="AIO小主机">
+<meta property="article:tag" content="OpenWrt">
+<meta property="article:tag" content="PVE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504123638.png">
+
+<link rel="canonical" href="https://www.itfanr.cc/2022/05/03/my-home-server-configuration-pve-faster-lxc-docker/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>PVE配置-镜像加速及LXC容器安装Docker | IT范儿</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?eac19a9eb5ae3d4b5784857872188c97";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">IT范儿</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">程序员改变世界</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leafney" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2022/05/03/my-home-server-configuration-pve-faster-lxc-docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="Stay Hungry. Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PVE配置-镜像加速及LXC容器安装Docker
+        </h1>
+
+        <div class="post-meta">
+
+          
+            
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-03 21:50:45" itemprop="dateCreated datePublished" datetime="2022-05-03T21:50:45+08:00">2022-05-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-04 13:34:52" itemprop="dateModified" datetime="2022-05-04T13:34:52+08:00">2022-05-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%B6%E5%BA%ADAIO%E5%B0%8F%E4%B8%BB%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">家庭AIO小主机</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">从0到1打造一款个人家庭All-in-One小主机，用技术让生活变得更美好</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在之前的文章中配置好了PVE基础系统的环境和OpenWrt的网络环境，接下来就要开心的折腾小主机了。</p>
+<p>话说 “磨刀不误砍柴工”，所以在此之前，我们先要磨磨刀。</p>
+<p>通过之前的了解，我们知道PVE系统底层就是基于Debian的Linux系统，所以在后续我们需要安装一些依赖文件的时候，就是在Debian系统下的那些操作了。而此时就会遇到安装依赖包慢的问题：PVE7默认配置的apt软件源和CT容器模板源均是官方默认的，而在国内访问又会遇到 “你懂得” 的问题。所以我们要先来加个速。</p>
+<hr>
+<h3 id="更换软件源"><a href="#更换软件源" class="headerlink" title="更换软件源"></a>更换软件源</h3><p>我当前使用的PVE系统版本是 <code>v7.1-2</code>，基于 <code>Debian 11 bullseye</code> 系统。</p>
+<p>默认以 <code>root</code> 用户登录系统并操作。查看系统版本信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@pve:~# cat &#x2F;etc&#x2F;os-release </span><br><span class="line">PRETTY_NAME&#x3D;&quot;Debian GNU&#x2F;Linux 11 (bullseye)&quot;</span><br><span class="line">NAME&#x3D;&quot;Debian GNU&#x2F;Linux&quot;</span><br><span class="line">VERSION_ID&#x3D;&quot;11&quot;</span><br><span class="line">VERSION&#x3D;&quot;11 (bullseye)&quot;</span><br><span class="line">VERSION_CODENAME&#x3D;bullseye</span><br><span class="line">ID&#x3D;debian</span><br><span class="line">HOME_URL&#x3D;&quot;https:&#x2F;&#x2F;www.debian.org&#x2F;&quot;</span><br><span class="line">SUPPORT_URL&#x3D;&quot;https:&#x2F;&#x2F;www.debian.org&#x2F;support&quot;</span><br><span class="line">BUG_REPORT_URL&#x3D;&quot;https:&#x2F;&#x2F;bugs.debian.org&#x2F;&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="apt软件源"><a href="#apt软件源" class="headerlink" title="apt软件源"></a>apt软件源</h4><p>替换前可以先尝试更新下证书，主要是为了防止证书不可用导致无法拉取 <code>https</code> 源的情况。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># apt install apt-transport-https ca-certificates</span><br></pre></td></tr></table></figure>
+
+<p>首先替换通用软件源，<code>Debian</code> 系统的软件源配置文件是 <code>/etc/apt/sources.list</code> ，先对该文件进行备份：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cp &#x2F;etc&#x2F;apt&#x2F;sources.list &#x2F;etc&#x2F;apt&#x2F;sources.list.bak</span><br></pre></td></tr></table></figure>
+
+<p>然后将其中内容修改为如下，这里我选择使用清华的软件源地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">deb https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F; bullseye main contrib non-free</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F; bullseye main contrib non-free</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F; bullseye-updates main contrib non-free</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F; bullseye-updates main contrib non-free</span><br><span class="line"></span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F; bullseye-backports main contrib non-free</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F; bullseye-backports main contrib non-free</span><br><span class="line"></span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian-security bullseye-security main contrib non-free</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian-security bullseye-security main contrib non-free</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://mirrors.tuna.tsinghua.edu.cn/help/debian/" target="_blank" rel="noopener">debian | 镜像站使用帮助 | 清华大学开源软件镜像站 | Tsinghua Open Source Mirror</a></li>
+<li><a href="https://mirrors.tuna.tsinghua.edu.cn/help/proxmox/" target="_blank" rel="noopener">proxmox | 镜像站使用帮助 | 清华大学开源软件镜像站 | Tsinghua Open Source Mirror</a></li>
+</ul>
+<h4 id="pve软件源"><a href="#pve软件源" class="headerlink" title="pve软件源"></a>pve软件源</h4><p>pve镜像默认的pve软件源配置文件是 <code>/etc/apt/sources.list.d/pve-enterprise.list</code> ，将该文件备份：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cp &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;pve-enterprise.list &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;pve-enterprise.list.bak</span><br></pre></td></tr></table></figure>
+
+<p>并将内容替换为以下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deb https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;proxmox&#x2F;debian bullseye pve-no-subscription</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h4><p>最后，执行更新操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># apt-get update</span><br></pre></td></tr></table></figure>
+
+<h4 id="一个问题"><a href="#一个问题" class="headerlink" title="一个问题"></a>一个问题</h4><p>当我执行更新命令后，却输出了如下的报错信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># apt-get update</span><br><span class="line">Err:1 https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian bullseye InRelease</span><br><span class="line">  Temporary failure resolving &#39;mirrors.tuna.tsinghua.edu.cn&#39;</span><br><span class="line">Err:2 https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian bullseye-updates InRelease</span><br><span class="line">  Temporary failure resolving &#39;mirrors.tuna.tsinghua.edu.cn&#39;</span><br><span class="line">Err:3 https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian bullseye-backports InRelease</span><br><span class="line">  Temporary failure resolving &#39;mirrors.tuna.tsinghua.edu.cn&#39;</span><br><span class="line">Err:4 https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian-security bullseye-security InRelease</span><br><span class="line">  Temporary failure resolving &#39;mirrors.tuna.tsinghua.edu.cn&#39;</span><br><span class="line">Err:5 https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;proxmox&#x2F;debian bullseye InRelease</span><br><span class="line">  Temporary failure resolving &#39;mirrors.tuna.tsinghua.edu.cn&#39;</span><br><span class="line">Reading package lists... Done</span><br><span class="line">W: Failed to fetch https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F;dists&#x2F;bullseye&#x2F;InRelease  Temporary failure resolving &#39;mirrors.tuna.tsinghua.edu.cn&#39;</span><br><span class="line">W: Failed to fetch https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F;dists&#x2F;bullseye-updates&#x2F;InRelease  Temporary failure resolving &#39;mirrors.tuna.tsinghua.edu.cn&#39;</span><br><span class="line">W: Failed to fetch https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F;dists&#x2F;bullseye-backports&#x2F;InRelease  Temporary failure resolving &#39;mirrors.tuna.tsinghua.edu.cn&#39;</span><br><span class="line">W: Failed to fetch https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian-security&#x2F;dists&#x2F;bullseye-security&#x2F;InRelease  Temporary failure resolving &#39;mirrors.tuna.tsinghua.edu.cn&#39;</span><br><span class="line">W: Failed to fetch https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;proxmox&#x2F;debian&#x2F;dists&#x2F;bullseye&#x2F;InRelease  Temporary failure resolving &#39;mirrors.tuna.tsinghua.edu.cn&#39;</span><br><span class="line">W: Some index files failed to download. They have been ignored, or old ones used instead.</span><br></pre></td></tr></table></figure>
+
+<p>后来参考了网络上的相关问题，发现原来是 <code>DNS没有配置好</code>。</p>
+<p>解决方法是编辑如下文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vi &#x2F;etc&#x2F;resolv.conf</span><br></pre></td></tr></table></figure>
+
+<p>然后将 <code>nameserver 223.5.5.5</code> 添加到其中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nameserver 127.0.0.1</span><br><span class="line"># 添加阿里云的DNS服务器</span><br><span class="line">nameserver 223.5.5.5</span><br></pre></td></tr></table></figure>
+
+<p>我这里选择的是阿里云的DNS，当然也可以是 <code>8.8.8.8</code> 或者 <code>114.114.114.114</code> 。之后再次执行 <code>apt-get update</code> 发现软件源更新成功了。</p>
+<ul>
+<li><a href="https://www.cnblogs.com/Lxk0825/p/9520002.html" target="_blank" rel="noopener">ubuntu 执行apt-get update报错Failed to fetch - Lxk- - 博客园</a> </li>
+</ul>
+<hr>
+<h3 id="修改CT容器源"><a href="#修改CT容器源" class="headerlink" title="修改CT容器源"></a>修改CT容器源</h3><h4 id="什么是CT容器"><a href="#什么是CT容器" class="headerlink" title="什么是CT容器"></a>什么是CT容器</h4><p>PVE中的CT容器，也叫LXC容器。</p>
+<blockquote>
+<p>LXC为Linux Container的简写。可以提供轻量级的虚拟化，以便隔离进程和资源，而且不需要提供指令解释机制以及全虚拟化的其他复杂性。</p>
+</blockquote>
+<p>以下统称为 <code>CT容器</code>。</p>
+<h4 id="修改模板镜像源"><a href="#修改模板镜像源" class="headerlink" title="修改模板镜像源"></a>修改模板镜像源</h4><p>当创建CT容器时，需要先下载相应系统的模板镜像，此时就涉及到模板镜像的软件源了。</p>
+<p><code>CT Templates</code> 的配置文件为 <code>/usr/share/perl5/PVE/APLInfo.pm</code> 。将其中默认的源地址 <code>http://download.proxmox.com</code> 替换为 <code>https://mirrors.tuna.tsinghua.edu.cn/proxmox</code> 即可。</p>
+<p>先备份该配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cp &#x2F;usr&#x2F;share&#x2F;perl5&#x2F;PVE&#x2F;APLInfo.pm &#x2F;usr&#x2F;share&#x2F;perl5&#x2F;PVE&#x2F;APLInfo.pm.bak</span><br></pre></td></tr></table></figure>
+
+<p>然后执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sed -i &#39;s|http:&#x2F;&#x2F;download.proxmox.com|https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;proxmox|g&#39; &#x2F;usr&#x2F;share&#x2F;perl5&#x2F;PVE&#x2F;APLInfo.pm</span><br></pre></td></tr></table></figure>
+
+<p>针对 <code>/usr/share/perl5/PVE/APLInfo.pm</code> 文件的修改，重启服务后生效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl restart pvedaemon.service</span><br></pre></td></tr></table></figure>
+
+<p>之后，在 PVE 网页端下载 <code>CT Templates</code> 的速度就快了。</p>
+<hr>
+<h3 id="下载CT-Templates"><a href="#下载CT-Templates" class="headerlink" title="下载CT Templates"></a>下载CT Templates</h3><p>想要创建CT容器，先要下载相应的CT模板镜像。</p>
+<p>下载模板镜像，有三种方法。</p>
+<h4 id="网页端下载"><a href="#网页端下载" class="headerlink" title="网页端下载"></a>网页端下载</h4><p>网页端下载我们可以直接在PVE系统中操作。</p>
+<p>依次选择左侧数据中心下的 <code>pve</code> – <code>local(pve)</code> – <code>CT模板</code> – <code>模板</code> ：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504123638.png" alt="20220504123638"></p>
+<p>在弹出的窗口中选择想要使用的系统镜像，点击底部的 <code>下载</code> 按钮即可下载到本地：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504123659.png" alt="20220504123659"></p>
+<h4 id="网页-命令行方式"><a href="#网页-命令行方式" class="headerlink" title="网页+命令行方式"></a>网页+命令行方式</h4><p>如果不想在页面中操作，我们也可以自己通过命令下载想要的镜像文件。</p>
+<p>打开网址  <a href="http://download.proxmox.com/images/system/" target="_blank" rel="noopener">Index of /images/system/</a> 找到相应镜像：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124901.png" alt="20220504124901"></p>
+<p>然后登录到PVE系统的控制台窗口。依次选择左侧数据中心下的 <code>pve</code> – 右侧 <code>Shell</code> ，通过 <code>wget</code> 或 <code>curl</code> 命令下载镜像文件到本地。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504123753.png" alt="20220504123753"></p>
+<h4 id="命令行下载"><a href="#命令行下载" class="headerlink" title="命令行下载"></a>命令行下载</h4><p>如果更喜欢命令行的操作方式，也可以选择PVE系统自带的 <code>pveam</code> 命令来进行操作。</p>
+<p>首先刷新模板列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># pveam update</span><br></pre></td></tr></table></figure>
+
+<p>然后查看可下载的镜像文件列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># pveam available</span><br></pre></td></tr></table></figure>
+
+<p>也可以筛选查看基础系统镜像：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># pveam available --section system</span><br></pre></td></tr></table></figure>
+
+<p>在使用镜像前，先要将镜像下载到本地。这里我选择PVE系统中默认的 <code>local</code> 存储。</p>
+<p>选择并复制想要的镜像名，执行 <code>pveam download</code> 命令进行下载：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># pveam download local debian-11-standard_11.3-1_amd64.tar.zst</span><br></pre></td></tr></table></figure>
+
+<p>可以通过 <code>pveam list</code> 命令来查看当前本地已经下载的镜像列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># pveam list local</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://pve.proxmox.com/wiki/Linux_Container" target="_blank" rel="noopener">Linux Container - Proxmox VE</a> </li>
+</ul>
+<hr>
+<h3 id="CT容器安装系统"><a href="#CT容器安装系统" class="headerlink" title="CT容器安装系统"></a>CT容器安装系统</h3><p>CT Template 镜像文件已经有了，下面来创建该CT容器。</p>
+<p>这里我以 <code>Debian 11</code> 系统镜像为例。</p>
+<p>选择PVE系统顶部菜单栏中的 <code>创建CT</code> 按钮</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504123816.png" alt="20220504123816"></p>
+<p>在弹出的 <code>创建：LXC容器</code> 窗口 <code>常规</code> 选项卡中，填写以下几项：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504123836.png" alt="20220504123836"></p>
+<p>其中，<code>CT ID</code> 是系统默认编号，可以自定义，只要保证唯一就行。</p>
+<p><code>无特权的容器</code> 和 <code>嵌套</code> 两项一定要勾选。</p>
+<p><code>嵌套</code> 选项可以在CT容器里继续使用相关虚拟化技术，比如运行Docker。</p>
+<p>在 <code>模板</code> 选项卡中，选择刚刚下载的镜像文件：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124122.png" alt="20220504124122"></p>
+<p>在 <code>磁盘</code> 选项卡中，设置磁盘大小：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124138.png" alt="20220504124138"></p>
+<p>在 <code>CPU</code> 选项卡中，设置分配的cpu核数：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124149.png" alt="20220504124149"></p>
+<p>在 <code>内存</code> 选项卡中，分配内存大小。交换分区大小一般可以设置为内存大小的两倍：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124201.png" alt="20220504124201"></p>
+<p>在 <code>网络</code> 选项卡中，将 <code>IPv4</code> 选择为 <code>DHCP</code> ，由 OpenWrt 来分配IP：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124209.png" alt="20220504124209"></p>
+<p><code>DNS</code> 选项卡保持默认：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504124217.png" alt="20220504124217"></p>
+<p>在 <code>确认</code> 选项卡中确认系统配置信息，完成配置。</p>
+<p>之后，我们就可以在左侧树形菜单中看到刚刚创建的CT容器了。 </p>
+<hr>
+<h3 id="Debian11配置Docker"><a href="#Debian11配置Docker" class="headerlink" title="Debian11配置Docker"></a>Debian11配置Docker</h3><p>在 Debian 系统下配置 Docker 是比较简单的，直接按照官方教程来操作即可。这里仅作参考。</p>
+<h4 id="配置apt国内源"><a href="#配置apt国内源" class="headerlink" title="配置apt国内源"></a>配置apt国内源</h4><p>先将默认配置文件备份：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv &#x2F;etc&#x2F;apt&#x2F;sources.list &#x2F;etc&#x2F;apt&#x2F;sources.list.bak</span><br></pre></td></tr></table></figure>
+
+<p>然后执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt; &#x2F;etc&#x2F;apt&#x2F;sources.list  &lt;&lt; EOF</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F; bullseye main contrib non-free</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F; bullseye-updates main contrib non-free</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F; bullseye-backports main contrib non-free</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian-security bullseye-security main contrib non-free</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F; bullseye main contrib non-free</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F; bullseye-updates main contrib non-free</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian&#x2F; bullseye-backports main contrib non-free</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;debian-security bullseye-security main contrib non-free</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>执行更新：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="开启SSH访问"><a href="#开启SSH访问" class="headerlink" title="开启SSH访问"></a>开启SSH访问</h4><p>Debian11 默认禁用了 <code>root</code> 用户 <code>SSH</code> 登录，安装时候推荐创建特定用户作为管理员帐号。</p>
+<p>可以通过修改 <code>SSH</code> 配置开启 <code>root</code> 账户的权限。</p>
+<p>执行更新：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br></pre></td></tr></table></figure>
+
+<p>安装 vim:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install vim</span><br></pre></td></tr></table></figure>
+
+<p>安装 openssh 服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install openssh-server</span><br></pre></td></tr></table></figure>
+
+<p>查看ssh服务状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status ssh.service</span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>vim</code> 编辑ssh配置文件 <code>/etc/ssh/sshd_config</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;ssh&#x2F;sshd_config</span><br></pre></td></tr></table></figure>
+
+<p>将 <code>PermitRootLogin</code> 设置为 <code>yes</code>, 再将 <code>PasswordAuthentication</code> 设置为 <code>yes</code> ，<code>:wq</code> 保存退出即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PermitRootLogin yes</span><br><span class="line"></span><br><span class="line">PasswordAuthentication yes</span><br></pre></td></tr></table></figure>
+
+<p>重启 <code>ssh</code> 服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart ssh.service</span><br></pre></td></tr></table></figure>
+
+<p>设置服务开机自启动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable ssh.service</span><br></pre></td></tr></table></figure>
+
+<p>这个时候就可以关闭当前PVE打开的控制台网页窗口，通过 <code>SSH</code> 工具访问该CT容器系统，查看是否能够正常登录。</p>
+<hr>
+<h4 id="配置Docker"><a href="#配置Docker" class="headerlink" title="配置Docker"></a>配置Docker</h4><p>默认以 <code>root</code> 用户操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br><span class="line"></span><br><span class="line">apt-get install \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    gnupg \</span><br><span class="line">    lsb-release</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">curl -fsSL https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;debian&#x2F;gpg | gpg --dearmor -o &#x2F;usr&#x2F;share&#x2F;keyrings&#x2F;docker-archive-keyring.gpg</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo &quot;deb [arch&#x3D;$(dpkg --print-architecture) signed-by&#x3D;&#x2F;usr&#x2F;share&#x2F;keyrings&#x2F;docker-archive-keyring.gpg] https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;debian \</span><br><span class="line">  $(lsb_release -cs) stable&quot; | tee &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;docker.list &gt; &#x2F;dev&#x2F;null</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">apt update</span><br><span class="line"></span><br><span class="line">apt-get install docker-ce docker-ce-cli containerd.io</span><br><span class="line"></span><br><span class="line">apt-cache madison docker-ce</span><br><span class="line"></span><br><span class="line"># 选择指定版本，这里选择 &#96;5:20.10.14~3-0~debian-bullseye&#96;：</span><br><span class="line"></span><br><span class="line">apt-get install docker-ce&#x3D;5:20.10.14~3-0~debian-bullseye docker-ce-cli&#x3D;5:20.10.14~3-0~debian-bullseye containerd.io</span><br><span class="line"></span><br><span class="line">docker info</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a href="https://docs.docker.com/engine/install/debian/" target="_blank" rel="noopener">Install Docker Engine on Debian | Docker Documentation</a></li>
+</ul>
+<hr>
+<h4 id="docker加速"><a href="#docker加速" class="headerlink" title="docker加速"></a>docker加速</h4><p>依然以 <code>root</code> 用户执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [</span><br><span class="line">    &quot;https:&#x2F;&#x2F;docker.mirrors.ustc.edu.cn&quot;,</span><br><span class="line">    &quot;http:&#x2F;&#x2F;f1361db2.m.daocloud.io&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">systemctl daemon-reload</span><br><span class="line"></span><br><span class="line">systemctl restart docker</span><br><span class="line"></span><br><span class="line">docker info</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h4><p>以 <code>root</code> 用户执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -L &quot;https:&#x2F;&#x2F;github.com&#x2F;docker&#x2F;compose&#x2F;releases&#x2F;download&#x2F;1.29.2&#x2F;docker-compose-$(uname -s)-$(uname -m)&quot; -o &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line"></span><br><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li><a href="https://docs.docker.com/compose/install/" target="_blank" rel="noopener">Install Docker Compose | Docker Documentation</a></li>
+</ul>
+<hr>
+<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><h4 id="sudo-命令"><a href="#sudo-命令" class="headerlink" title="sudo 命令"></a>sudo 命令</h4><p>在配置 <code>Docker加速</code> 时，一开始考虑通过 <code>daocloud</code> 提供的一键安装命令来配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sSL https:&#x2F;&#x2F;get.daocloud.io&#x2F;daotools&#x2F;set_mirror.sh | sh -s http:&#x2F;&#x2F;f1361db2.m.daocloud.io</span><br></pre></td></tr></table></figure>
+
+<p>结果发现执行后有错误提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker version &gt;&#x3D; 1.12</span><br><span class="line">sh: 46: sudo: not found</span><br><span class="line">sh: 55: sudo: not found</span><br></pre></td></tr></table></figure>
+
+<p>因为 Debian系统默认没有安装 <code>sudo</code> 命令。可以选择安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># apt install sudo -y</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="不支持CentOS7镜像"><a href="#不支持CentOS7镜像" class="headerlink" title="不支持CentOS7镜像"></a>不支持CentOS7镜像</h4><p>因为之前配置的个人云服务器一直使用的都是 <code>CentOS7</code> 的系统，当开始打算创建CT容器时，就考虑直接安装 <code>CentOS-7</code> 的系统镜像。</p>
+<p>结果系统能够正常安装，却总是无法启动，一直显示一个黑窗口。</p>
+<p>后来参照文章 <a href="https://blog.csdn.net/phrnet/article/details/104839774" target="_blank" rel="noopener">proxmox中 centos7 lxc 无法使用root登录_phrnet的博客-CSDN博客</a> 中的介绍：</p>
+<blockquote>
+<p>在选项中，选择控制台为：shell（除了tty）就可以了。</p>
+</blockquote>
+<p>修改配置后是能够进入系统了，但却发现执行命令很卡顿，并且想要关闭退出CT容器时，出现了系统无法关闭的情况。</p>
+<p>无论是执行 <code>shutdown -h now</code> 命令，还是点击停止CT容器，网页一直卡在转圈圈的界面，等了很久都不能关闭，或者直接提示错误：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220504132335.png" alt="20220504132335"></p>
+<p>后来在PVE系统界面底部的操作日志中发现了具体的错误提示信息：</p>
+<blockquote>
+<p>WARN: old systemd (&lt; v232) detected, container won’t run in a pure cgroupv2 environment! Please see documentation -&gt; container -&gt; cgroup version.<br>Task finished with 1 warning(s)!</p>
+</blockquote>
+<p>查询了相关资料，原来 <code>PVE7</code> 对于 <code>CentOS 7</code> 及以下版本的系统已经不支持了。</p>
+<blockquote>
+<p>CentOS 7 and Ubuntu 16.10 are two prominent Linux distributions releases, which have a systemd version that is too old to run in a cgroupv2 environment.</p>
+</blockquote>
+<p>即：<strong>PVE7对于 <code>CentOS 7</code> 和 <code>Ubuntu 16.10</code> 及以下版本不支持，建议安装 <code>Ubuntu 18.04</code> 或 <code>CentOS 8</code> 及以上版本。</strong></p>
+<p>详细的说明可以参考 <a href="https://pve.proxmox.com/pve-docs/chapter-pct.html#pct_cgroup_compat" target="_blank" rel="noopener">Proxmox Container Toolkit</a></p>
+<hr>
+<p>至此，配置完成。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>如有疑问或需要技术讨论，请留言或发邮件到 service@itfanr.cc</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    码字不易，鼓励一下
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Leafney 微信鼓励">
+        <p>微信鼓励</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Leafney 支付宝鼓励">
+        <p>支付宝鼓励</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2022/05/03/my-home-server-configuration-pve-faster-lxc-docker/" title="PVE配置-镜像加速及LXC容器安装Docker">https://www.itfanr.cc/2022/05/03/my-home-server-configuration-pve-faster-lxc-docker/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AIO%E5%B0%8F%E4%B8%BB%E6%9C%BA/" rel="tag"># AIO小主机</a>
+              <a href="/tags/OpenWrt/" rel="tag"># OpenWrt</a>
+              <a href="/tags/PVE/" rel="tag"># PVE</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/03/my-home-server-configuration-pve/" rel="prev" title="我的家庭小主机配置-PVE安装及OpenWrt配置">
+      <i class="fa fa-chevron-left"></i> 我的家庭小主机配置-PVE安装及OpenWrt配置
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/04/my-home-server-configuration-pve-home-assistant/" rel="next" title="PVE配置-智能家居HomeAssistant安装">
+      PVE配置-智能家居HomeAssistant安装 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div id="toc-div">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#更换软件源"><span class="nav-number">1.</span> <span class="nav-text">更换软件源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#apt软件源"><span class="nav-number">1.1.</span> <span class="nav-text">apt软件源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pve软件源"><span class="nav-number">1.2.</span> <span class="nav-text">pve软件源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新"><span class="nav-number">1.3.</span> <span class="nav-text">更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个问题"><span class="nav-number">1.4.</span> <span class="nav-text">一个问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改CT容器源"><span class="nav-number">2.</span> <span class="nav-text">修改CT容器源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是CT容器"><span class="nav-number">2.1.</span> <span class="nav-text">什么是CT容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改模板镜像源"><span class="nav-number">2.2.</span> <span class="nav-text">修改模板镜像源</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载CT-Templates"><span class="nav-number">3.</span> <span class="nav-text">下载CT Templates</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#网页端下载"><span class="nav-number">3.1.</span> <span class="nav-text">网页端下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网页-命令行方式"><span class="nav-number">3.2.</span> <span class="nav-text">网页+命令行方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令行下载"><span class="nav-number">3.3.</span> <span class="nav-text">命令行下载</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CT容器安装系统"><span class="nav-number">4.</span> <span class="nav-text">CT容器安装系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Debian11配置Docker"><span class="nav-number">5.</span> <span class="nav-text">Debian11配置Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置apt国内源"><span class="nav-number">5.1.</span> <span class="nav-text">配置apt国内源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启SSH访问"><span class="nav-number">5.2.</span> <span class="nav-text">开启SSH访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置Docker"><span class="nav-number">5.3.</span> <span class="nav-text">配置Docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker加速"><span class="nav-number">5.4.</span> <span class="nav-text">docker加速</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-compose"><span class="nav-number">5.5.</span> <span class="nav-text">docker-compose</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题解决"><span class="nav-number">6.</span> <span class="nav-text">问题解决</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sudo-命令"><span class="nav-number">6.1.</span> <span class="nav-text">sudo 命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不支持CentOS7镜像"><span class="nav-number">6.2.</span> <span class="nav-text">不支持CentOS7镜像</span></a></li></ol></li></ol></div>
+
+        </div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leafney"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Leafney</p>
+  <div class="site-description" itemprop="description">Stay Hungry. Stay Foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">186</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leafney" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leafney" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hub.docker.com/r/leafney/" title="DockerHub → https:&#x2F;&#x2F;hub.docker.com&#x2F;r&#x2F;leafney&#x2F;" rel="noopener" target="_blank"><i class="fab fa-docker fa-fw"></i>DockerHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:service@itfanr.cc" title="E-Mail → mailto:service@itfanr.cc" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        访客数 <span id="busuanzi_value_site_uv"></span> 人次
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        访问量 <span id="busuanzi_value_site_pv"></span> 次
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f28d68fd5271fd52826d',
+      clientSecret: '78dcf9e469d35b463903642be740b85f198fec97',
+      repo        : 'Leafney.github.io',
+      owner       : 'leafney',
+      admin       : ['leafney'],
+      id : 'itfanr_20220503215045',
+      labels: 'comments'.split(',').filter(l => l),
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

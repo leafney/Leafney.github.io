@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.itfanr.cc","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="快去看看你们的项目git仓库为什么那么大？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="探究git如何从历史提交记录中移除大文件">
+<meta property="og:url" content="https://www.itfanr.cc/2022/11/08/git-remove-large-files-from-commit-history/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="快去看看你们的项目git仓库为什么那么大？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221108092206.png">
+<meta property="article:published_time" content="2022-11-08T12:37:43.000Z">
+<meta property="article:modified_time" content="2022-11-12T09:17:28.000Z">
+<meta property="article:author" content="Leafney">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221108092206.png">
+
+<link rel="canonical" href="https://www.itfanr.cc/2022/11/08/git-remove-large-files-from-commit-history/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>探究git如何从历史提交记录中移除大文件 | IT范儿</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?eac19a9eb5ae3d4b5784857872188c97";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">IT范儿</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">程序员改变世界</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leafney" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2022/11/08/git-remove-large-files-from-commit-history/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="Stay Hungry. Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          探究git如何从历史提交记录中移除大文件
+        </h1>
+
+        <div class="post-meta">
+
+          
+            
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-11-08 20:37:43" itemprop="dateCreated datePublished" datetime="2022-11-08T20:37:43+08:00">2022-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-11-12 17:17:28" itemprop="dateModified" datetime="2022-11-12T17:17:28+08:00">2022-11-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git%E6%93%8D%E4%BD%9C%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">Git操作系列</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">快去看看你们的项目git仓库为什么那么大？</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>项目中使用到了IP离线数据库 <code>GeoLite2-City.mmdb</code>，结果在git提交时就直接把该文件给提交了。</p>
+<p>然后 <code>commit</code> 命令弹出了下面的警告信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Compressing objects: 100% (125&#x2F;125), done.</span><br><span class="line">Writing objects: 100% (152&#x2F;152), 32.12 MiB | 378.00 KiB&#x2F;s, done.</span><br><span class="line">Total 152 (delta 62), reused 0 (delta 0), pack-reused 0</span><br><span class="line">remote: Resolving deltas: 100% (62&#x2F;62), completed with 20 local objects.</span><br><span class="line">remote: warning: See http:&#x2F;&#x2F;git.io&#x2F;iEPt8g for more information.</span><br><span class="line">remote: warning: File files&#x2F;GeoLite2-City.mmdb is 66.64 MB; this is larger than GitHub&#39;s recommended maximum file size of 50.00 MB</span><br><span class="line">remote: warning: GH001: Large files detected. You may want to try Git Large File Storage - https:&#x2F;&#x2F;git-lfs.github.com.</span><br></pre></td></tr></table></figure>
+
+
+<p>后来想想其实这个文件并不需要通过git管理，只需要在项目部署时将其拷贝到服务器上的相应目录就可以了。</p>
+<p>最重要的一点就是可以减少git仓库的大小。</p>
+<p>但想要回滚回去还面临一个问题：也就是我在这次 <code>commit</code> 之后又进行多次 <code>commit</code> 。</p>
+<p>主要是当时看到上面的警告提示并没有太在意，后来提交过几次后发现整个项目的代码才几百KB，而这一个文件就60多MB，而且拉取仓库还很慢。于是就后知后觉的想要把它删除。</p>
+<hr>
+<h3 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h3><p>可以通过 <code>count-objects</code> 命令查看当前git项目占用的大小：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">➜ git count-objects -v</span><br><span class="line">count: 1047</span><br><span class="line">size: 39168</span><br><span class="line">in-pack: 0</span><br><span class="line">packs: 0</span><br><span class="line">size-pack: 0</span><br><span class="line">prune-packable: 0</span><br><span class="line">garbage: 0</span><br><span class="line">size-garbage: 0</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>size</code> 大小是 <code>KB</code>，所以整个项目大约有 <code>38MB</code> 左右。</p>
+<h4 id="移除文件跟踪"><a href="#移除文件跟踪" class="headerlink" title="移除文件跟踪"></a>移除文件跟踪</h4><p>发现提交问题后，我就首先通过 <code>git rm</code> 命令移除了对该大文件的跟踪：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜ git rm --cached -r files&#x2F;</span><br><span class="line">rm &#39;files&#x2F;GeoLite2-City.mmdb&#39;</span><br></pre></td></tr></table></figure>
+
+<p>然后在 <code>.gitignore</code> 文件中添加目录排除：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># .gitingore</span><br><span class="line"></span><br><span class="line">files&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>因为该大文件直接存放在项目根目录下的 <code>files</code> 目录下，考虑到该目录仅用作存放类似的外部引用文件，所以这里就直接对该目录做了排除处理。</p>
+<hr>
+<h4 id="移除历史记录"><a href="#移除历史记录" class="headerlink" title="移除历史记录"></a>移除历史记录</h4><p>虽然上面已经将该大文件移除了git跟踪，但是由于之前已经执行过 <code>commit</code> 命令，该大文件也就存在于git的历史提交记录中，那么其所占的空间大小并不会随之减少。</p>
+<p>后来搜索到git中有一个 <code>filter-branch</code> 命令，可以用来更改提交记录。</p>
+<h4 id="找出要清理的大文件"><a href="#找出要清理的大文件" class="headerlink" title="找出要清理的大文件"></a>找出要清理的大文件</h4><p>通过如下命令找出大小排名前5的提交记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git verify-pack -v .git&#x2F;objects&#x2F;pack&#x2F;pack-*.idx | sort -k 3 -g | tail -5</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git verify-pack -v .git&#x2F;objects&#x2F;pack&#x2F;pack-*.idx | sort -k 3 -g | tail -5</span><br><span class="line">f1fa258c4de231d60dd34bfe086cb1fd9bdfeffe blob   6729 1973 168915</span><br><span class="line">a3b8064f46bfc68a8cd4a23c9e4d07e8512f498e blob   9196 1837 153011</span><br><span class="line">fb6959274ac0df12ba5ca20efacb06ba902b37d8 blob   22021 3110 147510</span><br><span class="line">e585637c26cb4b5bb1b21f95045e5f2ce845848b blob   96767 36508 108212</span><br><span class="line">0482b283b80efeb1ab0549132fead647f7b9b9e7 blob   69875685 33652834 178184</span><br></pre></td></tr></table></figure>
+
+<p>查看该提交包含的文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git rev-list --objects --all | grep 0482b283b80efeb1ab0549132fead647f7b9b9e7</span><br><span class="line">0482b283b80efeb1ab0549132fead647f7b9b9e7 files&#x2F;GeoLite2-City.mmdb</span><br></pre></td></tr></table></figure>
+
+<p>可见提交记录中的对应文件就是 <code>files/GeoLite2-City.mmdb</code> 。</p>
+<p>其中：</p>
+<ul>
+<li><code>verify-pack</code> 表示用于显示已打包的内容</li>
+<li><code>rev-list</code> 表示用来列出Git仓库中的提交</li>
+<li><code>--objects</code> 表示列出该提交涉及的所有文件ID</li>
+<li><code>--all</code> 表示所有分支的提交，相当于指定了位于/refs下的所有引用</li>
+</ul>
+<hr>
+<h4 id="重写commit，删除大文件"><a href="#重写commit，删除大文件" class="headerlink" title="重写commit，删除大文件"></a>重写commit，删除大文件</h4><p>通过 <code>filter-branch</code> 命令，来删除上面找到的大文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git filter-branch --force --index-filter &#39;git rm --cached --ignore-unmatch path-to-your-remove-file&#39; --prune-empty --tag-name-filter cat -- --all</span><br></pre></td></tr></table></figure>
+
+<p>注意将其中的 <code>path-to-your-remove-file</code> 换成具体的文件路径。</p>
+<p>其中：</p>
+<ul>
+<li><code>filter-branch</code> 表示：用来重写Git仓库中的提交</li>
+<li><code>-f/--force</code> 表示：<code>git filter-branch</code>拒绝从现有的临时目录开始过滤，或者当已经有ref时 <code>refs/original/</code> ，使用该参数强制执行过滤</li>
+<li><code>--index-filter</code> 表示：重写索引的过滤器。用来指定一条Bash命令，然后Git会检出（checkout）所有的提交， 执行该命令，然后重新提交</li>
+<li><code>--ignore-unmatch</code> 表示：</li>
+<li><code>--prune-empty</code> 表示：过滤常常生成空的提交，从而使树保持不变。该参数会删除空提交</li>
+<li><code>--tag-name-filter</code> 表示：重写标签名称，原始标签不会被删除，但可以被覆盖；使用 <code>--tag-name-filter cat</code> 来简单地更新标签</li>
+<li><code>--</code> 表示：分隔符 </li>
+<li><code>--all</code> 表示：需要重写所有分支（或引用）</li>
+</ul>
+<p>执行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">➜ git filter-branch --force --index-filter &#39;git rm --cached --ignore-unmatch files&#x2F;GeoLite2-City.mmdb&#39; --prune-empty --tag-name-filter cat -- --all</span><br><span class="line">WARNING: git-filter-branch has a glut of gotchas generating mangled history</span><br><span class="line">         rewrites.  Hit Ctrl-C before proceeding to abort, then use an</span><br><span class="line">         alternative filtering tool such as &#39;git filter-repo&#39;</span><br><span class="line">         (https:&#x2F;&#x2F;github.com&#x2F;newren&#x2F;git-filter-repo&#x2F;) instead.  See the</span><br><span class="line">         filter-branch manual page for more details; to squelch this warning,</span><br><span class="line">         set FILTER_BRANCH_SQUELCH_WARNING&#x3D;1.</span><br><span class="line">Proceeding with filter-branch...</span><br><span class="line"></span><br><span class="line">Rewrite f4767ff924b90157e19397af404a2ba38c5378fe (41&#x2F;54) (3 seconds passed, remaining 0 predicted)    rm &#39;files&#x2F;GeoLite2-City.mmdb&#39;</span><br><span class="line">Rewrite d095e133f47958a41a9f6bf09e9c3f8472f269b9 (41&#x2F;54) (3 seconds passed, remaining 0 predicted)    rm &#39;files&#x2F;GeoLite2-City.mmdb&#39;</span><br><span class="line">Rewrite b70f3fc69bb87fa63964a5536ee4ad3a7a4c3b87 (41&#x2F;54) (3 seconds passed, remaining 0 predicted)    rm &#39;files&#x2F;GeoLite2-City.mmdb&#39;</span><br><span class="line">Rewrite 507ba2652efabbd907d6aaad2d459ac1397cb54f (41&#x2F;54) (3 seconds passed, remaining 0 predicted)    rm &#39;files&#x2F;GeoLite2-City.mmdb&#39;</span><br><span class="line">Rewrite cc8706560aac102304ab16dd1aa1b4ee24186558 (41&#x2F;54) (3 seconds passed, remaining 0 predicted)    rm &#39;files&#x2F;GeoLite2-City.mmdb&#39;</span><br><span class="line">Rewrite 5e2088ef3f256ba3c9ebfc73af36c7f2c5f19b09 (41&#x2F;54) (3 seconds passed, remaining 0 predicted)</span><br><span class="line">Ref &#39;refs&#x2F;heads&#x2F;dev&#39; was rewritten</span><br><span class="line">WARNING: Ref &#39;refs&#x2F;heads&#x2F;main&#39; is unchanged</span><br><span class="line">Ref &#39;refs&#x2F;remotes&#x2F;origin&#x2F;dev&#39; was rewritten</span><br><span class="line">WARNING: Ref &#39;refs&#x2F;remotes&#x2F;origin&#x2F;main&#39; is unchanged</span><br><span class="line">WARNING: Ref &#39;refs&#x2F;tags&#x2F;v0.1.0&#39; is unchanged</span><br><span class="line">WARNING: Ref &#39;refs&#x2F;tags&#x2F;v0.1.2&#39; is unchanged</span><br><span class="line">WARNING: Ref &#39;refs&#x2F;tags&#x2F;v0.1.3&#39; is unchanged</span><br><span class="line">v0.1.0 -&gt; v0.1.0 (05258f376c40e2ce3db184957e8ecff94a12a41a -&gt; 05258f376c40e2ce3db184957e8ecff94a12a41a)</span><br><span class="line">v0.1.2 -&gt; v0.1.2 (d8d2681645ce807069c7a1f1c2865f8d74862a20 -&gt; d8d2681645ce807069c7a1f1c2865f8d74862a20)</span><br><span class="line">v0.1.3 -&gt; v0.1.3 (39f36e09ba24badcae6360686f1dc433690b185d -&gt; 39f36e09ba24badcae6360686f1dc433690b185d)</span><br></pre></td></tr></table></figure>
+
+
+<p>通过 <code>Sourcetree</code> 工具查看一下所做的更改：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221108092206.png" alt="21108092206|500"></p>
+<p>其中，红色框选部分是原来的提交记录，绿色框选部分是移除大文件后被更改的提交记录。</p>
+<hr>
+<h4 id="清理和回收本地空间"><a href="#清理和回收本地空间" class="headerlink" title="清理和回收本地空间"></a>清理和回收本地空间</h4><p>此时如果通过命令 <code>git count-objects -v</code> 去查看git仓库占用大小，会发现并没有什么变化：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">➜ git count-objects -v</span><br><span class="line">count: 1058</span><br><span class="line">size: 39212</span><br><span class="line">in-pack: 0</span><br><span class="line">packs: 0</span><br><span class="line">size-pack: 0</span><br><span class="line">prune-packable: 0</span><br><span class="line">garbage: 0</span><br><span class="line">size-garbage: 0</span><br></pre></td></tr></table></figure>
+
+<p>这是因为，虽然我们已经删除了大文件，但在 <code>.git</code> 目录下仍然保留了这些 <code>objects</code>，等待垃圾回收。我们可以手动将其立即删除。</p>
+<p>执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rm -rf .git&#x2F;refs&#x2F;original</span><br><span class="line">git reflog expire --expire&#x3D;now --all</span><br><span class="line">git gc --prune&#x3D;now</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><code>rm .git/refs/original</code>  表示：删除git的备份文件</li>
+<li><code>git reflog expire --expire=now --all</code> 表示：使所有散落的object立即失效</li>
+<li><code>git gc --prune=now</code> 表示：立即执行垃圾回收gc</li>
+</ul>
+<p>再次查看文件占用大小，为了便于查看，可以通过增加 <code>-H</code> 选项，自动将其转换为 <code>MB</code> 大小：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">➜ git count-objects -vH</span><br><span class="line">count: 0</span><br><span class="line">size: 0 bytes</span><br><span class="line">in-pack: 1022</span><br><span class="line">packs: 1</span><br><span class="line">size-pack: 32.30 MiB</span><br><span class="line">prune-packable: 0</span><br><span class="line">garbage: 0</span><br><span class="line">size-garbage: 0 bytes</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="推送修改"><a href="#推送修改" class="headerlink" title="推送修改"></a>推送修改</h4><p>通过强制覆盖的方式 <code>-f,--force</code> 将修改后的代码提交到远端：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout dev</span><br><span class="line"></span><br><span class="line">git push origin dev:dev -f</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>虽然通过上面的操作我们可以将已经 <code>commit</code> 的大文件完整移除，但我发现其中还是有一些需要注意的问题。</p>
+<p>总结下来就是：<strong>我不建议使用 <code>filter-branch</code> 命令来解决此种情况</strong>。</p>
+<p>主要有两点：</p>
+<h4 id="原因一：不推荐"><a href="#原因一：不推荐" class="headerlink" title="原因一：不推荐"></a>原因一：不推荐</h4><p>可以看到在执行 <code>git filter-branch</code> 命令时给出了下面的警告信息：</p>
+<blockquote>
+<p>WARNING: git-filter-branch has a glut of gotchas generating mangled history<br>rewrites.  Hit Ctrl-C before proceeding to abort, then use an<br>alternative filtering tool such as ‘git filter-repo’<br>(<a href="https://github.com/newren/git-filter-repo/" target="_blank" rel="noopener">https://github.com/newren/git-filter-repo/</a>) instead.  See the<br>filter-branch manual page for more details; to squelch this warning,<br>set FILTER_BRANCH_SQUELCH_WARNING=1.</p>
+</blockquote>
+<p><code>filter-branch</code> 会完全改写你的提交历史记录，git官方推荐使用 <code>git filter-repo</code> 命令来代替。</p>
+<p>至于 <code>filter-repo</code> 命令的具体操作，后续再补充说明。</p>
+<h4 id="原因二：不安全"><a href="#原因二：不安全" class="headerlink" title="原因二：不安全"></a>原因二：不安全</h4><p>因为我也是第一次遇到需要对提交过的大文件进行移除的场景，所以整个的操作流程也是在网上搜索了好多的资料才敢下手操作。整个过程也是非常的 <code>战战兢兢</code> 生怕一步错导致整个项目出错而无法恢复。</p>
+<p>毕竟其中不乏各种 <code>--force</code> 命令。</p>
+<p>所以说，虽然这种方式能够解决，但我并不推荐这样做。</p>
+<hr>
+<h3 id="更好的方法"><a href="#更好的方法" class="headerlink" title="更好的方法"></a>更好的方法</h3><p>除了上面官方推荐的<code>filter-repo</code> 命令外，后来想想，其实当我在发现大文件被 <code>commit</code> 后的几次提交时，我就可以通过 <code>git reset</code> 命令将本地版本回退到没有大文件之前的版本，重新提交这些更改。</p>
+<p>具体的操作这里暂时先不展开。</p>
+<p>(ps. 主要是目前项目中的大文件情况已经解决，只能后续再次遇到时或者专门针对这种情况做一个深入探讨了😋)</p>
+<hr>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>如有疑问或需要技术讨论，请留言或发邮件到 service@itfanr.cc</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    码字不易，鼓励一下
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Leafney 微信鼓励">
+        <p>微信鼓励</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Leafney 支付宝鼓励">
+        <p>支付宝鼓励</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2022/11/08/git-remove-large-files-from-commit-history/" title="探究git如何从历史提交记录中移除大文件">https://www.itfanr.cc/2022/11/08/git-remove-large-files-from-commit-history/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"># Git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/15/covid-testing-difference-in-beijing-and-tianjin/" rel="prev" title="聊聊京津两地核酸检测的差异">
+      <i class="fa fa-chevron-left"></i> 聊聊京津两地核酸检测的差异
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/11/10/homebrew-install-speed-up/" rel="next" title="Homebrew下载加速">
+      Homebrew下载加速 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div id="toc-div">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#起因"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何解决"><span class="nav-number">2.</span> <span class="nav-text">如何解决</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#移除文件跟踪"><span class="nav-number">2.1.</span> <span class="nav-text">移除文件跟踪</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#移除历史记录"><span class="nav-number">2.2.</span> <span class="nav-text">移除历史记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#找出要清理的大文件"><span class="nav-number">2.3.</span> <span class="nav-text">找出要清理的大文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重写commit，删除大文件"><span class="nav-number">2.4.</span> <span class="nav-text">重写commit，删除大文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#清理和回收本地空间"><span class="nav-number">2.5.</span> <span class="nav-text">清理和回收本地空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推送修改"><span class="nav-number">2.6.</span> <span class="nav-text">推送修改</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原因一：不推荐"><span class="nav-number">3.1.</span> <span class="nav-text">原因一：不推荐</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#原因二：不安全"><span class="nav-number">3.2.</span> <span class="nav-text">原因二：不安全</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更好的方法"><span class="nav-number">4.</span> <span class="nav-text">更好的方法</span></a></li></ol></div>
+
+        </div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leafney"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Leafney</p>
+  <div class="site-description" itemprop="description">Stay Hungry. Stay Foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">193</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leafney" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leafney" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hub.docker.com/r/leafney/" title="DockerHub → https:&#x2F;&#x2F;hub.docker.com&#x2F;r&#x2F;leafney&#x2F;" rel="noopener" target="_blank"><i class="fab fa-docker fa-fw"></i>DockerHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:service@itfanr.cc" title="E-Mail → mailto:service@itfanr.cc" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        访客数 <span id="busuanzi_value_site_uv"></span> 人次
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        访问量 <span id="busuanzi_value_site_pv"></span> 次
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f28d68fd5271fd52826d',
+      clientSecret: '78dcf9e469d35b463903642be740b85f198fec97',
+      repo        : 'Leafney.github.io',
+      owner       : 'leafney',
+      admin       : ['leafney'],
+      id : 'itfanr_20221108203743',
+      labels: 'comments'.split(',').filter(l => l),
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

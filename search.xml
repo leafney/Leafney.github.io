@@ -61,6 +61,215 @@
       </tags>
   </entry>
   <entry>
+    <title>Homebrew下载加速</title>
+    <url>/2022/11/10/homebrew-install-speed-up/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p><code>Homebrew</code> 是 macOS 上知名的软件包管理工具。但我平时却很少会用到。究其原因，主要还是由于 <code>众所周知</code> 的原因，在国内通过 <code>homebrew</code> 命令安装软件时总是出现 <code>timeout</code> 的情况。</p>
+<p>最近打算再创建一个个人博客。我之前的博客采用 <code>hexo</code> 搭建，需要配置nodejs开发环境，而项目目录下的 <code>node_modules</code> 目录其实挺让人感觉无奈的。</p>
+<p>后来了解到用go开发的一款静态博客工具 <code>hugo</code> ，安装简单，部署方便。所以打算尝试一下。</p>
+<p>但没想到第一步就遇到了问题。</p>
+<p>我通过 <code>homebrew</code> 安装 <code>hugo</code> 时，直接就安装失败：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ brew install hugo</span><br><span class="line">Updating Homebrew...</span><br><span class="line">^[^C&#x3D;&#x3D;&gt; Downloading https:&#x2F;&#x2F;homebrew.bintray.com&#x2F;bottles&#x2F;hugo-0.82.0.big_sur.bottle.</span><br><span class="line">Warning: Transient problem: HTTP error Will retry in 1 seconds. 3 retries</span><br><span class="line">Warning: left.</span><br><span class="line">Warning: Transient problem: HTTP error Will retry in 2 seconds. 2 retries</span><br><span class="line">Warning: left.</span><br><span class="line">Warning: Transient problem: HTTP error Will retry in 4 seconds. 1 retries</span><br><span class="line">Warning: left.</span><br><span class="line">-&#x3D;O&#x3D;-              #    #     #     #</span><br><span class="line">curl: (22) The requested URL returned error: 502 Bad Gateway</span><br><span class="line">Error: Failed to download resource &quot;hugo&quot;</span><br><span class="line">Download failed: https:&#x2F;&#x2F;homebrew.bintray.com&#x2F;bottles&#x2F;hugo-0.82.0.big_sur.bottle.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>由于我Mac电脑上安装的 homebrew程序版本比较低，所以每次安装软件时都会提示更新，然后等待很长时间。参照网上的教程，通过 <code>Ctrl+C</code> 命令取消它的自动检测更新操作，但这并没有什么卵用，最终还是会安装失败。</p>
+<hr>
+<h3 id="配置加速"><a href="#配置加速" class="headerlink" title="配置加速"></a>配置加速</h3><p>解决 <code>homebrew</code> 国内下载慢的问题，最简单的方法就是更换国内的镜像源。</p>
+<h4 id="查看配置"><a href="#查看配置" class="headerlink" title="查看配置"></a>查看配置</h4><p>首先查看 <code>homebrew</code> 当前的配置信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ brew config</span><br><span class="line">HOMEBREW_VERSION: 3.0.9</span><br><span class="line">ORIGIN: https:&#x2F;&#x2F;github.com&#x2F;Homebrew&#x2F;brew</span><br><span class="line">HEAD: ed87211daa83982a6136e14d181a1550b46a0f17</span><br><span class="line">Last commit: 1 year, 7 months ago</span><br><span class="line">Core tap ORIGIN: https:&#x2F;&#x2F;github.com&#x2F;Homebrew&#x2F;homebrew-core</span><br><span class="line">Core tap HEAD: 3be1dcad062cfe1639b9eea8c8bc1d27c45aacfa</span><br><span class="line">Core tap last commit: 1 year, 7 months ago</span><br><span class="line">Core tap branch: master</span><br><span class="line">HOMEBREW_PREFIX: &#x2F;usr&#x2F;local</span><br><span class="line">HOMEBREW_CASK_OPTS: []</span><br><span class="line">HOMEBREW_MAKE_JOBS: 8</span><br><span class="line">Homebrew Ruby: 2.6.3 &#x3D;&gt; &#x2F;usr&#x2F;local&#x2F;Homebrew&#x2F;Library&#x2F;Homebrew&#x2F;vendor&#x2F;portable-ruby&#x2F;2.6.3_2&#x2F;bin&#x2F;ruby</span><br><span class="line">CPU: octa-core 64-bit haswell</span><br><span class="line">Clang: 12.0 build 1200</span><br><span class="line">Git: 2.33.0 &#x3D;&gt; &#x2F;usr&#x2F;local&#x2F;bin&#x2F;git</span><br><span class="line">Curl: 7.64.1 &#x3D;&gt; &#x2F;usr&#x2F;bin&#x2F;curl</span><br><span class="line">macOS: 11.4-x86_64</span><br><span class="line">CLT: 1103.0.32.62</span><br><span class="line">Xcode: 12.4</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>homebrew</code> 的版本已经很老了。</p>
+<h4 id="更换镜像源"><a href="#更换镜像源" class="headerlink" title="更换镜像源"></a>更换镜像源</h4><p>执行brew命令安装应用的时候，跟以下3个仓库地址有关：</p>
+<ul>
+<li>brew.git</li>
+<li>homebrew-core.git</li>
+<li>homebrew-bottles</li>
+</ul>
+<p>目前国内镜像源推荐使用的有以下两种：</p>
+<p>中科大镜像站 ：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;mirrors.ustc.edu.cn&#x2F;brew.git</span><br><span class="line"></span><br><span class="line">https:&#x2F;&#x2F;mirrors.ustc.edu.cn&#x2F;homebrew-core.git</span><br><span class="line"></span><br><span class="line">https:&#x2F;&#x2F;mirrors.ustc.edu.cn&#x2F;homebrew-bottles</span><br></pre></td></tr></table></figure>
+
+<p>清华大学镜像站 ：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;git&#x2F;homebrew&#x2F;brew.git</span><br><span class="line"></span><br><span class="line">https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;git&#x2F;homebrew&#x2F;homebrew-core.git</span><br><span class="line"></span><br><span class="line">https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;homebrew-bottles</span><br></pre></td></tr></table></figure>
+
+<p>这里我使用的 <code>清华大学镜像</code> ，分别执行如下命令进行替换。</p>
+<p>更换 <code>brew.git</code> :</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git -C &quot;$(brew --repo)&quot; remote set-url origin https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;git&#x2F;homebrew&#x2F;brew.git</span><br></pre></td></tr></table></figure>
+
+<p>更换 <code>homebrew-core.git</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git -C &quot;$(brew --repo homebrew&#x2F;core)&quot; remote set-url origin https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;git&#x2F;homebrew&#x2F;homebrew-core.git</span><br></pre></td></tr></table></figure>
+
+<p>然后执行更新命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew update</span><br></pre></td></tr></table></figure>
+
+<p>这里需要一些时间，等待其更新。</p>
+<p>完成后再次通过 <code>brew config</code> 命令查看配置信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ brew config</span><br><span class="line">HOMEBREW_VERSION: 3.6.8</span><br><span class="line">ORIGIN: https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;git&#x2F;homebrew&#x2F;brew.git</span><br><span class="line">HEAD: fa2649dde786208da7d151a89bcafdd23a453f4d</span><br><span class="line">Last commit: 6 days ago</span><br><span class="line">Core tap ORIGIN: https:&#x2F;&#x2F;github.com&#x2F;Homebrew&#x2F;homebrew-core</span><br><span class="line">Core tap HEAD: 1bcaa928a1ca0dd2ae12167d5b6a917acc63d8c4</span><br><span class="line">Core tap last commit: 2 hours ago</span><br><span class="line">Core tap branch: master</span><br><span class="line">HOMEBREW_PREFIX: &#x2F;usr&#x2F;local</span><br><span class="line">HOMEBREW_CASK_OPTS: []</span><br><span class="line">HOMEBREW_MAKE_JOBS: 8</span><br><span class="line">Homebrew Ruby: 2.6.8 &#x3D;&gt; &#x2F;usr&#x2F;local&#x2F;Homebrew&#x2F;Library&#x2F;Homebrew&#x2F;vendor&#x2F;portable-ruby&#x2F;2.6.8_1&#x2F;bin&#x2F;ruby</span><br><span class="line">CPU: octa-core 64-bit haswell</span><br><span class="line">Clang: 12.0.0 build 1200</span><br><span class="line">Git: 2.33.0 &#x3D;&gt; &#x2F;usr&#x2F;local&#x2F;bin&#x2F;git</span><br><span class="line">Curl: 7.64.1 &#x3D;&gt; &#x2F;usr&#x2F;bin&#x2F;curl</span><br><span class="line">macOS: 11.4-x86_64</span><br><span class="line">CLT: 11.3.0.32.62</span><br><span class="line">Xcode: 12.4</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 其中的 <code>ORIGIN</code> 地址已经更改，<code>version</code> 也已经更新到最新。</p>
+<h4 id="更换-homebrew-bottles"><a href="#更换-homebrew-bottles" class="headerlink" title="更换 homebrew-bottles"></a>更换 homebrew-bottles</h4><p><code>bottles</code> 主要是涉及二进制文件下载的配置。</p>
+<p>我们需要在当前shell配置中添加 <code>HOMEBREW_BOTTLE_DOMAIN</code> 参数来进行指定。</p>
+<p>查看当前macOS系统中使用的终端shell：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo $SHELL</span><br></pre></td></tr></table></figure>
+
+<p>一般情况下输出为 <code>/bin/bash</code>，我使用的是 <code>zsh</code> ，输出的就是 <code>/bin/zsh</code> 。</p>
+<p>在shell相应的配置文件中添加如下命令 :</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export HOMEBREW_BOTTLE_DOMAIN&#x3D;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;homebrew-bottles</span><br></pre></td></tr></table></figure>
+
+
+<p>也可以直接在终端执行添加命令：</p>
+<p><code>/bin/bash</code> </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &#39;export HOMEBREW_BOTTLE_DOMAIN&#x3D;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;homebrew-bottles&#39; &gt;&gt; ~&#x2F;.bash_profile</span><br><span class="line"></span><br><span class="line">source ~&#x2F;.bash_profile</span><br></pre></td></tr></table></figure>
+
+<p><code>/bin/zsh</code> </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &#39;export HOMEBREW_BOTTLE_DOMAIN&#x3D;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;homebrew-bottles&#39; &gt;&gt; ~&#x2F;.zshrc</span><br><span class="line"></span><br><span class="line">source ~&#x2F;.zshrc</span><br></pre></td></tr></table></figure>
+
+<p>这里要提醒不要忘记刷新配置使其生效。</p>
+<p>之后，就可以尽情的通过 <code>brew install</code> 安装软件了。</p>
+<h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><p>继续上面未完成的安装操作：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ brew install hugo</span><br><span class="line">&#x3D;&#x3D;&gt; Downloading https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;homebrew-bottles&#x2F;hugo-0.105.0.big_sur.bottle.tar.gz</span><br><span class="line">######################################################################## 100.0%</span><br><span class="line">&#x3D;&#x3D;&gt; Pouring hugo-0.105.0.big_sur.bottle.tar.gz</span><br><span class="line">&#x3D;&#x3D;&gt; Caveats</span><br><span class="line">zsh completions have been installed to:</span><br><span class="line">  &#x2F;usr&#x2F;local&#x2F;share&#x2F;zsh&#x2F;site-functions</span><br><span class="line">&#x3D;&#x3D;&gt; Summary</span><br><span class="line">🍺  &#x2F;usr&#x2F;local&#x2F;Cellar&#x2F;hugo&#x2F;0.105.0: 48 files, 57.8MB</span><br><span class="line">&#x3D;&#x3D;&gt; Running &#96;brew cleanup hugo&#96;...</span><br><span class="line">Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.</span><br><span class="line">Hide these hints with HOMEBREW_NO_ENV_HINTS (see &#96;man brew&#96;).</span><br><span class="line">&#x3D;&#x3D;&gt; &#96;brew cleanup&#96; has not been run in the last 30 days, running now...</span><br><span class="line">Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.</span><br><span class="line">Hide these hints with HOMEBREW_NO_ENV_HINTS (see &#96;man brew&#96;).</span><br></pre></td></tr></table></figure>
+
+<p>基本上没有卡顿，软件安装的非常顺利。</p>
+<p>验证：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ hugo version</span><br><span class="line">hugo v0.105.0+extended darwin&#x2F;amd64 BuildDate&#x3D;unknown</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h3 id="恢复默认配置"><a href="#恢复默认配置" class="headerlink" title="恢复默认配置"></a>恢复默认配置</h3><p>某些情况下可能需要使用 <code>homebrew</code> 的默认配置，可以通过如下命令来恢复。</p>
+<h4 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h4><p>重置 <code>brew.git</code> 和 <code>homebrew-core.git</code> :</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git -C &quot;$(brew --repo)&quot; remote set-url origin https:&#x2F;&#x2F;github.com&#x2F;Homebrew&#x2F;brew.git</span><br><span class="line"></span><br><span class="line">git -C &quot;$(brew --repo homebrew&#x2F;core)&quot; remote set-url origin https:&#x2F;&#x2F;github.com&#x2F;Homebrew&#x2F;homebrew-core.git</span><br></pre></td></tr></table></figure>
+
+<p>执行更新：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew update</span><br></pre></td></tr></table></figure>
+
+<h4 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h4><p>移除终端配置文件中的 <code>HOMEBREW_BOTTLE_DOMAIN</code> 环境变量，然后执行 <code>source ~/.bash_profile</code>  或 <code>source ~/.zshrc</code> 使其生效。</p>
+<hr>
+<h3 id="git-C-释意"><a href="#git-C-释意" class="headerlink" title="git -C 释意"></a><code>git -C</code> 释意</h3><p>有的朋友看到上面执行的命令中 <code>git -C &quot;$(brew --repo)&quot;</code> 可能感觉有些陌生，另外还有朋友告诉我如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &quot;$(brew --repo)&quot;</span><br><span class="line">git remote set-url origin https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;git&#x2F;homebrew&#x2F;brew.git</span><br><span class="line"></span><br><span class="line">cd &quot;$(brew --repo)&#x2F;Library&#x2F;Taps&#x2F;homebrew&#x2F;homebrew-core&quot;</span><br><span class="line">git remote set-url origin https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;git&#x2F;homebrew&#x2F;homebrew-core.git</span><br></pre></td></tr></table></figure>
+
+<p>其实这两种写法最后的执行结果是一样的。只是写法不同，相比之下我使用的命令要更简便一些。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>工具技巧</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>探究git如何从历史提交记录中移除大文件</title>
+    <url>/2022/11/08/git-remove-large-files-from-commit-history/</url>
+    <content><![CDATA[<h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>项目中使用到了IP离线数据库 <code>GeoLite2-City.mmdb</code>，结果在git提交时就直接把该文件给提交了。</p>
+<p>然后 <code>commit</code> 命令弹出了下面的警告信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Compressing objects: 100% (125&#x2F;125), done.</span><br><span class="line">Writing objects: 100% (152&#x2F;152), 32.12 MiB | 378.00 KiB&#x2F;s, done.</span><br><span class="line">Total 152 (delta 62), reused 0 (delta 0), pack-reused 0</span><br><span class="line">remote: Resolving deltas: 100% (62&#x2F;62), completed with 20 local objects.</span><br><span class="line">remote: warning: See http:&#x2F;&#x2F;git.io&#x2F;iEPt8g for more information.</span><br><span class="line">remote: warning: File files&#x2F;GeoLite2-City.mmdb is 66.64 MB; this is larger than GitHub&#39;s recommended maximum file size of 50.00 MB</span><br><span class="line">remote: warning: GH001: Large files detected. You may want to try Git Large File Storage - https:&#x2F;&#x2F;git-lfs.github.com.</span><br></pre></td></tr></table></figure>
+
+
+<p>后来想想其实这个文件并不需要通过git管理，只需要在项目部署时将其拷贝到服务器上的相应目录就可以了。</p>
+<p>最重要的一点就是可以减少git仓库的大小。</p>
+<p>但想要回滚回去还面临一个问题：也就是我在这次 <code>commit</code> 之后又进行多次 <code>commit</code> 。</p>
+<p>主要是当时看到上面的警告提示并没有太在意，后来提交过几次后发现整个项目的代码才几百KB，而这一个文件就60多MB，而且拉取仓库还很慢。于是就后知后觉的想要把它删除。</p>
+<hr>
+<h3 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h3><p>可以通过 <code>count-objects</code> 命令查看当前git项目占用的大小：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ git count-objects -v</span><br><span class="line">count: 1047</span><br><span class="line">size: 39168</span><br><span class="line">in-pack: 0</span><br><span class="line">packs: 0</span><br><span class="line">size-pack: 0</span><br><span class="line">prune-packable: 0</span><br><span class="line">garbage: 0</span><br><span class="line">size-garbage: 0</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>size</code> 大小是 <code>KB</code>，所以整个项目大约有 <code>38MB</code> 左右。</p>
+<h4 id="移除文件跟踪"><a href="#移除文件跟踪" class="headerlink" title="移除文件跟踪"></a>移除文件跟踪</h4><p>发现提交问题后，我就首先通过 <code>git rm</code> 命令移除了对该大文件的跟踪：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ git rm --cached -r files&#x2F;</span><br><span class="line">rm &#39;files&#x2F;GeoLite2-City.mmdb&#39;</span><br></pre></td></tr></table></figure>
+
+<p>然后在 <code>.gitignore</code> 文件中添加目录排除：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># .gitingore</span><br><span class="line"></span><br><span class="line">files&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>因为该大文件直接存放在项目根目录下的 <code>files</code> 目录下，考虑到该目录仅用作存放类似的外部引用文件，所以这里就直接对该目录做了排除处理。</p>
+<hr>
+<h4 id="移除历史记录"><a href="#移除历史记录" class="headerlink" title="移除历史记录"></a>移除历史记录</h4><p>虽然上面已经将该大文件移除了git跟踪，但是由于之前已经执行过 <code>commit</code> 命令，该大文件也就存在于git的历史提交记录中，那么其所占的空间大小并不会随之减少。</p>
+<p>后来搜索到git中有一个 <code>filter-branch</code> 命令，可以用来更改提交记录。</p>
+<h4 id="找出要清理的大文件"><a href="#找出要清理的大文件" class="headerlink" title="找出要清理的大文件"></a>找出要清理的大文件</h4><p>通过如下命令找出大小排名前5的提交记录：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git verify-pack -v .git&#x2F;objects&#x2F;pack&#x2F;pack-*.idx | sort -k 3 -g | tail -5</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git verify-pack -v .git&#x2F;objects&#x2F;pack&#x2F;pack-*.idx | sort -k 3 -g | tail -5</span><br><span class="line">f1fa258c4de231d60dd34bfe086cb1fd9bdfeffe blob   6729 1973 168915</span><br><span class="line">a3b8064f46bfc68a8cd4a23c9e4d07e8512f498e blob   9196 1837 153011</span><br><span class="line">fb6959274ac0df12ba5ca20efacb06ba902b37d8 blob   22021 3110 147510</span><br><span class="line">e585637c26cb4b5bb1b21f95045e5f2ce845848b blob   96767 36508 108212</span><br><span class="line">0482b283b80efeb1ab0549132fead647f7b9b9e7 blob   69875685 33652834 178184</span><br></pre></td></tr></table></figure>
+
+<p>查看该提交包含的文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git rev-list --objects --all | grep 0482b283b80efeb1ab0549132fead647f7b9b9e7</span><br><span class="line">0482b283b80efeb1ab0549132fead647f7b9b9e7 files&#x2F;GeoLite2-City.mmdb</span><br></pre></td></tr></table></figure>
+
+<p>可见提交记录中的对应文件就是 <code>files/GeoLite2-City.mmdb</code> 。</p>
+<p>其中：</p>
+<ul>
+<li><code>verify-pack</code> 表示用于显示已打包的内容</li>
+<li><code>rev-list</code> 表示用来列出Git仓库中的提交</li>
+<li><code>--objects</code> 表示列出该提交涉及的所有文件ID</li>
+<li><code>--all</code> 表示所有分支的提交，相当于指定了位于/refs下的所有引用</li>
+</ul>
+<hr>
+<h4 id="重写commit，删除大文件"><a href="#重写commit，删除大文件" class="headerlink" title="重写commit，删除大文件"></a>重写commit，删除大文件</h4><p>通过 <code>filter-branch</code> 命令，来删除上面找到的大文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git filter-branch --force --index-filter &#39;git rm --cached --ignore-unmatch path-to-your-remove-file&#39; --prune-empty --tag-name-filter cat -- --all</span><br></pre></td></tr></table></figure>
+
+<p>注意将其中的 <code>path-to-your-remove-file</code> 换成具体的文件路径。</p>
+<p>其中：</p>
+<ul>
+<li><code>filter-branch</code> 表示：用来重写Git仓库中的提交</li>
+<li><code>-f/--force</code> 表示：<code>git filter-branch</code>拒绝从现有的临时目录开始过滤，或者当已经有ref时 <code>refs/original/</code> ，使用该参数强制执行过滤</li>
+<li><code>--index-filter</code> 表示：重写索引的过滤器。用来指定一条Bash命令，然后Git会检出（checkout）所有的提交， 执行该命令，然后重新提交</li>
+<li><code>--ignore-unmatch</code> 表示：</li>
+<li><code>--prune-empty</code> 表示：过滤常常生成空的提交，从而使树保持不变。该参数会删除空提交</li>
+<li><code>--tag-name-filter</code> 表示：重写标签名称，原始标签不会被删除，但可以被覆盖；使用 <code>--tag-name-filter cat</code> 来简单地更新标签</li>
+<li><code>--</code> 表示：分隔符 </li>
+<li><code>--all</code> 表示：需要重写所有分支（或引用）</li>
+</ul>
+<p>执行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ git filter-branch --force --index-filter &#39;git rm --cached --ignore-unmatch files&#x2F;GeoLite2-City.mmdb&#39; --prune-empty --tag-name-filter cat -- --all</span><br><span class="line">WARNING: git-filter-branch has a glut of gotchas generating mangled history</span><br><span class="line">         rewrites.  Hit Ctrl-C before proceeding to abort, then use an</span><br><span class="line">         alternative filtering tool such as &#39;git filter-repo&#39;</span><br><span class="line">         (https:&#x2F;&#x2F;github.com&#x2F;newren&#x2F;git-filter-repo&#x2F;) instead.  See the</span><br><span class="line">         filter-branch manual page for more details; to squelch this warning,</span><br><span class="line">         set FILTER_BRANCH_SQUELCH_WARNING&#x3D;1.</span><br><span class="line">Proceeding with filter-branch...</span><br><span class="line"></span><br><span class="line">Rewrite f4767ff924b90157e19397af404a2ba38c5378fe (41&#x2F;54) (3 seconds passed, remaining 0 predicted)    rm &#39;files&#x2F;GeoLite2-City.mmdb&#39;</span><br><span class="line">Rewrite d095e133f47958a41a9f6bf09e9c3f8472f269b9 (41&#x2F;54) (3 seconds passed, remaining 0 predicted)    rm &#39;files&#x2F;GeoLite2-City.mmdb&#39;</span><br><span class="line">Rewrite b70f3fc69bb87fa63964a5536ee4ad3a7a4c3b87 (41&#x2F;54) (3 seconds passed, remaining 0 predicted)    rm &#39;files&#x2F;GeoLite2-City.mmdb&#39;</span><br><span class="line">Rewrite 507ba2652efabbd907d6aaad2d459ac1397cb54f (41&#x2F;54) (3 seconds passed, remaining 0 predicted)    rm &#39;files&#x2F;GeoLite2-City.mmdb&#39;</span><br><span class="line">Rewrite cc8706560aac102304ab16dd1aa1b4ee24186558 (41&#x2F;54) (3 seconds passed, remaining 0 predicted)    rm &#39;files&#x2F;GeoLite2-City.mmdb&#39;</span><br><span class="line">Rewrite 5e2088ef3f256ba3c9ebfc73af36c7f2c5f19b09 (41&#x2F;54) (3 seconds passed, remaining 0 predicted)</span><br><span class="line">Ref &#39;refs&#x2F;heads&#x2F;dev&#39; was rewritten</span><br><span class="line">WARNING: Ref &#39;refs&#x2F;heads&#x2F;main&#39; is unchanged</span><br><span class="line">Ref &#39;refs&#x2F;remotes&#x2F;origin&#x2F;dev&#39; was rewritten</span><br><span class="line">WARNING: Ref &#39;refs&#x2F;remotes&#x2F;origin&#x2F;main&#39; is unchanged</span><br><span class="line">WARNING: Ref &#39;refs&#x2F;tags&#x2F;v0.1.0&#39; is unchanged</span><br><span class="line">WARNING: Ref &#39;refs&#x2F;tags&#x2F;v0.1.2&#39; is unchanged</span><br><span class="line">WARNING: Ref &#39;refs&#x2F;tags&#x2F;v0.1.3&#39; is unchanged</span><br><span class="line">v0.1.0 -&gt; v0.1.0 (05258f376c40e2ce3db184957e8ecff94a12a41a -&gt; 05258f376c40e2ce3db184957e8ecff94a12a41a)</span><br><span class="line">v0.1.2 -&gt; v0.1.2 (d8d2681645ce807069c7a1f1c2865f8d74862a20 -&gt; d8d2681645ce807069c7a1f1c2865f8d74862a20)</span><br><span class="line">v0.1.3 -&gt; v0.1.3 (39f36e09ba24badcae6360686f1dc433690b185d -&gt; 39f36e09ba24badcae6360686f1dc433690b185d)</span><br></pre></td></tr></table></figure>
+
+
+<p>通过 <code>Sourcetree</code> 工具查看一下所做的更改：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221108092206.png" alt="21108092206|500"></p>
+<p>其中，红色框选部分是原来的提交记录，绿色框选部分是移除大文件后被更改的提交记录。</p>
+<hr>
+<h4 id="清理和回收本地空间"><a href="#清理和回收本地空间" class="headerlink" title="清理和回收本地空间"></a>清理和回收本地空间</h4><p>此时如果通过命令 <code>git count-objects -v</code> 去查看git仓库占用大小，会发现并没有什么变化：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ git count-objects -v</span><br><span class="line">count: 1058</span><br><span class="line">size: 39212</span><br><span class="line">in-pack: 0</span><br><span class="line">packs: 0</span><br><span class="line">size-pack: 0</span><br><span class="line">prune-packable: 0</span><br><span class="line">garbage: 0</span><br><span class="line">size-garbage: 0</span><br></pre></td></tr></table></figure>
+
+<p>这是因为，虽然我们已经删除了大文件，但在 <code>.git</code> 目录下仍然保留了这些 <code>objects</code>，等待垃圾回收。我们可以手动将其立即删除。</p>
+<p>执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm -rf .git&#x2F;refs&#x2F;original</span><br><span class="line">git reflog expire --expire&#x3D;now --all</span><br><span class="line">git gc --prune&#x3D;now</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><code>rm .git/refs/original</code>  表示：删除git的备份文件</li>
+<li><code>git reflog expire --expire=now --all</code> 表示：使所有散落的object立即失效</li>
+<li><code>git gc --prune=now</code> 表示：立即执行垃圾回收gc</li>
+</ul>
+<p>再次查看文件占用大小，为了便于查看，可以通过增加 <code>-H</code> 选项，自动将其转换为 <code>MB</code> 大小：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜ git count-objects -vH</span><br><span class="line">count: 0</span><br><span class="line">size: 0 bytes</span><br><span class="line">in-pack: 1022</span><br><span class="line">packs: 1</span><br><span class="line">size-pack: 32.30 MiB</span><br><span class="line">prune-packable: 0</span><br><span class="line">garbage: 0</span><br><span class="line">size-garbage: 0 bytes</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="推送修改"><a href="#推送修改" class="headerlink" title="推送修改"></a>推送修改</h4><p>通过强制覆盖的方式 <code>-f,--force</code> 将修改后的代码提交到远端：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git checkout dev</span><br><span class="line"></span><br><span class="line">git push origin dev:dev -f</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>虽然通过上面的操作我们可以将已经 <code>commit</code> 的大文件完整移除，但我发现其中还是有一些需要注意的问题。</p>
+<p>总结下来就是：<strong>我不建议使用 <code>filter-branch</code> 命令来解决此种情况</strong>。</p>
+<p>主要有两点：</p>
+<h4 id="原因一：不推荐"><a href="#原因一：不推荐" class="headerlink" title="原因一：不推荐"></a>原因一：不推荐</h4><p>可以看到在执行 <code>git filter-branch</code> 命令时给出了下面的警告信息：</p>
+<blockquote>
+<p>WARNING: git-filter-branch has a glut of gotchas generating mangled history<br>rewrites.  Hit Ctrl-C before proceeding to abort, then use an<br>alternative filtering tool such as ‘git filter-repo’<br>(<a href="https://github.com/newren/git-filter-repo/" target="_blank" rel="noopener">https://github.com/newren/git-filter-repo/</a>) instead.  See the<br>filter-branch manual page for more details; to squelch this warning,<br>set FILTER_BRANCH_SQUELCH_WARNING=1.</p>
+</blockquote>
+<p><code>filter-branch</code> 会完全改写你的提交历史记录，git官方推荐使用 <code>git filter-repo</code> 命令来代替。</p>
+<p>至于 <code>filter-repo</code> 命令的具体操作，后续再补充说明。</p>
+<h4 id="原因二：不安全"><a href="#原因二：不安全" class="headerlink" title="原因二：不安全"></a>原因二：不安全</h4><p>因为我也是第一次遇到需要对提交过的大文件进行移除的场景，所以整个的操作流程也是在网上搜索了好多的资料才敢下手操作。整个过程也是非常的 <code>战战兢兢</code> 生怕一步错导致整个项目出错而无法恢复。</p>
+<p>毕竟其中不乏各种 <code>--force</code> 命令。</p>
+<p>所以说，虽然这种方式能够解决，但我并不推荐这样做。</p>
+<hr>
+<h3 id="更好的方法"><a href="#更好的方法" class="headerlink" title="更好的方法"></a>更好的方法</h3><p>除了上面官方推荐的<code>filter-repo</code> 命令外，后来想想，其实当我在发现大文件被 <code>commit</code> 后的几次提交时，我就可以通过 <code>git reset</code> 命令将本地版本回退到没有大文件之前的版本，重新提交这些更改。</p>
+<p>具体的操作这里暂时先不展开。</p>
+<p>(ps. 主要是目前项目中的大文件情况已经解决，只能后续再次遇到时或者专门针对这种情况做一个深入探讨了😋)</p>
+<hr>
+]]></content>
+      <categories>
+        <category>Git操作系列</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>聊聊京津两地核酸检测的差异</title>
     <url>/2022/08/15/covid-testing-difference-in-beijing-and-tianjin/</url>
     <content><![CDATA[<p>8月12日应天津朋友的邀请，来了一次说走就走的旅行。</p>
@@ -8293,7 +8502,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#101;&#109;&#x61;&#x69;&#108;&#x40;&#x65;&#120;&#97;&#x6d;&#x70;&#108;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#101;&#109;&#x61;&#x69;&#108;&#x40;&#x65;&#120;&#97;&#x6d;&#x70;&#108;&#x65;&#x2e;&#x63;&#111;&#x6d;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#97;&#x69;&#x6c;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#109;">&#x65;&#109;&#97;&#x69;&#x6c;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>

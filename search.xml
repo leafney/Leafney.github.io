@@ -1,6 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Golang通过Embed嵌入静态资源</title>
+    <url>/2022/08/18/golang-embed-static-files/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>通过Golang开发前后端项目时，普遍采用 <code>Gin</code> 结合 <code>Vue</code> 或者 <code>React</code> 项目来实现。</p>
+<p>但在部署时，前端的项目则需要通过nginx来实现转发。对于小型的前后端项目来说，这种方式就有点复杂了。</p>
+<p>小型的前后端项目，一般会考虑将静态文件打包到go二进制文件中，这样在发布时只需要部署单个二进制文件即可。相对于 <code>Python</code> 或 <code>Java</code> 等项目来说，并不需要前期配置依赖的运行环境，省时、省力还非常方便。</p>
+<p>在之前的方法中，普遍采用第三方的类库实现。比较知名的有 <code>go-bindata</code> 、<code>packr</code> 等。</p>
+<p>这里来聊聊使用golang最新支持的 <code>embed</code> 特性如何实现。</p>
+<hr>
+<h3 id="embed了解"><a href="#embed了解" class="headerlink" title="embed了解"></a>embed了解</h3><p>Go1.16 引入了 <code>//go:embed</code> 功能，可以将静态资源文件内容直接打包到二进制文件，方便部署。</p>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p>在embed中，可以将静态资源文件嵌入到三种类型的变量：<code>string</code> , <code>byte slice</code> 和 <code>embed.FS</code> 这三种类型。</p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>string</code></td>
+<td>表示数据被编码成 <code>utf8</code> 编码的字符串</td>
+</tr>
+<tr>
+<td><code>[]byte</code></td>
+<td>表示数据存储为二进制格式</td>
+</tr>
+<tr>
+<td><code>embed.FS</code></td>
+<td>表示存储多个文件和目录的结构，而 <code>string</code> 和 <code>[]byte</code> 只能存储单个文件</td>
+</tr>
+</tbody></table>
+<p>其中，<code>string</code> 和 <code>[]byte</code> 需要通过 <code>import (_ &quot;embed&quot;)</code> 的形式引入 <code>embed</code> 库</p>
+<p>示例：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"embed"</span>  </span><br><span class="line">   _ <span class="string">"embed"</span>  </span><br><span class="line">   <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"><span class="comment">// 以字符串的形式嵌入 hello.txt  </span></span><br><span class="line"><span class="comment">//go:embed hello.txt  </span></span><br><span class="line"><span class="keyword">var</span> s <span class="keyword">string</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 以字节数组的形式嵌入  </span></span><br><span class="line"><span class="comment">//go:embed hello.txt  </span></span><br><span class="line"><span class="keyword">var</span> b []<span class="keyword">byte</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 以FS文件系统的形式嵌入  </span></span><br><span class="line"><span class="comment">//go:embed hello.txt  </span></span><br><span class="line"><span class="keyword">var</span> f embed.FS  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   fmt.Println(<span class="string">"embed string: "</span>, s)  </span><br><span class="line">  </span><br><span class="line">   fmt.Println(<span class="string">"embed byte: "</span>, <span class="keyword">string</span>(b))  </span><br><span class="line">  </span><br><span class="line">   data, _ := f.ReadFile(<span class="string">"hello.txt"</span>)  </span><br><span class="line">   fmt.Println(<span class="string">"embed fs: "</span>, <span class="keyword">string</span>(data))  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行后输出为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">embed string:  你好鸭</span><br><span class="line">embed byte:  你好鸭</span><br><span class="line">embed fs:  你好鸭</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h4><p>当通过 <code>embed.FS</code> 嵌入多个文件时，支持 <code>通配符</code> 的使用。</p>
+<table>
+<thead>
+<tr>
+<th>通配符</th>
+<th>释义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>?</td>
+<td>代表任意一个字符（不包括半角中括号）</td>
+</tr>
+<tr>
+<td>*</td>
+<td>代表0至多个任意字符组成的字符串（不包括半角中括号）</td>
+</tr>
+<tr>
+<td>[…] 和 [!…]</td>
+<td>代表任意一个匹配方括号里字符的字符，!表示任意不匹配方括号中字符的字符</td>
+</tr>
+<tr>
+<td>[a-z]、[0-9]</td>
+<td>代表匹配a-z任意一个字符的字符或是0-9中的任意一个数字</td>
+</tr>
+<tr>
+<td>**</td>
+<td>部分系统支持，<code>*</code>不能跨目录匹配，<code>**</code> 可以，不过目前在golang中和<code>*</code>是同义词</td>
+</tr>
+</tbody></table>
+<p>例如，我们可以通过如下的方式来嵌入多个目录下的文件：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> server</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"embed"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// content holds our static web server content.</span></span><br><span class="line"><span class="comment">//go:embed image/* template/*</span></span><br><span class="line"><span class="comment">//go:embed html/index.html</span></span><br><span class="line"><span class="keyword">var</span> content embed.FS</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>注意：支持同时设置多个 <code>//go:embed</code> 来嵌入多个文件或目录，或者在同一行的 <code>//go:embed</code> 中通过 <code>空格分隔</code> 的形式设置多个文件或目录</p>
+</blockquote>
+<p>所以，我们也可以通过如下的方式来实现同样的效果：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;go:embed image template html&#x2F;index.html</span><br><span class="line">var content embed.FS</span><br></pre></td></tr></table></figure>
+
+
+<p>不过这两种方式是有区别的：</p>
+<blockquote>
+<p>纯目录名的方式 <code>//go:embed image template</code> 会排除掉该目录下包含的以 <code>.</code> 或 <code>_</code> 开头的文件，例如 <code>image/.tempfile</code> 文件不会被包含在内；<br>而通配符的方式 <code>//go:embed image/* template/*</code> 则会包含该目录下的所有文件，即 <code>image/.tempfile</code> 会被包含在内</p>
+</blockquote>
+<hr>
+<h3 id="前端实现"><a href="#前端实现" class="headerlink" title="前端实现"></a>前端实现</h3><p>通过 <code>vite</code> 来创建 <code>vue</code> 或 <code>react</code> 前端项目。</p>
+<h4 id="创建react项目"><a href="#创建react项目" class="headerlink" title="创建react项目"></a>创建react项目</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yarn create vite react-app</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yarn create vite react-app --template react</span><br><span class="line"></span><br><span class="line">yarn create vite react-app --template react-ts</span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd react-app</span><br><span class="line">yarn</span><br><span class="line">yarn dev</span><br></pre></td></tr></table></figure>
+
+<p>构建：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yarn build</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建vue项目"><a href="#创建vue项目" class="headerlink" title="创建vue项目"></a>创建vue项目</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yarn create vite vue-app</span><br><span class="line"></span><br><span class="line"># 或者：</span><br><span class="line">yarn create vite vue-app --template vue</span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd vue-app</span><br><span class="line">yarn</span><br><span class="line">yarn dev</span><br></pre></td></tr></table></figure>
+
+<p>构建：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yarn build</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="Gin实现打包"><a href="#Gin实现打包" class="headerlink" title="Gin实现打包"></a>Gin实现打包</h3><h4 id="创建gin项目"><a href="#创建gin项目" class="headerlink" title="创建gin项目"></a>创建gin项目</h4><p>创建一个基本的Gin项目：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// main.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">   r.GET(<span class="string">"/ping"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">         <span class="string">"msg"</span>: <span class="string">"pong"</span>,  </span><br><span class="line">      &#125;)  </span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="作为前端首页"><a href="#作为前端首页" class="headerlink" title="作为前端首页"></a>作为前端首页</h4><p>一般情况下，我们想将前端页面作为首页来访问，即访问 <code>/</code> 根路径直接打开的是 <code>index.html</code> 页面。</p>
+<p>参照Gin官方文档中的介绍，我们可以通过如下的方式导入静态文件：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  router := gin.Default()</span><br><span class="line">  router.Static(<span class="string">"/assets"</span>, <span class="string">"./assets"</span>)</span><br><span class="line">  router.StaticFS(<span class="string">"/more_static"</span>, http.Dir(<span class="string">"my_file_system"</span>))</span><br><span class="line">  router.StaticFile(<span class="string">"/favicon.ico"</span>, <span class="string">"./resources/favicon.ico"</span>)</span><br><span class="line">  router.StaticFileFS(<span class="string">"/more_favicon.ico"</span>, <span class="string">"more_favicon.ico"</span>, http.Dir(<span class="string">"my_file_system"</span>))</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Listen and serve on 0.0.0.0:8080</span></span><br><span class="line">  router.Run(<span class="string">":8080"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>这里，我们选择 <code>StaticFS</code> 来添加 <code>FS</code> 资源。</p>
+<p>将上面打包好的 <code>vue</code> 静态项目 <code>dist</code> 目录下的文件拷贝到 Golang 项目的 <code>web</code> 目录下，作为静态资源目录。</p>
+<p>相应的目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">└── web</span><br><span class="line">    ├── assets</span><br><span class="line">    │   ├── index.16c4fe9c.css</span><br><span class="line">    │   ├── index.e9286135.js</span><br><span class="line">    │   ├── logo.03d6d6da.png</span><br><span class="line">    │   └── vendor.65715d52.js</span><br><span class="line">    ├── favicon.ico</span><br><span class="line">    ├── index.html</span><br><span class="line">    └── web.go</span><br></pre></td></tr></table></figure>
+
+
+<p>在 <code>web</code> 目录下创建 <code>web.go</code> 文件，作为静态资源导入的 <code>embed</code> 文件：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// web/web.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> web  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> <span class="string">"embed"</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//go:embed index.html favicon.ico assets</span></span><br><span class="line"><span class="keyword">var</span> Static embed.FS</span><br></pre></td></tr></table></figure>
+
+<p>然后在 <code>main.go</code> 中添加该静态资源文件：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// main.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>    </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">   r.GET(<span class="string">"/ping"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">         <span class="string">"msg"</span>: <span class="string">"pong"</span>,  </span><br><span class="line">      &#125;)  </span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line">	r.StaticFS(<span class="string">"/"</span>, http.FS(web.Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>通过浏览器访问 <code>http://localhost:8080/</code> 后发现能够正常访问：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192105.png" alt="20220820192105"></p>
+<hr>
+<h4 id="多路由实现"><a href="#多路由实现" class="headerlink" title="多路由实现"></a>多路由实现</h4><p>不过一般情况下，在 <code>Gin</code> 的路由中我们除了添加静态资源外，还会设置前端的api请求路由。这样我们既可以直接访问默认路径 <code>/</code> 打开web页面，又可以通过请求 <code>/api/*</code> 的路径实现 <code>api接口</code> 调用。</p>
+<p>如下面的方式：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// main.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>    </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">   </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">   c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">      <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">	   &#125;)  </span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	r.StaticFS(<span class="string">"/"</span>, http.FS(web.Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但执行 <code>go run main.go</code> 命令后会报错：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[GIN-debug] GET    &#x2F;api&#x2F;hello                --&gt; main.main.func1 (3 handlers)</span><br><span class="line">[GIN-debug] GET    &#x2F;*filepath                --&gt; github.com&#x2F;gin-gonic&#x2F;gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)</span><br><span class="line">panic: catch-all wildcard &#39;*filepath&#39; in new path &#39;&#x2F;*filepath&#39; conflicts with existing path segment &#39;api&#39; in existing prefix &#39;&#x2F;api&#39;</span><br></pre></td></tr></table></figure>
+
+
+<p>参考网上相关的讨论，我整理并总结了如下两种解决方法。</p>
+<h5 id="重定向法"><a href="#重定向法" class="headerlink" title="重定向法"></a>重定向法</h5><p>查看上面的错误信息，<code>/*filepath</code> 会匹配到所有的根路径下的路由导致出现问题，那么我们把静态页放到一个二级目录下，例如 <code>/ui</code>，这样匹配到的就是 <code>/ui/*filepath</code> 下的所有路径了，跟 <code>/api</code> 就不会出现冲突的问题。</p>
+<p>我们将 <code>main.go</code> 修改为如下：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>    </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">   </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">   c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">      <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">	   &#125;)  </span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	r.GET(<span class="string">"/"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">	   c.Redirect(http.StatusMovedPermanently, <span class="string">"ui/"</span>)  </span><br><span class="line">	&#125;)  </span><br><span class="line">	r.StaticFS(<span class="string">"/ui"</span>, http.FS(web5.Web5Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不过，这种情况下我们还需要对前端代码做一些修改，将原来的默认根路径 <code>/</code> 修改为 <code>/ui</code> 。</p>
+<p>打开文件 <code>vite.config.js</code> ，添加 <code>base</code> 配置项：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">'vite'</span></span><br><span class="line"><span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">'@vitejs/plugin-vue'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// https://vitejs.dev/config/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> defineConfig(&#123;</span><br><span class="line">  plugins: [vue()],</span><br><span class="line">  base: <span class="string">'/ui/'</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<p>此时，访问浏览器会发现，默认根路径 <code>/</code> 会执行 <code>301</code> 跳转到  <code>/ui</code> 路径下实现静态资源的正常访问：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192159.png" alt="20220820192159"></p>
+<p>相关讨论：（<strong>建议看一下这个</strong>）</p>
+<ul>
+<li><a href="https://github.com/gin-gonic/gin/issues/360" target="_blank" rel="noopener">Wildcard route conflicts with static files · Issue #360 · gin-gonic/gin</a> </li>
+</ul>
+<h5 id="中间件法"><a href="#中间件法" class="headerlink" title="中间件法"></a>中间件法</h5><p>我找到了一个 Gin 项目的第三方扩展中间件，可以实现对静态资源文件的调用：<a href="https://github.com/gin-contrib/static" target="_blank" rel="noopener">gin-contrib/static: Static middleware (github.com)</a></p>
+<p>但是该三方库目前对于 <code>Embed</code> 方式嵌入的静态资源文件并不支持。好在我在该三方库的 <code>Issues</code> 中找到了相关的讨论：</p>
+<ul>
+<li><a href="https://github.com/gin-contrib/static/issues/19" target="_blank" rel="noopener">Embed (release go 1.16) implementation · Issue #19 · gin-contrib/static</a> </li>
+</ul>
+<p>以及某位大神提交的 <code>Pull requests</code> ：</p>
+<ul>
+<li><a href="https://github.com/gin-contrib/static/pull/20" target="_blank" rel="noopener">feat: Implement embed folder and a better organisation by vomnes · Pull Request #20 · gin-contrib/static</a> </li>
+</ul>
+<p>不过开发者一直没有对该提交进行合并。那我们只能自行实现了。</p>
+<p>在项目根目录下创建 <code>static</code> 文件夹，包含两个文件 <code>serve.go</code> 和 <code>embed.go</code> 。结合上面的 <code>Issues</code> 讨论，最终实现的文件代码如下：</p>
+<p>文件 <code>static/serve.go</code> :</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> static  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>  </span><br><span class="line">   <span class="string">"net/http"</span>   </span><br><span class="line">   <span class="string">"os"</span>   </span><br><span class="line">   <span class="string">"path"</span>   </span><br><span class="line">   <span class="string">"strings"</span></span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">const</span> INDEX = <span class="string">"index.html"</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">type</span> ServeFileSystem <span class="keyword">interface</span> &#123;  </span><br><span class="line">   http.FileSystem  </span><br><span class="line">   Exists(prefix <span class="keyword">string</span>, path <span class="keyword">string</span>) <span class="keyword">bool</span>  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">type</span> localFileSystem <span class="keyword">struct</span> &#123;  </span><br><span class="line">   http.FileSystem  </span><br><span class="line">   root    <span class="keyword">string</span>  </span><br><span class="line">   indexes <span class="keyword">bool</span>  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">LocalFile</span><span class="params">(root <span class="keyword">string</span>, indexes <span class="keyword">bool</span>)</span> *<span class="title">localFileSystem</span></span> &#123;  </span><br><span class="line">   <span class="keyword">return</span> &amp;localFileSystem&#123;  </span><br><span class="line">      FileSystem: gin.Dir(root, indexes),  </span><br><span class="line">      root:       root,  </span><br><span class="line">      indexes:    indexes,  </span><br><span class="line">   &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(l *localFileSystem)</span> <span class="title">Exists</span><span class="params">(prefix <span class="keyword">string</span>, filepath <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;  </span><br><span class="line">   <span class="keyword">if</span> p := strings.TrimPrefix(filepath, prefix); <span class="built_in">len</span>(p) &lt; <span class="built_in">len</span>(filepath) &#123;  </span><br><span class="line">      name := path.Join(l.root, p)  </span><br><span class="line">      stats, err := os.Stat(name)  </span><br><span class="line">      <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">         <span class="keyword">return</span> <span class="literal">false</span>  </span><br><span class="line">      &#125;  </span><br><span class="line">      <span class="keyword">if</span> stats.IsDir() &#123;  </span><br><span class="line">         <span class="keyword">if</span> !l.indexes &#123;  </span><br><span class="line">            index := path.Join(name, INDEX)  </span><br><span class="line">            _, err := os.Stat(index)  </span><br><span class="line">            <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">               <span class="keyword">return</span> <span class="literal">false</span>  </span><br><span class="line">            &#125;  </span><br><span class="line">         &#125;  </span><br><span class="line">      &#125;  </span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>  </span><br><span class="line">   &#125;  </span><br><span class="line">   <span class="keyword">return</span> <span class="literal">false</span>  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ServeRoot</span><span class="params">(urlPrefix, root <span class="keyword">string</span>)</span> <span class="title">gin</span>.<span class="title">HandlerFunc</span></span> &#123;  </span><br><span class="line">   <span class="keyword">return</span> Serve(urlPrefix, LocalFile(root, <span class="literal">false</span>))  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// Static returns a middleware handler that serves static files in the given directory.  </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Serve</span><span class="params">(urlPrefix <span class="keyword">string</span>, fs ServeFileSystem)</span> <span class="title">gin</span>.<span class="title">HandlerFunc</span></span> &#123;  </span><br><span class="line">   fileserver := http.FileServer(fs)  </span><br><span class="line">   <span class="keyword">if</span> urlPrefix != <span class="string">""</span> &#123;  </span><br><span class="line">      fileserver = http.StripPrefix(urlPrefix, fileserver)  </span><br><span class="line">   &#125;  </span><br><span class="line">   <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      <span class="keyword">if</span> fs.Exists(urlPrefix, c.Request.URL.Path) &#123;  </span><br><span class="line">         fileserver.ServeHTTP(c.Writer, c.Request)  </span><br><span class="line">         c.Abort()  </span><br><span class="line">      &#125;  </span><br><span class="line">   &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>文件 <code>static/embed.go</code> :</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">  </span><br><span class="line"><span class="keyword">package</span> static </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (   </span><br><span class="line">   <span class="string">"embed"</span>   </span><br><span class="line">   <span class="string">"io/fs"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">type</span> embedFileSystem <span class="keyword">struct</span> &#123;  </span><br><span class="line">   http.FileSystem  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e embedFileSystem)</span> <span class="title">Exists</span><span class="params">(prefix <span class="keyword">string</span>, path <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;  </span><br><span class="line">   _, err := e.Open(path)  </span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>  </span><br><span class="line">   &#125;  </span><br><span class="line">   <span class="keyword">return</span> <span class="literal">true</span>  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">EmbedFolder</span><span class="params">(fsEmbed embed.FS, targetPath <span class="keyword">string</span>)</span> <span class="title">ServeFileSystem</span></span> &#123;  </span><br><span class="line">   fsys, err := fs.Sub(fsEmbed, targetPath)  </span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">      <span class="built_in">panic</span>(err)  </span><br><span class="line">   &#125;  </span><br><span class="line">   <span class="keyword">return</span> embedFileSystem&#123;  </span><br><span class="line">      FileSystem: http.FS(fsys),  </span><br><span class="line">   &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>文件 <code>main.go</code>  中通过 <code>中间件</code> 的方式引入:</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">"demo/static"</span></span><br><span class="line">   <span class="string">"demo/web"</span>    </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">   </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">   c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">      <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">	   &#125;)  </span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	r.Use(static.Serve(<span class="string">"/"</span>, static.EmbedFolder(web.Static, <span class="string">"."</span>)))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问地址 <code>http://localhost:8080/</code>  发现能够正常返回，访问 <code>http://localhost:8080/api/hello</code>  也能正常响应。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192226.png" alt="20220820192226"></p>
+<p>总结：</p>
+<blockquote>
+<p>这种方法采用中间件的方式实现，也就不会遇到官方 <code>StaticFS</code> 方法的路径通配符冲突问题。</p>
+</blockquote>
+<hr>
+<h4 id="作为后端首页"><a href="#作为后端首页" class="headerlink" title="作为后端首页"></a>作为后端首页</h4><p>特殊情况下，我们可能还会将静态页面作为后端的入口文件，例如各种管理后台。此时访问的路径一般会定义为 <code>/admin</code>  的形式。</p>
+<h5 id="一级目录结构"><a href="#一级目录结构" class="headerlink" title="一级目录结构"></a>一级目录结构</h5><p>其实这个需求实现起来和上面的 <code>重定向法</code> 有些类似。</p>
+<p>我们将前端项目打包后的 <code>dist</code> 目录内容拷贝到Golang项目的 <code>web</code> 目录下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">└── web</span><br><span class="line">    ├── assets</span><br><span class="line">    │   ├── index.16c4fe9c.css</span><br><span class="line">    │   ├── index.e9286135.js</span><br><span class="line">    │   ├── logo.03d6d6da.png</span><br><span class="line">    │   └── vendor.65715d52.js</span><br><span class="line">    ├── favicon.ico</span><br><span class="line">    ├── index.html</span><br><span class="line">    └── web.go</span><br></pre></td></tr></table></figure>
+
+<p>需要注意在 <code>yarn build</code> 打包前要将 <code>vite.config.js</code> 中的 <code>base</code> 配置项修改为 <code>/admin/</code> :</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">'vite'</span></span><br><span class="line"><span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">'@vitejs/plugin-vue'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// https://vitejs.dev/config/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> defineConfig(&#123;</span><br><span class="line">  plugins: [vue()],</span><br><span class="line">  base: <span class="string">'/admin/'</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>文件 <code>web/web.go</code> 中的内容依旧如下：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> web  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> <span class="string">"embed"</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//go:embed index.html favicon.ico assets</span></span><br><span class="line"><span class="keyword">var</span> Static embed.FS</span><br></pre></td></tr></table></figure>
+
+<p>只需要注意将 <code>main.go</code> 中的静态文件路径修改为 <code>/admin</code> 即可：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>  </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">  </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">         <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">      &#125;)  </span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line">	r.StaticFS(<span class="string">"/admin"</span>, http.FS(web.Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：因为静态文件路径 <code>/admin</code> 是非根路径，所以生成的通配符路径为 <code>/admin/*filepath</code> ，也就不需要像 <code>重定向法</code> 中介绍的那样，需要手动添加<code>301</code> 跳转来避开 <code>通配符路径冲突</code> 问题了。</p>
+</blockquote>
+<h5 id="多级目录结构"><a href="#多级目录结构" class="headerlink" title="多级目录结构"></a>多级目录结构</h5><p>某些特殊情况下，我们可能会将后台的前端项目放在Golang项目的二级目录下；或者设置多个单独的二级前端项目来进行分别访问。</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">└── web</span><br><span class="line">    ├── admin</span><br><span class="line">    │   ├── assets</span><br><span class="line">    │   │   ├── index.16c4fe9c.css</span><br><span class="line">    │   │   ├── index.e9286135.js</span><br><span class="line">    │   │   ├── logo.03d6d6da.png</span><br><span class="line">    │   │   └── vendor.65715d52.js</span><br><span class="line">    │   ├── favicon.ico</span><br><span class="line">    │   └── index.html</span><br><span class="line">    ├── ui</span><br><span class="line">    │   ├── assets</span><br><span class="line">    │   │   ├── index.16c4fe9c.css</span><br><span class="line">    │   │   ├── index.e9286135.js</span><br><span class="line">    │   │   ├── logo.03d6d6da.png</span><br><span class="line">    │   │   └── vendor.65715d52.js</span><br><span class="line">    │   ├── favicon.ico</span><br><span class="line">    │   └── index.html</span><br><span class="line">    └── web.go</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>web/admin</code> 表示管理后台的前端项目，需要通过路径 <code>/admin</code> 来进行访问；<code>web/ui</code> 表示首页的前端项目，需要通过路径 <code>/</code> 进行访问。</p>
+<p>这种情况下，有以下两点需要注意：</p>
+<p>其一，也是比较容易忽略的，要将 <code>vite.config.js</code> 中的 <code>base</code> 配置项修改为相应路径；</p>
+<p>其二，由于现在管理后台的前端项目是处于二级目录 <code>web/admin</code> 下，那么我们直接通过如下的方式会发现找不到首页：</p>
+<p>文件 <code>main.go</code> :</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>  </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">  </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">         <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">      &#125;)  </span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line">	r.StaticFS(<span class="string">"/admin"</span>, http.FS(web.Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br></pre></td></tr></table></figure>
+
+<p>访问 <code>http://localhost:8080/admin/</code> 会显示为如下内容：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192301.png" alt="20220820192301"></p>
+<p>这是因为首页文件 <code>index.html</code> 并不是在 <code>web.go</code> 文件的同级目录下，这样 <code>embed</code> 也就找不到该文件了。</p>
+<p>所以，一方面除了定义 <code>//go:embed</code> 时要设置 <code>web.go</code> 同级下的目录文件：</p>
+<p>文件 <code>web/web.go</code> :</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> web  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> <span class="string">"embed"</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//go:embed admin/* </span></span><br><span class="line"><span class="keyword">var</span> AdminStatic embed.FS</span><br><span class="line"></span><br><span class="line"><span class="comment">//go:embed ui/* </span></span><br><span class="line"><span class="keyword">var</span> UiStatic embed.FS</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或者不用通配符：</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//go:embed admin </span></span><br><span class="line"><span class="keyword">var</span> AdminStatic embed.FS</span><br><span class="line"></span><br><span class="line"><span class="comment">//go:embed ui </span></span><br><span class="line"><span class="keyword">var</span> UiStatic embed.FS</span><br></pre></td></tr></table></figure>
+
+
+<p>另一方面还要在调用时指定二级目录，可以通过 <code>fs.Sub</code> 来实现：</p>
+<p>文件 <code>main.go</code> :</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>  </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">  </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">         <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">      &#125;)  </span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line">	fAdmin, _ := fs.Sub(web.AdminStatic, <span class="string">"admin"</span>)  </span><br><span class="line">	r.StaticFS(<span class="string">"/admin"</span>, http.FS(fAdmin))</span><br><span class="line"></span><br><span class="line">	r.GET(<span class="string">"/"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">	   c.Redirect(http.StatusMovedPermanently, <span class="string">"ui/"</span>)  </span><br><span class="line">	&#125;)  </span><br><span class="line">	fUi, _ := fs.Sub(web.UiStatic, <span class="string">"ui"</span>)  </span><br><span class="line">	r.StaticFS(<span class="string">"/ui"</span>, http.FS(fUi))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br></pre></td></tr></table></figure>
+
+
+<p>这样，就实现了多级目录场景下的正常访问。</p>
+<hr>
+<h3 id="iris实现打包"><a href="#iris实现打包" class="headerlink" title="iris实现打包"></a>iris实现打包</h3><p>同样作为Golang中受欢迎的web开发框架，<code>iris</code> 相比 <code>gin</code> 实现静态文件的嵌入就相对比较简单了。经过测试，<code>iris</code> 中并不会遇到 <code>gin</code> 中的 <code>通配符路径冲突</code> 的问题。</p>
+<p>需要注意，安装 <code>iris</code> 时要使用 <code>master</code> 分支最新代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">go get github.com&#x2F;kataras&#x2F;iris&#x2F;v12@master</span><br></pre></td></tr></table></figure>
+
+
+<p>参照上面 <code>Gin实现打包</code> 步骤中的各种场景，这里仅对 <code>iris</code> 中的 <code>多路由多目录场景</code> 具体说明。</p>
+<hr>
+<h4 id="多级场景实现"><a href="#多级场景实现" class="headerlink" title="多级场景实现"></a>多级场景实现</h4><p>目录结构如下，这里前端页面 <code>web/ui</code> 采用 react框架开发，后端页面 <code>web/admin</code> 采用vue框架开发：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">└── web</span><br><span class="line">    ├── admin</span><br><span class="line">    │   ├── assets</span><br><span class="line">    │   │   ├── index.16c4fe9c.css</span><br><span class="line">    │   │   ├── index.e9286135.js</span><br><span class="line">    │   │   ├── logo.03d6d6da.png</span><br><span class="line">    │   │   └── vendor.65715d52.js</span><br><span class="line">    │   ├── favicon.ico</span><br><span class="line">    │   └── index.html</span><br><span class="line">    ├── ui</span><br><span class="line">    │   ├── assets</span><br><span class="line">    │   │   ├── index.3fce1f81.css</span><br><span class="line">    │   │   ├── index.edeff469.js</span><br><span class="line">    │   │   └── react.35ef61ed.svg</span><br><span class="line">    │   ├── index.html</span><br><span class="line">    │   └── vite.svg</span><br><span class="line">    └── web.go</span><br></pre></td></tr></table></figure>
+
+<p>此外，管理平台通过路径 <code>/admin</code> 访问，需要在vue项目的 <code>vite.config.js</code> 中添加 <code>base: &#39;/admin/&#39;,</code> 配置项。</p>
+<p><code>web/web.go</code> 代码如下：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> web  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> <span class="string">"embed"</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//go:embed admin  </span></span><br><span class="line"><span class="keyword">var</span> AdminStatic embed.FS  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//go:embed ui  </span></span><br><span class="line"><span class="keyword">var</span> UiStatic embed.FS</span><br></pre></td></tr></table></figure>
+
+
+<p><code>main.go</code> 代码如下：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>  </span><br><span class="line">   <span class="string">"github.com/kataras/iris/v12"</span>   </span><br><span class="line">   <span class="string">"io/fs"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	i := iris.New()  </span><br><span class="line">	i.Get(<span class="string">"/api"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c iris.Context)</span></span> &#123;  </span><br><span class="line">	   c.JSON(iris.Map&#123;  </span><br><span class="line">	      <span class="string">"msg"</span>: <span class="string">"hello"</span>,  </span><br><span class="line">	   &#125;)  </span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 前端首页</span></span><br><span class="line">	i.HandleDir(<span class="string">"/"</span>, http.FS(web.UiStatic))</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 管理后台</span></span><br><span class="line">	fsys, _ := fs.Sub(web.AdminStatic, <span class="string">"admin"</span>)  </span><br><span class="line">	i.HandleDir(<span class="string">"/admin"</span>, http.FS(fsys))</span><br><span class="line"></span><br><span class="line">	i.Listen(<span class="string">":8081"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>访问浏览器，却发现：</p>
+<ul>
+<li><code>http://localhost:8081/</code> 404 Not Found</li>
+<li><code>http://localhost:8081/admin</code> 请求正常</li>
+<li><code>http://localhost:8081/api</code> 请求正常</li>
+</ul>
+<p><strong>此时让人很诧异的是为什么首页会访问不到？</strong></p>
+<p>再回看上面的文件目录结构，<code>web.go</code> 文件嵌入同目录下的 <code>ui</code> 和 <code>admin</code> 目录，虽然 <code>ui</code> 目录是和 <code>web.go</code> 文件处于同一目录下，但我们要访问的却是 <code>ui</code> 目录下的 <code>index.html</code> 文件。至此，问题也就找到了。</p>
+<p>虽然在前台页面中我们访问的是根路由，但要访问的文件却是在二级目录下。换句话说：</p>
+<blockquote>
+<p><code>//go:embed</code> 处理的文件要在同一目录下，否则就需要手动处理目录层级关系</p>
+</blockquote>
+<p>把上面的 <code>main.go</code> 修改后如下：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>  </span><br><span class="line">   <span class="string">"github.com/kataras/iris/v12"</span>   </span><br><span class="line">   <span class="string">"io/fs"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	i := iris.New()  </span><br><span class="line">	i.Get(<span class="string">"/api"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c iris.Context)</span></span> &#123;  </span><br><span class="line">	   c.JSON(iris.Map&#123;  </span><br><span class="line">	      <span class="string">"msg"</span>: <span class="string">"hello"</span>,  </span><br><span class="line">	   &#125;)  </span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 前端首页</span></span><br><span class="line">	<span class="comment">//i.HandleDir("/", http.FS(web.UiStatic))</span></span><br><span class="line">	fsy, _ := fs.Sub(web6.UiStatic, <span class="string">"ui"</span>)  </span><br><span class="line">	i.HandleDir(<span class="string">"/"</span>, http.FS(fsy))</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 管理后台</span></span><br><span class="line">	fsys, _ := fs.Sub(web.AdminStatic, <span class="string">"admin"</span>)  </span><br><span class="line">	i.HandleDir(<span class="string">"/admin"</span>, http.FS(fsys))</span><br><span class="line"></span><br><span class="line">	i.Listen(<span class="string">":8081"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>再次访问，会发现前后端及接口都正常响应了。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192320.png" alt="20220820192320"></p>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实 <code>embed</code> 特性的使用并不复杂，只是在处理目录层级上需要注意。理解了这一点，使用起来也就很简单了。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>Golang开发</category>
+      </categories>
+      <tags>
+        <tag>Golang</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>科学上网mac客户端V2rayU使用技巧</title>
     <url>/2021/03/25/science-online-mac-client-v2rayu/</url>
     <content><![CDATA[<h4 id="V2rayU-介绍"><a href="#V2rayU-介绍" class="headerlink" title="V2rayU 介绍"></a>V2rayU 介绍</h4><p>V2rayU,基于v2ray核心的mac版客户端,用于科学上网,使用swift编写,支持vmess,shadowsocks,socks5等服务协议,支持订阅, 支持二维码,剪贴板导入,手动配置,二维码分享等</p>
@@ -54,7 +324,7 @@
 <hr>
 ]]></content>
       <categories>
-        <category>Proxy</category>
+        <category>科学上网</category>
       </categories>
       <tags>
         <tag>Shadowsocks</tag>
@@ -152,7 +422,7 @@
         <category>工具技巧</category>
       </categories>
       <tags>
-        <tag>Mac</tag>
+        <tag>MacOS</tag>
       </tags>
   </entry>
   <entry>
@@ -263,10 +533,76 @@
 <hr>
 ]]></content>
       <categories>
-        <category>Git操作系列</category>
+        <category>Git技巧</category>
       </categories>
       <tags>
         <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python中Requests库操作Cookie常用方法</title>
+    <url>/2022/10/13/python-requests-use-cookies/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在通过 <code>requests</code> 库实现模拟请求类项目时，免不了要对请求过程中的 <code>Cookie</code> 进行处理。</p>
+<p>花了点时间，整理了一下平时开发中常用到的 <code>requests</code> 操作 <code>cookies</code>  的方法。</p>
+<hr>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>Python中操作 <code>Cookie</code> ，常用的方法主要有：</p>
+<ul>
+<li><code>cookiejar_from_dict</code></li>
+<li><code>dict_from_cookiejar</code></li>
+<li><code>add_dict_to_cookiejar</code></li>
+</ul>
+<h4 id="cookiejar-from-dict"><a href="#cookiejar-from-dict" class="headerlink" title="cookiejar_from_dict"></a>cookiejar_from_dict</h4><p><code>requests.utils.cookiejar_from_dict</code> 方法可以将一个字典转换成<code>cookiejar</code> 对象并添加到当前 <code>session</code> 的 <code>cookies</code> 中：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">session=requests.Session()</span><br><span class="line">session.cookies=requests.utils.cookiejar_from_dict(cook1)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="dict-from-cookiejar"><a href="#dict-from-cookiejar" class="headerlink" title="dict_from_cookiejar"></a>dict_from_cookiejar</h4><p><code>requests.utils.dict_from_cookiejar</code> 方法可以将 <code>cookiejar</code> 对象转换成一个dict对象：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cook_dict=requests.utils.dict_from_cookiejar(s.cookies)</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h4 id="add-dict-to-cookiejar"><a href="#add-dict-to-cookiejar" class="headerlink" title="add_dict_to_cookiejar"></a>add_dict_to_cookiejar</h4><p><code>requests.utils.add_dict_to_cookiejar</code> 方法可以为当前的 <code>cookies</code> 添加新的cookie ：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">requests.utils.add_dict_to_cookiejar(session.cookies, cook_dict)</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h3 id="Cookie字符串处理"><a href="#Cookie字符串处理" class="headerlink" title="Cookie字符串处理"></a>Cookie字符串处理</h3><p>一般情况下除了从登录请求中获取到 <code>Cookie</code> 数据用于后续的请求这种场景，另一种情况就是我们从其他的方式获取到了 <code>字符串</code> 形式的cookie数据，然后需要将字符串转换为代码中可用的 <code>Cookie值</code> 来添加到请求<code>Cookie</code> 中。</p>
+<p>常用方法如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cook_str=<span class="string">'lang=zh-cn; uid=1000; key=9335e01424;'</span></span><br><span class="line">cook_dict=dict([x.strip().split(<span class="string">'='</span>) <span class="keyword">for</span> x <span class="keyword">in</span> cook_str.split(<span class="string">';'</span>)<span class="keyword">if</span> x != <span class="string">''</span>])</span><br><span class="line">requests.utils.add_dict_to_cookiejar(session.cookies, cook_dict)</span><br></pre></td></tr></table></figure>
+
+
+<p>其中，为了将cookie字符串信息转成 <code>dict</code> 形式，通过如下函数实现：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dict([x.strip().split(<span class="string">'='</span>) <span class="keyword">for</span> x <span class="keyword">in</span> cook_str.split(<span class="string">';'</span>)<span class="keyword">if</span> x != <span class="string">''</span>])</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="RequestsCookieJar"><a href="#RequestsCookieJar" class="headerlink" title="RequestsCookieJar"></a>RequestsCookieJar</h3><p>当通过 <code>dict_from_cookiejar</code> 去转存cookie时，它只保留了 <code>name</code> 和 <code>value</code> 两个参数。而通过 <code>add_dict_to_cookiejar</code> 或 <code>cookiejar_from_dict</code> 将 字典dict 转成 cookiejar 时，也只会设置cookie的  <code>name</code> 和 <code>value</code> 。</p>
+<p>由于 <code>dict</code> 中的 <code>key</code> 不能重复，也就可能导致对于一些 <code>name</code> 重复而 <code>domain</code> 或 <code>path</code> 等不相同的cookie时，就会导致cookie数据丢失。</p>
+<p>添加cookie信息的path、domain参数，可以通过 <code>RequestsCookieJar</code> 来实现，常用的方法有三种：</p>
+<ul>
+<li><code>jar.set()</code></li>
+<li><code>jar.set_cookie()</code></li>
+<li><code>jar.update()</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> requests.cookies <span class="keyword">import</span> RequestsCookieJar</span><br><span class="line"></span><br><span class="line">session = requests.Session()</span><br><span class="line">jar = RequestsCookieJar()</span><br><span class="line">jar.set(<span class="string">'cookie-name'</span>, <span class="string">'cookie-value'</span>, path=<span class="string">'/'</span>, domain=<span class="string">'.abc.com'</span>)</span><br><span class="line">session.cookies.update(jar)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> requests.cookies <span class="keyword">import</span> RequestsCookieJar,create_cookie</span><br><span class="line"></span><br><span class="line">jar=RequestsCookieJar()</span><br><span class="line">jar.set_cookie(create_cookie(<span class="string">'T'</span>, <span class="string">'cookie_t'</span>))</span><br><span class="line">session.cookies=jar</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> http.cookiejar <span class="keyword">import</span> Cookie</span><br><span class="line"><span class="keyword">from</span> requests.cookies <span class="keyword">import</span> RequestsCookieJar</span><br><span class="line"></span><br><span class="line">jar = RequestsCookieJar()</span><br><span class="line">c1=Cookie(name=<span class="string">''</span>,value=<span class="string">''</span>,domain=<span class="string">''</span>,path=<span class="string">''</span>,expires=<span class="number">0</span>)</span><br><span class="line">jar.set_cookie(c1)</span><br><span class="line">session.cookies=jar</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> http.cookies <span class="keyword">import</span> SimpleCookie </span><br><span class="line"><span class="keyword">from</span> requests.cookies <span class="keyword">import</span> RequestsCookieJar </span><br><span class="line"></span><br><span class="line">cookies = SimpleCookie()</span><br><span class="line">cookies.load(<span class="string">'auth_session=null; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly; samesite=strict'</span>) </span><br><span class="line"></span><br><span class="line">jar = RequestsCookieJar() </span><br><span class="line">jar.update(cookies)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="Demo示例"><a href="#Demo示例" class="headerlink" title="Demo示例"></a>Demo示例</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cookie_test</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    s=requests.Session()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">f'cookies: <span class="subst">&#123;s.cookies&#125;</span>'</span>)</span><br><span class="line">    <span class="comment"># 结果：cookies: &lt;RequestsCookieJar[]&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># requests.utils.cookiejar_from_dict 方法可以将一个字典转换成cookiejar对象并添加到当前session的cookies中</span></span><br><span class="line">    cook1=&#123;<span class="string">'a'</span>:<span class="string">'1'</span>,<span class="string">'b'</span>:<span class="string">'2'</span>&#125;</span><br><span class="line">    s.cookies=requests.utils.cookiejar_from_dict(cook1)</span><br><span class="line">    print(<span class="string">f'cookies: <span class="subst">&#123;s.cookies&#125;</span>'</span>)</span><br><span class="line">    <span class="comment"># 结果：cookies: &lt;RequestsCookieJar[&lt;Cookie a=1 for /&gt;, &lt;Cookie b=2 for /&gt;]&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># requests.utils.dict_from_cookiejar 方法可以将cookiejar对象转换成一个dict对象</span></span><br><span class="line">    cookies=requests.utils.dict_from_cookiejar(s.cookies)</span><br><span class="line">    print(<span class="string">f'cookies: <span class="subst">&#123;cookies&#125;</span>'</span>)</span><br><span class="line">    <span class="comment"># 结果：cookies: &#123;'a': '1', 'b': '2'&#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># requests.utils.add_dict_to_cookiejar 方法可以为当前的cookies添加新的cookie</span></span><br><span class="line">    cook2=&#123;<span class="string">'c'</span>:<span class="string">'3'</span>&#125;</span><br><span class="line">    requests.utils.add_dict_to_cookiejar(s.cookies, cook2)</span><br><span class="line">    cookies=requests.utils.dict_from_cookiejar(s.cookies)</span><br><span class="line">    print(<span class="string">f'cookies: <span class="subst">&#123;cookies&#125;</span>'</span>)</span><br><span class="line">    <span class="comment"># 结果：cookies: &#123;'a': '1', 'b': '2', 'c': '3'&#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将 cookie 字符串添加到当前session的cookie中</span></span><br><span class="line">    cook_str=<span class="string">'lang=zh-cn; uid=1000; key=9335e01424; ip=901eb854; expire_in=1666229628; PHPSESSID=994kdkgrkss; pop=yes;'</span></span><br><span class="line">    cook_dict=dict([x.strip().split(<span class="string">'='</span>) <span class="keyword">for</span> x <span class="keyword">in</span> cook_str.split(<span class="string">';'</span>)<span class="keyword">if</span> x != <span class="string">''</span>])</span><br><span class="line">    requests.utils.add_dict_to_cookiejar(s.cookies, cook_dict)</span><br><span class="line">    cookies=requests.utils.dict_from_cookiejar(s.cookies)</span><br><span class="line">    print(<span class="string">f'cookies: <span class="subst">&#123;cookies&#125;</span>'</span>)</span><br><span class="line">    <span class="comment"># 结果：cookies: &#123;'PHPSESSID': '994kdkgrkss', 'a': '1', 'b': '2', 'c': '3', 'expire_in': '1666229628', 'ip': '901eb854', 'key': '9335e01424', 'lang': 'zh-cn', 'pop': 'yes', 'uid': '1000'&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    cookie_test()</span><br></pre></td></tr></table></figure>
+
+<hr>
+]]></content>
+      <categories>
+        <category>Python开发</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -311,6 +647,71 @@
       </categories>
       <tags>
         <tag>人在帝都</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git stash暂存区的使用</title>
+    <url>/2022/07/08/git-stash/</url>
+    <content><![CDATA[<p>当我们在开发一个新功能时，线上出现bug需要临时修改。需要创建一个新的分支来进行修复，但是当前的功能没开发完又不想提交commit，这种情况下可以通过 <code>git暂存区</code> 来临时保存修改。</p>
+<hr>
+<h3 id="创建暂存"><a href="#创建暂存" class="headerlink" title="创建暂存"></a>创建暂存</h3><h4 id="修改文件"><a href="#修改文件" class="headerlink" title="修改文件"></a>修改文件</h4><p>当前分支中的文件已经被git跟踪，只是对文件进行了修改。可以通过如下命令来暂存修改：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git stash</span><br></pre></td></tr></table></figure>
+
+<p>默认会使用上一次的commit信息来命名这次暂存的注释。</p>
+<p>也可以自定义暂存注释信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git stash save &quot;暂存注释&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="新增文件"><a href="#新增文件" class="headerlink" title="新增文件"></a>新增文件</h4><p>如果有新添加的文件，需要通过 <code>-a</code> 参数来创建暂存：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git stash -a</span><br><span class="line"></span><br><span class="line">git stash save -a &quot;暂存注释&quot;</span><br></pre></td></tr></table></figure>
+
+<p>当然，这一步操作也可以拆分成两步来完成：</p>
+<p>第一步，先将当前的修改添加到暂存区：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
+
+<p>对修改后的文件创建暂存：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git stash</span><br><span class="line"></span><br><span class="line">git stash save &quot;暂存注释&quot;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="查看暂存"><a href="#查看暂存" class="headerlink" title="查看暂存"></a>查看暂存</h3><h4 id="查看暂存记录"><a href="#查看暂存记录" class="headerlink" title="查看暂存记录"></a>查看暂存记录</h4><p>列出暂存区所有列表记录：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git stash list</span><br></pre></td></tr></table></figure>
+
+<p>eg:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">stash@&#123;0&#125;: On kf-207: url</span><br></pre></td></tr></table></figure>
+
+<p>可以看到每条暂存记录通过前面的 <code>stash@{index}</code> 来进行标识，后续可以通过该参数来进行操作，默认 <code>index</code> 从0开始。</p>
+<h4 id="查看暂存修改"><a href="#查看暂存修改" class="headerlink" title="查看暂存修改"></a>查看暂存修改</h4><p>如果想要查看某个暂存改动了哪些文件，可以通过 <code>show</code> 命令实现。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git stash show</span><br><span class="line"></span><br><span class="line">git stash show stash@&#123;index&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认 <code>show</code> 第一个暂存，如果想要显示其他，直接在后面加上相应的 <code>stash@{index}</code> 即可。</p>
+<p>如果想要查看某个暂存具体改动了文件中的哪些内容，可以通过 <code>show</code> 命令的 <code>-p</code> 参数实现。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git stash show -p</span><br><span class="line"></span><br><span class="line">git stash show stash@&#123;index&#125; -p</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h3 id="使用暂存"><a href="#使用暂存" class="headerlink" title="使用暂存"></a>使用暂存</h3><h4 id="apply应用暂存"><a href="#apply应用暂存" class="headerlink" title="apply应用暂存"></a>apply应用暂存</h4><p>做完了临时修改，想要恢复应用某个暂存，可以通过 <code>apply</code> 命令来恢复：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git stash apply</span><br><span class="line"></span><br><span class="line">git stash apply stash@&#123;index&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认会使用第一个暂存记录，即 <code>stash@{0}</code> 。</p>
+<h4 id="pop应用并删除"><a href="#pop应用并删除" class="headerlink" title="pop应用并删除"></a>pop应用并删除</h4><p>和 <code>apply</code> 命令类似的，还有一个 <code>pop</code> 命令也可以恢复应用暂存：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git stash pop</span><br><span class="line"></span><br><span class="line">git stash pop stash@&#123;index&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认会使用第一个暂存记录，即 <code>stash@{0}</code> 。</p>
+<p>需要注意的是：<code>pop</code> 命令会恢复相应的暂存记录后，从列表中删除该记录。可以理解为 <code>应用并删除</code> 。</p>
+<p>而上面介绍的 <code>apply</code> 命令只是 <code>应用</code> ，暂存记录仍会保留。</p>
+<hr>
+<h3 id="删除暂存"><a href="#删除暂存" class="headerlink" title="删除暂存"></a>删除暂存</h3><p>如果想要删除某一个修改暂存，可以通过 <code>drop</code> 命令操作：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git stash drop stash@&#123;0&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果要清空所有的暂存记录，可以通过 <code>clear</code> 命令操作：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git stash clear</span><br></pre></td></tr></table></figure>
+
+<hr>
+]]></content>
+      <categories>
+        <category>Git技巧</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
@@ -485,6 +886,7 @@
         <tag>AIO小主机</tag>
         <tag>PVE</tag>
         <tag>Home Assistant</tag>
+        <tag>智能家居</tag>
       </tags>
   </entry>
   <entry>
@@ -1031,10 +1433,10 @@
 </ul>
 ]]></content>
       <categories>
-        <category>浏览器插件</category>
+        <category>开发笔记</category>
       </categories>
       <tags>
-        <tag>Tampermonkey</tag>
+        <tag>浏览器插件</tag>
       </tags>
   </entry>
   <entry>
@@ -1124,7 +1526,7 @@
 <hr>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -1171,7 +1573,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -1350,7 +1752,7 @@
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	beego <span class="string">"github.com/beego/beego/v2/server/web"</span></span><br><span class="line">	<span class="string">"github.com/beego/beego/v2/server/web/filter/cors"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 解决跨域问题</span></span><br><span class="line">	beego.InsertFilter(<span class="string">"/*"</span>, beego.BeforeRouter, cors.Allow(&amp;cors.Options&#123;</span><br><span class="line">		AllowAllOrigins:  <span class="literal">true</span>,</span><br><span class="line">		AllowMethods:     []<span class="keyword">string</span>&#123;<span class="string">"GET"</span>, <span class="string">"POST"</span>, <span class="string">"PUT"</span>, <span class="string">"DELETE"</span>, <span class="string">"OPTIONS"</span>&#125;,</span><br><span class="line">		AllowHeaders:     []<span class="keyword">string</span>&#123;<span class="string">"Origin"</span>, <span class="string">"Authorization"</span>, <span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"Access-Control-Allow-Headers"</span>, <span class="string">"Content-Type"</span>&#125;,</span><br><span class="line">		ExposeHeaders:    []<span class="keyword">string</span>&#123;<span class="string">"Content-Length"</span>, <span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"Access-Control-Allow-Headers"</span>, <span class="string">"Content-Type"</span>&#125;,</span><br><span class="line">		AllowCredentials: <span class="literal">true</span>,</span><br><span class="line">	&#125;))</span><br><span class="line"></span><br><span class="line">	beego.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -1371,7 +1773,7 @@
 
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -1393,7 +1795,7 @@
 
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -1435,7 +1837,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -1499,7 +1901,7 @@
 
 ]]></content>
       <categories>
-        <category>Git操作系列</category>
+        <category>Git技巧</category>
       </categories>
       <tags>
         <tag>Git</tag>
@@ -1599,7 +2001,7 @@
 <hr>
 ]]></content>
       <categories>
-        <category>go-zero实践</category>
+        <category>go-zero微服务实践</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -1653,7 +2055,7 @@
     <content><![CDATA[<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">计算两个坐标点之间的距离</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"math"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 张自忠路站</span></span><br><span class="line">	lat1:=<span class="number">39.939889</span></span><br><span class="line">	lng1:=<span class="number">116.423528</span></span><br><span class="line">	<span class="comment">// 阜成门站</span></span><br><span class="line">	lat2:=<span class="number">39.929488</span></span><br><span class="line">	lng2:=<span class="number">116.362875</span></span><br><span class="line"></span><br><span class="line">	fmt.Println(GetDistance(lat1, lat2, lng1, lng2))</span><br><span class="line">    <span class="comment">// 得到结果 5.2991238</span></span><br><span class="line">    <span class="comment">// 百度地图测距 5.3km</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回单位为：千米</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetDistance</span><span class="params">(lat1, lat2, lng1, lng2 <span class="keyword">float64</span>)</span> <span class="title">float64</span></span> &#123;</span><br><span class="line">	radius := <span class="number">6371000.0</span> <span class="comment">//6378137.0</span></span><br><span class="line">	rad := math.Pi / <span class="number">180.0</span></span><br><span class="line">	lat1 = lat1 * rad</span><br><span class="line">	lng1 = lng1 * rad</span><br><span class="line">	lat2 = lat2 * rad</span><br><span class="line">	lng2 = lng2 * rad</span><br><span class="line">	theta := lng2 - lng1</span><br><span class="line">	dist := math.Acos(math.Sin(lat1)*math.Sin(lat2) + math.Cos(lat1)*math.Cos(lat2)*math.Cos(theta))</span><br><span class="line">	<span class="keyword">return</span> dist * radius / <span class="number">1000</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -1681,7 +2083,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Vue前端开发</category>
+        <category>前端开发</category>
       </categories>
       <tags>
         <tag>Vue</tag>
@@ -1761,7 +2163,7 @@
 </div>
 <script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
       <categories>
-        <category>Proxy</category>
+        <category>科学上网</category>
       </categories>
       <tags>
         <tag>Skill</tag>
@@ -1821,7 +2223,7 @@
 <hr>
 ]]></content>
       <categories>
-        <category>Proxy</category>
+        <category>科学上网</category>
       </categories>
       <tags>
         <tag>Skill</tag>
@@ -1888,11 +2290,10 @@
 <hr>
 ]]></content>
       <categories>
-        <category>Vue前端开发</category>
+        <category>前端开发</category>
       </categories>
       <tags>
         <tag>Vue</tag>
-        <tag>Debug</tag>
       </tags>
   </entry>
   <entry>
@@ -1913,7 +2314,7 @@
 <hr>
 ]]></content>
       <categories>
-        <category>Vue前端开发</category>
+        <category>前端开发</category>
       </categories>
       <tags>
         <tag>Vue</tag>
@@ -2001,7 +2402,7 @@
 <hr>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -2416,7 +2817,7 @@
 <hr>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -2533,10 +2934,10 @@
 <hr>
 ]]></content>
       <categories>
-        <category>树莓派</category>
+        <category>智能家居</category>
       </categories>
       <tags>
-        <tag>RaspberryPi</tag>
+        <tag>树莓派</tag>
       </tags>
   </entry>
   <entry>
@@ -2897,7 +3298,7 @@
 <p>如果你使用的时候发现访问慢，可以依照上面的操作步骤更新这些地址。</p>
 ]]></content>
       <categories>
-        <category>Git操作系列</category>
+        <category>Git技巧</category>
       </categories>
       <tags>
         <tag>Github</tag>
@@ -2945,7 +3346,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -3023,7 +3424,7 @@
 <h4 id="移除所有标记为-none-的镜像"><a href="#移除所有标记为-none-的镜像" class="headerlink" title="移除所有标记为 none 的镜像"></a>移除所有标记为 <code>none</code> 的镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker rmi $(docker images -f &quot;dangling&#x3D;true&quot; -q)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>Docker容器技术</category>
+        <category>Docker开发</category>
       </categories>
       <tags>
         <tag>Docker</tag>
@@ -3227,7 +3628,7 @@
       </categories>
       <tags>
         <tag>Skill</tag>
-        <tag>Mac</tag>
+        <tag>MacOS</tag>
       </tags>
   </entry>
   <entry>
@@ -3482,7 +3883,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 将远端待提交分支hexo拉取到本地的一个临时分支tmp下</span><br><span class="line">git fetch origin hexo:tmp</span><br><span class="line"></span><br><span class="line"># 切换到临时分支tmp</span><br><span class="line">git checkout tmp</span><br><span class="line"></span><br><span class="line"># 将本地的待提交分支hexo合并到临时分支tmp，并解决冲突</span><br><span class="line">git merge hexo</span><br><span class="line"></span><br><span class="line"># 将临时分支tmp提交到远端的待提交分支hexo</span><br><span class="line">git push origin tmp:hexo</span><br><span class="line"></span><br><span class="line"># 切换到本地的待提交分支hexo</span><br><span class="line">git checkout hexo</span><br><span class="line"></span><br><span class="line"># 拉取远端的待提交分支hexo到本地的待提交分支hexo</span><br><span class="line">git pull origin hexo:hexo</span><br><span class="line"></span><br><span class="line"># 删除本地的临时分支tmp</span><br><span class="line">git branch -D tmp</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>Git操作系列</category>
+        <category>Git技巧</category>
       </categories>
       <tags>
         <tag>Git</tag>
@@ -3520,11 +3921,12 @@
 <p><strong>未完待续。。。</strong></p>
 ]]></content>
       <categories>
-        <category>轻量级云原生</category>
+        <category>云原生开发</category>
       </categories>
       <tags>
         <tag>云原生</tag>
         <tag>K3s</tag>
+        <tag>树莓派</tag>
       </tags>
   </entry>
   <entry>
@@ -3838,12 +4240,13 @@
 </ul>
 ]]></content>
       <categories>
-        <category>轻量级云原生</category>
+        <category>云原生开发</category>
       </categories>
       <tags>
         <tag>云原生</tag>
         <tag>K3s</tag>
         <tag>Helm</tag>
+        <tag>树莓派</tag>
       </tags>
   </entry>
   <entry>
@@ -3920,11 +4323,12 @@
 <p>后来才发现原来是master服务器和agent服务器两个主机的<strong>系统时间不一致</strong>导致的，我将agent服务器重启后就好了。</p>
 ]]></content>
       <categories>
-        <category>轻量级云原生</category>
+        <category>云原生开发</category>
       </categories>
       <tags>
         <tag>云原生</tag>
         <tag>K3s</tag>
+        <tag>树莓派</tag>
       </tags>
   </entry>
   <entry>
@@ -3967,11 +4371,12 @@
 <p>这篇文章多少有点水，当然，硬货还在后面。。。</p>
 ]]></content>
       <categories>
-        <category>轻量级云原生</category>
+        <category>云原生开发</category>
       </categories>
       <tags>
         <tag>云原生</tag>
         <tag>K3s</tag>
+        <tag>树莓派</tag>
       </tags>
   </entry>
   <entry>
@@ -4049,7 +4454,7 @@
 <p>注意：<strong>推荐网站中涉及到的资源建议仅供学习和研究使用，请支持并购买正版软件。</strong></p>
 ]]></content>
       <tags>
-        <tag>Mac</tag>
+        <tag>MacOS</tag>
       </tags>
   </entry>
   <entry>
@@ -4109,11 +4514,12 @@
 </ul>
 ]]></content>
       <categories>
-        <category>CI/CD实践</category>
+        <category>自动化运维</category>
       </categories>
       <tags>
+        <tag>Docker</tag>
         <tag>Kubernetes</tag>
-        <tag>Drone</tag>
+        <tag>Drone CI</tag>
       </tags>
   </entry>
   <entry>
@@ -4135,7 +4541,7 @@
         <category>工具技巧</category>
       </categories>
       <tags>
-        <tag>Mac</tag>
+        <tag>MacOS</tag>
       </tags>
   </entry>
   <entry>
@@ -4233,8 +4639,8 @@
 ]]></content>
       <tags>
         <tag>Golang</tag>
-        <tag>Docker</tag>
         <tag>Python</tag>
+        <tag>Docker</tag>
         <tag>Alpine</tag>
       </tags>
   </entry>
@@ -4257,7 +4663,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -4457,7 +4863,7 @@
 <p>未完待续。。。</p>
 ]]></content>
       <categories>
-        <category>云原生系列</category>
+        <category>云原生开发</category>
       </categories>
       <tags>
         <tag>Kubernetes</tag>
@@ -4687,7 +5093,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>云原生系列</category>
+        <category>云原生开发</category>
       </categories>
       <tags>
         <tag>Kubernetes</tag>
@@ -5169,6 +5575,9 @@
 <hr>
 <p>这算是一个小的注意事项吧！</p>
 ]]></content>
+      <categories>
+        <category>Python开发</category>
+      </categories>
       <tags>
         <tag>Python</tag>
       </tags>
@@ -5629,7 +6038,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -5729,7 +6138,7 @@
 <hr>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -5772,7 +6181,7 @@
 <hr>
 ]]></content>
       <categories>
-        <category>Git操作系列</category>
+        <category>Git技巧</category>
       </categories>
       <tags>
         <tag>Git</tag>
@@ -5816,7 +6225,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Git操作系列</category>
+        <category>Git技巧</category>
       </categories>
       <tags>
         <tag>Git</tag>
@@ -5935,7 +6344,7 @@
 <p>以上，仅做记录。由于暂未查询到问题原因，后续持续更新。</p>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -6308,7 +6717,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Docker容器技术</category>
+        <category>Docker开发</category>
       </categories>
       <tags>
         <tag>Docker</tag>
@@ -6782,7 +7191,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ chown -R tiger:tiger &#x2F;data&#x2F;sites</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>Docker容器技术</category>
+        <category>Docker开发</category>
       </categories>
       <tags>
         <tag>Docker</tag>
@@ -7017,7 +7426,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Git操作系列</category>
+        <category>Git技巧</category>
       </categories>
       <tags>
         <tag>GitHub</tag>
@@ -7391,10 +7800,11 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Celery分布式任务队列入门</category>
+        <category>Python开发</category>
       </categories>
       <tags>
         <tag>Celery</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -7564,10 +7974,11 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Celery分布式任务队列入门</category>
+        <category>Python开发</category>
       </categories>
       <tags>
         <tag>Celery</tag>
+        <tag>Python</tag>
         <tag>Docker</tag>
         <tag>RabbitMQ</tag>
       </tags>
@@ -7593,10 +8004,11 @@
 <p>未完待续。。。</p>
 ]]></content>
       <categories>
-        <category>Celery分布式任务队列入门</category>
+        <category>Python开发</category>
       </categories>
       <tags>
         <tag>Celery</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -7609,7 +8021,7 @@
 
 <h5 id="添加标记"><a href="#添加标记" class="headerlink" title="添加标记"></a>添加标记</h5><p>在需要置顶的文章的 <code>Front-matter</code> 中加上 <code>top: true</code> 即可。</p>
 <p>比如：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 从0到1学Golang之基础--Go 数组</span><br><span class="line">date: 2017-05-24 22:07:58</span><br><span class="line">tags:</span><br><span class="line">    - Golang</span><br><span class="line">categories: </span><br><span class="line">    - 从0到1学Golang</span><br><span class="line">description: Golang下的数组操作</span><br><span class="line">top: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 从0到1学Golang之基础--Go 数组</span><br><span class="line">date: 2017-05-24 22:07:58</span><br><span class="line">tags:</span><br><span class="line">    - Golang</span><br><span class="line">categories: </span><br><span class="line">    - Golang开发</span><br><span class="line">description: Golang下的数组操作</span><br><span class="line">top: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
 
 <p>ok，现在发布文章，就能看到我们设置的文章已经置顶显示了，即使是之前发布的文章，同时日期也不会被更改。</p>
 <h5 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h5><ul>
@@ -7653,7 +8065,7 @@
 <p>通过 <code>hexo s -g</code> 预览，可以看到已经自动添加上了更新日期。</p>
 <h5 id="自定义显示更新日期"><a href="#自定义显示更新日期" class="headerlink" title="自定义显示更新日期"></a>自定义显示更新日期</h5><p>对于某些特殊的文章，我们也想能够自定义这个更新的日期。当然，更改起来也非常的简单，Hexo默认就支持更新日期的配置。</p>
 <p>在每一篇文章的 <code>Front-matter</code> 部分，只要添加 <code>updated</code> 参数即可。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 从0到1学Golang之基础--Go 数组</span><br><span class="line">date: 2017-05-24 22:07:58</span><br><span class="line">updated: 2017-12-01 10:35:18</span><br><span class="line">tags:</span><br><span class="line">    - Golang</span><br><span class="line">categories: </span><br><span class="line">    - 从0到1学Golang</span><br><span class="line">description: Golang下的数组操作</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 从0到1学Golang之基础--Go 数组</span><br><span class="line">date: 2017-05-24 22:07:58</span><br><span class="line">updated: 2017-12-01 10:35:18</span><br><span class="line">tags:</span><br><span class="line">    - Golang</span><br><span class="line">categories: </span><br><span class="line">    - Golang开发</span><br><span class="line">description: Golang下的数组操作</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
 
 <p>这样我们就自定义了这篇文章的更新时间。</p>
 <h5 id="相关参考-3"><a href="#相关参考-3" class="headerlink" title="相关参考"></a>相关参考</h5><ul>
@@ -7858,11 +8270,12 @@
 </ol>
 ]]></content>
       <categories>
-        <category>DuerOS开放平台</category>
+        <category>智能家居</category>
       </categories>
       <tags>
-        <tag>DuerOS</tag>
+        <tag>树莓派</tag>
         <tag>智能家居</tag>
+        <tag>DuerOS</tag>
       </tags>
   </entry>
   <entry>
@@ -8250,7 +8663,6 @@
       </categories>
       <tags>
         <tag>Hexo</tag>
-        <tag>Search</tag>
       </tags>
   </entry>
   <entry>
@@ -8502,7 +8914,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#97;&#x69;&#x6c;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#109;">&#x65;&#109;&#97;&#x69;&#x6c;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#97;&#x69;&#x6c;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;">&#x65;&#109;&#97;&#x69;&#x6c;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>
@@ -8770,9 +9182,13 @@
 <li><a href="https://github.com/olahol/melody" target="_blank" rel="noopener">GitHub - olahol/melody: Minimalist websocket framework for Go</a></li>
 </ul>
 ]]></content>
+      <categories>
+        <category>Golang开发</category>
+      </categories>
       <tags>
         <tag>Golang</tag>
         <tag>Gin</tag>
+        <tag>WebSocket</tag>
       </tags>
   </entry>
   <entry>
@@ -8942,7 +9358,7 @@
       </tags>
   </entry>
   <entry>
-    <title>reload-changed-without-restart-for-golang-web-gin</title>
+    <title>通过热更新方式调试Gin项目</title>
     <url>/2017/08/01/reload-changed-without-restart-for-golang-web-gin/</url>
     <content><![CDATA[<p>Gin is a HTTP web framework written in Go (Golang)。但是在调试Gin项目时，每次更改了文件内容后都需要重新运行 <code>go run main.go</code> 命令才能看到更改。项目 <code>codegangsta/gin</code> 和 <code>pilu/fresh</code> 是通过采用热更新的方式来调试Gin项目推荐度较高的两个，且看哪个在操作上更加的方便。</p>
 <h4 id="gin"><a href="#gin" class="headerlink" title="gin"></a>gin</h4><h5 id="github-地址"><a href="#github-地址" class="headerlink" title="github 地址"></a>github 地址</h5><p><a href="https://github.com/codegangsta/gin" target="_blank" rel="noopener">GitHub - codegangsta/gin: Live reload utility for Go web servers</a></p>
@@ -8981,7 +9397,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -9222,7 +9638,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -9351,7 +9767,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -9529,7 +9945,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -9633,7 +10049,7 @@
 
 ]]></content>
       <categories>
-        <category>从0到1学Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -9694,7 +10110,7 @@
 <p>如上非常简洁，剩下很对数据库的操作，都是使用 <code>database/sql</code> 标准接口。如果我们想换其他数据库驱动，只需要换个导入即可，灵活方便。</p>
 ]]></content>
       <categories>
-        <category>从0到1学Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -9762,7 +10178,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -9869,7 +10285,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>Golang</category>
+        <category>Golang开发</category>
       </categories>
       <tags>
         <tag>Golang</tag>
@@ -10619,6 +11035,9 @@
 <li><a href="http://blog.topspeedsnail.com/archives/4750" target="_blank" rel="noopener">Ubuntu 16.04 安装 RabbitMQ</a></li>
 </ul>
 ]]></content>
+      <categories>
+        <category>Linux技术</category>
+      </categories>
       <tags>
         <tag>RabbitMQ</tag>
         <tag>消息队列</tag>
@@ -11118,6 +11537,9 @@
 </ul>
 <hr>
 ]]></content>
+      <categories>
+        <category>Python开发</category>
+      </categories>
       <tags>
         <tag>Python</tag>
         <tag>SQLAlchemy</tag>
@@ -11385,6 +11807,9 @@
 </ul>
 <hr>
 ]]></content>
+      <categories>
+        <category>Python开发</category>
+      </categories>
       <tags>
         <tag>Python</tag>
       </tags>
@@ -11516,10 +11941,12 @@
 <li><a href="https://mynook.info/blog/post/host-your-own-git-server-using-gogs" target="_blank" rel="noopener">使用 Gogs 搭建自己的 Git 服务器 - My Nook</a></li>
 </ul>
 ]]></content>
+      <categories>
+        <category>Ubuntu-Gogs</category>
+      </categories>
       <tags>
         <tag>Gogs</tag>
-        <tag>Git Server</tag>
-        <tag>代码管理</tag>
+        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
@@ -12765,11 +13192,11 @@
 <p>PublishTime: 2016-9-24 22:35:16</p>
 ]]></content>
       <categories>
-        <category>微信公众平台</category>
+        <category>开发笔记</category>
       </categories>
       <tags>
-        <tag>Docker</tag>
         <tag>Python</tag>
+        <tag>Docker</tag>
         <tag>Flask</tag>
       </tags>
   </entry>
@@ -13211,12 +13638,90 @@
 </ul>
 ]]></content>
       <categories>
-        <category>开发笔记</category>
+        <category>Python开发</category>
       </categories>
       <tags>
         <tag>数据抓取</tag>
         <tag>Python</tag>
         <tag>Scrapy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python操作SQLServer数据库</title>
+    <url>/2016/06/20/python-connect-sqlserver/</url>
+    <content><![CDATA[<h4 id="pymssql"><a href="#pymssql" class="headerlink" title="pymssql"></a>pymssql</h4><p>Python操作SQLServer需要使用 <code>pymssql</code> 模块</p>
+<p>Windows系统下的Python类库文件 <code>*.whl</code>文件，需要用 <code>pip install *.whl</code> 的方式来安装。</p>
+<p>下载pymssql2.7 library ：<a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pymssql" target="_blank" rel="noopener">pythonlibs</a></p>
+<p>第一次下载了 <code>pymssql-2.1.2-cp27-cp27m-win_amd64.whl</code> 文件，安装时报错，提示如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">λ pip install pymssql-2.1.2-cp27-cp27m-win_amd64.whl</span><br><span class="line">pymssql-2.1.2-cp27-cp27m-win_amd64.whl is not a supported wheel on this platform.</span><br></pre></td></tr></table></figure>
+
+<p>即使成功安装了 <code>pymssql</code>，但是 <code>import pymssql</code> 还是会报错</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import pymssql</span><br><span class="line">ImportError: DLL load failed: 找不到指定的模块。</span><br></pre></td></tr></table></figure>
+
+<p>所以又再次下载了 <code>pymssql-1.0.3-cp27-none-win32.whl</code> 文件，再次安装成功。<br>具体原因可能和操作系统或python版本有关，具体待深入研究。</p>
+<h4 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># coding:utf-8</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">http:&#x2F;&#x2F;www.pymssql.org&#x2F;en&#x2F;stable&#x2F;</span><br><span class="line">http:&#x2F;&#x2F;www.lfd.uci.edu&#x2F;~gohlke&#x2F;pythonlibs&#x2F;#pymssql </span><br><span class="line"></span><br><span class="line">pymssql-1.0.3-cp27-none-win32.whl    # 只有这个才能在windows下执行</span><br><span class="line">pymssql-2.1.2-cp27-cp27m-win_amd64.whl # 这个不能执行</span><br><span class="line"></span><br><span class="line">安装 whl文件 执行 &#96;pip install *.whl&#96;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">异常：</span><br><span class="line">不能用 DB-Library (如 ISQL)或 ODBC 3.7 或更早版本将 ntext 数据或仅使用 Unicode 排序规则的 Unicode 数据发送到客 户端。</span><br><span class="line">这个问题是数据库中字段为ntext类型，这种类型目前的c-library不支持，需要转为nvchar或text类型才可以。</span><br><span class="line">1. 建议：将ntext修改为nvarchar或text.</span><br><span class="line">2. 既然不支持ntext但支持text，那么我们只需要在输出时将ntext转换为text就好了 </span><br><span class="line">&#96;SELECT cast ( field_name AS TEXT ) AS field_name&#96;</span><br><span class="line">&#96;select convert(varchar(50),guid) as guid, convert(text,content) as content from news&#96;</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">import pymssql</span><br><span class="line"></span><br><span class="line">class MSSQL:</span><br><span class="line">    def __init__(self,host,user,pwd,db):</span><br><span class="line">        self.host&#x3D;host</span><br><span class="line">        self.user&#x3D;user</span><br><span class="line">        self.pwd&#x3D;pwd</span><br><span class="line">        self.db&#x3D;db</span><br><span class="line"></span><br><span class="line">    def __GetConnect(self):</span><br><span class="line">        if not self.db:</span><br><span class="line">            raise(NameError,&quot;没有设置数据库信息&quot;)</span><br><span class="line"></span><br><span class="line">        self.conn&#x3D;pymssql.connect(host&#x3D;self.host,user&#x3D;self.user,password&#x3D;self.pwd,database&#x3D;self.db,charset&#x3D;&quot;utf-8&quot;)</span><br><span class="line">        cur&#x3D;self.conn.cursor()</span><br><span class="line">        if not cur:</span><br><span class="line">            raise(NameError,&quot;连接数据库失败&quot;)</span><br><span class="line">        else:</span><br><span class="line">            return cur</span><br><span class="line"></span><br><span class="line">    def ExecQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        resList&#x3D;cur.fetchall()</span><br><span class="line">        # 查询完毕后关闭连接</span><br><span class="line">        self.conn.close()</span><br><span class="line">        return resList</span><br><span class="line"></span><br><span class="line">    def ExecNonQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        self.conn.commit()</span><br><span class="line">        self.conn.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__&#x3D;&#x3D;&quot;__main__&quot;:</span><br><span class="line"></span><br><span class="line">    ms&#x3D;MSSQL(host&#x3D;&quot;Test-FPC\sqlexpress&quot;,user&#x3D;&quot;sa&quot;,pwd&#x3D;&quot;1&quot;,db&#x3D;&quot;its&quot;)</span><br><span class="line">    resList&#x3D;ms.ExecQuery(&quot;select * from [SchemeCategory] where IsShow&#x3D;1&quot;)   </span><br><span class="line">    for i in resList:</span><br><span class="line">        print(i[&quot;Name&quot;])</span><br></pre></td></tr></table></figure>
+
+<h4 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h4><p>在操作是报出了如下异常信息：</p>
+<blockquote>
+<p>不能用 DB-Library (如 ISQL)或 ODBC 3.7 或更早版本将 ntext 数据或仅使用 Unicode 排序规则的 Unicode 数据发送到客 户端。</p>
+</blockquote>
+<p>这个问题是数据库中字段为ntext类型，这种类型目前的 <code>c-library</code> 不支持，需要转为 <code>nvchar</code> 或 <code>text</code> 类型才可以。</p>
+<ol>
+<li>建议：将ntext修改为nvarchar或text.</li>
+<li>既然不支持ntext但支持text，那么我们只需要在输出时将ntext转换为text就好了 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT cast ( field_name AS TEXT ) AS field_name</span><br><span class="line">select convert(varchar(50),guid) as guid, convert(text,content) as content from news</span><br></pre></td></tr></table></figure></li>
+<li>使用另一个类库 <code>pyodbc</code> 来操作，未遇到该问题。</li>
+</ol>
+<hr>
+<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><p><a href="http://lovesoo.org/python-example-sqlserver.html" target="_blank" rel="noopener">Python操作SQLServer示例 | 大爱</a><br><a href="http://www.cnblogs.com/qianlifeng/archive/2012/02/08/2343286.html" target="_blank" rel="noopener">利用python简化sql server数据导入导出 - qianlifeng - 博客园</a></p>
+<ul>
+<li><a href="http://blog.csdn.net/shanliangliuxing/article/details/8632909" target="_blank" rel="noopener">python 使用pymssql连接sql server数据库 - Hello World!</a></li>
+</ul>
+<p><a href="http://pymssql.org/en/latest/index.html" target="_blank" rel="noopener">pymssql &mdash; pymssql 2.2.0.dev documentation</a><br><a href="http://pymssql.org/en/latest/freetds.html#windows" target="_blank" rel="noopener">FreeTDS &mdash; pymssql 2.2.0.dev documentation</a><br><a href="https://github.com/pymssql/pymssql" target="_blank" rel="noopener">GitHub - pymssql/pymssql: Official home for the pymssql source code.</a><br><a href="http://www.freetds.org/" target="_blank" rel="noopener">FreeTDS.org</a><br><a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pymssql" target="_blank" rel="noopener">Python Extension Packages for Windows - Christoph Gohlke</a></p>
+<hr>
+<h4 id="pyodbc"><a href="#pyodbc" class="headerlink" title="pyodbc"></a>pyodbc</h4><h5 id="SQL-Server-ODBC-drivers"><a href="#SQL-Server-ODBC-drivers" class="headerlink" title="SQL Server ODBC drivers"></a>SQL Server ODBC drivers</h5><ul>
+<li><p>{SQL Server} - released with SQL Server 2000</p>
+</li>
+<li><p>{SQL Native Client} - released with SQL Server 2005 (also known as version 9.0)</p>
+</li>
+<li><p>{SQL Server Native Client 10.0} - released with SQL Server 2008</p>
+</li>
+<li><p>{SQL Server Native Client 11.0} - released with SQL Server 2012</p>
+<p>[sqlservertests]<br><code>connection-string=DRIVER={SQL Server};SERVER=localhost;UID=uid;PWD=pwd;DATABASE=db</code></p>
+</li>
+</ul>
+<p>The connection string above will use the 2000/2005 driver, even if SQL Server 2008<br>is installed:</p>
+<ul>
+<li>2000: DRIVER={SQL Server}</li>
+<li>2005: DRIVER={SQL Server}</li>
+<li>2008: DRIVER={SQL Server Native Client 10.0}</li>
+</ul>
+<h5 id="connection-strings"><a href="#connection-strings" class="headerlink" title="connection strings"></a>connection strings</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password</span><br></pre></td></tr></table></figure>
+
+<p>in Python:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conn &#x3D; pyodbc.connect(r&#39;DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password&#39;)</span><br></pre></td></tr></table></figure>
+
+<h5 id="连接字符串的两种写法"><a href="#连接字符串的两种写法" class="headerlink" title="连接字符串的两种写法"></a>连接字符串的两种写法</h5><h6 id="字符串方式"><a href="#字符串方式" class="headerlink" title="字符串方式"></a>字符串方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">connSqlServer &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server Native Client 10.0&#125;;SERVER&#x3D;192.106.0.102\instance1;DATABASE&#x3D;master;UID&#x3D;sql2008;PWD&#x3D;password123&#39;)</span><br><span class="line"></span><br><span class="line">connSqlServer &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server Native Client 10.0&#125;;SERVER&#x3D;192.106.0.102,1443;DATABASE&#x3D;master;UID&#x3D;sql2008;PWD&#x3D;password123&#39;)</span><br></pre></td></tr></table></figure>
+
+<h6 id="关键字方式"><a href="#关键字方式" class="headerlink" title="关键字方式"></a>关键字方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">connSqlServer &#x3D; pyodbc.connect(driver&#x3D;&#39;&#123;SQL Server Native Client 10.0&#125;&#39;,</span><br><span class="line">                               server&#x3D;&#39;192.106.0.102\instance1&#39;,</span><br><span class="line">                               database&#x3D;&#39;master&#39;,</span><br><span class="line">                               uid&#x3D;&#39;sql2008&#39;,pwd&#x3D;&#39;password123&#39;)</span><br><span class="line"></span><br><span class="line">connSqlServer &#x3D; pyodbc.connect(driver&#x3D;&#39;&#123;SQL Server Native Client 10.0&#125;&#39;,</span><br><span class="line">                               server&#x3D;&#39;192.106.0.102,1443&#39;,</span><br><span class="line">                               database&#x3D;&#39;master&#39;,</span><br><span class="line">                               uid&#x3D;&#39;sql2008&#39;,pwd&#x3D;&#39;password123&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>详见：<a href="http://stackoverflow.com/questions/25505081/python-pyodbc-how-to-connect-to-a-specific-instance" target="_blank" rel="noopener">sql - python pyodbc : how to connect to a specific instance - Stack Overflow</a></p>
+<h5 id="我的写法"><a href="#我的写法" class="headerlink" title="我的写法"></a>我的写法</h5><h6 id="第一种方式"><a href="#第一种方式" class="headerlink" title="第一种方式"></a>第一种方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def __init__(self,driver,server,db,uid,pwd):</span><br><span class="line">    self.driver&#x3D;&quot;&#123;&#123;&#123;0&#125;&#125;&#125;&quot;.format(driver)  # 两个&#123;表示一个</span><br><span class="line">    self.server&#x3D;server</span><br><span class="line">    self.db&#x3D;db</span><br><span class="line">    self.uid&#x3D;uid</span><br><span class="line">    self.pwd&#x3D;pwd</span><br><span class="line"></span><br><span class="line">def __GetConnect(self):</span><br><span class="line">    if not self.db:</span><br><span class="line">        raise(NameError,&quot;没有设置数据库信息&quot;)</span><br><span class="line"></span><br><span class="line">    # r&#39;DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password&#39;</span><br><span class="line">    self.conn&#x3D;pyodbc.connect(driver&#x3D;self.driver,server&#x3D;self.server,database&#x3D;self.db,uid&#x3D;self.uid,pwd&#x3D;self.pwd)</span><br><span class="line"></span><br><span class="line">ms&#x3D;MSSQLODBC(driver&#x3D;&quot;SQL Server&quot;,server&#x3D;&quot;Test-FPC\sqlexpress&quot;,db&#x3D;&quot;its&quot;,uid&#x3D;&quot;sa&quot;,pwd&#x3D;&quot;1&quot;)</span><br></pre></td></tr></table></figure>
+
+<h6 id="第二种方式"><a href="#第二种方式" class="headerlink" title="第二种方式"></a>第二种方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">self.conn &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server&#125;;SERVER&#x3D;Test-FPC\sqlexpress;PORT&#x3D;1433;DATABASE&#x3D;its;UID&#x3D;sa;PWD&#x3D;1&#39;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li><a href="https://mkleehammer.github.io/pyodbc/" target="_blank" rel="noopener">pyodbc</a></li>
+<li><a href="https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-Windows" target="_blank" rel="noopener">Connecting to SQL Server from Windows · mkleehammer/pyodbc Wiki · GitHub</a></li>
+<li><a href="http://stackoverflow.com/questions/25505081/python-pyodbc-how-to-connect-to-a-specific-instance" target="_blank" rel="noopener">sql - python pyodbc : how to connect to a specific instance - Stack Overflow</a></li>
+</ul>
+<h4 id="Demo-1"><a href="#Demo-1" class="headerlink" title="Demo"></a>Demo</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># coding:utf-8</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">import pyodbc</span><br><span class="line"></span><br><span class="line">class MSSQLODBC:</span><br><span class="line">    def __init__(self,driver,server,db,uid,pwd):</span><br><span class="line">        self.driver&#x3D;&quot;&#123;&#123;&#123;0&#125;&#125;&#125;&quot;.format(driver)  # 两个&#123;表示一个</span><br><span class="line">        self.server&#x3D;server</span><br><span class="line">        self.db&#x3D;db</span><br><span class="line">        self.uid&#x3D;uid</span><br><span class="line">        self.pwd&#x3D;pwd</span><br><span class="line"></span><br><span class="line">    def __GetConnect(self):</span><br><span class="line">        if not self.db:</span><br><span class="line">            raise(NameError,&quot;没有设置数据库信息&quot;)</span><br><span class="line"></span><br><span class="line">        # r&#39;DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password&#39;</span><br><span class="line">        self.conn&#x3D;pyodbc.connect(driver&#x3D;self.driver,server&#x3D;self.server,database&#x3D;self.db,uid&#x3D;self.uid,pwd&#x3D;self.pwd)</span><br><span class="line">        # self.conn &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server&#125;;SERVER&#x3D;Test-FPC\sqlexpress;PORT&#x3D;1433;DATABASE&#x3D;its;UID&#x3D;sa;PWD&#x3D;1&#39;)</span><br><span class="line">        cur&#x3D;self.conn.cursor()</span><br><span class="line">        if not cur:</span><br><span class="line">            raise(NameError,&quot;连接数据库失败&quot;)</span><br><span class="line">        else:</span><br><span class="line">            return cur</span><br><span class="line"></span><br><span class="line">    def ExecQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        resList&#x3D;cur.fetchall()</span><br><span class="line">        # 查询完毕后关闭连接</span><br><span class="line">        self.conn.close()</span><br><span class="line">        return resList</span><br><span class="line"></span><br><span class="line">    def ExecNonQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        self.conn.commit()</span><br><span class="line">        self.conn.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__&#x3D;&#x3D;&quot;__main__&quot;:</span><br><span class="line"></span><br><span class="line">    ms&#x3D;MSSQLODBC(driver&#x3D;&quot;SQL Server&quot;,server&#x3D;&quot;Test-FPC\sqlexpress&quot;,db&#x3D;&quot;its&quot;,uid&#x3D;&quot;sa&quot;,pwd&#x3D;&quot;1&quot;)</span><br><span class="line">    resList&#x3D;ms.ExecQuery(&quot;select top 10 * from [MallProductItem]&quot;)</span><br><span class="line">    for m in resList:</span><br><span class="line">        print(m[4])</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>开发笔记</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -13489,84 +13994,6 @@
       </categories>
       <tags>
         <tag>ElasticSearch</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python操作SQLServer数据库</title>
-    <url>/2016/06/20/python-connect-sqlserver/</url>
-    <content><![CDATA[<h4 id="pymssql"><a href="#pymssql" class="headerlink" title="pymssql"></a>pymssql</h4><p>Python操作SQLServer需要使用 <code>pymssql</code> 模块</p>
-<p>Windows系统下的Python类库文件 <code>*.whl</code>文件，需要用 <code>pip install *.whl</code> 的方式来安装。</p>
-<p>下载pymssql2.7 library ：<a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pymssql" target="_blank" rel="noopener">pythonlibs</a></p>
-<p>第一次下载了 <code>pymssql-2.1.2-cp27-cp27m-win_amd64.whl</code> 文件，安装时报错，提示如下错误：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">λ pip install pymssql-2.1.2-cp27-cp27m-win_amd64.whl</span><br><span class="line">pymssql-2.1.2-cp27-cp27m-win_amd64.whl is not a supported wheel on this platform.</span><br></pre></td></tr></table></figure>
-
-<p>即使成功安装了 <code>pymssql</code>，但是 <code>import pymssql</code> 还是会报错</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import pymssql</span><br><span class="line">ImportError: DLL load failed: 找不到指定的模块。</span><br></pre></td></tr></table></figure>
-
-<p>所以又再次下载了 <code>pymssql-1.0.3-cp27-none-win32.whl</code> 文件，再次安装成功。<br>具体原因可能和操作系统或python版本有关，具体待深入研究。</p>
-<h4 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># coding:utf-8</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">http:&#x2F;&#x2F;www.pymssql.org&#x2F;en&#x2F;stable&#x2F;</span><br><span class="line">http:&#x2F;&#x2F;www.lfd.uci.edu&#x2F;~gohlke&#x2F;pythonlibs&#x2F;#pymssql </span><br><span class="line"></span><br><span class="line">pymssql-1.0.3-cp27-none-win32.whl    # 只有这个才能在windows下执行</span><br><span class="line">pymssql-2.1.2-cp27-cp27m-win_amd64.whl # 这个不能执行</span><br><span class="line"></span><br><span class="line">安装 whl文件 执行 &#96;pip install *.whl&#96;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">异常：</span><br><span class="line">不能用 DB-Library (如 ISQL)或 ODBC 3.7 或更早版本将 ntext 数据或仅使用 Unicode 排序规则的 Unicode 数据发送到客 户端。</span><br><span class="line">这个问题是数据库中字段为ntext类型，这种类型目前的c-library不支持，需要转为nvchar或text类型才可以。</span><br><span class="line">1. 建议：将ntext修改为nvarchar或text.</span><br><span class="line">2. 既然不支持ntext但支持text，那么我们只需要在输出时将ntext转换为text就好了 </span><br><span class="line">&#96;SELECT cast ( field_name AS TEXT ) AS field_name&#96;</span><br><span class="line">&#96;select convert(varchar(50),guid) as guid, convert(text,content) as content from news&#96;</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">import pymssql</span><br><span class="line"></span><br><span class="line">class MSSQL:</span><br><span class="line">    def __init__(self,host,user,pwd,db):</span><br><span class="line">        self.host&#x3D;host</span><br><span class="line">        self.user&#x3D;user</span><br><span class="line">        self.pwd&#x3D;pwd</span><br><span class="line">        self.db&#x3D;db</span><br><span class="line"></span><br><span class="line">    def __GetConnect(self):</span><br><span class="line">        if not self.db:</span><br><span class="line">            raise(NameError,&quot;没有设置数据库信息&quot;)</span><br><span class="line"></span><br><span class="line">        self.conn&#x3D;pymssql.connect(host&#x3D;self.host,user&#x3D;self.user,password&#x3D;self.pwd,database&#x3D;self.db,charset&#x3D;&quot;utf-8&quot;)</span><br><span class="line">        cur&#x3D;self.conn.cursor()</span><br><span class="line">        if not cur:</span><br><span class="line">            raise(NameError,&quot;连接数据库失败&quot;)</span><br><span class="line">        else:</span><br><span class="line">            return cur</span><br><span class="line"></span><br><span class="line">    def ExecQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        resList&#x3D;cur.fetchall()</span><br><span class="line">        # 查询完毕后关闭连接</span><br><span class="line">        self.conn.close()</span><br><span class="line">        return resList</span><br><span class="line"></span><br><span class="line">    def ExecNonQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        self.conn.commit()</span><br><span class="line">        self.conn.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__&#x3D;&#x3D;&quot;__main__&quot;:</span><br><span class="line"></span><br><span class="line">    ms&#x3D;MSSQL(host&#x3D;&quot;Test-FPC\sqlexpress&quot;,user&#x3D;&quot;sa&quot;,pwd&#x3D;&quot;1&quot;,db&#x3D;&quot;its&quot;)</span><br><span class="line">    resList&#x3D;ms.ExecQuery(&quot;select * from [SchemeCategory] where IsShow&#x3D;1&quot;)   </span><br><span class="line">    for i in resList:</span><br><span class="line">        print(i[&quot;Name&quot;])</span><br></pre></td></tr></table></figure>
-
-<h4 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h4><p>在操作是报出了如下异常信息：</p>
-<blockquote>
-<p>不能用 DB-Library (如 ISQL)或 ODBC 3.7 或更早版本将 ntext 数据或仅使用 Unicode 排序规则的 Unicode 数据发送到客 户端。</p>
-</blockquote>
-<p>这个问题是数据库中字段为ntext类型，这种类型目前的 <code>c-library</code> 不支持，需要转为 <code>nvchar</code> 或 <code>text</code> 类型才可以。</p>
-<ol>
-<li>建议：将ntext修改为nvarchar或text.</li>
-<li>既然不支持ntext但支持text，那么我们只需要在输出时将ntext转换为text就好了 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT cast ( field_name AS TEXT ) AS field_name</span><br><span class="line">select convert(varchar(50),guid) as guid, convert(text,content) as content from news</span><br></pre></td></tr></table></figure></li>
-<li>使用另一个类库 <code>pyodbc</code> 来操作，未遇到该问题。</li>
-</ol>
-<hr>
-<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><p><a href="http://lovesoo.org/python-example-sqlserver.html" target="_blank" rel="noopener">Python操作SQLServer示例 | 大爱</a><br><a href="http://www.cnblogs.com/qianlifeng/archive/2012/02/08/2343286.html" target="_blank" rel="noopener">利用python简化sql server数据导入导出 - qianlifeng - 博客园</a></p>
-<ul>
-<li><a href="http://blog.csdn.net/shanliangliuxing/article/details/8632909" target="_blank" rel="noopener">python 使用pymssql连接sql server数据库 - Hello World!</a></li>
-</ul>
-<p><a href="http://pymssql.org/en/latest/index.html" target="_blank" rel="noopener">pymssql &mdash; pymssql 2.2.0.dev documentation</a><br><a href="http://pymssql.org/en/latest/freetds.html#windows" target="_blank" rel="noopener">FreeTDS &mdash; pymssql 2.2.0.dev documentation</a><br><a href="https://github.com/pymssql/pymssql" target="_blank" rel="noopener">GitHub - pymssql/pymssql: Official home for the pymssql source code.</a><br><a href="http://www.freetds.org/" target="_blank" rel="noopener">FreeTDS.org</a><br><a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pymssql" target="_blank" rel="noopener">Python Extension Packages for Windows - Christoph Gohlke</a></p>
-<hr>
-<h4 id="pyodbc"><a href="#pyodbc" class="headerlink" title="pyodbc"></a>pyodbc</h4><h5 id="SQL-Server-ODBC-drivers"><a href="#SQL-Server-ODBC-drivers" class="headerlink" title="SQL Server ODBC drivers"></a>SQL Server ODBC drivers</h5><ul>
-<li><p>{SQL Server} - released with SQL Server 2000</p>
-</li>
-<li><p>{SQL Native Client} - released with SQL Server 2005 (also known as version 9.0)</p>
-</li>
-<li><p>{SQL Server Native Client 10.0} - released with SQL Server 2008</p>
-</li>
-<li><p>{SQL Server Native Client 11.0} - released with SQL Server 2012</p>
-<p>[sqlservertests]<br><code>connection-string=DRIVER={SQL Server};SERVER=localhost;UID=uid;PWD=pwd;DATABASE=db</code></p>
-</li>
-</ul>
-<p>The connection string above will use the 2000/2005 driver, even if SQL Server 2008<br>is installed:</p>
-<ul>
-<li>2000: DRIVER={SQL Server}</li>
-<li>2005: DRIVER={SQL Server}</li>
-<li>2008: DRIVER={SQL Server Native Client 10.0}</li>
-</ul>
-<h5 id="connection-strings"><a href="#connection-strings" class="headerlink" title="connection strings"></a>connection strings</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password</span><br></pre></td></tr></table></figure>
-
-<p>in Python:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conn &#x3D; pyodbc.connect(r&#39;DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password&#39;)</span><br></pre></td></tr></table></figure>
-
-<h5 id="连接字符串的两种写法"><a href="#连接字符串的两种写法" class="headerlink" title="连接字符串的两种写法"></a>连接字符串的两种写法</h5><h6 id="字符串方式"><a href="#字符串方式" class="headerlink" title="字符串方式"></a>字符串方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">connSqlServer &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server Native Client 10.0&#125;;SERVER&#x3D;192.106.0.102\instance1;DATABASE&#x3D;master;UID&#x3D;sql2008;PWD&#x3D;password123&#39;)</span><br><span class="line"></span><br><span class="line">connSqlServer &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server Native Client 10.0&#125;;SERVER&#x3D;192.106.0.102,1443;DATABASE&#x3D;master;UID&#x3D;sql2008;PWD&#x3D;password123&#39;)</span><br></pre></td></tr></table></figure>
-
-<h6 id="关键字方式"><a href="#关键字方式" class="headerlink" title="关键字方式"></a>关键字方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">connSqlServer &#x3D; pyodbc.connect(driver&#x3D;&#39;&#123;SQL Server Native Client 10.0&#125;&#39;,</span><br><span class="line">                               server&#x3D;&#39;192.106.0.102\instance1&#39;,</span><br><span class="line">                               database&#x3D;&#39;master&#39;,</span><br><span class="line">                               uid&#x3D;&#39;sql2008&#39;,pwd&#x3D;&#39;password123&#39;)</span><br><span class="line"></span><br><span class="line">connSqlServer &#x3D; pyodbc.connect(driver&#x3D;&#39;&#123;SQL Server Native Client 10.0&#125;&#39;,</span><br><span class="line">                               server&#x3D;&#39;192.106.0.102,1443&#39;,</span><br><span class="line">                               database&#x3D;&#39;master&#39;,</span><br><span class="line">                               uid&#x3D;&#39;sql2008&#39;,pwd&#x3D;&#39;password123&#39;)</span><br></pre></td></tr></table></figure>
-
-<p>详见：<a href="http://stackoverflow.com/questions/25505081/python-pyodbc-how-to-connect-to-a-specific-instance" target="_blank" rel="noopener">sql - python pyodbc : how to connect to a specific instance - Stack Overflow</a></p>
-<h5 id="我的写法"><a href="#我的写法" class="headerlink" title="我的写法"></a>我的写法</h5><h6 id="第一种方式"><a href="#第一种方式" class="headerlink" title="第一种方式"></a>第一种方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def __init__(self,driver,server,db,uid,pwd):</span><br><span class="line">    self.driver&#x3D;&quot;&#123;&#123;&#123;0&#125;&#125;&#125;&quot;.format(driver)  # 两个&#123;表示一个</span><br><span class="line">    self.server&#x3D;server</span><br><span class="line">    self.db&#x3D;db</span><br><span class="line">    self.uid&#x3D;uid</span><br><span class="line">    self.pwd&#x3D;pwd</span><br><span class="line"></span><br><span class="line">def __GetConnect(self):</span><br><span class="line">    if not self.db:</span><br><span class="line">        raise(NameError,&quot;没有设置数据库信息&quot;)</span><br><span class="line"></span><br><span class="line">    # r&#39;DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password&#39;</span><br><span class="line">    self.conn&#x3D;pyodbc.connect(driver&#x3D;self.driver,server&#x3D;self.server,database&#x3D;self.db,uid&#x3D;self.uid,pwd&#x3D;self.pwd)</span><br><span class="line"></span><br><span class="line">ms&#x3D;MSSQLODBC(driver&#x3D;&quot;SQL Server&quot;,server&#x3D;&quot;Test-FPC\sqlexpress&quot;,db&#x3D;&quot;its&quot;,uid&#x3D;&quot;sa&quot;,pwd&#x3D;&quot;1&quot;)</span><br></pre></td></tr></table></figure>
-
-<h6 id="第二种方式"><a href="#第二种方式" class="headerlink" title="第二种方式"></a>第二种方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">self.conn &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server&#125;;SERVER&#x3D;Test-FPC\sqlexpress;PORT&#x3D;1433;DATABASE&#x3D;its;UID&#x3D;sa;PWD&#x3D;1&#39;)</span><br></pre></td></tr></table></figure>
-
-<hr>
-<ul>
-<li><a href="https://mkleehammer.github.io/pyodbc/" target="_blank" rel="noopener">pyodbc</a></li>
-<li><a href="https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-Windows" target="_blank" rel="noopener">Connecting to SQL Server from Windows · mkleehammer/pyodbc Wiki · GitHub</a></li>
-<li><a href="http://stackoverflow.com/questions/25505081/python-pyodbc-how-to-connect-to-a-specific-instance" target="_blank" rel="noopener">sql - python pyodbc : how to connect to a specific instance - Stack Overflow</a></li>
-</ul>
-<h4 id="Demo-1"><a href="#Demo-1" class="headerlink" title="Demo"></a>Demo</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># coding:utf-8</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">import pyodbc</span><br><span class="line"></span><br><span class="line">class MSSQLODBC:</span><br><span class="line">    def __init__(self,driver,server,db,uid,pwd):</span><br><span class="line">        self.driver&#x3D;&quot;&#123;&#123;&#123;0&#125;&#125;&#125;&quot;.format(driver)  # 两个&#123;表示一个</span><br><span class="line">        self.server&#x3D;server</span><br><span class="line">        self.db&#x3D;db</span><br><span class="line">        self.uid&#x3D;uid</span><br><span class="line">        self.pwd&#x3D;pwd</span><br><span class="line"></span><br><span class="line">    def __GetConnect(self):</span><br><span class="line">        if not self.db:</span><br><span class="line">            raise(NameError,&quot;没有设置数据库信息&quot;)</span><br><span class="line"></span><br><span class="line">        # r&#39;DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password&#39;</span><br><span class="line">        self.conn&#x3D;pyodbc.connect(driver&#x3D;self.driver,server&#x3D;self.server,database&#x3D;self.db,uid&#x3D;self.uid,pwd&#x3D;self.pwd)</span><br><span class="line">        # self.conn &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server&#125;;SERVER&#x3D;Test-FPC\sqlexpress;PORT&#x3D;1433;DATABASE&#x3D;its;UID&#x3D;sa;PWD&#x3D;1&#39;)</span><br><span class="line">        cur&#x3D;self.conn.cursor()</span><br><span class="line">        if not cur:</span><br><span class="line">            raise(NameError,&quot;连接数据库失败&quot;)</span><br><span class="line">        else:</span><br><span class="line">            return cur</span><br><span class="line"></span><br><span class="line">    def ExecQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        resList&#x3D;cur.fetchall()</span><br><span class="line">        # 查询完毕后关闭连接</span><br><span class="line">        self.conn.close()</span><br><span class="line">        return resList</span><br><span class="line"></span><br><span class="line">    def ExecNonQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        self.conn.commit()</span><br><span class="line">        self.conn.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__&#x3D;&#x3D;&quot;__main__&quot;:</span><br><span class="line"></span><br><span class="line">    ms&#x3D;MSSQLODBC(driver&#x3D;&quot;SQL Server&quot;,server&#x3D;&quot;Test-FPC\sqlexpress&quot;,db&#x3D;&quot;its&quot;,uid&#x3D;&quot;sa&quot;,pwd&#x3D;&quot;1&quot;)</span><br><span class="line">    resList&#x3D;ms.ExecQuery(&quot;select top 10 * from [MallProductItem]&quot;)</span><br><span class="line">    for m in resList:</span><br><span class="line">        print(m[4])</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>开发笔记</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -14268,7 +14695,6 @@
       </categories>
       <tags>
         <tag>ASP.NET</tag>
-        <tag>RestfulApi</tag>
       </tags>
   </entry>
   <entry>

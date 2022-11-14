@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.itfanr.cc","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":true,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Golang通过 Embed 特性实现对 vue react 等静态资源的内嵌打包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang通过Embed嵌入静态资源">
+<meta property="og:url" content="https://www.itfanr.cc/2022/08/18/golang-embed-static-files/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="Golang通过 Embed 特性实现对 vue react 等静态资源的内嵌打包">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192105.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192159.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192226.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192301.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192320.png">
+<meta property="article:published_time" content="2022-08-18T14:48:28.000Z">
+<meta property="article:modified_time" content="2022-11-14T06:27:58.000Z">
+<meta property="article:author" content="Leafney">
+<meta property="article:tag" content="Golang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192105.png">
+
+<link rel="canonical" href="https://www.itfanr.cc/2022/08/18/golang-embed-static-files/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Golang通过Embed嵌入静态资源 | IT范儿</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?eac19a9eb5ae3d4b5784857872188c97";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">IT范儿</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">程序员改变世界</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/leafney" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.itfanr.cc/2022/08/18/golang-embed-static-files/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="Stay Hungry. Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Golang通过Embed嵌入静态资源
+        </h1>
+
+        <div class="post-meta">
+            
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                  <i class="fas fa-thumbtack"></i>
+              </span>
+              <span class="post-meta-item-text">
+                  <font color='#f05050'>[置顶]</font>
+              </span>
+            </span>
+
+          
+            
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-18 22:48:28" itemprop="dateCreated datePublished" datetime="2022-08-18T22:48:28+08:00">2022-08-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-11-14 14:27:58" itemprop="dateModified" datetime="2022-11-14T14:27:58+08:00">2022-11-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Golang%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Golang开发</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">Golang通过 Embed 特性实现对 vue react 等静态资源的内嵌打包</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>通过Golang开发前后端项目时，普遍采用 <code>Gin</code> 结合 <code>Vue</code> 或者 <code>React</code> 项目来实现。</p>
+<p>但在部署时，前端的项目则需要通过nginx来实现转发。对于小型的前后端项目来说，这种方式就有点复杂了。</p>
+<p>小型的前后端项目，一般会考虑将静态文件打包到go二进制文件中，这样在发布时只需要部署单个二进制文件即可。相对于 <code>Python</code> 或 <code>Java</code> 等项目来说，并不需要前期配置依赖的运行环境，省时、省力还非常方便。</p>
+<p>在之前的方法中，普遍采用第三方的类库实现。比较知名的有 <code>go-bindata</code> 、<code>packr</code> 等。</p>
+<p>这里来聊聊使用golang最新支持的 <code>embed</code> 特性如何实现。</p>
+<hr>
+<h3 id="embed了解"><a href="#embed了解" class="headerlink" title="embed了解"></a>embed了解</h3><p>Go1.16 引入了 <code>//go:embed</code> 功能，可以将静态资源文件内容直接打包到二进制文件，方便部署。</p>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p>在embed中，可以将静态资源文件嵌入到三种类型的变量：<code>string</code> , <code>byte slice</code> 和 <code>embed.FS</code> 这三种类型。</p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>string</code></td>
+<td>表示数据被编码成 <code>utf8</code> 编码的字符串</td>
+</tr>
+<tr>
+<td><code>[]byte</code></td>
+<td>表示数据存储为二进制格式</td>
+</tr>
+<tr>
+<td><code>embed.FS</code></td>
+<td>表示存储多个文件和目录的结构，而 <code>string</code> 和 <code>[]byte</code> 只能存储单个文件</td>
+</tr>
+</tbody></table>
+<p>其中，<code>string</code> 和 <code>[]byte</code> 需要通过 <code>import (_ &quot;embed&quot;)</code> 的形式引入 <code>embed</code> 库</p>
+<p>示例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"embed"</span>  </span><br><span class="line">   _ <span class="string">"embed"</span>  </span><br><span class="line">   <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"><span class="comment">// 以字符串的形式嵌入 hello.txt  </span></span><br><span class="line"><span class="comment">//go:embed hello.txt  </span></span><br><span class="line"><span class="keyword">var</span> s <span class="keyword">string</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 以字节数组的形式嵌入  </span></span><br><span class="line"><span class="comment">//go:embed hello.txt  </span></span><br><span class="line"><span class="keyword">var</span> b []<span class="keyword">byte</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// 以FS文件系统的形式嵌入  </span></span><br><span class="line"><span class="comment">//go:embed hello.txt  </span></span><br><span class="line"><span class="keyword">var</span> f embed.FS  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   fmt.Println(<span class="string">"embed string: "</span>, s)  </span><br><span class="line">  </span><br><span class="line">   fmt.Println(<span class="string">"embed byte: "</span>, <span class="keyword">string</span>(b))  </span><br><span class="line">  </span><br><span class="line">   data, _ := f.ReadFile(<span class="string">"hello.txt"</span>)  </span><br><span class="line">   fmt.Println(<span class="string">"embed fs: "</span>, <span class="keyword">string</span>(data))  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行后输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">embed string:  你好鸭</span><br><span class="line">embed byte:  你好鸭</span><br><span class="line">embed fs:  你好鸭</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h4><p>当通过 <code>embed.FS</code> 嵌入多个文件时，支持 <code>通配符</code> 的使用。</p>
+<table>
+<thead>
+<tr>
+<th>通配符</th>
+<th>释义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>?</td>
+<td>代表任意一个字符（不包括半角中括号）</td>
+</tr>
+<tr>
+<td>*</td>
+<td>代表0至多个任意字符组成的字符串（不包括半角中括号）</td>
+</tr>
+<tr>
+<td>[…] 和 [!…]</td>
+<td>代表任意一个匹配方括号里字符的字符，!表示任意不匹配方括号中字符的字符</td>
+</tr>
+<tr>
+<td>[a-z]、[0-9]</td>
+<td>代表匹配a-z任意一个字符的字符或是0-9中的任意一个数字</td>
+</tr>
+<tr>
+<td>**</td>
+<td>部分系统支持，<code>*</code>不能跨目录匹配，<code>**</code> 可以，不过目前在golang中和<code>*</code>是同义词</td>
+</tr>
+</tbody></table>
+<p>例如，我们可以通过如下的方式来嵌入多个目录下的文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> server</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"embed"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// content holds our static web server content.</span></span><br><span class="line"><span class="comment">//go:embed image/* template/*</span></span><br><span class="line"><span class="comment">//go:embed html/index.html</span></span><br><span class="line"><span class="keyword">var</span> content embed.FS</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>注意：支持同时设置多个 <code>//go:embed</code> 来嵌入多个文件或目录，或者在同一行的 <code>//go:embed</code> 中通过 <code>空格分隔</code> 的形式设置多个文件或目录</p>
+</blockquote>
+<p>所以，我们也可以通过如下的方式来实现同样的效果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;go:embed image template html&#x2F;index.html</span><br><span class="line">var content embed.FS</span><br></pre></td></tr></table></figure>
+
+
+<p>不过这两种方式是有区别的：</p>
+<blockquote>
+<p>纯目录名的方式 <code>//go:embed image template</code> 会排除掉该目录下包含的以 <code>.</code> 或 <code>_</code> 开头的文件，例如 <code>image/.tempfile</code> 文件不会被包含在内；<br>而通配符的方式 <code>//go:embed image/* template/*</code> 则会包含该目录下的所有文件，即 <code>image/.tempfile</code> 会被包含在内</p>
+</blockquote>
+<hr>
+<h3 id="前端实现"><a href="#前端实现" class="headerlink" title="前端实现"></a>前端实现</h3><p>通过 <code>vite</code> 来创建 <code>vue</code> 或 <code>react</code> 前端项目。</p>
+<h4 id="创建react项目"><a href="#创建react项目" class="headerlink" title="创建react项目"></a>创建react项目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn create vite react-app</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yarn create vite react-app --template react</span><br><span class="line"></span><br><span class="line">yarn create vite react-app --template react-ts</span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd react-app</span><br><span class="line">yarn</span><br><span class="line">yarn dev</span><br></pre></td></tr></table></figure>
+
+<p>构建：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn build</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建vue项目"><a href="#创建vue项目" class="headerlink" title="创建vue项目"></a>创建vue项目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yarn create vite vue-app</span><br><span class="line"></span><br><span class="line"># 或者：</span><br><span class="line">yarn create vite vue-app --template vue</span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd vue-app</span><br><span class="line">yarn</span><br><span class="line">yarn dev</span><br></pre></td></tr></table></figure>
+
+<p>构建：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn build</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="Gin实现打包"><a href="#Gin实现打包" class="headerlink" title="Gin实现打包"></a>Gin实现打包</h3><h4 id="创建gin项目"><a href="#创建gin项目" class="headerlink" title="创建gin项目"></a>创建gin项目</h4><p>创建一个基本的Gin项目：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">   r.GET(<span class="string">"/ping"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">         <span class="string">"msg"</span>: <span class="string">"pong"</span>,  </span><br><span class="line">      &#125;)  </span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="作为前端首页"><a href="#作为前端首页" class="headerlink" title="作为前端首页"></a>作为前端首页</h4><p>一般情况下，我们想将前端页面作为首页来访问，即访问 <code>/</code> 根路径直接打开的是 <code>index.html</code> 页面。</p>
+<p>参照Gin官方文档中的介绍，我们可以通过如下的方式导入静态文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  router := gin.Default()</span><br><span class="line">  router.Static(<span class="string">"/assets"</span>, <span class="string">"./assets"</span>)</span><br><span class="line">  router.StaticFS(<span class="string">"/more_static"</span>, http.Dir(<span class="string">"my_file_system"</span>))</span><br><span class="line">  router.StaticFile(<span class="string">"/favicon.ico"</span>, <span class="string">"./resources/favicon.ico"</span>)</span><br><span class="line">  router.StaticFileFS(<span class="string">"/more_favicon.ico"</span>, <span class="string">"more_favicon.ico"</span>, http.Dir(<span class="string">"my_file_system"</span>))</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Listen and serve on 0.0.0.0:8080</span></span><br><span class="line">  router.Run(<span class="string">":8080"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>这里，我们选择 <code>StaticFS</code> 来添加 <code>FS</code> 资源。</p>
+<p>将上面打包好的 <code>vue</code> 静态项目 <code>dist</code> 目录下的文件拷贝到 Golang 项目的 <code>web</code> 目录下，作为静态资源目录。</p>
+<p>相应的目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">└── web</span><br><span class="line">    ├── assets</span><br><span class="line">    │   ├── index.16c4fe9c.css</span><br><span class="line">    │   ├── index.e9286135.js</span><br><span class="line">    │   ├── logo.03d6d6da.png</span><br><span class="line">    │   └── vendor.65715d52.js</span><br><span class="line">    ├── favicon.ico</span><br><span class="line">    ├── index.html</span><br><span class="line">    └── web.go</span><br></pre></td></tr></table></figure>
+
+
+<p>在 <code>web</code> 目录下创建 <code>web.go</code> 文件，作为静态资源导入的 <code>embed</code> 文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// web/web.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> web  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> <span class="string">"embed"</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//go:embed index.html favicon.ico assets</span></span><br><span class="line"><span class="keyword">var</span> Static embed.FS</span><br></pre></td></tr></table></figure>
+
+<p>然后在 <code>main.go</code> 中添加该静态资源文件：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>    </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">   r.GET(<span class="string">"/ping"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">         <span class="string">"msg"</span>: <span class="string">"pong"</span>,  </span><br><span class="line">      &#125;)  </span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line">	r.StaticFS(<span class="string">"/"</span>, http.FS(web.Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>通过浏览器访问 <code>http://localhost:8080/</code> 后发现能够正常访问：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192105.png" alt="20220820192105"></p>
+<hr>
+<h4 id="多路由实现"><a href="#多路由实现" class="headerlink" title="多路由实现"></a>多路由实现</h4><p>不过一般情况下，在 <code>Gin</code> 的路由中我们除了添加静态资源外，还会设置前端的api请求路由。这样我们既可以直接访问默认路径 <code>/</code> 打开web页面，又可以通过请求 <code>/api/*</code> 的路径实现 <code>api接口</code> 调用。</p>
+<p>如下面的方式：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>    </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">   </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">   c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">      <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">	   &#125;)  </span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	r.StaticFS(<span class="string">"/"</span>, http.FS(web.Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但执行 <code>go run main.go</code> 命令后会报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[GIN-debug] GET    &#x2F;api&#x2F;hello                --&gt; main.main.func1 (3 handlers)</span><br><span class="line">[GIN-debug] GET    &#x2F;*filepath                --&gt; github.com&#x2F;gin-gonic&#x2F;gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)</span><br><span class="line">panic: catch-all wildcard &#39;*filepath&#39; in new path &#39;&#x2F;*filepath&#39; conflicts with existing path segment &#39;api&#39; in existing prefix &#39;&#x2F;api&#39;</span><br></pre></td></tr></table></figure>
+
+
+<p>参考网上相关的讨论，我整理并总结了如下两种解决方法。</p>
+<h5 id="重定向法"><a href="#重定向法" class="headerlink" title="重定向法"></a>重定向法</h5><p>查看上面的错误信息，<code>/*filepath</code> 会匹配到所有的根路径下的路由导致出现问题，那么我们把静态页放到一个二级目录下，例如 <code>/ui</code>，这样匹配到的就是 <code>/ui/*filepath</code> 下的所有路径了，跟 <code>/api</code> 就不会出现冲突的问题。</p>
+<p>我们将 <code>main.go</code> 修改为如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>    </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">   </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">   c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">      <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">	   &#125;)  </span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	r.GET(<span class="string">"/"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">	   c.Redirect(http.StatusMovedPermanently, <span class="string">"ui/"</span>)  </span><br><span class="line">	&#125;)  </span><br><span class="line">	r.StaticFS(<span class="string">"/ui"</span>, http.FS(web5.Web5Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不过，这种情况下我们还需要对前端代码做一些修改，将原来的默认根路径 <code>/</code> 修改为 <code>/ui</code> 。</p>
+<p>打开文件 <code>vite.config.js</code> ，添加 <code>base</code> 配置项：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">'vite'</span></span><br><span class="line"><span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">'@vitejs/plugin-vue'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// https://vitejs.dev/config/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> defineConfig(&#123;</span><br><span class="line">  plugins: [vue()],</span><br><span class="line">  base: <span class="string">'/ui/'</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<p>此时，访问浏览器会发现，默认根路径 <code>/</code> 会执行 <code>301</code> 跳转到  <code>/ui</code> 路径下实现静态资源的正常访问：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192159.png" alt="20220820192159"></p>
+<p>相关讨论：（<strong>建议看一下这个</strong>）</p>
+<ul>
+<li><a href="https://github.com/gin-gonic/gin/issues/360" target="_blank" rel="noopener">Wildcard route conflicts with static files · Issue #360 · gin-gonic/gin</a> </li>
+</ul>
+<h5 id="中间件法"><a href="#中间件法" class="headerlink" title="中间件法"></a>中间件法</h5><p>我找到了一个 Gin 项目的第三方扩展中间件，可以实现对静态资源文件的调用：<a href="https://github.com/gin-contrib/static" target="_blank" rel="noopener">gin-contrib/static: Static middleware (github.com)</a></p>
+<p>但是该三方库目前对于 <code>Embed</code> 方式嵌入的静态资源文件并不支持。好在我在该三方库的 <code>Issues</code> 中找到了相关的讨论：</p>
+<ul>
+<li><a href="https://github.com/gin-contrib/static/issues/19" target="_blank" rel="noopener">Embed (release go 1.16) implementation · Issue #19 · gin-contrib/static</a> </li>
+</ul>
+<p>以及某位大神提交的 <code>Pull requests</code> ：</p>
+<ul>
+<li><a href="https://github.com/gin-contrib/static/pull/20" target="_blank" rel="noopener">feat: Implement embed folder and a better organisation by vomnes · Pull Request #20 · gin-contrib/static</a> </li>
+</ul>
+<p>不过开发者一直没有对该提交进行合并。那我们只能自行实现了。</p>
+<p>在项目根目录下创建 <code>static</code> 文件夹，包含两个文件 <code>serve.go</code> 和 <code>embed.go</code> 。结合上面的 <code>Issues</code> 讨论，最终实现的文件代码如下：</p>
+<p>文件 <code>static/serve.go</code> :</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> static  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>  </span><br><span class="line">   <span class="string">"net/http"</span>   </span><br><span class="line">   <span class="string">"os"</span>   </span><br><span class="line">   <span class="string">"path"</span>   </span><br><span class="line">   <span class="string">"strings"</span></span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">const</span> INDEX = <span class="string">"index.html"</span>  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">type</span> ServeFileSystem <span class="keyword">interface</span> &#123;  </span><br><span class="line">   http.FileSystem  </span><br><span class="line">   Exists(prefix <span class="keyword">string</span>, path <span class="keyword">string</span>) <span class="keyword">bool</span>  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">type</span> localFileSystem <span class="keyword">struct</span> &#123;  </span><br><span class="line">   http.FileSystem  </span><br><span class="line">   root    <span class="keyword">string</span>  </span><br><span class="line">   indexes <span class="keyword">bool</span>  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">LocalFile</span><span class="params">(root <span class="keyword">string</span>, indexes <span class="keyword">bool</span>)</span> *<span class="title">localFileSystem</span></span> &#123;  </span><br><span class="line">   <span class="keyword">return</span> &amp;localFileSystem&#123;  </span><br><span class="line">      FileSystem: gin.Dir(root, indexes),  </span><br><span class="line">      root:       root,  </span><br><span class="line">      indexes:    indexes,  </span><br><span class="line">   &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(l *localFileSystem)</span> <span class="title">Exists</span><span class="params">(prefix <span class="keyword">string</span>, filepath <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;  </span><br><span class="line">   <span class="keyword">if</span> p := strings.TrimPrefix(filepath, prefix); <span class="built_in">len</span>(p) &lt; <span class="built_in">len</span>(filepath) &#123;  </span><br><span class="line">      name := path.Join(l.root, p)  </span><br><span class="line">      stats, err := os.Stat(name)  </span><br><span class="line">      <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">         <span class="keyword">return</span> <span class="literal">false</span>  </span><br><span class="line">      &#125;  </span><br><span class="line">      <span class="keyword">if</span> stats.IsDir() &#123;  </span><br><span class="line">         <span class="keyword">if</span> !l.indexes &#123;  </span><br><span class="line">            index := path.Join(name, INDEX)  </span><br><span class="line">            _, err := os.Stat(index)  </span><br><span class="line">            <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">               <span class="keyword">return</span> <span class="literal">false</span>  </span><br><span class="line">            &#125;  </span><br><span class="line">         &#125;  </span><br><span class="line">      &#125;  </span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>  </span><br><span class="line">   &#125;  </span><br><span class="line">   <span class="keyword">return</span> <span class="literal">false</span>  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ServeRoot</span><span class="params">(urlPrefix, root <span class="keyword">string</span>)</span> <span class="title">gin</span>.<span class="title">HandlerFunc</span></span> &#123;  </span><br><span class="line">   <span class="keyword">return</span> Serve(urlPrefix, LocalFile(root, <span class="literal">false</span>))  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">// Static returns a middleware handler that serves static files in the given directory.  </span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Serve</span><span class="params">(urlPrefix <span class="keyword">string</span>, fs ServeFileSystem)</span> <span class="title">gin</span>.<span class="title">HandlerFunc</span></span> &#123;  </span><br><span class="line">   fileserver := http.FileServer(fs)  </span><br><span class="line">   <span class="keyword">if</span> urlPrefix != <span class="string">""</span> &#123;  </span><br><span class="line">      fileserver = http.StripPrefix(urlPrefix, fileserver)  </span><br><span class="line">   &#125;  </span><br><span class="line">   <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      <span class="keyword">if</span> fs.Exists(urlPrefix, c.Request.URL.Path) &#123;  </span><br><span class="line">         fileserver.ServeHTTP(c.Writer, c.Request)  </span><br><span class="line">         c.Abort()  </span><br><span class="line">      &#125;  </span><br><span class="line">   &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>文件 <code>static/embed.go</code> :</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line"><span class="keyword">package</span> static </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (   </span><br><span class="line">   <span class="string">"embed"</span>   </span><br><span class="line">   <span class="string">"io/fs"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">type</span> embedFileSystem <span class="keyword">struct</span> &#123;  </span><br><span class="line">   http.FileSystem  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(e embedFileSystem)</span> <span class="title">Exists</span><span class="params">(prefix <span class="keyword">string</span>, path <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;  </span><br><span class="line">   _, err := e.Open(path)  </span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>  </span><br><span class="line">   &#125;  </span><br><span class="line">   <span class="keyword">return</span> <span class="literal">true</span>  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">EmbedFolder</span><span class="params">(fsEmbed embed.FS, targetPath <span class="keyword">string</span>)</span> <span class="title">ServeFileSystem</span></span> &#123;  </span><br><span class="line">   fsys, err := fs.Sub(fsEmbed, targetPath)  </span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;  </span><br><span class="line">      <span class="built_in">panic</span>(err)  </span><br><span class="line">   &#125;  </span><br><span class="line">   <span class="keyword">return</span> embedFileSystem&#123;  </span><br><span class="line">      FileSystem: http.FS(fsys),  </span><br><span class="line">   &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>文件 <code>main.go</code>  中通过 <code>中间件</code> 的方式引入:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">"demo/static"</span></span><br><span class="line">   <span class="string">"demo/web"</span>    </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">   </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">   c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">      <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">	   &#125;)  </span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	r.Use(static.Serve(<span class="string">"/"</span>, static.EmbedFolder(web.Static, <span class="string">"."</span>)))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问地址 <code>http://localhost:8080/</code>  发现能够正常返回，访问 <code>http://localhost:8080/api/hello</code>  也能正常响应。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192226.png" alt="20220820192226"></p>
+<p>总结：</p>
+<blockquote>
+<p>这种方法采用中间件的方式实现，也就不会遇到官方 <code>StaticFS</code> 方法的路径通配符冲突问题。</p>
+</blockquote>
+<hr>
+<h4 id="作为后端首页"><a href="#作为后端首页" class="headerlink" title="作为后端首页"></a>作为后端首页</h4><p>特殊情况下，我们可能还会将静态页面作为后端的入口文件，例如各种管理后台。此时访问的路径一般会定义为 <code>/admin</code>  的形式。</p>
+<h5 id="一级目录结构"><a href="#一级目录结构" class="headerlink" title="一级目录结构"></a>一级目录结构</h5><p>其实这个需求实现起来和上面的 <code>重定向法</code> 有些类似。</p>
+<p>我们将前端项目打包后的 <code>dist</code> 目录内容拷贝到Golang项目的 <code>web</code> 目录下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">└── web</span><br><span class="line">    ├── assets</span><br><span class="line">    │   ├── index.16c4fe9c.css</span><br><span class="line">    │   ├── index.e9286135.js</span><br><span class="line">    │   ├── logo.03d6d6da.png</span><br><span class="line">    │   └── vendor.65715d52.js</span><br><span class="line">    ├── favicon.ico</span><br><span class="line">    ├── index.html</span><br><span class="line">    └── web.go</span><br></pre></td></tr></table></figure>
+
+<p>需要注意在 <code>yarn build</code> 打包前要将 <code>vite.config.js</code> 中的 <code>base</code> 配置项修改为 <code>/admin/</code> :</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">'vite'</span></span><br><span class="line"><span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">'@vitejs/plugin-vue'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// https://vitejs.dev/config/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> defineConfig(&#123;</span><br><span class="line">  plugins: [vue()],</span><br><span class="line">  base: <span class="string">'/admin/'</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>文件 <code>web/web.go</code> 中的内容依旧如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> web  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> <span class="string">"embed"</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//go:embed index.html favicon.ico assets</span></span><br><span class="line"><span class="keyword">var</span> Static embed.FS</span><br></pre></td></tr></table></figure>
+
+<p>只需要注意将 <code>main.go</code> 中的静态文件路径修改为 <code>/admin</code> 即可：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>  </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">  </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">         <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">      &#125;)  </span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line">	r.StaticFS(<span class="string">"/admin"</span>, http.FS(web.Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：因为静态文件路径 <code>/admin</code> 是非根路径，所以生成的通配符路径为 <code>/admin/*filepath</code> ，也就不需要像 <code>重定向法</code> 中介绍的那样，需要手动添加<code>301</code> 跳转来避开 <code>通配符路径冲突</code> 问题了。</p>
+</blockquote>
+<h5 id="多级目录结构"><a href="#多级目录结构" class="headerlink" title="多级目录结构"></a>多级目录结构</h5><p>某些特殊情况下，我们可能会将后台的前端项目放在Golang项目的二级目录下；或者设置多个单独的二级前端项目来进行分别访问。</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">└── web</span><br><span class="line">    ├── admin</span><br><span class="line">    │   ├── assets</span><br><span class="line">    │   │   ├── index.16c4fe9c.css</span><br><span class="line">    │   │   ├── index.e9286135.js</span><br><span class="line">    │   │   ├── logo.03d6d6da.png</span><br><span class="line">    │   │   └── vendor.65715d52.js</span><br><span class="line">    │   ├── favicon.ico</span><br><span class="line">    │   └── index.html</span><br><span class="line">    ├── ui</span><br><span class="line">    │   ├── assets</span><br><span class="line">    │   │   ├── index.16c4fe9c.css</span><br><span class="line">    │   │   ├── index.e9286135.js</span><br><span class="line">    │   │   ├── logo.03d6d6da.png</span><br><span class="line">    │   │   └── vendor.65715d52.js</span><br><span class="line">    │   ├── favicon.ico</span><br><span class="line">    │   └── index.html</span><br><span class="line">    └── web.go</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>web/admin</code> 表示管理后台的前端项目，需要通过路径 <code>/admin</code> 来进行访问；<code>web/ui</code> 表示首页的前端项目，需要通过路径 <code>/</code> 进行访问。</p>
+<p>这种情况下，有以下两点需要注意：</p>
+<p>其一，也是比较容易忽略的，要将 <code>vite.config.js</code> 中的 <code>base</code> 配置项修改为相应路径；</p>
+<p>其二，由于现在管理后台的前端项目是处于二级目录 <code>web/admin</code> 下，那么我们直接通过如下的方式会发现找不到首页：</p>
+<p>文件 <code>main.go</code> :</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>  </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">  </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">         <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">      &#125;)  </span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line">	r.StaticFS(<span class="string">"/admin"</span>, http.FS(web.Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br></pre></td></tr></table></figure>
+
+<p>访问 <code>http://localhost:8080/admin/</code> 会显示为如下内容：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192301.png" alt="20220820192301"></p>
+<p>这是因为首页文件 <code>index.html</code> 并不是在 <code>web.go</code> 文件的同级目录下，这样 <code>embed</code> 也就找不到该文件了。</p>
+<p>所以，一方面除了定义 <code>//go:embed</code> 时要设置 <code>web.go</code> 同级下的目录文件：</p>
+<p>文件 <code>web/web.go</code> :</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> web  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> <span class="string">"embed"</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//go:embed admin/* </span></span><br><span class="line"><span class="keyword">var</span> AdminStatic embed.FS</span><br><span class="line"></span><br><span class="line"><span class="comment">//go:embed ui/* </span></span><br><span class="line"><span class="keyword">var</span> UiStatic embed.FS</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或者不用通配符：</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//go:embed admin </span></span><br><span class="line"><span class="keyword">var</span> AdminStatic embed.FS</span><br><span class="line"></span><br><span class="line"><span class="comment">//go:embed ui </span></span><br><span class="line"><span class="keyword">var</span> UiStatic embed.FS</span><br></pre></td></tr></table></figure>
+
+
+<p>另一方面还要在调用时指定二级目录，可以通过 <code>fs.Sub</code> 来实现：</p>
+<p>文件 <code>main.go</code> :</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>  </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">  </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">         <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">      &#125;)  </span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line">	fAdmin, _ := fs.Sub(web.AdminStatic, <span class="string">"admin"</span>)  </span><br><span class="line">	r.StaticFS(<span class="string">"/admin"</span>, http.FS(fAdmin))</span><br><span class="line"></span><br><span class="line">	r.GET(<span class="string">"/"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">	   c.Redirect(http.StatusMovedPermanently, <span class="string">"ui/"</span>)  </span><br><span class="line">	&#125;)  </span><br><span class="line">	fUi, _ := fs.Sub(web.UiStatic, <span class="string">"ui"</span>)  </span><br><span class="line">	r.StaticFS(<span class="string">"/ui"</span>, http.FS(fUi))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br></pre></td></tr></table></figure>
+
+
+<p>这样，就实现了多级目录场景下的正常访问。</p>
+<hr>
+<h3 id="iris实现打包"><a href="#iris实现打包" class="headerlink" title="iris实现打包"></a>iris实现打包</h3><p>同样作为Golang中受欢迎的web开发框架，<code>iris</code> 相比 <code>gin</code> 实现静态文件的嵌入就相对比较简单了。经过测试，<code>iris</code> 中并不会遇到 <code>gin</code> 中的 <code>通配符路径冲突</code> 的问题。</p>
+<p>需要注意，安装 <code>iris</code> 时要使用 <code>master</code> 分支最新代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com&#x2F;kataras&#x2F;iris&#x2F;v12@master</span><br></pre></td></tr></table></figure>
+
+
+<p>参照上面 <code>Gin实现打包</code> 步骤中的各种场景，这里仅对 <code>iris</code> 中的 <code>多路由多目录场景</code> 具体说明。</p>
+<hr>
+<h4 id="多级场景实现"><a href="#多级场景实现" class="headerlink" title="多级场景实现"></a>多级场景实现</h4><p>目录结构如下，这里前端页面 <code>web/ui</code> 采用 react框架开发，后端页面 <code>web/admin</code> 采用vue框架开发：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">└── web</span><br><span class="line">    ├── admin</span><br><span class="line">    │   ├── assets</span><br><span class="line">    │   │   ├── index.16c4fe9c.css</span><br><span class="line">    │   │   ├── index.e9286135.js</span><br><span class="line">    │   │   ├── logo.03d6d6da.png</span><br><span class="line">    │   │   └── vendor.65715d52.js</span><br><span class="line">    │   ├── favicon.ico</span><br><span class="line">    │   └── index.html</span><br><span class="line">    ├── ui</span><br><span class="line">    │   ├── assets</span><br><span class="line">    │   │   ├── index.3fce1f81.css</span><br><span class="line">    │   │   ├── index.edeff469.js</span><br><span class="line">    │   │   └── react.35ef61ed.svg</span><br><span class="line">    │   ├── index.html</span><br><span class="line">    │   └── vite.svg</span><br><span class="line">    └── web.go</span><br></pre></td></tr></table></figure>
+
+<p>此外，管理平台通过路径 <code>/admin</code> 访问，需要在vue项目的 <code>vite.config.js</code> 中添加 <code>base: &#39;/admin/&#39;,</code> 配置项。</p>
+<p><code>web/web.go</code> 代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> web  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> <span class="string">"embed"</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//go:embed admin  </span></span><br><span class="line"><span class="keyword">var</span> AdminStatic embed.FS  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//go:embed ui  </span></span><br><span class="line"><span class="keyword">var</span> UiStatic embed.FS</span><br></pre></td></tr></table></figure>
+
+
+<p><code>main.go</code> 代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>  </span><br><span class="line">   <span class="string">"github.com/kataras/iris/v12"</span>   </span><br><span class="line">   <span class="string">"io/fs"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	i := iris.New()  </span><br><span class="line">	i.Get(<span class="string">"/api"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c iris.Context)</span></span> &#123;  </span><br><span class="line">	   c.JSON(iris.Map&#123;  </span><br><span class="line">	      <span class="string">"msg"</span>: <span class="string">"hello"</span>,  </span><br><span class="line">	   &#125;)  </span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 前端首页</span></span><br><span class="line">	i.HandleDir(<span class="string">"/"</span>, http.FS(web.UiStatic))</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 管理后台</span></span><br><span class="line">	fsys, _ := fs.Sub(web.AdminStatic, <span class="string">"admin"</span>)  </span><br><span class="line">	i.HandleDir(<span class="string">"/admin"</span>, http.FS(fsys))</span><br><span class="line"></span><br><span class="line">	i.Listen(<span class="string">":8081"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>访问浏览器，却发现：</p>
+<ul>
+<li><code>http://localhost:8081/</code> 404 Not Found</li>
+<li><code>http://localhost:8081/admin</code> 请求正常</li>
+<li><code>http://localhost:8081/api</code> 请求正常</li>
+</ul>
+<p><strong>此时让人很诧异的是为什么首页会访问不到？</strong></p>
+<p>再回看上面的文件目录结构，<code>web.go</code> 文件嵌入同目录下的 <code>ui</code> 和 <code>admin</code> 目录，虽然 <code>ui</code> 目录是和 <code>web.go</code> 文件处于同一目录下，但我们要访问的却是 <code>ui</code> 目录下的 <code>index.html</code> 文件。至此，问题也就找到了。</p>
+<p>虽然在前台页面中我们访问的是根路由，但要访问的文件却是在二级目录下。换句话说：</p>
+<blockquote>
+<p><code>//go:embed</code> 处理的文件要在同一目录下，否则就需要手动处理目录层级关系</p>
+</blockquote>
+<p>把上面的 <code>main.go</code> 修改后如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>  </span><br><span class="line">   <span class="string">"github.com/kataras/iris/v12"</span>   </span><br><span class="line">   <span class="string">"io/fs"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	i := iris.New()  </span><br><span class="line">	i.Get(<span class="string">"/api"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c iris.Context)</span></span> &#123;  </span><br><span class="line">	   c.JSON(iris.Map&#123;  </span><br><span class="line">	      <span class="string">"msg"</span>: <span class="string">"hello"</span>,  </span><br><span class="line">	   &#125;)  </span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 前端首页</span></span><br><span class="line">	<span class="comment">//i.HandleDir("/", http.FS(web.UiStatic))</span></span><br><span class="line">	fsy, _ := fs.Sub(web6.UiStatic, <span class="string">"ui"</span>)  </span><br><span class="line">	i.HandleDir(<span class="string">"/"</span>, http.FS(fsy))</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 管理后台</span></span><br><span class="line">	fsys, _ := fs.Sub(web.AdminStatic, <span class="string">"admin"</span>)  </span><br><span class="line">	i.HandleDir(<span class="string">"/admin"</span>, http.FS(fsys))</span><br><span class="line"></span><br><span class="line">	i.Listen(<span class="string">":8081"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>再次访问，会发现前后端及接口都正常响应了。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20220820192320.png" alt="20220820192320"></p>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实 <code>embed</code> 特性的使用并不复杂，只是在处理目录层级上需要注意。理解了这一点，使用起来也就很简单了。</p>
+<hr>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>如有疑问或需要技术讨论，请留言或发邮件到 service@itfanr.cc</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    码字不易，鼓励一下
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Leafney 微信鼓励">
+        <p>微信鼓励</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Leafney 支付宝鼓励">
+        <p>支付宝鼓励</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.itfanr.cc/2022/08/18/golang-embed-static-files/" title="Golang通过Embed嵌入静态资源">https://www.itfanr.cc/2022/08/18/golang-embed-static-files/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Golang/" rel="tag"># Golang</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/15/covid-testing-difference-in-beijing-and-tianjin/" rel="prev" title="聊聊京津两地核酸检测的差异">
+      <i class="fa fa-chevron-left"></i> 聊聊京津两地核酸检测的差异
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/10/13/python-requests-use-cookies/" rel="next" title="Python中Requests库操作Cookie常用方法">
+      Python中Requests库操作Cookie常用方法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div id="toc-div">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#embed了解"><span class="nav-number">2.</span> <span class="nav-text">embed了解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据类型"><span class="nav-number">2.1.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通配符"><span class="nav-number">2.2.</span> <span class="nav-text">通配符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前端实现"><span class="nav-number">3.</span> <span class="nav-text">前端实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建react项目"><span class="nav-number">3.1.</span> <span class="nav-text">创建react项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建vue项目"><span class="nav-number">3.2.</span> <span class="nav-text">创建vue项目</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin实现打包"><span class="nav-number">4.</span> <span class="nav-text">Gin实现打包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建gin项目"><span class="nav-number">4.1.</span> <span class="nav-text">创建gin项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#作为前端首页"><span class="nav-number">4.2.</span> <span class="nav-text">作为前端首页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多路由实现"><span class="nav-number">4.3.</span> <span class="nav-text">多路由实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#重定向法"><span class="nav-number">4.3.1.</span> <span class="nav-text">重定向法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#中间件法"><span class="nav-number">4.3.2.</span> <span class="nav-text">中间件法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#作为后端首页"><span class="nav-number">4.4.</span> <span class="nav-text">作为后端首页</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一级目录结构"><span class="nav-number">4.4.1.</span> <span class="nav-text">一级目录结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多级目录结构"><span class="nav-number">4.4.2.</span> <span class="nav-text">多级目录结构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iris实现打包"><span class="nav-number">5.</span> <span class="nav-text">iris实现打包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多级场景实现"><span class="nav-number">5.1.</span> <span class="nav-text">多级场景实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+
+        </div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leafney"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Leafney</p>
+  <div class="site-description" itemprop="description">Stay Hungry. Stay Foolish.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">196</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leafney" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leafney" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://hub.docker.com/r/leafney/" title="DockerHub → https:&#x2F;&#x2F;hub.docker.com&#x2F;r&#x2F;leafney&#x2F;" rel="noopener" target="_blank"><i class="fab fa-docker fa-fw"></i>DockerHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:service@itfanr.cc" title="E-Mail → mailto:service@itfanr.cc" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        访客数 <span id="busuanzi_value_site_uv"></span> 人次
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        访问量 <span id="busuanzi_value_site_pv"></span> 次
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f28d68fd5271fd52826d',
+      clientSecret: '78dcf9e469d35b463903642be740b85f198fec97',
+      repo        : 'Leafney.github.io',
+      owner       : 'leafney',
+      admin       : ['leafney'],
+      id : 'itfanr_20220818224828',
+      labels: 'comments'.split(',').filter(l => l),
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

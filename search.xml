@@ -331,6 +331,200 @@
       </tags>
   </entry>
   <entry>
+    <title>Node-Red入门-从一个天气预报通知说起</title>
+    <url>/2022/11/28/node-red-for-weather-forecast-notification/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p><code>Node-Red</code>  环境配置好之后，我去看了一些入门类的文章，基本上都是从各种节点组件开始讲起，要不就是一个最简单的 <code>打印输出</code> 的示例就完了。</p>
+<p>但这么简单的入门教程其实跟不写一样，对于想要入门的新手来说，一点帮助都没有。</p>
+<p>于是，我打算从一个需求点出发，通过实现该需求一步步的了解 <code>Node-Red</code> 的使用方法。</p>
+<p>偶然间刷头条App时，看到顶部菜单项 <code>北京</code> 页面上面显示的天气，突然来了兴趣，干脆我就从实现一个天气预报的推送通知开始入门 <code>Node-Red</code> 吧。</p>
+<hr>
+<h3 id="获取天气接口"><a href="#获取天气接口" class="headerlink" title="获取天气接口"></a>获取天气接口</h3><p>那么问题来了，天气接口从哪来呢？</p>
+<p>看了看头条App上的天气页面，感觉基本的天气信息都有了。不过对头条App抓包不太好操作。于是打算看看头条PC版首页是不是好获取。</p>
+<p>没想到天气接口直接就能拿到。那就开始吧！</p>
+<p>打开浏览器的调试窗口。这里有一个技巧：如果第一次加载页面，无法记录到和天气相关的数据请求。</p>
+<p>可以先 <code>清除历史请求记录</code>，然后选择 <code>筛选</code> 所有的api请求。点击顶部的 <code>天气城市切换</code> ，可以看到下面已经显示出来切换后城市的天气请求数据了。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129014803.png" alt="20221129014803"></p>
+<p>对获取到的天气接口做精简，得到如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.toutiao.com&#x2F;stream&#x2F;widget&#x2F;local_weather&#x2F;data&#x2F;?city&#x3D;上海</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，我们只需要提供一个 <code>城市名称</code> 即可。</p>
+<hr>
+<h3 id="提取天气数据"><a href="#提取天气数据" class="headerlink" title="提取天气数据"></a>提取天气数据</h3><p>在 <code>Node-Red</code> 页面中添加一个 <code>inject节点</code> 作为流程的触发起点。</p>
+<p>上面我们得到了天气api接口，我们要做的第一步就是请求接口，得到天气数据。那么就需要从 <code>网络</code> 组中找一个能够发起http请求的节点。这里我们选择 <code>http request节点</code>。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129014848.png" alt="20221129014848"></p>
+<p>注意，URL一栏填入的接口中，为了防止报错要将城市中文名称进行URL编码处理(说明：直接从浏览器地址栏中拷贝过来就是被URL编码后的)。</p>
+<p>再添加一个 <code>debug节点</code> 用来查看请求返回的结果。点击 <code>部署</code> ，触发流程。</p>
+<p>结构如下：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129014954.png" alt="20221129014954"></p>
+<p>可以看到正确请求了接口并返回了该城市天气数据。</p>
+<p>返回的天气数据直接是一个 <code>json对象</code> ，那么我们可以直接拿到想要的信息。如上图所示，我们需要的参数都在 <code>weather</code> 对象下。那首先，我们要先拿到这个 <code>weather</code> 对象。</p>
+<p>这里选择用 <code>function节点</code> 来处理。根据返回的json结构，加入如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var data &#x3D; msg.payload.data.weather;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 提取数据</span><br><span class="line"></span><br><span class="line">msg.payload&#x3D;data;</span><br><span class="line">return msg;</span><br></pre></td></tr></table></figure>
+
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015022.png" alt="20221129015022"></p>
+<p>再次点击右上角 <code>部署</code> ，执行流程：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015035.png" alt="20221129015035"></p>
+<p>可以看到，右侧的输出中打印出了 <code>weather对象</code> 包含的所有属性。</p>
+<hr>
+<h3 id="构造天气信息"><a href="#构造天气信息" class="headerlink" title="构造天气信息"></a>构造天气信息</h3><p>天气数据获取到了，下面要来考虑下如何输出这些信息。</p>
+<h4 id="获取指定参数"><a href="#获取指定参数" class="headerlink" title="获取指定参数"></a>获取指定参数</h4><p>天气信息中，除了包含当前天气情况，今天天气情况和明天天气情况以外，还有未来两周天气和未来24小时天气情况。某些城市还包含特殊天气提醒。</p>
+<p>这里为了简单，我只获取当时、今日和明日天气。其他的后续再考虑扩展。</p>
+<p>继续在 <code>function节点</code> 中对数据做二次处理。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015053.png" alt="20221129015053"></p>
+<p><code>部署</code> 后查看输出：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015111.png" alt="20221129015111"></p>
+<p>正确得到了我们想要的指定参数。</p>
+<hr>
+<h4 id="文案组装"><a href="#文案组装" class="headerlink" title="文案组装"></a>文案组装</h4><p>获取到了所需的天气属性参数，对这些信息进行拼装，整理成了如下的天气播报文案：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[上海]当前天气：[阴]，气温[21]℃，空气质量[优]。今日天气：[中雨]转[小雨]，气温[14]℃~[22]℃。明日天气：[小雨]，[5]℃~[17]℃。</span><br></pre></td></tr></table></figure>
+
+<p>其中，中括号 <code>[]</code> 中的内容为需要的天气属性参数值。</p>
+<p>那这里又遇到一个问题，要如何将这些天气属性参数拼接成上面的文案呢？</p>
+<p><code>Node-Red</code> 中提供了一个 <code>template节点</code> ，我们可以用该节点实现文案拼接。</p>
+<p>拖放一个 <code>template节点</code> ，先来研究一下如何使用。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015129.png" alt="20221129015129"></p>
+<p>将其中模板内容改为如下：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015145.png" alt="20221129015145"></p>
+<p>然后 <code>部署</code> 、执行。查看输出：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015211.png" alt="20221129015211"></p>
+<p>那么，从上一个节点中传递过来的 <code>payload</code> 参数，就表示上面经过二次处理后的 <code>完整数据</code>，需要哪个参数，直接通过 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;&#123;payload.xxx&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>的形式就能获取到。</p>
+<p>所以，模板中的内容对应于上面的文案，修改为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;&#123;payload.city&#125;&#125;当前天气：&#123;&#123;payload.cur_con&#125;&#125;，气温&#123;&#123;payload.cur_tp&#125;&#125;℃，空气质量&#123;&#123;payload.qua_level&#125;&#125;。今日天气：&#123;&#123;payload.day_con&#125;&#125;转&#123;&#123;payload.night_con&#125;&#125;，气温&#123;&#123;payload.low_tp&#125;&#125;℃~&#123;&#123;payload.high_tp&#125;&#125;℃。明日天气：&#123;&#123;payload.tom_con&#125;&#125;，&#123;&#123;payload.tom_low_tp&#125;&#125;℃~&#123;&#123;payload.tom_hight_tp&#125;&#125;℃。</span><br></pre></td></tr></table></figure>
+
+
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015238.png" alt="20221129015238"></p>
+<p>注意，下面的 <code>输出为</code> 类型要选为 <code>纯文本</code> 。</p>
+<p><code>部署</code> 后执行，查看输出内容。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015254.png" alt="20221129015254"></p>
+<p>貌似输出的内容中有一些错误。</p>
+<h4 id="排查问题"><a href="#排查问题" class="headerlink" title="排查问题"></a>排查问题</h4><p>最终输出的结果中出现了问题，那么要如何来调试找出问题所在呢？</p>
+<p>这里就不得不再提一下 <code>debug节点</code> 。</p>
+<p>前面我们在执行完成每一个步骤之后，都会加一个 <code>debug节点</code> 来查看该步骤的输出内容。这样的话，就便于我们判断该步骤是否执行成功。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015315.png" alt="20221129015315"></p>
+<p>经过查看，原来是在 <code>提取天气数据</code> 阶段出了问题</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015330.png" alt="20221129015330"></p>
+<p>将其改正后，再次部署查看。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015342.png" alt="20221129015342"></p>
+<p>此时，输出的天气文案就是我们想要的了。</p>
+<hr>
+<h3 id="发送通知"><a href="#发送通知" class="headerlink" title="发送通知"></a>发送通知</h3><p>天气信息有了，下一步就要考虑如何接收通知了。</p>
+<h4 id="选择通知方案"><a href="#选择通知方案" class="headerlink" title="选择通知方案"></a>选择通知方案</h4><p>便于实现的消息通知方式，除了企业微信、钉钉机器人、飞书机器人之外，对于iPhone用户来说，还可以选择像 <code>Bark</code> 这种开源方案。</p>
+<p>这里我选择的是一款名为 <code>PushDeer</code> 的开源App推送方案，效果类似于 <code>Bark</code>。</p>
+<p>参考 PushDeer 官方文档  <a href="https://www.pushdeer.com/official.html" target="_blank" rel="noopener">使用官方在线版 - PushDeer·推送说明</a>  的说明，在安装好App后，获取相应的 <code>key</code> 就可以通过如下的请求方式发送消息了：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;api2.pushdeer.com&#x2F;message&#x2F;push?pushkey&#x3D;key&amp;text&#x3D;要发送的内容</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="实现通知请求"><a href="#实现通知请求" class="headerlink" title="实现通知请求"></a>实现通知请求</h4><p>在 <code>Node-Red</code> 中，发送通知请求还是继续使用 <code>http request节点</code> 来实现。</p>
+<p>拖放一个 <code>http request节点</code>，由于此时的请求链接是带有 <code>可变化</code> 参数的，并不是像上面获取天气的链接那样直接指定后就不再改变。所以，这里在内容下拉框中要选择 <code>Append to query-string parameters</code> 项，表示将前面步骤传递过来的 <code>msg.payload</code> 作为url请求参数来使用。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015407.png" alt="20221129015407"></p>
+<p>但我们知道，上一个步骤 <code>构造天气信息</code> 中，输出的是我们拼装后的天气文案。</p>
+<p>那也就是说，我们要在这两个节点之间对数据再做一次转换，将上一步的 <code>天气文案</code> 经过处理后作为下一个步骤的url请求参数使用。</p>
+<h4 id="构造请求参数"><a href="#构造请求参数" class="headerlink" title="构造请求参数"></a>构造请求参数</h4><p>在上面 <code>PushDeer</code> 的请求链接中，我们需要的是两个url请求参数： <code>pushkey</code> 和 <code>text</code> 。其中，<code>pushkey</code> 在我们安装完App后已经得到；而 <code>text</code> 就是上一个步骤中的天气文案。</p>
+<p>但要怎么将这两个参数作为url请求参数呢？</p>
+<p><strong>在使用工具时遇到了问题，最简单的方法就是去看官方文档。</strong></p>
+<p>查询 <code>Node-Red</code> 的官方文档，我找到了这篇文章  <a href="https://cookbook.nodered.org/http/handle-query-parameters" target="_blank" rel="noopener">Handle query parameters passed to an HTTP endpoint : Node-RED</a> </p>
+<p>参照其中的说明，我们可以将参数构造成如下的键值对结构：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;name&quot;: &quot;Nick&quot;,</span><br><span class="line">    &quot;colour&quot;: &quot;blue&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样作为url的请求参数后的形式就是 <code>/hello-query?name=Nick&amp;colour=blue</code> 。</p>
+<p>这不正是我们所需要的嘛。</p>
+<p>于是，为了实现中间的处理操作，我们可以通过拖放一个 <code>function节点</code> 来实现。将函数的处理逻辑改成如下：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015429.png" alt="20221129015429"></p>
+<p>同时，修改 <code>http request节点</code> 发送的URL为去除参数的形式：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015442.png" alt="20221129015442"></p>
+<h4 id="发送通知-1"><a href="#发送通知-1" class="headerlink" title="发送通知"></a>发送通知</h4><p>将以上流程组合，点击 <code>部署</code> 后手动触发。会发现 <code>debug节点</code> 打印了每一步的输出结果：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015457.png" alt="20221129015457"></p>
+<p>同时，我的手机上也收到了相应的通知提醒：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015511.PNG" alt="20221129015511"></p>
+<p>至此，天气预报通知手动触发操作算是实现了。</p>
+<hr>
+<h3 id="定时触发"><a href="#定时触发" class="headerlink" title="定时触发"></a>定时触发</h3><p>不过为了接收天气预报，我们总不能每次都要打开电脑去点一下来进行操作吧。</p>
+<p>最基本的，我想要实现的是每天早晨7:30起床后，手机上收到一条天气播报，了解一下当天的天气情况，这样临出门前也能应对当天可能出现的恶劣天气；每天晚上20:30临睡觉前，收到一条天气播报，了解一下明天的整体天气情况，是降温还是偏热，可以提前考虑一下明天的穿衣情况。</p>
+<p>但是在 <code>Node-Red</code> 中想要实现定时触发，我却找不到符合这种条件的节点。虽说 <code>inject节点</code> 可以实现简单的 <code>重复触发</code> 操作，但功能比较简单，想要实现定时功能要做的处理比较复杂。</p>
+<p>其实，<code>Node-Red</code> 的节点本质上就是一些 <code>Nodejs</code> 的模块实现的功能，内部执行的就是 <code>Nodejs</code> 脚本。</p>
+<p>那么，我们可以通过安装第三方的模块来实现更多更复杂的功能。</p>
+<h4 id="安装定时模块"><a href="#安装定时模块" class="headerlink" title="安装定时模块"></a>安装定时模块</h4><p>为了实现定时任务，比较灵活的方式就是通过 <code>cron表达式</code> 来实现。</p>
+<p>在 <code>Node-Red</code> 中比较有名的支持 <code>cron表达式</code> 的模块叫 <code>node-red-contrib-cron-plus</code> 。</p>
+<p>要在 <code>Node-Red</code> 中安装模块，依次选择：右上角 <code>菜单</code> – <code>节点管理</code> –  左侧 <code>控制板</code> – 右侧 <code>安装</code> – 在 <code>搜索模块</code> 中输入名称</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015647.png" alt="20221129015647"></p>
+<p>找到相应模块后点击 <code>安装</code> ，等待其安装即可。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015706.png" alt="20221129015706"></p>
+<h4 id="npm加速"><a href="#npm加速" class="headerlink" title="npm加速"></a>npm加速</h4><p>在等待了大约2分钟左右，我发现该模块还没有安装成功，一直处于下面的 <code>安装中</code> 界面：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015717.png" alt="20221129015717"></p>
+<p>又继续等待一段时间后，直接弹出了错误信息。查看日志后发现，果然又遇到了 <code>特殊网络</code> 问题。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015730.png" alt="20221129015730"></p>
+<p>上面日志中也描述的很清楚 <code>npm install</code> 安装时，网络请求失败。</p>
+<blockquote>
+<p>对于 <code>npm install</code> 的问题，可以直接通过 <code>替换国内镜像源</code> 的方式来解决。</p>
+</blockquote>
+<p>登录 <code>树莓派</code> ，进入之前安装的 <code>node-red</code> 容器中：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker-compose -f docker-compose-node-red.yml exec hass-nodered bash</span><br></pre></td></tr></table></figure>
+
+<p>直接执行如下命令来为 <code>npm</code> 设置国内镜像源：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm config set registry https:&#x2F;&#x2F;registry.npmmirror.com</span><br></pre></td></tr></table></figure>
+
+<p>然后再回到 <code>Node-Red</code> 节点管理设置界面，再次安装模块，会发现该模块几秒钟就安装成功了：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015745.png" alt="20221129015745"></p>
+<h4 id="定时模块配置"><a href="#定时模块配置" class="headerlink" title="定时模块配置"></a>定时模块配置</h4><p>模块安装好后，在左侧的节点栏中可以看到新增了一个 <code>cronplus</code> 节点</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015756.png" alt="20221129015756"></p>
+<p>拖放该节点并双击打开配置界面，在 <code>Schedules</code> 区域添加我们想要的定时cron表达式。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015809.png" alt="20221129015809"></p>
+<p>配置完点击 <code>部署</code> 后，可以发现该节点下方直接显示出了下一次执行的时间：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015821.png" alt="20221129015821"></p>
+<p>之后，将定时组件加入流程中。为了方便处理，我保留了手动和自动两种触发方式。同时也为了便于调试，我又将整体的流程布局做了调整，最终的效果如下：</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015830.png" alt="20221129015830"></p>
+<hr>
+<h3 id="流程分享"><a href="#流程分享" class="headerlink" title="流程分享"></a>流程分享</h3><p>为了方便流程的分享，<code>Node-Red</code> 支持导入导出功能。</p>
+<p>直接在右上角 <code>菜单</code> 中选择即可。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129015855.png" alt="20221129015855"></p>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>至此，一个 <code>Node-Red</code> 入门流程 – <code>天气预报通知</code> 的功能就实现了。</p>
+<p>俗话说，<strong>授人以鱼不如授人以渔</strong>。</p>
+<p>这里主要就是想通过如何实现一个小功能来入门 <code>Node-Red</code> ，关键还是要理清思路，一步一步来，遇到了问题不要慌，通过错误日志一点点分析，最终得到想要的结果。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>智能家居</category>
+      </categories>
+      <tags>
+        <tag>Node-Red</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>饿了？别急，码上开饭！</title>
+    <url>/2022/11/25/coder-to-cook/</url>
+    <content><![CDATA[<p>故事还要从2020年中在京东上花一分钱买的一套刀具说起。。。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/leafney/blog-images@main/blog/20221129120630.JPG" alt="20221129120630"></p>
+<p>当时正值618时节，京东App上获得了好多的小红包。本着 <strong>有羊毛不薅对不起东哥</strong> 的原则，只得无奈入手了。</p>
+<p>毕竟，我可是拿东哥当兄弟看待的。</p>
+<hr>
+<p>一开始我上班是不愿意带饭的，当然，主要原因还是不会。</p>
+<p>后来无奈于吃遍了公司附近的外卖，却又往往逃不开重油、难吃，而自己又不舍的扔掉。</p>
+<p>看着公司里带饭的同事越来越多，心想要不我也试试，别的不会做，西红柿炒鸡蛋总还是可以的吧。</p>
+<p>于是，故事就这么开始了。。。</p>
+<hr>
+<p>后来抖音火了之后，就开始在抖音上学做菜。</p>
+<p>别管好不好吃吧，反正看到感兴趣的，就想跟着露一手儿。</p>
+<p>至于做出来不好吃的，嗯，反正最后都被我吃了。</p>
+<hr>
+<p>话说，独乐了不如众乐乐。于是打算将这两年来做过的菜整理一下，做个笔记，也能分享给我那些不会做饭的朋友们。</p>
+<p>毕竟，<strong>男人会做饭，生活更浪漫</strong> 嘛。</p>
+<p>至此，就有了一个新的站点。</p>
+<p>猛戳：☞ <a href="https://cookbook.itfanr.cc/" target="_blank" rel="noopener">码上开饭</a> </p>
+<hr>
+]]></content>
+      <categories>
+        <category>人生随感</category>
+      </categories>
+      <tags>
+        <tag>人生感悟</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Homebrew下载加速</title>
     <url>/2022/11/10/homebrew-install-speed-up/</url>
     <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p><code>Homebrew</code> 是 macOS 上知名的软件包管理工具。但我平时却很少会用到。究其原因，主要还是由于 <code>众所周知</code> 的原因，在国内通过 <code>homebrew</code> 命令安装软件时总是出现 <code>timeout</code> 的情况。</p>
@@ -880,7 +1074,7 @@
 <hr>
 ]]></content>
       <categories>
-        <category>家庭AIO小主机</category>
+        <category>智能家居</category>
       </categories>
       <tags>
         <tag>AIO小主机</tag>
@@ -8914,7 +9108,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#97;&#x69;&#x6c;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;">&#x65;&#109;&#97;&#x69;&#x6c;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#x6c;&#x65;&#46;&#99;&#111;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#99;&#x6f;&#109;">&#x65;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#99;&#x6f;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>
@@ -13647,84 +13841,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Python操作SQLServer数据库</title>
-    <url>/2016/06/20/python-connect-sqlserver/</url>
-    <content><![CDATA[<h4 id="pymssql"><a href="#pymssql" class="headerlink" title="pymssql"></a>pymssql</h4><p>Python操作SQLServer需要使用 <code>pymssql</code> 模块</p>
-<p>Windows系统下的Python类库文件 <code>*.whl</code>文件，需要用 <code>pip install *.whl</code> 的方式来安装。</p>
-<p>下载pymssql2.7 library ：<a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pymssql" target="_blank" rel="noopener">pythonlibs</a></p>
-<p>第一次下载了 <code>pymssql-2.1.2-cp27-cp27m-win_amd64.whl</code> 文件，安装时报错，提示如下错误：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">λ pip install pymssql-2.1.2-cp27-cp27m-win_amd64.whl</span><br><span class="line">pymssql-2.1.2-cp27-cp27m-win_amd64.whl is not a supported wheel on this platform.</span><br></pre></td></tr></table></figure>
-
-<p>即使成功安装了 <code>pymssql</code>，但是 <code>import pymssql</code> 还是会报错</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import pymssql</span><br><span class="line">ImportError: DLL load failed: 找不到指定的模块。</span><br></pre></td></tr></table></figure>
-
-<p>所以又再次下载了 <code>pymssql-1.0.3-cp27-none-win32.whl</code> 文件，再次安装成功。<br>具体原因可能和操作系统或python版本有关，具体待深入研究。</p>
-<h4 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># coding:utf-8</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">http:&#x2F;&#x2F;www.pymssql.org&#x2F;en&#x2F;stable&#x2F;</span><br><span class="line">http:&#x2F;&#x2F;www.lfd.uci.edu&#x2F;~gohlke&#x2F;pythonlibs&#x2F;#pymssql </span><br><span class="line"></span><br><span class="line">pymssql-1.0.3-cp27-none-win32.whl    # 只有这个才能在windows下执行</span><br><span class="line">pymssql-2.1.2-cp27-cp27m-win_amd64.whl # 这个不能执行</span><br><span class="line"></span><br><span class="line">安装 whl文件 执行 &#96;pip install *.whl&#96;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">异常：</span><br><span class="line">不能用 DB-Library (如 ISQL)或 ODBC 3.7 或更早版本将 ntext 数据或仅使用 Unicode 排序规则的 Unicode 数据发送到客 户端。</span><br><span class="line">这个问题是数据库中字段为ntext类型，这种类型目前的c-library不支持，需要转为nvchar或text类型才可以。</span><br><span class="line">1. 建议：将ntext修改为nvarchar或text.</span><br><span class="line">2. 既然不支持ntext但支持text，那么我们只需要在输出时将ntext转换为text就好了 </span><br><span class="line">&#96;SELECT cast ( field_name AS TEXT ) AS field_name&#96;</span><br><span class="line">&#96;select convert(varchar(50),guid) as guid, convert(text,content) as content from news&#96;</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">import pymssql</span><br><span class="line"></span><br><span class="line">class MSSQL:</span><br><span class="line">    def __init__(self,host,user,pwd,db):</span><br><span class="line">        self.host&#x3D;host</span><br><span class="line">        self.user&#x3D;user</span><br><span class="line">        self.pwd&#x3D;pwd</span><br><span class="line">        self.db&#x3D;db</span><br><span class="line"></span><br><span class="line">    def __GetConnect(self):</span><br><span class="line">        if not self.db:</span><br><span class="line">            raise(NameError,&quot;没有设置数据库信息&quot;)</span><br><span class="line"></span><br><span class="line">        self.conn&#x3D;pymssql.connect(host&#x3D;self.host,user&#x3D;self.user,password&#x3D;self.pwd,database&#x3D;self.db,charset&#x3D;&quot;utf-8&quot;)</span><br><span class="line">        cur&#x3D;self.conn.cursor()</span><br><span class="line">        if not cur:</span><br><span class="line">            raise(NameError,&quot;连接数据库失败&quot;)</span><br><span class="line">        else:</span><br><span class="line">            return cur</span><br><span class="line"></span><br><span class="line">    def ExecQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        resList&#x3D;cur.fetchall()</span><br><span class="line">        # 查询完毕后关闭连接</span><br><span class="line">        self.conn.close()</span><br><span class="line">        return resList</span><br><span class="line"></span><br><span class="line">    def ExecNonQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        self.conn.commit()</span><br><span class="line">        self.conn.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__&#x3D;&#x3D;&quot;__main__&quot;:</span><br><span class="line"></span><br><span class="line">    ms&#x3D;MSSQL(host&#x3D;&quot;Test-FPC\sqlexpress&quot;,user&#x3D;&quot;sa&quot;,pwd&#x3D;&quot;1&quot;,db&#x3D;&quot;its&quot;)</span><br><span class="line">    resList&#x3D;ms.ExecQuery(&quot;select * from [SchemeCategory] where IsShow&#x3D;1&quot;)   </span><br><span class="line">    for i in resList:</span><br><span class="line">        print(i[&quot;Name&quot;])</span><br></pre></td></tr></table></figure>
-
-<h4 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h4><p>在操作是报出了如下异常信息：</p>
-<blockquote>
-<p>不能用 DB-Library (如 ISQL)或 ODBC 3.7 或更早版本将 ntext 数据或仅使用 Unicode 排序规则的 Unicode 数据发送到客 户端。</p>
-</blockquote>
-<p>这个问题是数据库中字段为ntext类型，这种类型目前的 <code>c-library</code> 不支持，需要转为 <code>nvchar</code> 或 <code>text</code> 类型才可以。</p>
-<ol>
-<li>建议：将ntext修改为nvarchar或text.</li>
-<li>既然不支持ntext但支持text，那么我们只需要在输出时将ntext转换为text就好了 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT cast ( field_name AS TEXT ) AS field_name</span><br><span class="line">select convert(varchar(50),guid) as guid, convert(text,content) as content from news</span><br></pre></td></tr></table></figure></li>
-<li>使用另一个类库 <code>pyodbc</code> 来操作，未遇到该问题。</li>
-</ol>
-<hr>
-<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><p><a href="http://lovesoo.org/python-example-sqlserver.html" target="_blank" rel="noopener">Python操作SQLServer示例 | 大爱</a><br><a href="http://www.cnblogs.com/qianlifeng/archive/2012/02/08/2343286.html" target="_blank" rel="noopener">利用python简化sql server数据导入导出 - qianlifeng - 博客园</a></p>
-<ul>
-<li><a href="http://blog.csdn.net/shanliangliuxing/article/details/8632909" target="_blank" rel="noopener">python 使用pymssql连接sql server数据库 - Hello World!</a></li>
-</ul>
-<p><a href="http://pymssql.org/en/latest/index.html" target="_blank" rel="noopener">pymssql &mdash; pymssql 2.2.0.dev documentation</a><br><a href="http://pymssql.org/en/latest/freetds.html#windows" target="_blank" rel="noopener">FreeTDS &mdash; pymssql 2.2.0.dev documentation</a><br><a href="https://github.com/pymssql/pymssql" target="_blank" rel="noopener">GitHub - pymssql/pymssql: Official home for the pymssql source code.</a><br><a href="http://www.freetds.org/" target="_blank" rel="noopener">FreeTDS.org</a><br><a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pymssql" target="_blank" rel="noopener">Python Extension Packages for Windows - Christoph Gohlke</a></p>
-<hr>
-<h4 id="pyodbc"><a href="#pyodbc" class="headerlink" title="pyodbc"></a>pyodbc</h4><h5 id="SQL-Server-ODBC-drivers"><a href="#SQL-Server-ODBC-drivers" class="headerlink" title="SQL Server ODBC drivers"></a>SQL Server ODBC drivers</h5><ul>
-<li><p>{SQL Server} - released with SQL Server 2000</p>
-</li>
-<li><p>{SQL Native Client} - released with SQL Server 2005 (also known as version 9.0)</p>
-</li>
-<li><p>{SQL Server Native Client 10.0} - released with SQL Server 2008</p>
-</li>
-<li><p>{SQL Server Native Client 11.0} - released with SQL Server 2012</p>
-<p>[sqlservertests]<br><code>connection-string=DRIVER={SQL Server};SERVER=localhost;UID=uid;PWD=pwd;DATABASE=db</code></p>
-</li>
-</ul>
-<p>The connection string above will use the 2000/2005 driver, even if SQL Server 2008<br>is installed:</p>
-<ul>
-<li>2000: DRIVER={SQL Server}</li>
-<li>2005: DRIVER={SQL Server}</li>
-<li>2008: DRIVER={SQL Server Native Client 10.0}</li>
-</ul>
-<h5 id="connection-strings"><a href="#connection-strings" class="headerlink" title="connection strings"></a>connection strings</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password</span><br></pre></td></tr></table></figure>
-
-<p>in Python:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conn &#x3D; pyodbc.connect(r&#39;DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password&#39;)</span><br></pre></td></tr></table></figure>
-
-<h5 id="连接字符串的两种写法"><a href="#连接字符串的两种写法" class="headerlink" title="连接字符串的两种写法"></a>连接字符串的两种写法</h5><h6 id="字符串方式"><a href="#字符串方式" class="headerlink" title="字符串方式"></a>字符串方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">connSqlServer &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server Native Client 10.0&#125;;SERVER&#x3D;192.106.0.102\instance1;DATABASE&#x3D;master;UID&#x3D;sql2008;PWD&#x3D;password123&#39;)</span><br><span class="line"></span><br><span class="line">connSqlServer &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server Native Client 10.0&#125;;SERVER&#x3D;192.106.0.102,1443;DATABASE&#x3D;master;UID&#x3D;sql2008;PWD&#x3D;password123&#39;)</span><br></pre></td></tr></table></figure>
-
-<h6 id="关键字方式"><a href="#关键字方式" class="headerlink" title="关键字方式"></a>关键字方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">connSqlServer &#x3D; pyodbc.connect(driver&#x3D;&#39;&#123;SQL Server Native Client 10.0&#125;&#39;,</span><br><span class="line">                               server&#x3D;&#39;192.106.0.102\instance1&#39;,</span><br><span class="line">                               database&#x3D;&#39;master&#39;,</span><br><span class="line">                               uid&#x3D;&#39;sql2008&#39;,pwd&#x3D;&#39;password123&#39;)</span><br><span class="line"></span><br><span class="line">connSqlServer &#x3D; pyodbc.connect(driver&#x3D;&#39;&#123;SQL Server Native Client 10.0&#125;&#39;,</span><br><span class="line">                               server&#x3D;&#39;192.106.0.102,1443&#39;,</span><br><span class="line">                               database&#x3D;&#39;master&#39;,</span><br><span class="line">                               uid&#x3D;&#39;sql2008&#39;,pwd&#x3D;&#39;password123&#39;)</span><br></pre></td></tr></table></figure>
-
-<p>详见：<a href="http://stackoverflow.com/questions/25505081/python-pyodbc-how-to-connect-to-a-specific-instance" target="_blank" rel="noopener">sql - python pyodbc : how to connect to a specific instance - Stack Overflow</a></p>
-<h5 id="我的写法"><a href="#我的写法" class="headerlink" title="我的写法"></a>我的写法</h5><h6 id="第一种方式"><a href="#第一种方式" class="headerlink" title="第一种方式"></a>第一种方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def __init__(self,driver,server,db,uid,pwd):</span><br><span class="line">    self.driver&#x3D;&quot;&#123;&#123;&#123;0&#125;&#125;&#125;&quot;.format(driver)  # 两个&#123;表示一个</span><br><span class="line">    self.server&#x3D;server</span><br><span class="line">    self.db&#x3D;db</span><br><span class="line">    self.uid&#x3D;uid</span><br><span class="line">    self.pwd&#x3D;pwd</span><br><span class="line"></span><br><span class="line">def __GetConnect(self):</span><br><span class="line">    if not self.db:</span><br><span class="line">        raise(NameError,&quot;没有设置数据库信息&quot;)</span><br><span class="line"></span><br><span class="line">    # r&#39;DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password&#39;</span><br><span class="line">    self.conn&#x3D;pyodbc.connect(driver&#x3D;self.driver,server&#x3D;self.server,database&#x3D;self.db,uid&#x3D;self.uid,pwd&#x3D;self.pwd)</span><br><span class="line"></span><br><span class="line">ms&#x3D;MSSQLODBC(driver&#x3D;&quot;SQL Server&quot;,server&#x3D;&quot;Test-FPC\sqlexpress&quot;,db&#x3D;&quot;its&quot;,uid&#x3D;&quot;sa&quot;,pwd&#x3D;&quot;1&quot;)</span><br></pre></td></tr></table></figure>
-
-<h6 id="第二种方式"><a href="#第二种方式" class="headerlink" title="第二种方式"></a>第二种方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">self.conn &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server&#125;;SERVER&#x3D;Test-FPC\sqlexpress;PORT&#x3D;1433;DATABASE&#x3D;its;UID&#x3D;sa;PWD&#x3D;1&#39;)</span><br></pre></td></tr></table></figure>
-
-<hr>
-<ul>
-<li><a href="https://mkleehammer.github.io/pyodbc/" target="_blank" rel="noopener">pyodbc</a></li>
-<li><a href="https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-Windows" target="_blank" rel="noopener">Connecting to SQL Server from Windows · mkleehammer/pyodbc Wiki · GitHub</a></li>
-<li><a href="http://stackoverflow.com/questions/25505081/python-pyodbc-how-to-connect-to-a-specific-instance" target="_blank" rel="noopener">sql - python pyodbc : how to connect to a specific instance - Stack Overflow</a></li>
-</ul>
-<h4 id="Demo-1"><a href="#Demo-1" class="headerlink" title="Demo"></a>Demo</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># coding:utf-8</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">import pyodbc</span><br><span class="line"></span><br><span class="line">class MSSQLODBC:</span><br><span class="line">    def __init__(self,driver,server,db,uid,pwd):</span><br><span class="line">        self.driver&#x3D;&quot;&#123;&#123;&#123;0&#125;&#125;&#125;&quot;.format(driver)  # 两个&#123;表示一个</span><br><span class="line">        self.server&#x3D;server</span><br><span class="line">        self.db&#x3D;db</span><br><span class="line">        self.uid&#x3D;uid</span><br><span class="line">        self.pwd&#x3D;pwd</span><br><span class="line"></span><br><span class="line">    def __GetConnect(self):</span><br><span class="line">        if not self.db:</span><br><span class="line">            raise(NameError,&quot;没有设置数据库信息&quot;)</span><br><span class="line"></span><br><span class="line">        # r&#39;DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password&#39;</span><br><span class="line">        self.conn&#x3D;pyodbc.connect(driver&#x3D;self.driver,server&#x3D;self.server,database&#x3D;self.db,uid&#x3D;self.uid,pwd&#x3D;self.pwd)</span><br><span class="line">        # self.conn &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server&#125;;SERVER&#x3D;Test-FPC\sqlexpress;PORT&#x3D;1433;DATABASE&#x3D;its;UID&#x3D;sa;PWD&#x3D;1&#39;)</span><br><span class="line">        cur&#x3D;self.conn.cursor()</span><br><span class="line">        if not cur:</span><br><span class="line">            raise(NameError,&quot;连接数据库失败&quot;)</span><br><span class="line">        else:</span><br><span class="line">            return cur</span><br><span class="line"></span><br><span class="line">    def ExecQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        resList&#x3D;cur.fetchall()</span><br><span class="line">        # 查询完毕后关闭连接</span><br><span class="line">        self.conn.close()</span><br><span class="line">        return resList</span><br><span class="line"></span><br><span class="line">    def ExecNonQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        self.conn.commit()</span><br><span class="line">        self.conn.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__&#x3D;&#x3D;&quot;__main__&quot;:</span><br><span class="line"></span><br><span class="line">    ms&#x3D;MSSQLODBC(driver&#x3D;&quot;SQL Server&quot;,server&#x3D;&quot;Test-FPC\sqlexpress&quot;,db&#x3D;&quot;its&quot;,uid&#x3D;&quot;sa&quot;,pwd&#x3D;&quot;1&quot;)</span><br><span class="line">    resList&#x3D;ms.ExecQuery(&quot;select top 10 * from [MallProductItem]&quot;)</span><br><span class="line">    for m in resList:</span><br><span class="line">        print(m[4])</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>开发笔记</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>分布式搜索引擎ElasticSearch初探</title>
     <url>/2016/06/20/distributed-search-engine-elasticsearch/</url>
     <content><![CDATA[<p>ElasticSearch是一个基于Lucene构建的开源，分布式，RESTful搜索引擎。</p>
@@ -13994,6 +14110,84 @@
       </categories>
       <tags>
         <tag>ElasticSearch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python操作SQLServer数据库</title>
+    <url>/2016/06/20/python-connect-sqlserver/</url>
+    <content><![CDATA[<h4 id="pymssql"><a href="#pymssql" class="headerlink" title="pymssql"></a>pymssql</h4><p>Python操作SQLServer需要使用 <code>pymssql</code> 模块</p>
+<p>Windows系统下的Python类库文件 <code>*.whl</code>文件，需要用 <code>pip install *.whl</code> 的方式来安装。</p>
+<p>下载pymssql2.7 library ：<a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pymssql" target="_blank" rel="noopener">pythonlibs</a></p>
+<p>第一次下载了 <code>pymssql-2.1.2-cp27-cp27m-win_amd64.whl</code> 文件，安装时报错，提示如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">λ pip install pymssql-2.1.2-cp27-cp27m-win_amd64.whl</span><br><span class="line">pymssql-2.1.2-cp27-cp27m-win_amd64.whl is not a supported wheel on this platform.</span><br></pre></td></tr></table></figure>
+
+<p>即使成功安装了 <code>pymssql</code>，但是 <code>import pymssql</code> 还是会报错</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import pymssql</span><br><span class="line">ImportError: DLL load failed: 找不到指定的模块。</span><br></pre></td></tr></table></figure>
+
+<p>所以又再次下载了 <code>pymssql-1.0.3-cp27-none-win32.whl</code> 文件，再次安装成功。<br>具体原因可能和操作系统或python版本有关，具体待深入研究。</p>
+<h4 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># coding:utf-8</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">http:&#x2F;&#x2F;www.pymssql.org&#x2F;en&#x2F;stable&#x2F;</span><br><span class="line">http:&#x2F;&#x2F;www.lfd.uci.edu&#x2F;~gohlke&#x2F;pythonlibs&#x2F;#pymssql </span><br><span class="line"></span><br><span class="line">pymssql-1.0.3-cp27-none-win32.whl    # 只有这个才能在windows下执行</span><br><span class="line">pymssql-2.1.2-cp27-cp27m-win_amd64.whl # 这个不能执行</span><br><span class="line"></span><br><span class="line">安装 whl文件 执行 &#96;pip install *.whl&#96;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">异常：</span><br><span class="line">不能用 DB-Library (如 ISQL)或 ODBC 3.7 或更早版本将 ntext 数据或仅使用 Unicode 排序规则的 Unicode 数据发送到客 户端。</span><br><span class="line">这个问题是数据库中字段为ntext类型，这种类型目前的c-library不支持，需要转为nvchar或text类型才可以。</span><br><span class="line">1. 建议：将ntext修改为nvarchar或text.</span><br><span class="line">2. 既然不支持ntext但支持text，那么我们只需要在输出时将ntext转换为text就好了 </span><br><span class="line">&#96;SELECT cast ( field_name AS TEXT ) AS field_name&#96;</span><br><span class="line">&#96;select convert(varchar(50),guid) as guid, convert(text,content) as content from news&#96;</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">import pymssql</span><br><span class="line"></span><br><span class="line">class MSSQL:</span><br><span class="line">    def __init__(self,host,user,pwd,db):</span><br><span class="line">        self.host&#x3D;host</span><br><span class="line">        self.user&#x3D;user</span><br><span class="line">        self.pwd&#x3D;pwd</span><br><span class="line">        self.db&#x3D;db</span><br><span class="line"></span><br><span class="line">    def __GetConnect(self):</span><br><span class="line">        if not self.db:</span><br><span class="line">            raise(NameError,&quot;没有设置数据库信息&quot;)</span><br><span class="line"></span><br><span class="line">        self.conn&#x3D;pymssql.connect(host&#x3D;self.host,user&#x3D;self.user,password&#x3D;self.pwd,database&#x3D;self.db,charset&#x3D;&quot;utf-8&quot;)</span><br><span class="line">        cur&#x3D;self.conn.cursor()</span><br><span class="line">        if not cur:</span><br><span class="line">            raise(NameError,&quot;连接数据库失败&quot;)</span><br><span class="line">        else:</span><br><span class="line">            return cur</span><br><span class="line"></span><br><span class="line">    def ExecQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        resList&#x3D;cur.fetchall()</span><br><span class="line">        # 查询完毕后关闭连接</span><br><span class="line">        self.conn.close()</span><br><span class="line">        return resList</span><br><span class="line"></span><br><span class="line">    def ExecNonQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        self.conn.commit()</span><br><span class="line">        self.conn.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__&#x3D;&#x3D;&quot;__main__&quot;:</span><br><span class="line"></span><br><span class="line">    ms&#x3D;MSSQL(host&#x3D;&quot;Test-FPC\sqlexpress&quot;,user&#x3D;&quot;sa&quot;,pwd&#x3D;&quot;1&quot;,db&#x3D;&quot;its&quot;)</span><br><span class="line">    resList&#x3D;ms.ExecQuery(&quot;select * from [SchemeCategory] where IsShow&#x3D;1&quot;)   </span><br><span class="line">    for i in resList:</span><br><span class="line">        print(i[&quot;Name&quot;])</span><br></pre></td></tr></table></figure>
+
+<h4 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h4><p>在操作是报出了如下异常信息：</p>
+<blockquote>
+<p>不能用 DB-Library (如 ISQL)或 ODBC 3.7 或更早版本将 ntext 数据或仅使用 Unicode 排序规则的 Unicode 数据发送到客 户端。</p>
+</blockquote>
+<p>这个问题是数据库中字段为ntext类型，这种类型目前的 <code>c-library</code> 不支持，需要转为 <code>nvchar</code> 或 <code>text</code> 类型才可以。</p>
+<ol>
+<li>建议：将ntext修改为nvarchar或text.</li>
+<li>既然不支持ntext但支持text，那么我们只需要在输出时将ntext转换为text就好了 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT cast ( field_name AS TEXT ) AS field_name</span><br><span class="line">select convert(varchar(50),guid) as guid, convert(text,content) as content from news</span><br></pre></td></tr></table></figure></li>
+<li>使用另一个类库 <code>pyodbc</code> 来操作，未遇到该问题。</li>
+</ol>
+<hr>
+<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><p><a href="http://lovesoo.org/python-example-sqlserver.html" target="_blank" rel="noopener">Python操作SQLServer示例 | 大爱</a><br><a href="http://www.cnblogs.com/qianlifeng/archive/2012/02/08/2343286.html" target="_blank" rel="noopener">利用python简化sql server数据导入导出 - qianlifeng - 博客园</a></p>
+<ul>
+<li><a href="http://blog.csdn.net/shanliangliuxing/article/details/8632909" target="_blank" rel="noopener">python 使用pymssql连接sql server数据库 - Hello World!</a></li>
+</ul>
+<p><a href="http://pymssql.org/en/latest/index.html" target="_blank" rel="noopener">pymssql &mdash; pymssql 2.2.0.dev documentation</a><br><a href="http://pymssql.org/en/latest/freetds.html#windows" target="_blank" rel="noopener">FreeTDS &mdash; pymssql 2.2.0.dev documentation</a><br><a href="https://github.com/pymssql/pymssql" target="_blank" rel="noopener">GitHub - pymssql/pymssql: Official home for the pymssql source code.</a><br><a href="http://www.freetds.org/" target="_blank" rel="noopener">FreeTDS.org</a><br><a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#pymssql" target="_blank" rel="noopener">Python Extension Packages for Windows - Christoph Gohlke</a></p>
+<hr>
+<h4 id="pyodbc"><a href="#pyodbc" class="headerlink" title="pyodbc"></a>pyodbc</h4><h5 id="SQL-Server-ODBC-drivers"><a href="#SQL-Server-ODBC-drivers" class="headerlink" title="SQL Server ODBC drivers"></a>SQL Server ODBC drivers</h5><ul>
+<li><p>{SQL Server} - released with SQL Server 2000</p>
+</li>
+<li><p>{SQL Native Client} - released with SQL Server 2005 (also known as version 9.0)</p>
+</li>
+<li><p>{SQL Server Native Client 10.0} - released with SQL Server 2008</p>
+</li>
+<li><p>{SQL Server Native Client 11.0} - released with SQL Server 2012</p>
+<p>[sqlservertests]<br><code>connection-string=DRIVER={SQL Server};SERVER=localhost;UID=uid;PWD=pwd;DATABASE=db</code></p>
+</li>
+</ul>
+<p>The connection string above will use the 2000/2005 driver, even if SQL Server 2008<br>is installed:</p>
+<ul>
+<li>2000: DRIVER={SQL Server}</li>
+<li>2005: DRIVER={SQL Server}</li>
+<li>2008: DRIVER={SQL Server Native Client 10.0}</li>
+</ul>
+<h5 id="connection-strings"><a href="#connection-strings" class="headerlink" title="connection strings"></a>connection strings</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password</span><br></pre></td></tr></table></figure>
+
+<p>in Python:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conn &#x3D; pyodbc.connect(r&#39;DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password&#39;)</span><br></pre></td></tr></table></figure>
+
+<h5 id="连接字符串的两种写法"><a href="#连接字符串的两种写法" class="headerlink" title="连接字符串的两种写法"></a>连接字符串的两种写法</h5><h6 id="字符串方式"><a href="#字符串方式" class="headerlink" title="字符串方式"></a>字符串方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">connSqlServer &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server Native Client 10.0&#125;;SERVER&#x3D;192.106.0.102\instance1;DATABASE&#x3D;master;UID&#x3D;sql2008;PWD&#x3D;password123&#39;)</span><br><span class="line"></span><br><span class="line">connSqlServer &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server Native Client 10.0&#125;;SERVER&#x3D;192.106.0.102,1443;DATABASE&#x3D;master;UID&#x3D;sql2008;PWD&#x3D;password123&#39;)</span><br></pre></td></tr></table></figure>
+
+<h6 id="关键字方式"><a href="#关键字方式" class="headerlink" title="关键字方式"></a>关键字方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">connSqlServer &#x3D; pyodbc.connect(driver&#x3D;&#39;&#123;SQL Server Native Client 10.0&#125;&#39;,</span><br><span class="line">                               server&#x3D;&#39;192.106.0.102\instance1&#39;,</span><br><span class="line">                               database&#x3D;&#39;master&#39;,</span><br><span class="line">                               uid&#x3D;&#39;sql2008&#39;,pwd&#x3D;&#39;password123&#39;)</span><br><span class="line"></span><br><span class="line">connSqlServer &#x3D; pyodbc.connect(driver&#x3D;&#39;&#123;SQL Server Native Client 10.0&#125;&#39;,</span><br><span class="line">                               server&#x3D;&#39;192.106.0.102,1443&#39;,</span><br><span class="line">                               database&#x3D;&#39;master&#39;,</span><br><span class="line">                               uid&#x3D;&#39;sql2008&#39;,pwd&#x3D;&#39;password123&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>详见：<a href="http://stackoverflow.com/questions/25505081/python-pyodbc-how-to-connect-to-a-specific-instance" target="_blank" rel="noopener">sql - python pyodbc : how to connect to a specific instance - Stack Overflow</a></p>
+<h5 id="我的写法"><a href="#我的写法" class="headerlink" title="我的写法"></a>我的写法</h5><h6 id="第一种方式"><a href="#第一种方式" class="headerlink" title="第一种方式"></a>第一种方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">def __init__(self,driver,server,db,uid,pwd):</span><br><span class="line">    self.driver&#x3D;&quot;&#123;&#123;&#123;0&#125;&#125;&#125;&quot;.format(driver)  # 两个&#123;表示一个</span><br><span class="line">    self.server&#x3D;server</span><br><span class="line">    self.db&#x3D;db</span><br><span class="line">    self.uid&#x3D;uid</span><br><span class="line">    self.pwd&#x3D;pwd</span><br><span class="line"></span><br><span class="line">def __GetConnect(self):</span><br><span class="line">    if not self.db:</span><br><span class="line">        raise(NameError,&quot;没有设置数据库信息&quot;)</span><br><span class="line"></span><br><span class="line">    # r&#39;DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password&#39;</span><br><span class="line">    self.conn&#x3D;pyodbc.connect(driver&#x3D;self.driver,server&#x3D;self.server,database&#x3D;self.db,uid&#x3D;self.uid,pwd&#x3D;self.pwd)</span><br><span class="line"></span><br><span class="line">ms&#x3D;MSSQLODBC(driver&#x3D;&quot;SQL Server&quot;,server&#x3D;&quot;Test-FPC\sqlexpress&quot;,db&#x3D;&quot;its&quot;,uid&#x3D;&quot;sa&quot;,pwd&#x3D;&quot;1&quot;)</span><br></pre></td></tr></table></figure>
+
+<h6 id="第二种方式"><a href="#第二种方式" class="headerlink" title="第二种方式"></a>第二种方式</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">self.conn &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server&#125;;SERVER&#x3D;Test-FPC\sqlexpress;PORT&#x3D;1433;DATABASE&#x3D;its;UID&#x3D;sa;PWD&#x3D;1&#39;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li><a href="https://mkleehammer.github.io/pyodbc/" target="_blank" rel="noopener">pyodbc</a></li>
+<li><a href="https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-Windows" target="_blank" rel="noopener">Connecting to SQL Server from Windows · mkleehammer/pyodbc Wiki · GitHub</a></li>
+<li><a href="http://stackoverflow.com/questions/25505081/python-pyodbc-how-to-connect-to-a-specific-instance" target="_blank" rel="noopener">sql - python pyodbc : how to connect to a specific instance - Stack Overflow</a></li>
+</ul>
+<h4 id="Demo-1"><a href="#Demo-1" class="headerlink" title="Demo"></a>Demo</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># coding:utf-8</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">import pyodbc</span><br><span class="line"></span><br><span class="line">class MSSQLODBC:</span><br><span class="line">    def __init__(self,driver,server,db,uid,pwd):</span><br><span class="line">        self.driver&#x3D;&quot;&#123;&#123;&#123;0&#125;&#125;&#125;&quot;.format(driver)  # 两个&#123;表示一个</span><br><span class="line">        self.server&#x3D;server</span><br><span class="line">        self.db&#x3D;db</span><br><span class="line">        self.uid&#x3D;uid</span><br><span class="line">        self.pwd&#x3D;pwd</span><br><span class="line"></span><br><span class="line">    def __GetConnect(self):</span><br><span class="line">        if not self.db:</span><br><span class="line">            raise(NameError,&quot;没有设置数据库信息&quot;)</span><br><span class="line"></span><br><span class="line">        # r&#39;DRIVER&#x3D;&#123;SQL Server Native Client 11.0&#125;;SERVER&#x3D;test;DATABASE&#x3D;test;UID&#x3D;user;PWD&#x3D;password&#39;</span><br><span class="line">        self.conn&#x3D;pyodbc.connect(driver&#x3D;self.driver,server&#x3D;self.server,database&#x3D;self.db,uid&#x3D;self.uid,pwd&#x3D;self.pwd)</span><br><span class="line">        # self.conn &#x3D; pyodbc.connect(&#39;DRIVER&#x3D;&#123;SQL Server&#125;;SERVER&#x3D;Test-FPC\sqlexpress;PORT&#x3D;1433;DATABASE&#x3D;its;UID&#x3D;sa;PWD&#x3D;1&#39;)</span><br><span class="line">        cur&#x3D;self.conn.cursor()</span><br><span class="line">        if not cur:</span><br><span class="line">            raise(NameError,&quot;连接数据库失败&quot;)</span><br><span class="line">        else:</span><br><span class="line">            return cur</span><br><span class="line"></span><br><span class="line">    def ExecQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        resList&#x3D;cur.fetchall()</span><br><span class="line">        # 查询完毕后关闭连接</span><br><span class="line">        self.conn.close()</span><br><span class="line">        return resList</span><br><span class="line"></span><br><span class="line">    def ExecNonQuery(self,sql):</span><br><span class="line">        cur&#x3D;self.__GetConnect()</span><br><span class="line">        cur.execute(sql.encode(&quot;utf-8&quot;))</span><br><span class="line">        self.conn.commit()</span><br><span class="line">        self.conn.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__&#x3D;&#x3D;&quot;__main__&quot;:</span><br><span class="line"></span><br><span class="line">    ms&#x3D;MSSQLODBC(driver&#x3D;&quot;SQL Server&quot;,server&#x3D;&quot;Test-FPC\sqlexpress&quot;,db&#x3D;&quot;its&quot;,uid&#x3D;&quot;sa&quot;,pwd&#x3D;&quot;1&quot;)</span><br><span class="line">    resList&#x3D;ms.ExecQuery(&quot;select top 10 * from [MallProductItem]&quot;)</span><br><span class="line">    for m in resList:</span><br><span class="line">        print(m[4])</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>开发笔记</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>

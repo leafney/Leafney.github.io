@@ -124,7 +124,7 @@
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// web/web.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> web  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> <span class="string">"embed"</span>  </span><br><span class="line">  </span><br><span class="line"><span class="comment">//go:embed index.html favicon.ico assets</span></span><br><span class="line"><span class="keyword">var</span> Static embed.FS</span><br></pre></td></tr></table></figure>
 
 <p>然后在 <code>main.go</code> 中添加该静态资源文件：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// main.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>    </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">   r.GET(<span class="string">"/ping"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">      c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">         <span class="string">"msg"</span>: <span class="string">"pong"</span>,  </span><br><span class="line">      &#125;)  </span><br><span class="line">   &#125;)</span><br><span class="line"></span><br><span class="line">	r.StaticFS(<span class="string">"/"</span>, http.FS(web.Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// main.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>    </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line"></span><br><span class="line">	<span class="comment">//r.GET("/ping", func(c *gin.Context) &#123;</span></span><br><span class="line">	<span class="comment">//	c.JSON(200, gin.H&#123;</span></span><br><span class="line">	<span class="comment">//		"msg": "pong",  </span></span><br><span class="line">	<span class="comment">//	&#125;)</span></span><br><span class="line">	<span class="comment">//&#125;)</span></span><br><span class="line"></span><br><span class="line">	r.StaticFS(<span class="string">"/"</span>, http.FS(web.Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <p>通过浏览器访问 <code>http://localhost:8080/</code> 后发现能够正常访问：</p>
@@ -138,7 +138,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[GIN-debug] GET    &#x2F;api&#x2F;hello                --&gt; main.main.func1 (3 handlers)</span><br><span class="line">[GIN-debug] GET    &#x2F;*filepath                --&gt; github.com&#x2F;gin-gonic&#x2F;gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)</span><br><span class="line">panic: catch-all wildcard &#39;*filepath&#39; in new path &#39;&#x2F;*filepath&#39; conflicts with existing path segment &#39;api&#39; in existing prefix &#39;&#x2F;api&#39;</span><br></pre></td></tr></table></figure>
 
 
-<p>参考网上相关的讨论，我整理并总结了如下两种解决方法。</p>
+<p>参考网上相关的讨论，我整理并总结了如下三种解决方法。</p>
 <h5 id="重定向法"><a href="#重定向法" class="headerlink" title="重定向法"></a>重定向法</h5><p>查看上面的错误信息，<code>/*filepath</code> 会匹配到所有的根路径下的路由导致出现问题，那么我们把静态页放到一个二级目录下，例如 <code>/ui</code>，这样匹配到的就是 <code>/ui/*filepath</code> 下的所有路径了，跟 <code>/api</code> 就不会出现冲突的问题。</p>
 <p>我们将 <code>main.go</code> 修改为如下：</p>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> (  </span><br><span class="line">   <span class="string">"demo/web"</span>    </span><br><span class="line">   <span class="string">"github.com/gin-gonic/gin"</span>   </span><br><span class="line">   <span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line">   </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">   r := gin.Default()  </span><br><span class="line">   </span><br><span class="line">   r.GET(<span class="string">"/api/hello"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">   c.JSON(<span class="number">200</span>, gin.H&#123;  </span><br><span class="line">      <span class="string">"msg"</span>: <span class="string">"hello world"</span>,  </span><br><span class="line">	   &#125;)  </span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	r.GET(<span class="string">"/"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;  </span><br><span class="line">	   c.Redirect(http.StatusMovedPermanently, <span class="string">"ui/"</span>)  </span><br><span class="line">	&#125;)  </span><br><span class="line">	r.StaticFS(<span class="string">"/ui"</span>, http.FS(web5.Web5Static))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -154,6 +154,7 @@
 <ul>
 <li><a href="https://github.com/gin-gonic/gin/issues/360" target="_blank" rel="noopener">Wildcard route conflicts with static files · Issue #360 · gin-gonic/gin</a> </li>
 </ul>
+<hr>
 <h5 id="中间件法"><a href="#中间件法" class="headerlink" title="中间件法"></a>中间件法</h5><p>我找到了一个 Gin 项目的第三方扩展中间件，可以实现对静态资源文件的调用：<a href="https://github.com/gin-contrib/static" target="_blank" rel="noopener">gin-contrib/static: Static middleware (github.com)</a></p>
 <p>但是该三方库目前对于 <code>Embed</code> 方式嵌入的静态资源文件并不支持。好在我在该三方库的 <code>Issues</code> 中找到了相关的讨论：</p>
 <ul>
@@ -180,6 +181,19 @@
 <blockquote>
 <p>这种方法采用中间件的方式实现，也就不会遇到官方 <code>StaticFS</code> 方法的路径通配符冲突问题。</p>
 </blockquote>
+<hr>
+<h5 id="黑科技法"><a href="#黑科技法" class="headerlink" title="黑科技法"></a>黑科技法</h5><blockquote>
+<p>2022-12-30 更新</p>
+</blockquote>
+<p>这种方法是我后来翻看 issues <a href="https://github.com/gin-gonic/gin/issues/360#issuecomment-1272532272" target="_blank" rel="noopener">Wildcard route conflicts with static files · Issue #360 · gin-gonic/gin</a>  时看到了的，尝试了一下发现居然可以。</p>
+<p>直接上代码：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line"></span><br><span class="line">	r.GET(<span class="string">"/api"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">		c.JSON(<span class="number">200</span>, gin.H&#123;</span><br><span class="line">			<span class="string">"msg"</span>: <span class="string">"hello world"</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 直接这样设置会报错：</span></span><br><span class="line">	<span class="comment">// panic: catch-all wildcard '*filepath' in new path '/*filepath' conflicts with existing path segment 'api' in existing prefix '/api'</span></span><br><span class="line">	<span class="comment">//r.StaticFS("/", http.FS(web.Static))</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 黑科技</span></span><br><span class="line">	r.NoRoute(gin.WrapH(http.FileServer(http.FS(web.Static))))</span><br><span class="line"></span><br><span class="line">	r.Run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>NoRoute</code> 来实现，但这种方法不是很推荐使用。如果上面的 <code>/api/*</code> 中没有匹配的路由，那么也会进入到 <code>NoRoute</code> 中，可能会出现问题。</p>
+<p>详见：</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/36357791/gin-router-path-segment-conflicts-with-existing-wildcard" target="_blank" rel="noopener">go - Gin router: path segment conflicts with existing wildcard - Stack Overflow</a> </li>
+</ul>
 <hr>
 <h4 id="作为后端首页"><a href="#作为后端首页" class="headerlink" title="作为后端首页"></a>作为后端首页</h4><p>特殊情况下，我们可能还会将静态页面作为后端的入口文件，例如各种管理后台。此时访问的路径一般会定义为 <code>/admin</code>  的形式。</p>
 <h5 id="一级目录结构"><a href="#一级目录结构" class="headerlink" title="一级目录结构"></a>一级目录结构</h5><p>其实这个需求实现起来和上面的 <code>重定向法</code> 有些类似。</p>
@@ -9108,7 +9122,7 @@
 </tr>
 <tr>
 <td>FROM</td>
-<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#99;&#x6f;&#109;">&#x65;&#109;&#x61;&#105;&#x6c;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#99;&#x6f;&#109;</a> 的形式</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="mailto:&#x65;&#109;&#x61;&#x69;&#108;&#x40;&#x65;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#109;">&#x65;&#109;&#x61;&#x69;&#108;&#x40;&#x65;&#x78;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#x63;&#111;&#109;</a> 的形式</td>
 </tr>
 <tr>
 <td>USER</td>
